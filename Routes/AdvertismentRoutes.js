@@ -10,7 +10,7 @@ const {
 const { upload } = require("../Utils/ImageUpload");
 
 router.route("/uploadAds", upload.single("image")).post(CreateAdvertisment);
-router.route("/Adsget/:id").get(AdsGet);
+router.route("/Adsget").get(AdsGet);
 router.route("/deleteAds/:id").delete(DeleteAds);
 router.route("/updateAds/:id", upload.single("image")).put(EditAds);
 router.route("/softdeleteAds/:id").delete(SoftDeleteAds);
