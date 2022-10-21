@@ -1,6 +1,7 @@
+const db = require("../config/Connection");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const OwnerModel = require("../Models/OwnerModel");
+const OwnerModel = db.OwnerModel;
 const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -28,7 +29,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
 exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {});
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
-  const data = await OwnerModel.findAll();
+  const data = await OwnerModel.findAll({});
   res.status(200).json({
     success: true,
     data: data,

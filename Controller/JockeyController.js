@@ -1,4 +1,5 @@
-const JockeyModel = require("../Models/JockeyModel");
+const db = require("../config/Connection");
+const JockeyModel = db.JockeyModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Jockey } = require("../Utils/Path");

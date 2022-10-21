@@ -5,7 +5,15 @@ process.on("uncaughtException", (err) => {
   console.log(`Shutting down the server due to unhandled exception`);
   process.exit(1);
 });
-
+async () => {
+  try {
+    await Db.authenticate();
+    console.log(Db);
+    console.log("done");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+};
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
 }

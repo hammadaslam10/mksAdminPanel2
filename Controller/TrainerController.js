@@ -1,4 +1,5 @@
-const TrainerModel = require("../Models/TrainerModel");
+const db = require("../config/Connection");
+const TrainerModel = db.TrainerModel
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Trainer } = require("../Utils/Path");

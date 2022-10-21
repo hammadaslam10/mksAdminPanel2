@@ -1,9 +1,63 @@
-const Sequelize = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 const Db = new Sequelize("mks", "root", "12345678abc", {
   dialect: "mysql",
   // logging: false,
 });
+Db.authenticate()
+  .then(() => {
+    console.log("connected..");
+  })
+  .catch((err) => {
+    console.log("Error" + err);
+  });
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = Db;
+db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
+db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
+db.JockeyModel = require("../Models/JockeyModel")(Db, DataTypes);
+db.TrainerModel = require("../Models/TrainerModel")(Db, DataTypes);
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
+db.HorseModel.belongsTo(db.JockeyModel, {
+  foreignKey: "ActiveJockey",
+  as: "ActiveJockeyData",
+});
+db.HorseModel.belongsTo(db.OwnerModel, {
+  foreignKey: "ActiveOwner",
+  as: "ActiveOwnerData",
+});
+db.HorseModel.belongsTo(db.TrainerModel, {
+  foreignKey: "ActiveTrainer",
+  as: "ActiveTrainerData",
+});
+db.HorseModel.hasMany(db.OwnerModel, {
+  foreignKey: "Owner",
+  as: "OwnerData",
+});
+db.OwnerModel.belongsTo(db.HorseModel, {
+  foreignKey: "Owner",
+  as: "OwnerData",
+});
+db.HorseModel.hasMany(db.JockeyModel, {
+  foreignKey: "Jockey",
+  as: "JockeyData",
+});
+db.JockeyModel.belongsTo(db.HorseModel, {
+  foreignKey: "Jockey",
+  as: "JockeyData",
+});
+db.HorseModel.hasMany(db.TrainerModel, {
+  foreignKey: "Trainer",
+  as: "TrainerData",
+});
+db.TrainerModel.belongsTo(db.HorseModel, {
+  foreignKey: "Trainer",
+  as: "TrainerDataHorse",
+});
+
 // var options = {
 //   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
 //   port: 3306,
@@ -20,5 +74,4 @@ const Db = new Sequelize("mks", "root", "12345678abc", {
 // });
 
 // module.exports = Db;
-
-module.exports = Db;
+module.exports = db;

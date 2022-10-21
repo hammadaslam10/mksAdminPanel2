@@ -1,8 +1,10 @@
+const db = require("../config/Connection");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const TrainerModel = require("../Models/TrainerModel");
-const HorseModel = require("../Models/HorseModel");
-const OwnerModel = require("../Models/OwnerModel");
+const TrainerModel = db.TrainerModel;
+const HorseModel = db.HorseModel;
+
+const OwnerModel = db.OwnerModel;
 const Features = require("../Utils/Features");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
