@@ -1,66 +1,62 @@
-const { Sequelize } = require("sequelize");
-const Db = require("../config/Connection");
-const { DataTypes } = Sequelize;
+const Sequelize = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  const AdvertismentModel = sequelize.define(
+    "AdvertismentModel",
 
-const AdvertismentModel = Db.define(
-  "AdvertismentModel",
-
-  {
-    _id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    DescriptionEn: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: "Ad will have description" },
-        notEmpty: { msg: "Descritpion  will not be empty" },
+    {
+      _id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
       },
-    },
-    DescriptionAr: {
-      type: DataTypes.STRING,
-      validate: {
-        is: /[\u0600-\u06FF]/,
-        is: {
-          msg: "Description Must Be In Arabic",
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      DescriptionEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Ad will have description" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
+      },
+      DescriptionAr: {
+        type: DataTypes.STRING,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Description Must Be In Arabic",
+          },
+        },
+      },
+      TitleEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      IsActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+      TitleAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Title Must Be In Arabic",
+          },
         },
       },
     },
-    TitleEn: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    IsActive: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-    },
-    TitleAr: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        is: /[\u0600-\u06FF]/,
-        is: {
-          msg: "Title Must Be In Arabic",
-        },
-      },
-    },
-  },
-  {
-    freezeTableName: true,
-    paranoid: true,
-  }
-);
-
-AdvertismentModel.sync();
-
-module.exports = AdvertismentModel;
+    {
+      freezeTableName: true,
+      paranoid: true,
+    }
+  );
+  return AdvertismentModel;
+};
 // const { Sequelize } = require("sequelize");
 // const Db = require("../config/Connection");
 // const { DataTypes } = Sequelize;

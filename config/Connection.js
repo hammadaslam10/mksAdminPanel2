@@ -18,9 +18,19 @@ db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
 db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
 db.JockeyModel = require("../Models/JockeyModel")(Db, DataTypes);
 db.TrainerModel = require("../Models/TrainerModel")(Db, DataTypes);
+db.RaceCourseModel = require("../Models/RaceCourseModel")(Db, DataTypes);
+db.AdvertismentModel = require("../Models/AdvertismentModel")(Db, DataTypes);
+db.NewsModel = require("../Models/NewsModel")(Db, DataTypes);
+db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
+db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
+db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
+db.HorseJockeyComboModel = require("../Models/HorseJockeyComboModel")(Db, DataTypes);
+db.HorseTrainerComboModel = require("../Models/HorseTrainerComboModel")(Db, DataTypes);
+db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
+
 db.HorseModel.belongsTo(db.JockeyModel, {
   foreignKey: "ActiveJockey",
   as: "ActiveJockeyData",
@@ -33,30 +43,61 @@ db.HorseModel.belongsTo(db.TrainerModel, {
   foreignKey: "ActiveTrainer",
   as: "ActiveTrainerData",
 });
-db.HorseModel.hasMany(db.OwnerModel, {
-  foreignKey: "Owner",
-  as: "OwnerData",
+db.HorseModel.belongsToMany(db.OwnerModel, {
+  through: "HorseOwnerComboModel",
 });
-db.OwnerModel.belongsTo(db.HorseModel, {
-  foreignKey: "Owner",
-  as: "OwnerData",
+db.OwnerModel.belongsToMany(db.HorseModel, {
+  through: "HorseOwnerComboModel",
 });
-db.HorseModel.hasMany(db.JockeyModel, {
-  foreignKey: "Jockey",
-  as: "JockeyData",
+db.HorseModel.belongsToMany(db.JockeyModel, {
+  through: "HorseJockeyComboModel",
 });
-db.JockeyModel.belongsTo(db.HorseModel, {
-  foreignKey: "Jockey",
-  as: "JockeyData",
+db.JockeyModel.belongsToMany(db.HorseModel, {
+  through: "HorseJockeyComboModel",
 });
-db.HorseModel.hasMany(db.TrainerModel, {
-  foreignKey: "Trainer",
-  as: "TrainerData",
+db.HorseModel.belongsToMany(db.TrainerModel, {
+  through: "HorseTrainerComboModel",
 });
-db.TrainerModel.belongsTo(db.HorseModel, {
-  foreignKey: "Trainer",
-  as: "TrainerDataHorse",
+db.TrainerModel.belongsToMany(db.HorseModel, {
+  through: "HorseTrainerComboModel",
 });
+
+// db.HorseModel.belongsTo(db.JockeyModel, {
+//   foreignKey: "ActiveJockey",
+//   as: "ActiveJockeyData",
+// });
+// db.HorseModel.belongsTo(db.OwnerModel, {
+//   foreignKey: "ActiveOwner",
+//   as: "ActiveOwnerData",
+// });
+// db.HorseModel.belongsTo(db.TrainerModel, {
+//   foreignKey: "ActiveTrainer",
+//   as: "ActiveTrainerData",
+// });
+// db.HorseModel.hasMany(db.OwnerModel, {
+//   foreignKey: "Owner",
+//   as: "OwnerData",
+// });
+// db.OwnerModel.hasMany(db.HorseModel, {
+//   foreignKey: "Owner",
+//   as: "OwnerData",
+// });
+// db.HorseModel.hasMany(db.JockeyModel, {
+//   foreignKey: "Jockey",
+//   as: "JockeyData",
+// });
+// db.JockeyModel.belongsTo(db.HorseModel, {
+//   foreignKey: "Jockey",
+//   as: "JockeyData",
+// });
+// db.HorseModel.hasMany(db.TrainerModel, {
+//   foreignKey: "Trainer",
+//   as: "TrainerData",
+// });
+// db.TrainerModel.belongsTo(db.HorseModel, {
+//   foreignKey: "Trainer",
+//   as: "TrainerDataHorse",
+// });
 
 // var options = {
 //   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",

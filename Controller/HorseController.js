@@ -3,9 +3,12 @@ const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const TrainerModel = db.TrainerModel;
 const HorseModel = db.HorseModel;
-
 const OwnerModel = db.OwnerModel;
+const JockeyModel = db.JockeyModel;
 const Features = require("../Utils/Features");
+const HorseJockeyComboModel = db.HorseJockeyComboModel;
+const HorseOwnerComboModel = db.HorseOwnerComboModel;
+const HorseTrainerComboModel = db.HorseTrainerComboModel;
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -20,6 +23,13 @@ exports.GetHorse = Trackerror(async (req, res, next) => {
     data,
   });
 });
+// async function makePostWithReactions(content, reactionTypes) {
+//   const post = await Post.create({ content });
+//   await Reaction.bulkCreate(
+//     reactionTypes.map((type) => ({ type, postId: post.id }))
+//   );
+//   return post;
+// }
 exports.SingleHorse = Trackerror(async (req, res, next) => {});
 exports.CreateHorse = Trackerror(async (req, res, next) => {
   const {
@@ -47,8 +57,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
   const data = await HorseModel.create({
     HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
     NameEn: NameEn,
@@ -73,6 +81,48 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Jockey: Jockey,
     ActiveOwner: ActiveOwner,
   });
+
+  // const QueryOwnerData = await OwnerModel.findAll({
+  //   where: { _id: Owner },
+  // });
+  // console.log(QueryOwnerData);
+  // if (true) {
+  //   // if(){
+  //   // }
+  //   // if (typeof Owner === "string") {
+  //   //   await OwnerModel.update(
+  //   //     { Owner: data._id },
+  //   //     {
+  //   //       where: { _id: Owner },
+  //   //     }
+  //   //   );
+  //   // } else {
+  //   //   await Owner.map(async (singleOwner) => {
+  //   //     await OwnerModel.update(
+  //   //       { Owner: data._id },
+  //   //       {
+  //   //         where: { _id: singleOwner },
+  //   //       }
+  //   //     );
+  //   //   });
+  //   // }
+  //   // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  //   // await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
+  // } else {
+  //   return next(new HandlerCallBack("Horse creation has its error", 401));
+  // }
+  // Owner.map(async (single) => {
+  //   await OwnerModel.create();
+  // });
+  // await OwnerModel.update(
+  //   { HorseThatOwned : data._id },
+  //   {
+  //     where: {
+  //       _id: Owner,
+  //     },
+  //   }
+  // );
+
   res.status(200).json({
     success: true,
     data,
