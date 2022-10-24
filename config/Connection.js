@@ -1,9 +1,14 @@
 const { Sequelize, DataTypes } = require("sequelize");
-
-const Db = new Sequelize("mks", "root", "12345678abc", {
-  dialect: "mysql",
-  // logging: false,
-});
+require("dotenv").config({ path: "./config/Secrets.env" });
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+    // logging: false,
+  }
+);
 Db.authenticate()
   .then(() => {
     console.log("connected..");
