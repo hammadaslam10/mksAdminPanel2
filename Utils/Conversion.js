@@ -4,7 +4,6 @@ exports.Conversion = (data) => {
     data = Array.from(data);
     return data;
   } else {
-    console.log(data);
     return data;
   }
 };

@@ -29,7 +29,7 @@ db.NewsModel = require("../Models/NewsModel")(Db, DataTypes);
 db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
-db.RaceAndCourseModel = require("../Models/RaceAndCourseModel")(Db, DataTypes);
+db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
 db.HorseJockeyComboModel = require("../Models/HorseJockeyComboModel")(
   Db,
   DataTypes
@@ -50,11 +50,11 @@ db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
 });
-db.RaceModel.belongsToMany(db.RaceCourseModel, {
-  through: "RaceAndCourseModel",
+db.RaceModel.belongsToMany(db.HorseModel, {
+  through: "RaceAndHorseModel",
 });
-db.RaceCourseModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndCourseModel",
+db.HorseModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndHorseModel",
 });
 db.HorseModel.belongsToMany(db.OwnerModel, {
   through: "HorseOwnerComboModel",

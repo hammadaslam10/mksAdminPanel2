@@ -18,7 +18,6 @@ exports.GetHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findAll({
     include: { all: true },
   });
-  console.log(data);
   res.status(200).json({
     success: true,
     data,
@@ -82,9 +81,28 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     let JockeyData = Conversion(Jockey);
     let TrainerData = Conversion(Trainer);
     let OwnerData = Conversion(Owner);
-    OwnerData.push(ActiveOwner);
-    TrainerData.push(ActiveTrainer);
-    JockeyData.push(ActiveJockey);
+    console.log(OwnerData);
+    console.log(JockeyData);
+    console.log(TrainerData);
+    // if (typeof OwnerData === "string") {
+    //   OwnerData = [];
+    //   OwnerData.push(ActiveOwner);
+    // } else {
+    //   OwnerData.push(ActiveOwner);
+    // }
+    // if (typeof TrainerData === "string") {
+    //   TrainerData = [];
+    //   TrainerData.push(ActiveTrainer);
+    // } else {
+    //   TrainerData.push(ActiveTrainer);
+    // }
+
+    // if (typeof JockeyData === "string") {
+    //   JockeyData = [];
+    //   JockeyData.push(ActiveJockey);
+    // } else {
+    //   JockeyData.push(ActiveJockey);
+    // }
 
     if (Owner) {
       await OwnerData.map(async (singleOwner) => {
