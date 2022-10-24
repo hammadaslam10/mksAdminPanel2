@@ -1,4 +1,6 @@
-const RaceCourseModel = require("../Models/RaceCourseModel");
+// const RaceCourseModel = require("../Models/RaceCourseModel");
+const db = require("../config/Connection");
+const RaceCourseModel = db.RaceCourseModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const Features = require("../Utils/Features");

@@ -1,4 +1,5 @@
-const SliderModel = require("../Models/SliderModel");
+const db = require("../config/Connection");
+const SliderModel = db.SliderModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Slider } = require("../Utils/Path");

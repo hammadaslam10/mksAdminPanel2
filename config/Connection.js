@@ -29,6 +29,7 @@ db.NewsModel = require("../Models/NewsModel")(Db, DataTypes);
 db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
+db.RaceAndCourseModel = require("../Models/RaceAndCourseModel")(Db, DataTypes);
 db.HorseJockeyComboModel = require("../Models/HorseJockeyComboModel")(
   Db,
   DataTypes
@@ -44,6 +45,53 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
+
+db.RaceModel.belongsTo(db.RaceCourseModel, {
+  foreignKey: "RaceCourse",
+  as: "RaceCourseData",
+});
+db.RaceModel.belongsToMany(db.RaceCourseModel, {
+  through: "RaceAndCourseModel",
+});
+db.RaceCourseModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndCourseModel",
+});
+db.HorseModel.belongsToMany(db.OwnerModel, {
+  through: "HorseOwnerComboModel",
+});
+db.OwnerModel.belongsToMany(db.HorseModel, {
+  through: "HorseOwnerComboModel",
+});
+db.HorseModel.belongsToMany(db.JockeyModel, {
+  through: "HorseJockeyComboModel",
+});
+db.JockeyModel.belongsToMany(db.HorseModel, {
+  through: "HorseJockeyComboModel",
+});
+db.HorseModel.belongsToMany(db.TrainerModel, {
+  through: "HorseTrainerComboModel",
+});
+db.TrainerModel.belongsToMany(db.HorseModel, {
+  through: "HorseTrainerComboModel",
+});
+
+// var options = {
+//   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
+//   port: 3306,
+//   logging: console.log,
+//   maxConcurrentQueries: 100,
+//   dialect: "mysql",
+//   ssl: "Amazon RDS",
+//   pool: { maxDbions: 5, maxIdleTime: 30 },
+//   language: "en",
+//   Protocol: "TCP"
+// };
+// const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
+//   ...options
+// });
+
+// module.exports = Db;
+module.exports = db;
 
 // db.HorseModel.belongsTo(db.JockeyModel, {
 //   foreignKey: "ActiveJockey",
@@ -68,25 +116,6 @@ db.sequelize.sync({ force: false }).then(() => {
 // db.TrainerModel.hasOne(db.HorseModel, {
 //   foreignKey: "ActiveTrainer",
 //   as: "ActiveTrainerData",
-// });
-db.HorseModel.belongsToMany(db.OwnerModel, {
-  through: "HorseOwnerComboModel",
-});
-db.OwnerModel.belongsToMany(db.HorseModel, {
-  through: "HorseOwnerComboModel",
-});
-db.HorseModel.belongsToMany(db.JockeyModel, {
-  through: "HorseJockeyComboModel",
-});
-db.JockeyModel.belongsToMany(db.HorseModel, {
-  through: "HorseJockeyComboModel",
-});
-db.HorseModel.belongsToMany(db.TrainerModel, {
-  through: "HorseTrainerComboModel",
-});
-db.TrainerModel.belongsToMany(db.HorseModel, {
-  through: "HorseTrainerComboModel",
-});
 
 // db.HorseModel.belongsTo(db.JockeyModel, {
 //   foreignKey: "ActiveJockey",
@@ -124,21 +153,4 @@ db.TrainerModel.belongsToMany(db.HorseModel, {
 //   foreignKey: "Trainer",
 //   as: "TrainerDataHorse",
 // });
-
-// var options = {
-//   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
-//   port: 3306,
-//   logging: console.log,
-//   maxConcurrentQueries: 100,
-//   dialect: "mysql",
-//   ssl: "Amazon RDS",
-//   pool: { maxDbions: 5, maxIdleTime: 30 },
-//   language: "en",
-//   Protocol: "TCP"
-// };
-// const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
-//   ...options
 // });
-
-// module.exports = Db;
-module.exports = db;

@@ -1,8 +1,9 @@
-const SponsorModel = require("../Models/SponsorModel");
+const db = require("../config/Connection");
+const SponsorModel = db.SponsorModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Sponsor } = require("../Utils/Path");
-const { uploadFile, deleteFile  } = require("../Utils/s3");
+const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");

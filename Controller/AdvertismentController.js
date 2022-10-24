@@ -1,4 +1,5 @@
-const AdvertismentModel = require("../Models/AdvertismentModel");
+const db = require("../config/Connection");
+const AdvertismentModel = db.AdvertismentModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Ads } = require("../Utils/Path");

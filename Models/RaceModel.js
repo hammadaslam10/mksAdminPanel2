@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // image: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
       RaceKind: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -53,13 +53,13 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      Horses: {
-        type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id",
-        },
-      },
+      // Horses: {
+      //   type: DataTypes.UUID,
+      //   references: {
+      //     model: "HorseModel",
+      //     key: "_id",
+      //   },
+      // },
       IsActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -74,7 +74,4 @@ module.exports = (sequelize, DataTypes) => {
 };
 // RaceModel.belongsToMany(HorseModel, {
 //   through: "Horses",
-// });
-// RaceModel.belongsTo(RaceCourseModel, {
-//   through: "RaceCourse",
 // });

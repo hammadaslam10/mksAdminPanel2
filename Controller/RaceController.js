@@ -1,16 +1,17 @@
-const RaceModel = require("../Models/RaceModel");
+const db = require("../config/Connection");
+const RaceModel = db.RaceModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const RaceCourseModel = require("../Models/RaceCourseModel");
-const TrainerModel = require("../Models/TrainerModel");
-const JockeyModel = require("../Models/JockeyModel");
-const OwnerModel = require("../Models/OwnerModel");
-const HorseModel = require("../Models/HorseModel");
 const { getObjectSignedUrl } = require("../Utils/s3");
 const { Trainer, Jockey, Owner, Horse, RaceCourse } = require("../Utils/Path");
-
 const Features = require("../Utils/Features");
-exports.GetRace = Trackerror(async (req, res, next) => {});
+exports.GetRace = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll();
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.SingleRace = Trackerror(async (req, res, next) => {});
 exports.CreateRace = Trackerror(async (req, res, next) => {
   const {
@@ -30,7 +31,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Description: Description,
     RaceCourse: RaceCourse,
     Weather: Weather,
-    Horses: Horses,
     Prizes: Prizes,
     RaceStatus: RaceStatus,
     DayNTime: DayNTime,

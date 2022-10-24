@@ -1,4 +1,5 @@
-const NewsModel = require("../Models/NewsModel");
+const db = require("../config/Connection");
+const NewsModel = db.NewsModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { News } = require("../Utils/Path");
