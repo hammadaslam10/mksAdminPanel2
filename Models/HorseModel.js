@@ -31,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      Owner: {
-        type: DataTypes.UUID,
-        references: {
-          model: "OwnerModel",
-          key: "_id",
-        },
-      },
+      // Owner: {
+      //   type: DataTypes.UUID,
+      //   references: {
+      //     model: "OwnerModel",
+      //     key: "_id",
+      //   },
+      // },
       ActiveJockey: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -46,14 +46,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      Jockey: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: "JockeyModel",
-          key: "_id",
-        },
-      },
+      // Jockey: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   references: {
+      //     model: "JockeyModel",
+      //     key: "_id",
+      //   },
+      // },
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -62,14 +62,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      Trainer: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: "TrainerModel",
-          key: "_id",
-        },
-      },
+      // Trainer: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   references: {
+      //     model: "TrainerModel",
+      //     key: "_id",
+      //   },
+      // },
       Dam: {
         type: DataTypes.UUID,
         references: {
