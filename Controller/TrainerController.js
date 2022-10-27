@@ -1,5 +1,5 @@
 const db = require("../config/Connection");
-const TrainerModel = db.TrainerModel
+const TrainerModel = db.TrainerModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Trainer } = require("../Utils/Path");
@@ -99,9 +99,10 @@ exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Ads}/${data.image.slice(-64)}`);
+  await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
+    force: true,
   });
 
   res.status(200).json({
@@ -118,10 +119,9 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Ads}/${data.image.slice(-64)}`);
+  await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
-    force: true,
   });
 
   res.status(200).json({
@@ -129,4 +129,3 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
     message: "data Delete Successfully",
   });
 });
-// aws dax cluster on nodejs ?

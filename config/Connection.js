@@ -19,6 +19,7 @@ Db.authenticate()
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = Db;
+db.SubscriberModel = require("../Models/SubscriberModel")(Db, DataTypes);
 db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
 db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
 db.JockeyModel = require("../Models/JockeyModel")(Db, DataTypes);
@@ -42,10 +43,14 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
   Db,
   DataTypes
 );
+
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
-
+db.RaceModel.belongsTo(db.JockeyModel, {
+  foreignKey: "ActiveJockeyForTheRace",
+  as: "ActiveJockeyForTheRaceData",
+});
 db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",

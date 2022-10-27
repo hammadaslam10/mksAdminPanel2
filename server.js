@@ -1,5 +1,8 @@
 const app = require("./app");
 const Db = require("./config/Connection");
+const { Server } = require("socket.io");
+
+
 process.on("uncaughtException", (err) => {
   console.log(`Error ${err.message}`);
   console.log(`Shutting down the server due to unhandled exception`);
@@ -21,7 +24,10 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 const server = app.listen(process.env.PORT || 8081, () => {
   console.log(`Server is working on port http:localhost:${process.env.PORT}`);
 });
-
+const io = new Server(server);
+io.on('connection', (socket) => {
+ 
+});
 process.on("unhandledRejection", (err) => {
   console.log(`Error ${err.message}`);
   console.log(`Shutting down the server due to Promise Rejection`);

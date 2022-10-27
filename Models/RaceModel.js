@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      // image: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
       RaceKind: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -30,20 +26,12 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-      Weather: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Race will have Weather" },
-          notEmpty: { msg: "Weather  will not be empty" },
-        },
-      },
       RaceStatus: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       DayNTime: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       RaceCourse: {
@@ -53,16 +41,16 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      // Horses: {
-      //   type: DataTypes.UUID,
-      //   references: {
-      //     model: "HorseModel",
-      //     key: "_id",
-      //   },
-      // },
-      IsActive: {
+      HorseFilled: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
+      },
+      ActiveJockeyForTheRace: {
+        type: DataTypes.UUID,
+        references: {
+          model: "JockeyModel",
+          key: "_id",
+        },
       },
     },
     {
@@ -72,6 +60,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return RaceModel;
 };
-// RaceModel.belongsToMany(HorseModel, {
-//   through: "Horses",
-// });

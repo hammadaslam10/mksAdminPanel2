@@ -23,35 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       Age: {
         type: DataTypes.INTEGER,
-        // validate: {
-        //   // is: /^[0-9]+$/,
-        //   is: {
-        //     msg: "Age should be in number",
-        //   },
-        // },
       },
       Rating: {
         type: DataTypes.INTEGER,
-        // validate: {
-        //   // is: /^[0-9]+$/,
-        //   is: {
-        //     msg: "Rating should be in number",
-        //   },
-        // },
       },
       Remarks: {
         type: DataTypes.STRING,
-        // validate: {
-        //   // is: /^[0-9]+$/,
-        //   is: {
-        //     msg: "Rating should be in number",
-        //   },
-        // },
-      },
-
-      IsActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
       },
     },
     {

@@ -24,7 +24,19 @@ exports.GetHorse = Trackerror(async (req, res, next) => {
   });
 });
 
-exports.SingleHorse = Trackerror(async (req, res, next) => {});
+exports.SingleHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return new next("Horse is not available", 404);
+  } else {
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+});
 exports.CreateHorse = Trackerror(async (req, res, next) => {
   const {
     Age,
@@ -58,10 +70,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     NameEn: NameEn,
     Age: Age,
     NameAr: NameAr,
-    // Owner: Owner,
     ActiveTrainer: ActiveTrainer,
     Breeder: Breeder,
-    // Trainer: Trainer,
     Remarks: Remarks,
     HorseRating: HorseRating,
     Sex: Sex,
@@ -74,7 +84,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     History: History,
     OverAllRating: OverAllRating,
     ActiveJockey: ActiveJockey,
-    // Jockey: Jockey,
     ActiveOwner: ActiveOwner,
   });
   if (data._id) {
@@ -84,26 +93,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     console.log(OwnerData);
     console.log(JockeyData);
     console.log(TrainerData);
-    // if (typeof OwnerData === "string") {
-    //   OwnerData = [];
-    //   OwnerData.push(ActiveOwner);
-    // } else {
-    //   OwnerData.push(ActiveOwner);
-    // }
-    // if (typeof TrainerData === "string") {
-    //   TrainerData = [];
-    //   TrainerData.push(ActiveTrainer);
-    // } else {
-    //   TrainerData.push(ActiveTrainer);
-    // }
-
-    // if (typeof JockeyData === "string") {
-    //   JockeyData = [];
-    //   JockeyData.push(ActiveJockey);
-    // } else {
-    //   JockeyData.push(ActiveJockey);
-    // }
-
     if (Owner) {
       await OwnerData.map(async (singleOwner) => {
         await HorseOwnerComboModel.create({
@@ -139,5 +128,60 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.UpdateHorse = Trackerror(async (req, res, next) => {});
-exports.DeleteHorse = Trackerror(async (req, res, next) => {});
+exports.UpdateHorse = Trackerror(async (req, res, next) => {
+  let data = await HorseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  data = await HorseModel.update(req.body, {
+    where: {
+      _id: req.params.id,
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.DeleteHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  console.log(data);
+  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  await HorseModel.destroy({
+    where: { _id: req.params.id },
+    force: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "data Delete Successfully",
+  });
+});
+exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  console.log(data);
+  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  await HorseModel.destroy({
+    where: { _id: req.params.id },
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "data Delete Successfully",
+  });
+});

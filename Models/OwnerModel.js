@@ -29,11 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       //     key: "_id",
       //   },
       // },
-
-      IsActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-      },
     },
     {
       freezeTableName: true,

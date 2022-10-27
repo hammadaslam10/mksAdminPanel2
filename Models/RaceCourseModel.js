@@ -24,16 +24,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       TrackLength: {
         type: DataTypes.INTEGER,
-        //     validate: {
-        //  // is: /^[0-9]+$/,
-        //       is: {
-        //         msg: "Track Length should be in number",
-        //       },
-        //     },
       },
-      IsActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+      WeatherType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      WeatherDegree: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      WeatherIcon: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {

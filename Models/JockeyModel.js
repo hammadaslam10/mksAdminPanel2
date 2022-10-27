@@ -24,10 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       Rating: {
         type: DataTypes.INTEGER,
       },
-      IsActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-      },
     },
     {
       freezeTableName: true,

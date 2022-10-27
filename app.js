@@ -1,3 +1,4 @@
+
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -6,7 +7,7 @@ const Upload = require("express-fileupload");
 const path = require("path");
 const ApplyMiddleware = require("./Middleware/ErrorCallBackReturn");
 const cors = require("cors");
-// const SubscriberRoutes = require("./Routes/SubsriberRoutes");
+const SubscriberRoutes = require("./Routes/SubsriberRoutes");
 const JockeyRoutes = require("./Routes/JockeyRoutes");
 const TrainerRoutes = require("./Routes/TrainerRoutes");
 const OwnerRoutes = require("./Routes/OwnerRoutes");
@@ -22,12 +23,13 @@ const RaceRoutes = require("./Routes/RaceRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
 }
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(Upload());
 app.use(cors());
-// app.use("/api/v1", SubscriberRoutes);
+app.use("/api/v1", SubscriberRoutes);
 app.use("/api/v1", NewsAndBlogRoutes);
 app.use("/api/v1", SponsorRoutes);
 app.use("/api/v1", RaceCourseRoute);
