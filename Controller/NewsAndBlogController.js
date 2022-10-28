@@ -33,6 +33,8 @@ exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${Image}`,
       DescriptionEn: DescriptionEn,
       DescriptionAr: DescriptionAr,
+      SecondTitleEn: SecondTitleEn,
+      SecondTitleAr: SecondTitleAr,
       TitleEn: TitleEn,
       TitleAr: TitleAr,
     });

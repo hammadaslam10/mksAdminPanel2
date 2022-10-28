@@ -155,7 +155,7 @@ exports.DeleteHorse = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
     where: { _id: req.params.id },
     force: true,
@@ -175,7 +175,7 @@ exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
     where: { _id: req.params.id },
   });

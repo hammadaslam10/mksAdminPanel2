@@ -29,19 +29,21 @@ const server = app.listen(process.env.PORT || 8081, () => {
 const io = new Server(server);
 io.on("connection", (socket) => {
   console.log("hello socket");
-  socket.emit(
+  socket.on(
     "Ads",
     Trackerror(async (req, res, next) => {
       const data = await AdvertismentModel.findAll();
+      socket.emit("Ads", data);
+      console.log(data);
       io.emit(data);
     })
   );
-  socket.on("message", async function (msg) {
-    const data = await AdvertismentModel.findAll();
-    msg = data;
-    io.emit(msg);
-    io.emit(JSON.stringify(data));
-  });
+  // socket.on("message", async function (msg) {
+  //   const data = await AdvertismentModel.findAll();
+  //   msg = data;
+  //   io.emit(msg);
+  //   io.emit(JSON.stringify(data));
+  // });
 });
 process.on("unhandledRejection", (err) => {
   console.log(`Error ${err.message}`);

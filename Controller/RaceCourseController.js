@@ -29,7 +29,14 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
   }
 });
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
-  const { Country, TrackName, TrackLength } = req.body;
+  const {
+    Country,
+    TrackName,
+    TrackLength,
+    WeatherType,
+    WeatherDegree,
+    WeatherIcon,
+  } = req.body;
 
   const file = req.files.image;
   let Image = generateFileName();
@@ -41,6 +48,9 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     Country: Country,
     TrackName: TrackName,
     TrackLength: TrackLength,
+    WeatherType:WeatherType,
+    WeatherDegree:WeatherDegree,
+    WeatherIcon:WeatherIcon
   });
   res.status(201).json({
     success: true,
