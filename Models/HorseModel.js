@@ -108,6 +108,14 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        not: /[\u0600-\u06FF]/,
+        not: {
+          msg: "Name Must Be In English",
+        },
+        validate: {
+          notNull: { msg: "Horse will have Name" },
+          notEmpty: { msg: "Name   will not be empty" },
+        },
       },
       OverAllRating: {
         type: DataTypes.INTEGER,
