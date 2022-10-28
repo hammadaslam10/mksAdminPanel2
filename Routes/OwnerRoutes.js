@@ -5,13 +5,15 @@ const {
   UpdateOwnerDetail,
   UpdateOwnerHorse,
   ViewASingleOwner,
-  ViewAllOwner
+  ViewAllOwner,
+  DeleteOwner,
+  SoftDeleteOwner
 } = require("../Controller/OwnerController");
 const { upload } = require("../Utils/ImageUpload");
 
 router.route("/createowner", upload.single("image")).post(CreateOwner);
 router.route("/Ownerget").get(ViewAllOwner);
-// router.route("/deleteOwner/:id").delete(DeleteOwner);
-// router.route("/updateOwner/:id", upload.single("image")).put(EditOwner);
-// router.post("/softdeleteOwner/:id").post(SoftDelete);
+router.route("/deleteOwner/:id").delete(DeleteOwner);
+router.route("/updateOwner/:id", upload.single("image")).put(UpdateOwnerDetail);
+router.post("/softdeleteOwner/:id").post(SoftDeleteOwner);
 module.exports = router;
