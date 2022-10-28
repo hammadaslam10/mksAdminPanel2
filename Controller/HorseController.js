@@ -87,13 +87,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     ActiveOwner: ActiveOwner,
   });
   if (data._id) {
-    let JockeyData = Conversion(Jockey);
-    let TrainerData = Conversion(Trainer);
-    let OwnerData = Conversion(Owner);
-    console.log(OwnerData);
-    console.log(JockeyData);
-    console.log(TrainerData);
     if (Owner) {
+      let OwnerData = Conversion(Owner);
+      console.log(OwnerData);
       await OwnerData.map(async (singleOwner) => {
         await HorseOwnerComboModel.create({
           HorseModelId: data._id,
@@ -101,8 +97,10 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
         });
       });
     }
-
+    
     if (Trainer) {
+      let TrainerData = Conversion(Trainer);
+      console.log(TrainerData);
       await TrainerData.map(async (singleTrainer) => {
         await HorseTrainerComboModel.create({
           HorseModelId: data._id,
@@ -112,6 +110,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     }
 
     if (Jockey) {
+      let JockeyData = Conversion(Jockey);
+      console.log(JockeyData);
       await JockeyData.map(async (singleJockey) => {
         await HorseJockeyComboModel.create({
           HorseModelId: data._id,

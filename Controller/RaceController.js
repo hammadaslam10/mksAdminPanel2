@@ -17,9 +17,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {
-  
-});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -73,6 +71,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       RaceModelId: req.params.id,
       HorseModelId: SingleEntry,
     });
+    console.log("done");
   });
 
   res.status(200).json({
