@@ -26,7 +26,24 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {});
+exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
+  let data = await OwnerModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  data = await OwnerModel.update(req.body, {
+    where: {
+      _id: req.params.id,
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({});

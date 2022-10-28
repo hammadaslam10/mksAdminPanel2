@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       TitleEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Slider will have Title" },
+          notEmpty: { msg: "Title  will not be empty" },
+        },
       },
       TitleAr: {
         type: DataTypes.STRING,

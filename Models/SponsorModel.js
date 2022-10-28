@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       DescriptionEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z][a-z\d]*$/i,
+          is: {
+            msg: "Description Must Be In English in this input",
+          },
+          notNull: { msg: "Sponsor will have description" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
       },
       DescriptionAr: {
         type: DataTypes.STRING,
@@ -30,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       TitleEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Ad will have description" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
       },
       TitleAr: {
         type: DataTypes.STRING,
