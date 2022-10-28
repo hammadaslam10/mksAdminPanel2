@@ -69,15 +69,15 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   });
   console.log(data1.HorseModelId);
   console.log(HorseEntryData);
-  // await HorseEntryData.map(async (SingleEntry) => {
-  //   console.log(SingleEntry);
-  //   await RaceAndHorseModel.create({
-  //     GateNo: 1,
-  //     RaceModelId: req.params.id,
-  //     HorseModelId: SingleEntry,
-  //   });
-  //   console.log("done");
-  // });
+  await HorseEntryData.map(async (SingleEntry) => {
+    console.log(SingleEntry);
+    await RaceAndHorseModel.create({
+      GateNo: 1,
+      RaceModelId: req.params.id,
+      HorseModelId: SingleEntry,
+    });
+    console.log("done");
+  });
 
   res.status(200).json({
     data1,
