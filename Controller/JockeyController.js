@@ -48,6 +48,13 @@ exports.GetJockey = Trackerror(async (req, res, next) => {
 });
 exports.EditJockey = Trackerror(async (req, res, next) => {
   const { Name, Age, Rating } = req.body;
+  console.log(req.body);
+  // if ((Age = "")) {
+  //   Age = null;
+  // }
+  // if ((Rating = "")) {
+  //   Rating = null;
+  // }
   let data = await JockeyModel.findOne({
     where: { _id: req.params.id },
   });
@@ -55,7 +62,12 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    data = await JockeyModel.update(req.body, {
+    const updateddata = {
+      Name: Name || data.Name,
+      Age: Age || data.Age,
+      Rating: Rating || data.Rating,
+    };
+    data = await JockeyModel.update(updateddata, {
       where: {
         _id: req.params.id,
       },

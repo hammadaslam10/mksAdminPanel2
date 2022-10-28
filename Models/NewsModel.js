@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       SecondTitleEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Horse will have Name" },
+          notEmpty: { msg: "Name   will not be empty" },
+        },
       },
       SecondTitleAr: {
         type: DataTypes.STRING,

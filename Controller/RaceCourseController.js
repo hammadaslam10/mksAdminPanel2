@@ -48,9 +48,9 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     Country: Country,
     TrackName: TrackName,
     TrackLength: TrackLength,
-    WeatherType:WeatherType,
-    WeatherDegree:WeatherDegree,
-    WeatherIcon:WeatherIcon
+    WeatherType: WeatherType,
+    WeatherDegree: WeatherDegree,
+    WeatherIcon: WeatherIcon,
   });
   res.status(201).json({
     success: true,
@@ -58,13 +58,29 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   });
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
+  const {
+    Country,
+    TrackName,
+    TrackLength,
+    WeatherType,
+    WeatherDegree,
+    WeatherIcon,
+  } = req.body;
   let data = await RaceCourseModel.findOne({
     where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  data = await RaceCourseModel.update(req.body, {
+  const updateddata = {
+    Country: Country || data.Country,
+    TrackName: TrackName || data.TrackName,
+    TrackLength: TrackLength || data.TrackLength,
+    WeatherType: WeatherType || data.WeatherType,
+    WeatherDegree: WeatherDegree || data.WeatherDegree,
+    WeatherIcon: WeatherIcon || data.WeatherIcon,
+  };
+  data = await RaceCourseModel.update(updateddata, {
     where: {
       _id: req.params.id,
     },
