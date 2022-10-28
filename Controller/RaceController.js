@@ -18,7 +18,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
   });
 });
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {
-  var socket = io();
+  
 });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
