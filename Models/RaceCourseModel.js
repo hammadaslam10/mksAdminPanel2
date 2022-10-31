@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       Country: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "RaceCourse will have Country" },
+          notEmpty: { msg: "Country  will not be empty" },
+        },
       },
       TrackName: {
         type: DataTypes.STRING,

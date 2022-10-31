@@ -35,8 +35,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Rating: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Trainer will have Rating" },
+          notEmpty: { msg: "Rating  will not be empty" },
+        },
       },
       Remarks: {
         type: DataTypes.STRING,

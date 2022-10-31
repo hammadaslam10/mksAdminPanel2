@@ -6,6 +6,7 @@ const HorseModel = db.HorseModel;
 const OwnerModel = db.OwnerModel;
 const JockeyModel = db.JockeyModel;
 const Features = require("../Utils/Features");
+const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const HorseJockeyComboModel = db.HorseJockeyComboModel;
 const HorseOwnerComboModel = db.HorseOwnerComboModel;
 const HorseTrainerComboModel = db.HorseTrainerComboModel;

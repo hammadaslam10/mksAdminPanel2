@@ -27,22 +27,73 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
   });
 });
 exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
+  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
   let data = await OwnerModel.findOne({
     where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  data = await OwnerModel.update(req.body, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  if (req.files == null) {
+    if (
+      ArRegex.test(DescriptionAr) &&
+      ArRegex.test(TitleAr) &&
+      ArRegex.test(DescriptionEn) == false &&
+      ArRegex.test(TitleEn) == false
+    ) {
+      const updateddata = {
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
+        Name: Name || data.Name,
+        Horses: Horses || data.Horses,
+        Rating: Rating || data.Rating,
+      };
+      data = await OwnerModel.update(updateddata, {
+        where: {
+          _id: req.params.id,
+        },
+      });
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } else {
+      return next(
+        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
+      );
+    }
+  } else {
+    const file = req.files.image;
+    await deleteFile(`${Owner}/${data.image}`);
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
+    const updateddata = {
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
+      Name: Name || data.Name,
+      Horses: Horses || data.Horses,
+      Rating: Rating || data.Rating,
+    };
+    if (
+      ArRegex.test(updateddata.DescriptionAr) &&
+      ArRegex.test(updateddata.TitleAr) &&
+      ArRegex.test(updateddata.DescriptionEn) == false &&
+      ArRegex.test(updateddata.TitleEn) == false
+    ) {
+      data = await OwnerModel.update(updateddata, {
+        where: {
+          _id: req.params.id,
+        },
+      });
+    } else {
+      return next(
+        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
+      );
+    }
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
 });
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {

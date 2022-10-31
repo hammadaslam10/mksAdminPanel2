@@ -37,12 +37,10 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     WeatherDegree,
     WeatherIcon,
   } = req.body;
-
   const file = req.files.image;
   let Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
-
   const data = await RaceCourseModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
     Country: Country,
