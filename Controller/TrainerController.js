@@ -43,7 +43,14 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    data = await TrainerModel.update(req.body, {
+    const updateddata = {
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${data.image}`,
+      Name: Name || data.Name,
+      Age: Age || data.Age,
+      Detail: Detail || data.Detail,
+      Remarks: Remarks || data.Remarks,
+    };
+    data = await TrainerModel.update(updateddata, {
       where: {
         _id: req.params.id,
       },

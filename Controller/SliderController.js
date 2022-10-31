@@ -13,16 +13,22 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Slider}/${Image}`, file.mimetype);
-  const data = await SliderModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${Image}`,
-    TitleEn: TitleEn,
-    TitleAr: TitleAr,
-  });
-  res.status(201).json({
-    success: true,
-    data,
-  });
+  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  if (ArRegex.test(TitleAr) && ArRegex.test(TitleEn) == false) {
+    const data = await SliderModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${Image}`,
+      TitleEn: TitleEn,
+      TitleAr: TitleAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } else {
+    return next(
+      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
+    );
+  }
 });
 exports.SliderGet = Trackerror(async (req, res, next) => {
   const data = await SliderModel.findAll();
@@ -42,7 +48,12 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
   }
   if (req.files == null) {
     if (ArRegex.test(TitleAr) && ArRegex.test(TitleEn) == false) {
-      data = await SliderModel.update(req.body, {
+      const updateddata = {
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${data.image}`,
+        TitleEn: TitleEn || data.TitleEn,
+        TitleAr: TitleAr || data.TitleAr,
+      };
+      data = await SliderModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },

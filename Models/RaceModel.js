@@ -52,6 +52,22 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
+      // HorseId: {
+      //   type: DataTypes.UUID,
+      //   allowNull: true,
+      //   references: {
+      //     model: "HorseModel",
+      //     key: "_id",
+      //   },
+      // },
+      // RaceId: {
+      //   type: DataTypes.UUID,
+      //   allowNull: true,
+      //   references: {
+      //     model: "RaceModel",
+      //     key: "_id",
+      //   },
+      // },
     },
     {
       freezeTableName: true,

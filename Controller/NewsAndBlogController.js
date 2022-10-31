@@ -81,7 +81,16 @@ exports.EditNews = Trackerror(async (req, res, next) => {
       ArRegex.test(TitleEn) == false &&
       ArRegex.test(SecondTitleEn) == false
     ) {
-      data = await NewsModel.update(req.body, {
+      const updateddata = {
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${data.image}`,
+        DescriptionEn: DescriptionEn || data.DescriptionEn,
+        DescriptionAr: DescriptionAr || data.DescriptionAr,
+        TitleEn: TitleEn || data.TitleEn,
+        TitleAr: TitleAr || data.TitleAr,
+        SecondTitleEn: SecondTitleEn || data.SecondTitleEn,
+        SecondTitleAr: SecondTitleAr || data.SecondTitleAr,
+      };
+      data = await NewsModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },
@@ -101,7 +110,6 @@ exports.EditNews = Trackerror(async (req, res, next) => {
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${News}/${Image}`, file.mimetype);
-
     const updateddata = {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${Image}`,
       DescriptionEn: DescriptionEn || data.DescriptionEn,

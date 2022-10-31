@@ -2,6 +2,7 @@ const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
 const RaceCourseModel = db.RaceCourseModel;
+const ResultModel = db.ResultModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { getObjectSignedUrl, deleteFile } = require("../Utils/s3");
@@ -77,6 +78,21 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
+  const { Rank, PrizeAmount, Points, HorseId, BonusPoints } = req.body;
+  const data = await ResultModel.create({
+    RaceId: req.params.RaceId,
+    HorseId: HorseId,
+    Rank: Rank,
+    PrizeAmount: PrizeAmount,
+    Points: Points,
+    BonusPoints: BonusPoints,
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
@@ -132,7 +148,6 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       },
     });
   });
-
   res.status(200).json({
     success: true,
   });
@@ -225,9 +240,10 @@ exports.DeleteRace = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  // await deleteFile(`${Horse}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
     where: { _id: req.params.id },
+    force: true,
   });
 
   res.status(200).json({
@@ -244,10 +260,9 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  // await deleteFile(`${Horse}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
     where: { _id: req.params.id },
-    force: true,
   });
 
   res.status(200).json({

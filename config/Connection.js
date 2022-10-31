@@ -28,6 +28,7 @@ db.RaceCourseModel = require("../Models/RaceCourseModel")(Db, DataTypes);
 db.AdvertismentModel = require("../Models/AdvertismentModel")(Db, DataTypes);
 db.NewsModel = require("../Models/NewsModel")(Db, DataTypes);
 db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
+db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
@@ -79,7 +80,22 @@ db.HorseModel.belongsToMany(db.TrainerModel, {
 db.TrainerModel.belongsToMany(db.HorseModel, {
   through: "HorseTrainerComboModel",
 });
-
+db.HorseModel.hasMany(db.ResultModel, {
+  foreignKey: "HorseId",
+  as: "HorseIdData",
+});
+db.ResultModel.belongsTo(db.HorseModel, {
+  foreignKey: "HorseId",
+  as: "HorseIdDataHorse",
+});
+db.RaceModel.hasMany(db.ResultModel, {
+  foreignKey: "RaceId",
+  as: "RaceIdData",
+});
+db.ResultModel.belongsTo(db.RaceModel, {
+  foreignKey: "RaceId",
+  as: "RaceIdDataHorse",
+});
 // var options = {
 //   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
 //   port: 3306,

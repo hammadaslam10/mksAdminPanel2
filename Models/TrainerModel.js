@@ -17,18 +17,34 @@ module.exports = (sequelize, DataTypes) => {
       Name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Trainer will have Name" },
+          notEmpty: { msg: "Name  will not be empty" },
+        },
       },
       Detail: {
         type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Trainer will have Detail" },
+          notEmpty: { msg: "Detail  will not be empty" },
+        },
       },
       Age: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       Rating: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       Remarks: {
         type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Trainer will have Remarks" },
+          notEmpty: { msg: "Remarks  will not be empty" },
+        },
       },
     },
     {

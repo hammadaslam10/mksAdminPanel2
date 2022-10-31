@@ -49,7 +49,14 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
       ArRegex.test(DescriptionEn) == false &&
       ArRegex.test(TitleEn) == false
     ) {
-      data = await SponsorModel.update(req.body, {
+      const updateddata = {
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${data.image}`,
+        DescriptionEn: DescriptionEn || data.DescriptionEn,
+        DescriptionAr: DescriptionAr || data.DescriptionAr,
+        TitleEn: TitleEn || data.TitleEn,
+        TitleAr: TitleAr || data.TitleAr,
+      };
+      data = await SponsorModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },

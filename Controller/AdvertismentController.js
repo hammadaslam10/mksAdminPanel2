@@ -62,7 +62,14 @@ exports.EditAds = Trackerror(async (req, res, next) => {
       ArRegex.test(DescriptionEn) == false &&
       ArRegex.test(TitleEn) == false
     ) {
-      data = await AdvertismentModel.update(req.body, {
+      const updateddata = {
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${data.image}`,
+        DescriptionEn: DescriptionEn || data.DescriptionEn,
+        DescriptionAr: DescriptionAr || data.DescriptionAr,
+        TitleEn: TitleEn || data.TitleEn,
+        TitleAr: TitleAr || data.TitleAr,
+      };
+      data = await AdvertismentModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },
@@ -83,13 +90,6 @@ exports.EditAds = Trackerror(async (req, res, next) => {
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
 
-    const updateddata = {
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-      DescriptionEn: DescriptionEn || data.DescriptionEn,
-      DescriptionAr: DescriptionAr || data.DescriptionAr,
-      TitleEn: TitleEn || data.TitleEn,
-      TitleAr: TitleAr || data.TitleAr,
-    };
     if (
       ArRegex.test(updateddata.DescriptionAr) &&
       ArRegex.test(updateddata.TitleAr) &&
