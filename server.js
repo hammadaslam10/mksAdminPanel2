@@ -34,16 +34,9 @@ io.on("connection", (socket) => {
     Trackerror(async (req, res, next) => {
       const data = await AdvertismentModel.findAll();
       socket.emit("Ads", data);
-      console.log(data);
-      io.emit(data);
+      console.log("done");
     })
   );
-  // socket.on("message", async function (msg) {
-  //   const data = await AdvertismentModel.findAll();
-  //   msg = data;
-  //   io.emit(msg);
-  //   io.emit(JSON.stringify(data));
-  // });
 });
 process.on("unhandledRejection", (err) => {
   console.log(`Error ${err.message}`);

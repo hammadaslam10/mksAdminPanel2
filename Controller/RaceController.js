@@ -1,6 +1,7 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
+const RaceCourseModel = db.RaceCourseModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { getObjectSignedUrl, deleteFile } = require("../Utils/s3");
@@ -10,8 +11,67 @@ const { Conversion } = require("../Utils/Conversion");
 
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
+    where: { HorseFilled: true },
     include: { all: true },
   });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: { HorseFilled: true },
+    // order: [["RaceCourse", "DESC"]],
+    include: {
+      model: RaceCourseModel,
+      as: "RaceCourseData",
+    },
+    order: [["RaceCourseData", "Country", "DESC"]],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
+  const RaceCourseName = await RaceCourseModel.findAll({
+    include: { all: true },
+    attributes: ["Country"],
+    group: "Country",
+  });
+  const data = await RaceModel.findAll({
+    where: { HorseFilled: true },
+    order: [["RaceStatus", "ASC"]],
+    include: {
+      model: RaceCourseModel,
+      as: "RaceCourseData",
+
+      // where: { TrackName: req.params.RaceCourseName },
+      attributes: ["Country", "TrackName"],
+    },
+  });
+  res.status(200).json({
+    success: true,
+    RaceCourseName,
+    data,
+  });
+});
+exports.PublishRaces = Trackerror(async (req, res, next) => {
+  let data = await RaceModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("Race Is Not Available", 404));
+  }
+  data = await RaceModel.update(
+    { HorseFilled: true },
+    {
+      where: {
+        _id: req.params.id,
+      },
+    }
+  );
   res.status(200).json({
     success: true,
     data,
@@ -23,7 +83,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (!data) {
-    return new next("Jockey is not available", 404);
+    return next(new HandlerCallBack("Race is Not Available", 404));
   } else {
     res.status(200).json({
       success: true,
@@ -57,22 +117,20 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   });
 });
 exports.IncludeHorses = Trackerror(async (req, res, next) => {
-  // const RaceId = await RaceModel.findOne({
-  //   where: { _id: req.params.id },
-  // });
-
   const { HorseEntry } = req.body;
+  console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
-
   console.log(HorseEntryData);
-  await HorseEntryData.map(async (SingleEntry) => {
-    console.log(SingleEntry);
-    await RaceAndHorseModel.create({
-      GateNo: 1,
-      RaceModelId: req.params.id,
-      HorseModelId: SingleEntry,
+  await HorseEntryData.map(async (SingleEntry, index) => {
+    SingleEntry = SingleEntry.split(",");
+    console.log(SingleEntry[1]);
+    await RaceAndHorseModel.findOrCreate({
+      where: {
+        GateNo: SingleEntry[0],
+        RaceModelId: req.params.id,
+        HorseModelId: SingleEntry[1],
+      },
     });
-    console.log("done");
   });
 
   res.status(200).json({
