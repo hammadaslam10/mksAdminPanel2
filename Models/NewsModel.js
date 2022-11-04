@@ -13,12 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "News will have Image" },
+          notEmpty: { msg: "Image   will not be empty" },
+        },
       },
       DescriptionEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Horse will have DescriptionEn" },
+          notNull: { msg: "News will have DescriptionEn" },
           notEmpty: { msg: "DescriptionEn   will not be empty" },
         },
       },
@@ -35,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Horse will have TitleEn" },
+          notNull: { msg: "News will have TitleEn" },
           notEmpty: { msg: "TitleEn   will not be empty" },
         },
       },
@@ -53,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Horse will have Name" },
+          notNull: { msg: "News will have Name" },
           notEmpty: { msg: "Name   will not be empty" },
         },
       },

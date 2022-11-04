@@ -37,23 +37,36 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     WeatherDegree,
     WeatherIcon,
   } = req.body;
-  const file = req.files.image;
-  let Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
-  const data = await RaceCourseModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
-    Country: Country,
-    TrackName: TrackName,
-    TrackLength: TrackLength,
-    WeatherType: WeatherType,
-    WeatherDegree: WeatherDegree,
-    WeatherIcon: WeatherIcon,
-  });
-  res.status(201).json({
-    success: true,
-    data,
-  });
+  if (
+    !Country ||
+    !TrackLength ||
+    TrackName ||
+    WeatherDegree ||
+    WeatherIcon ||
+    WeatherType
+  ) {
+    return next(
+      new HandlerCallBack("Please Fill Appropiate Detail Of Race Course", 404)
+    );
+  } else {
+    const file = req.files.image;
+    let Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
+    const data = await RaceCourseModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
+      Country: Country,
+      TrackName: TrackName,
+      TrackLength: TrackLength,
+      WeatherType: WeatherType,
+      WeatherDegree: WeatherDegree,
+      WeatherIcon: WeatherIcon,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  }
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
   const {

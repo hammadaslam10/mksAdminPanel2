@@ -240,7 +240,6 @@ exports.DeleteRace = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  // await deleteFile(`${Horse}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
     where: { _id: req.params.id },
     force: true,

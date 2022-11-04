@@ -82,7 +82,7 @@ exports.EditNews = Trackerror(async (req, res, next) => {
       ArRegex.test(SecondTitleEn) == false
     ) {
       const updateddata = {
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${data.image}`,
+        image: data.image,
         DescriptionEn: DescriptionEn || data.DescriptionEn,
         DescriptionAr: DescriptionAr || data.DescriptionAr,
         TitleEn: TitleEn || data.TitleEn,

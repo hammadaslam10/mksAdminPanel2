@@ -177,7 +177,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
   }
   if (req.files == null) {
     const updateddata = await HorseModel.create({
-      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
+      HorseImage: data.HorseImage,
       NameEn: NameEn || data.NameEn,
       Age: Age || data.Age,
       NameAr: NameAr || data.NameAr,
@@ -212,7 +212,23 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       212
     );
     await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
-
+    const updateddata = await HorseModel.create({
+      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
+      NameEn: NameEn || data.NameEn,
+      Age: Age || data.Age,
+      NameAr: NameAr || data.NameAr,
+      Breeder: Breeder || data.Breeder,
+      Remarks: Remarks || data.Remarks,
+      HorseRating: HorseRating || data.HorseRating,
+      Sex: Sex || data.Sex,
+      Color: Color || data.Color,
+      KindOfHorse: KindOfHorse || data.KindOfHorse,
+      Dam: Dam || data.Dam,
+      Sire: Sire || data.Sire,
+      GSire: GSire || data.GSire,
+      Earning: Earning || data.Earning,
+      OverAllRating: OverAllRating || data.OverAllRating,
+    });
     data = await HorseModel.update(updateddata, {
       where: {
         _id: req.params.id,

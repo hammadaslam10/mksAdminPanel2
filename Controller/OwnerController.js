@@ -7,6 +7,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
+const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const { Name, Horses, Rating } = req.body;
   const file = req.files.image;

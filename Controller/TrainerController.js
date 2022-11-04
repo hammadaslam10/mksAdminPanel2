@@ -20,19 +20,24 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Trainer}/${Image}`, file.mimetype);
+  if (!Name || !Age || !Detail || !Remarks) {
+    return next(
+      new HandlerCallBack("Please Fill Appropiate Detail Of Trainer", 404)
+    );
+  } else {
+    const data = await TrainerModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
+      Name: Name,
+      Age: Age,
+      Detail: Detail,
+      Remarks: Remarks,
+    });
 
-  const data = await TrainerModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
-    Name: Name,
-    Age: Age,
-    Detail: Detail,
-    Remarks: Remarks,
-  });
-
-  res.status(201).json({
-    success: true,
-    data,
-  });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  }
 });
 exports.UpdateTrainer = Trackerror(async (req, res, next) => {
   const { Name, Age, Detail, Remarks } = req.body;
@@ -44,7 +49,7 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
   }
   if (req.files == null) {
     const updateddata = {
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${data.image}`,
+      image: data.image,
       Name: Name || data.Name,
       Age: Age || data.Age,
       Detail: Detail || data.Detail,

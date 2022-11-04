@@ -13,25 +13,29 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Jockey}/${Image}`, file.mimetype);
-
-  const data = await JockeyModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Jockey}/${Image}`,
-    Name: Name,
-    Age: Age,
-    Rating: Rating,
-  });
-
-  res.status(201).json({
-    success: true,
-    data,
-  });
+  if (!Name || !Age || !Rating) {
+    return next(
+      new HandlerCallBack("Please Fill Appropiate Detail Of Trainer", 404)
+    );
+  } else {
+    const data = await JockeyModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Jockey}/${Image}`,
+      Name: Name,
+      Age: Age,
+      Rating: Rating,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  }
 });
 exports.SingleJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findOne({
     where: { _id: req.params.id },
   });
   if (!data) {
-    return new next("Jockey is not available", 404);
+    return next(new HandlerCallBack("Jockey is not available", 404));
   } else {
     res.status(200).json({
       success: true,

@@ -49,7 +49,7 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
   if (req.files == null) {
     if (ArRegex.test(TitleAr) && ArRegex.test(TitleEn) == false) {
       const updateddata = {
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${data.image}`,
+        image: data.image,
         TitleEn: TitleEn || data.TitleEn,
         TitleAr: TitleAr || data.TitleAr,
       };
