@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const AdvertismentModel = sequelize.define(
-    "AdvertismentModel",
+  const BreederModel = sequelize.define(
+    "BreederModel",
 
     {
       _id: {
@@ -14,40 +14,50 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      NameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Breeder will have Name" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
+      },
+      shortCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Breeder will have Name" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
+      },
+      NameAr: {
+        type: DataTypes.STRING,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Name Must Be In Arabic",
+          },
+        },
+      },
       DescriptionEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Ad will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Breeder will have Description" },
+          notEmpty: { msg: "Description   will not be empty" },
         },
       },
       DescriptionAr: {
         type: DataTypes.STRING,
-        validate: {
-          is: /[\u0600-\u06FF]/,
-          is: {
-            msg: "Description Must Be In Arabic",
-          },
-        },
-      },
-      TitleEn: {
-        type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
+          notNull: { msg: "Breeder will have Description" },
+          notEmpty: { msg: "Description   will not be empty" },
         },
       },
-      TitleAr: {
-        type: DataTypes.STRING,
+      Status: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        validate: {
-          is: /[\u0600-\u06FF]/,
-          is: {
-            msg: "Title Must Be In Arabic",
-          },
-        },
       },
     },
     {
@@ -55,5 +65,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return AdvertismentModel;
+  return BreederModel;
 };

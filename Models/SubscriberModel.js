@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         isEmail: true,
       },
+      PhoneNumber: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
       PassportPicture: {
         type: DataTypes.STRING,
         allowNull: false,

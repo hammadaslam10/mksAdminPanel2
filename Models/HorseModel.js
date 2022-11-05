@@ -31,13 +31,6 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      // Owner: {
-      //   type: DataTypes.UUID,
-      //   references: {
-      //     model: "OwnerModel",
-      //     key: "_id",
-      //   },
-      // },
       ActiveJockey: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -46,14 +39,6 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      // Jockey: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "JockeyModel",
-      //     key: "_id",
-      //   },
-      // },
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -62,14 +47,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      // Trainer: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "TrainerModel",
-      //     key: "_id",
-      //   },
-      // },
+      NationalityId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "TrainerModel",
+          key: "_id",
+        },
+      },
       Dam: {
         type: DataTypes.UUID,
         references: {
@@ -91,15 +76,9 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-
       Age: {
-        type: DataTypes.INTEGER,
-        // validate: {
-        // // is: /^[0-9]+$/,
-        //   is: {
-        //     msg: "Track Length should be in number",
-        //   },
-        // },
+        type: DataTypes.BIGINT,
+        allowNull: false,
       },
       Remarks: {
         type: DataTypes.STRING,
@@ -117,10 +96,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Name   will not be empty" },
         },
       },
-      OverAllRating: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -130,6 +105,42 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Title Must Be In Arabic",
           },
         },
+      },
+      OverAllRating: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      PurchasePrice: {
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+      },
+      WinningAmount: {
+        type: DataTypes.DOUBLE,
+        allowNull: false,
+      },
+      isGelded: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      Cap: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      STARS: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      Rds: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      ColorID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      Status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
       },
     },
     {

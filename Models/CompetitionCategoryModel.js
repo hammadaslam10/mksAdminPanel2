@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const AdvertismentModel = sequelize.define(
-    "AdvertismentModel",
+  const CompetitionCategoryModel = sequelize.define(
+    "CompetitionCategoryModel",
 
     {
       _id: {
@@ -10,44 +10,34 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      DescriptionEn: {
+      NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Ad will have description" },
+          notNull: { msg: "Competition Category will have Name" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-      DescriptionAr: {
+      shortCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Competition Category will have Name" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
+      },
+      NameAr: {
         type: DataTypes.STRING,
         validate: {
           is: /[\u0600-\u06FF]/,
           is: {
-            msg: "Description Must Be In Arabic",
+            msg: "Name Must Be In Arabic",
           },
         },
       },
-      TitleEn: {
-        type: DataTypes.STRING,
+      Status: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
-        },
-      },
-      TitleAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          is: /[\u0600-\u06FF]/,
-          is: {
-            msg: "Title Must Be In Arabic",
-          },
-        },
       },
     },
     {
@@ -55,5 +45,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return AdvertismentModel;
+  return CompetitionCategoryModel;
 };

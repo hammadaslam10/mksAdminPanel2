@@ -9,19 +9,18 @@ const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 exports.CreateOwner = Trackerror(async (req, res, next) => {
-  const { Name, Horses, Rating } = req.body;
+  const { NameEn, SilkColor, Horses, Rating } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
-
   const data = await OwnerModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${Image}`,
-    Name: Name,
-    Horses: Horses,
-    Rating: Rating,
+    NameEn: NameEn,
+    SilkColor: SilkColor,
+    ColorModelId: SilkColor,
   });
-
+  console.log(data);
   res.status(201).json({
     success: true,
     data,
@@ -98,7 +97,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
 });
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
-  const data = await OwnerModel.findAll({});
+  const data = await OwnerModel.findAll({ include: { all: true } });
   res.status(200).json({
     success: true,
     data: data,

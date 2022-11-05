@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const OwnerModel = sequelize.define(
-    "OwnerModel",
+  const ColorModel = sequelize.define(
+    "ColorModel",
 
     {
       _id: {
@@ -17,37 +17,30 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Color will have Name" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
       },
-      SilkColor: {
-        type: DataTypes.UUID,
+      shortCode: {
+        type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Color will have ShortCode" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
       },
       NameAr: {
         type: DataTypes.STRING,
-        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Name Must Be In Arabic",
+          },
+        },
       },
-      TitleEn: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      TitleAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      ShortEn: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      ShortAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      RegistrationDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      NationalityID: {
-        type: DataTypes.UUID,
+      Status: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     },
@@ -56,5 +49,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return OwnerModel;
+  return ColorModel;
 };

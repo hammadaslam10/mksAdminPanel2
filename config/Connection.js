@@ -32,6 +32,24 @@ db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
+db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
+db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
+db.CompetitionRacesPointsModel =
+  require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
+db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
+db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
+db.CompetitonWinnersModel = require("../Models/CompetitonWinnersModel")(
+  Db,
+  DataTypes
+);
+db.CompetitionCategoryModel = require("../Models/CompetitionCategoryModel")(
+  Db,
+  DataTypes
+);
+db.CompetitionRacesModel = require("../Models/CompetitionRacesModel")(
+  Db,
+  DataTypes
+);
 db.HorseJockeyComboModel = require("../Models/HorseJockeyComboModel")(
   Db,
   DataTypes
@@ -48,9 +66,33 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
-db.RaceModel.belongsTo(db.JockeyModel, {
-  foreignKey: "ActiveJockeyForTheRace",
-  as: "ActiveJockeyForTheRaceData",
+// db.RaceModel.belongsTo(db.JockeyModel, {
+//   foreignKey: "ActiveJockeyForTheRace",
+//   as: "ActiveJockeyForTheRaceData",
+// });
+db.BreederModel.belongsTo(db.HorseModel, {
+  foreignKey: "Breeder",
+  as: "BreederData",
+});
+db.HorseModel.hasMany(db.BreederModel, {
+  foreignKey: "Breeder",
+  as: "BreederData",
+});
+db.OwnerModel.belongsTo(db.ColorModel, {
+  foreignKey: "SilkColor",
+  as: "SilkColorData",
+});
+db.ColorModel.hasMany(db.OwnerModel, {
+  foreignKey: "SilkColor",
+  as: "SilkColorData",
+});
+db.HorseModel.belongsTo(db.ColorModel, {
+  foreignKey: "ColorID",
+  as: "ColorIDData",
+});
+db.ColorModel.hasMany(db.HorseModel, {
+  foreignKey: "ColorID",
+  as: "ColorIDData",
 });
 db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",

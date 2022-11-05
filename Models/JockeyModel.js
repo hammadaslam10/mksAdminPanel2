@@ -14,15 +14,57 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Name: {
+      Age: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      DOB: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      NameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      NameAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      ShortNameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      ShortNameAr: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       Age: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
+        allowNull: false,
       },
       Rating: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      Status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      JockeyLicenseDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      Remarks: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      MiniumumJockeyWeight: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      JockeyAllowance: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
       },
     },
     {

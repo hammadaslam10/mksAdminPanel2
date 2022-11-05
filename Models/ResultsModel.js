@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
         allowNull: true,
       },
+      Distance:{
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+        allowNull: true,
+      }
     },
 
     {

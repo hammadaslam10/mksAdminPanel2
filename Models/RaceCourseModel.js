@@ -38,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "TrackLength  will not be empty" },
         },
       },
+      GroundType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "RaceCourse will have GroundType" },
+          notEmpty: { msg: "GroundType  will not be empty" },
+        },
+      },
       WeatherType: {
         type: DataTypes.STRING,
         allowNull: false,
