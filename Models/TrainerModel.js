@@ -14,13 +14,37 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Name: {
+      NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Trainer will have Name" },
-          notEmpty: { msg: "Name  will not be empty" },
-        },
+      },
+      NameAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      TitleEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      TitleAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      DOB: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      JockeyLicenseDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      ShortNameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      ShortNameAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       Detail: {
         type: DataTypes.STRING,

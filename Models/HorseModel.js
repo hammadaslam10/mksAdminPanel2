@@ -15,8 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Breeder: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "BreederModel",
+          key: "_id",
+        },
       },
       Sex: {
         type: DataTypes.STRING,
@@ -51,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "TrainerModel",
+          model: "NationalityModel",
           key: "_id",
         },
       },
@@ -79,6 +83,10 @@ module.exports = (sequelize, DataTypes) => {
       Age: {
         type: DataTypes.BIGINT,
         allowNull: false,
+      },
+      Foal: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       Remarks: {
         type: DataTypes.STRING,
@@ -127,7 +135,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       STARS: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       Rds: {
@@ -136,6 +144,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       ColorID: {
         type: DataTypes.UUID,
+        allowNull: false,
+      },
+      Status: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     },

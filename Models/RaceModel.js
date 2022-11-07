@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       RaceKind: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -52,22 +56,6 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      // HorseId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: true,
-      //   references: {
-      //     model: "HorseModel",
-      //     key: "_id",
-      //   },
-      // },
-      // RaceId: {
-      //   type: DataTypes.UUID,
-      //   allowNull: true,
-      //   references: {
-      //     model: "RaceModel",
-      //     key: "_id",
-      //   },
-      // },
     },
     {
       freezeTableName: true,

@@ -34,6 +34,7 @@ db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
 db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
 db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
+db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
   require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
 db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
@@ -77,6 +78,14 @@ db.BreederModel.belongsTo(db.HorseModel, {
 db.HorseModel.hasMany(db.BreederModel, {
   foreignKey: "Breeder",
   as: "BreederData",
+});
+db.NationalityModel.belongsTo(db.HorseModel, {
+  foreignKey: "NationalityId",
+  as: "NationalityData",
+});
+db.HorseModel.hasMany(db.NationalityModel, {
+  foreignKey: "NationalityId",
+  as: "NationalityData",
 });
 db.OwnerModel.belongsTo(db.ColorModel, {
   foreignKey: "SilkColor",

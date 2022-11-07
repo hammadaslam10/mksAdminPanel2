@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Age: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
       DOB: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -38,21 +34,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Age: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
       Rating: {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-
       JockeyLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,
       },
       Remarks: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       MiniumumJockeyWeight: {

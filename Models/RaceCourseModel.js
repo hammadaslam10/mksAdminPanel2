@@ -46,28 +46,28 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "GroundType  will not be empty" },
         },
       },
-      WeatherType: {
-        type: DataTypes.STRING,
+      NationalityId: {
+        type: DataTypes.UUID,
         allowNull: false,
-        validate: {
-          notNull: { msg: "RaceCourse will have WeatherType" },
-          notEmpty: { msg: "WeatherType  will not be empty" },
+        references: {
+          model: "NationalityModel",
+          key: "_id",
         },
       },
-      WeatherDegree: {
+      ColorCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have WeatherDegree" },
-          notEmpty: { msg: "WeatherDegree  will not be empty" },
+          notNull: { msg: "RaceCourse will have ColorCode" },
+          notEmpty: { msg: "ColorCode  will not be empty" },
         },
       },
-      WeatherIcon: {
+      shortCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have WeatherIcon" },
-          notEmpty: { msg: "WeatherIcon  will not be empty" },
+          notNull: { msg: "RaceCourse will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
     },
@@ -78,3 +78,27 @@ module.exports = (sequelize, DataTypes) => {
   );
   return RaceCourseModel;
 };
+// WeatherType: {
+//   type: DataTypes.STRING,
+//   allowNull: false,
+//   validate: {
+//     notNull: { msg: "RaceCourse will have WeatherType" },
+//     notEmpty: { msg: "WeatherType  will not be empty" },
+//   },
+// },
+// WeatherDegree: {
+//   type: DataTypes.STRING,
+//   allowNull: false,
+//   validate: {
+//     notNull: { msg: "RaceCourse will have WeatherDegree" },
+//     notEmpty: { msg: "WeatherDegree  will not be empty" },
+//   },
+// },
+// WeatherIcon: {
+//   type: DataTypes.STRING,
+//   allowNull: false,
+//   validate: {
+//     notNull: { msg: "RaceCourse will have WeatherIcon" },
+//     notEmpty: { msg: "WeatherIcon  will not be empty" },
+//   },
+// },
