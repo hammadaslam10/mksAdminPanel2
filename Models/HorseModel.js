@@ -129,13 +129,14 @@ module.exports = (sequelize, DataTypes) => {
       isGelded: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: 0,
       },
       Cap: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       STARS: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       Rds: {
@@ -144,10 +145,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       ColorID: {
         type: DataTypes.UUID,
-        allowNull: false,
-      },
-      Status: {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     },

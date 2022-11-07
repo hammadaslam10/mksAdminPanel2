@@ -61,6 +61,12 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     ActiveJockey,
     ActiveOwner,
     Jockey,
+    NationalityId,
+    Foal,
+    PurchasePrice,
+    Cap,
+    Rds,
+    ColorID,
   } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
     const file = req.files.image;
@@ -87,6 +93,12 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       OverAllRating: OverAllRating,
       ActiveJockey: ActiveJockey,
       ActiveOwner: ActiveOwner,
+      NationalityId: NationalityId,
+      Foal: Foal,
+      PurchasePrice: PurchasePrice,
+      Cap: Cap,
+      Rds: Rds,
+      ColorID: ColorID,
     });
 
     if (data._id) {
@@ -168,6 +180,11 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     GSire,
     Earning,
     OverAllRating,
+    Foal,
+    PurchasePrice,
+    Cap,
+    Rds,
+    ColorID,
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -192,6 +209,11 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       GSire: GSire || data.GSire,
       Earning: Earning || data.Earning,
       OverAllRating: OverAllRating || data.OverAllRating,
+      Foal: Foal || data.Foal,
+      PurchasePrice: PurchasePrice || data.PurchasePrice,
+      Cap: Cap || data.Cap,
+      Rds: Rds || data.Rds,
+      ColorID: ColorID || data.ColorID,
     });
     data = await HorseModel.update(updateddata, {
       where: {
@@ -228,6 +250,11 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       GSire: GSire || data.GSire,
       Earning: Earning || data.Earning,
       OverAllRating: OverAllRating || data.OverAllRating,
+      Foal: Foal || data.Foal,
+      PurchasePrice: PurchasePrice || data.PurchasePrice,
+      Cap: Cap || data.Cap,
+      Rds: Rds || data.Rds,
+      ColorID: ColorID || data.ColorID,
     });
     data = await HorseModel.update(updateddata, {
       where: {

@@ -15,7 +15,19 @@ exports.GetTrainer = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreateTrainer = Trackerror(async (req, res, next) => {
-  const { Name, Age, Detail, Remarks } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    TitleEn,
+    TitleAr,
+    DOB,
+    TrainerLicenseDate,
+    ShortNameEn,
+    ShortNameAr,
+    Age,
+    Detail,
+    Remarks,
+  } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -27,7 +39,14 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
   } else {
     const data = await TrainerModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
-      Name: Name,
+      NameEn: NameEn,
+      NameAr: NameAr,
+      ShortNameEn: ShortNameEn,
+      ShortNameAr: ShortNameAr,
+      TitleEn: TitleEn,
+      TitleAr: TitleAr,
+      TrainerLicenseDate: TrainerLicenseDate,
+      DOB: DOB,
       Age: Age,
       Detail: Detail,
       Remarks: Remarks,
@@ -40,7 +59,19 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
   }
 });
 exports.UpdateTrainer = Trackerror(async (req, res, next) => {
-  const { Name, Age, Detail, Remarks } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    TitleEn,
+    TitleAr,
+    DOB,
+    TrainerLicenseDate,
+    ShortNameEn,
+    ShortNameAr,
+    Age,
+    Detail,
+    Remarks,
+  } = req.body;
   let data = await TrainerModel.findOne({
     where: { _id: req.params.id },
   });
@@ -50,7 +81,14 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
   if (req.files == null) {
     const updateddata = {
       image: data.image,
-      Name: Name || data.Name,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+      ShortNameEn: ShortNameEn || data.ShortNameEn,
+      ShortNameAr: ShortNameAr || data.ShortNameAr,
+      TitleEn: TitleEn || data.TitleEn,
+      TitleAr: TitleAr || data.TitleAr,
+      TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
+      DOB: DOB || data.DOB,
       Age: Age || data.Age,
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
@@ -73,7 +111,14 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
 
     const updateddata = {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
-      Name: Name || data.Name,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+      ShortNameEn: ShortNameEn || data.ShortNameEn,
+      ShortNameAr: ShortNameAr || data.ShortNameAr,
+      TitleEn: TitleEn || data.TitleEn,
+      TitleAr: TitleAr || data.TitleAr,
+      TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
+      DOB: DOB || data.DOB,
       Age: Age || data.Age,
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,

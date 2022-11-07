@@ -9,7 +9,9 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetCourse = Trackerror(async (req, res, next) => {
-  const data = await RaceCourseModel.findAll();
+  const data = await RaceCourseModel.findAll({
+    include: { all: true },
+  });
   res.status(200).json({
     success: true,
     data: data,
@@ -30,15 +32,16 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
 });
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   const {
-    Country,
     TrackName,
     TrackLength,
     WeatherType,
     WeatherDegree,
     WeatherIcon,
+    shortCode,
+    NationalityId,
+    ColorCode,
   } = req.body;
   if (
-    !Country ||
     !TrackLength ||
     TrackName ||
     WeatherDegree ||
@@ -55,12 +58,14 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
     const data = await RaceCourseModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
-      Country: Country,
       TrackName: TrackName,
       TrackLength: TrackLength,
       WeatherType: WeatherType,
       WeatherDegree: WeatherDegree,
       WeatherIcon: WeatherIcon,
+      ColorCode: ColorCode,
+      NationalityId: NationalityId,
+      shortCode: shortCode,
     });
     res.status(201).json({
       success: true,
@@ -70,12 +75,14 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
   const {
-    Country,
     TrackName,
     TrackLength,
     WeatherType,
     WeatherDegree,
     WeatherIcon,
+    shortCode,
+    NationalityId,
+    ColorCode,
   } = req.body;
   let data = await RaceCourseModel.findOne({
     where: { _id: req.params.id },
@@ -84,12 +91,14 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   const updateddata = {
-    Country: Country || data.Country,
+    shortCode: shortCode || data.shortCode,
     TrackName: TrackName || data.TrackName,
     TrackLength: TrackLength || data.TrackLength,
     WeatherType: WeatherType || data.WeatherType,
     WeatherDegree: WeatherDegree || data.WeatherDegree,
     WeatherIcon: WeatherIcon || data.WeatherIcon,
+    ColorCode: ColorCode || data.ColorCode,
+    NationalityId: NationalityId || data.NationalityId,
   };
   data = await RaceCourseModel.update(updateddata, {
     where: {

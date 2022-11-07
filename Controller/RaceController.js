@@ -79,7 +79,8 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
   });
 });
 exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
-  const { Rank, PrizeAmount, Points, HorseId, BonusPoints } = req.body;
+  const { Rank, PrizeAmount, Points, HorseId, BonusPoints, RaceType } =
+    req.body;
   const data = await ResultModel.create({
     RaceId: req.params.RaceId,
     HorseId: HorseId,
@@ -87,6 +88,7 @@ exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
     PrizeAmount: PrizeAmount,
     Points: Points,
     BonusPoints: BonusPoints,
+    RaceType: RaceType,
   });
   res.status(200).json({
     success: true,
@@ -115,6 +117,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     RaceCourse,
     Horses,
     Prizes,
+    RaceType,
     RaceStatus,
     DayNTime,
   } = req.body;
@@ -126,6 +129,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Prizes: Prizes,
     RaceStatus: RaceStatus,
     DayNTime: DayNTime,
+    RaceType: RaceType,
   });
   res.status(200).json({
     success: true,

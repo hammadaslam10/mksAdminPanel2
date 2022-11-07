@@ -14,14 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Country: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "RaceCourse will have Country" },
-          notEmpty: { msg: "Country  will not be empty" },
-        },
-      },
       TrackName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -70,6 +62,30 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
+      WeatherType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "RaceCourse will have WeatherType" },
+          notEmpty: { msg: "WeatherType  will not be empty" },
+        },
+      },
+      WeatherDegree: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "RaceCourse will have WeatherDegree" },
+          notEmpty: { msg: "WeatherDegree  will not be empty" },
+        },
+      },
+      WeatherIcon: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "RaceCourse will have WeatherIcon" },
+          notEmpty: { msg: "WeatherIcon  will not be empty" },
+        },
+      },
     },
     {
       freezeTableName: true,
@@ -78,27 +94,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return RaceCourseModel;
 };
-// WeatherType: {
-//   type: DataTypes.STRING,
-//   allowNull: false,
-//   validate: {
-//     notNull: { msg: "RaceCourse will have WeatherType" },
-//     notEmpty: { msg: "WeatherType  will not be empty" },
-//   },
-// },
-// WeatherDegree: {
-//   type: DataTypes.STRING,
-//   allowNull: false,
-//   validate: {
-//     notNull: { msg: "RaceCourse will have WeatherDegree" },
-//     notEmpty: { msg: "WeatherDegree  will not be empty" },
-//   },
-// },
-// WeatherIcon: {
-//   type: DataTypes.STRING,
-//   allowNull: false,
-//   validate: {
-//     notNull: { msg: "RaceCourse will have WeatherIcon" },
-//     notEmpty: { msg: "WeatherIcon  will not be empty" },
-//   },
-// },

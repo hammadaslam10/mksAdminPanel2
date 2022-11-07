@@ -45,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
+      RaceType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Race will have RaceKind" },
+          notEmpty: { msg: "RaceKind  will not be empty" },
+        },
+      },
       HorseFilled: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

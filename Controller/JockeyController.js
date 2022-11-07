@@ -8,7 +8,17 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
 exports.CreateJockey = Trackerror(async (req, res, next) => {
-  const { Name, Age, Rating } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    ShortNameEn,
+    ShortNameAr,
+    Age,
+    MiniumumJockeyWeight,
+    JockeyAllowance,
+    Rating,
+    DOB,
+  } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -20,7 +30,13 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
   } else {
     const data = await JockeyModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Jockey}/${Image}`,
-      Name: Name,
+      NameEn: NameEn,
+      NameAr: NameAr,
+      ShortNameEn: ShortNameEn,
+      ShortNameAr: ShortNameAr,
+      MiniumumJockeyWeight: MiniumumJockeyWeight,
+      JockeyAllowance: JockeyAllowance,
+      DOB: DOB,
       Age: Age,
       Rating: Rating,
     });
@@ -51,7 +67,17 @@ exports.GetJockey = Trackerror(async (req, res, next) => {
   });
 });
 exports.EditJockey = Trackerror(async (req, res, next) => {
-  const { Name, Age, Rating } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    ShortNameEn,
+    ShortNameAr,
+    Age,
+    MiniumumJockeyWeight,
+    JockeyAllowance,
+    Rating,
+    DOB,
+  } = req.body;
   console.log(req.body);
   // if ((Age = "")) {
   //   Age = null;
@@ -67,7 +93,14 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
   }
   if (req.files == null) {
     const updateddata = {
-      Name: Name || data.Name,
+      image: data.image,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+      ShortNameEn: ShortNameEn || data.ShortNameEn,
+      ShortNameAr: ShortNameAr || data.ShortNameAr,
+      MiniumumJockeyWeight: MiniumumJockeyWeight || data.MiniumumJockeyWeight,
+      DOB: DOB || data.DOB,
+      JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       Age: Age || data.Age,
       Rating: Rating || data.Rating,
     };
@@ -89,7 +122,13 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
 
     const updateddata = {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Jockey}/${Image}`,
-      Name: Name || data.Name,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+      ShortNameEn: ShortNameEn || data.ShortNameEn,
+      ShortNameAr: ShortNameAr || data.ShortNameAr,
+      MiniumumJockeyWeight: MiniumumJockeyWeight || data.MiniumumJockeyWeight,
+      DOB: DOB || data.DOB,
+      JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       Age: Age || data.Age,
       Rating: Rating || data.Rating,
     };

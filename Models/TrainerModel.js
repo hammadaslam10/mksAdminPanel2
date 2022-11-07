@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      JockeyLicenseDate: {
+     TrainerLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,
       },

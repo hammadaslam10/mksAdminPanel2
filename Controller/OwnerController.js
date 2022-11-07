@@ -9,7 +9,19 @@ const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 exports.CreateOwner = Trackerror(async (req, res, next) => {
-  const { NameEn, SilkColor, Horses, Rating } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    SilkColor,
+    TitleAr,
+    TitleEn,
+    Horses,
+    Rating,
+    ShortEn,
+    ShortAr,
+    RegistrationDate,
+    NationalityID,
+  } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -17,8 +29,15 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${Image}`,
     NameEn: NameEn,
+    NameAr: NameAr,
+    Rating: Rating,
+    ShortEn: ShortEn,
+    ShortAr: ShortAr,
+    TitleAr: TitleAr,
+    TitleEn: TitleEn,
+    NationalityID: NationalityID,
     SilkColor: SilkColor,
-    ColorModelId: SilkColor,
+    RegistrationDate: RegistrationDate,
   });
   console.log(data);
   res.status(201).json({
@@ -27,7 +46,19 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
   });
 });
 exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
+  const {
+    NameEn,
+    NameAr,
+    SilkColor,
+    TitleAr,
+    TitleEn,
+    Horses,
+    Rating,
+    ShortEn,
+    ShortAr,
+    RegistrationDate,
+    NationalityID,
+  } = req.body;
   let data = await OwnerModel.findOne({
     where: { _id: req.params.id },
   });
@@ -36,14 +67,20 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
   }
   if (req.files == null) {
     if (
-      ArRegex.test(DescriptionAr) &&
+      ArRegex.test(NameAr) &&
       ArRegex.test(TitleAr) &&
-      ArRegex.test(DescriptionEn) == false &&
+      ArRegex.test(NameEn) == false &&
       ArRegex.test(TitleEn) == false
     ) {
       const updateddata = {
         image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
-        Name: Name || data.Name,
+        NameEn: NameEn || data.NameEn,
+        NameAr: NameAr || data.NameAr,
+        ShortEn: ShortEn || data.ShortEn,
+        ShortAr: ShortAr || data.ShortAr,
+        RegistrationDate: RegistrationDate || data.RegistrationDate,
+        NationalityID: NationalityID || data.NationalityID,
+        SilkColor: SilkColor || data.SilkColor,
         Horses: Horses || data.Horses,
         Rating: Rating || data.Rating,
       };
@@ -69,14 +106,20 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
     const updateddata = {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
-      Name: Name || data.Name,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+      ShortEn: ShortEn || data.ShortEn,
+      ShortAr: ShortAr || data.ShortAr,
+      RegistrationDate: RegistrationDate || data.RegistrationDate,
+      NationalityID: NationalityID || data.NationalityID,
+      SilkColor: SilkColor || data.SilkColor,
       Horses: Horses || data.Horses,
       Rating: Rating || data.Rating,
     };
     if (
-      ArRegex.test(updateddata.DescriptionAr) &&
+      ArRegex.test(updateddata.NameAr) &&
       ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.DescriptionEn) == false &&
+      ArRegex.test(updateddata.NameEn) == false &&
       ArRegex.test(updateddata.TitleEn) == false
     ) {
       data = await OwnerModel.update(updateddata, {
