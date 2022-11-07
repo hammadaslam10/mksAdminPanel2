@@ -14,16 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Competition Category will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Nationality Category will have NameEn" },
+          notEmpty: { msg: "NameEn  will not be empty" },
         },
       },
       shortCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Competition Category will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Nationality Category will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
       NameAr: {
@@ -40,30 +40,27 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Competition Category will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Nationality Category will have Abbrev" },
+          notEmpty: { msg: "Abbrev  will not be empty" },
         },
       },
       AltName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Competition Category will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Nationality Category will have AltName" },
+          notEmpty: { msg: "AltName  will not be empty" },
         },
       },
       Label: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Competition Category will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Nationality Category will have Label" },
+          notEmpty: { msg: "Label  will not be empty" },
         },
       },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
+
       Offset: {
         type: DataTypes.INTEGER,
         allowNull: false,

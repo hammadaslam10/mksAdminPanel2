@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -38,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Name Must Be In Arabic",
           },
         },
-      },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
       },
     },
     {

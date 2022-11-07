@@ -55,10 +55,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Description   will not be empty" },
         },
       },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
     },
     {
       freezeTableName: true,

@@ -127,7 +127,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       STARS: {
-        type: DataTypes.UUID,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       Rds: {
@@ -136,10 +136,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       ColorID: {
         type: DataTypes.UUID,
-        allowNull: false,
-      },
-      Status: {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
     },

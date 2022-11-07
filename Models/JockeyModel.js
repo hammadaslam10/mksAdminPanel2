@@ -46,10 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
+
       JockeyLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,

@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       CompetitionId: {
-         type: DataTypes.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       RaceId: {
-         type: DataTypes.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       CompetitionDate: {
@@ -46,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Name Must Be In Arabic",
           },
         },
-      },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
       },
     },
     {

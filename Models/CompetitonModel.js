@@ -64,10 +64,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
-      Status: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
+
       pickCount: {
         type: DataTypes.BIGINT,
         allowNull: false,

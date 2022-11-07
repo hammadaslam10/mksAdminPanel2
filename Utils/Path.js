@@ -8,3 +8,5 @@ exports.Subscriber = "Subscriber";
 exports.Horse = "Horse";
 exports.RaceCourse = "RaceCourse";
 exports.Owner = "Owner";
+exports.Breeder = "Breeder";
+exports.Nationality = "Nationality";
