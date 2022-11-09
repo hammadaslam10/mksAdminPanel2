@@ -104,7 +104,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     if (data._id) {
       if (Owner) {
         let OwnerData = Conversion(Owner);
-        OwnerData.push(Owner);
+        OwnerData.push(ActiveOwner);
         await OwnerData.map(async (singleOwner) => {
           await HorseOwnerComboModel.create({
             HorseModelId: data._id,
@@ -115,7 +115,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
 
       if (Trainer) {
         let TrainerData = Conversion(Trainer);
-        TrainerData.push(Trainer);
+        TrainerData.push(ActiveTrainer);
         await TrainerData.map(async (singleTrainer) => {
           await HorseTrainerComboModel.create({
             HorseModelId: data._id,

@@ -27,14 +27,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
-      // ActiveOwner: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "OwnerModel",
-      //     key: "_id",
-      //   },
-      // },
+      ActiveOwner: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "OwnerModel",
+          key: "_id",
+        },
+      },
       // ActiveJockey: {
       //   type: DataTypes.UUID,
       //   allowNull: false,
@@ -43,14 +43,14 @@ module.exports = (sequelize, DataTypes) => {
       //     key: "_id",
       //   },
       // },
-      // ActiveTrainer: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "TrainerModel",
-      //     key: "_id",
-      //   },
-      // },
+      ActiveTrainer: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "TrainerModel",
+          key: "_id",
+        },
+      },
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -125,6 +125,7 @@ module.exports = (sequelize, DataTypes) => {
       WinningAmount: {
         type: DataTypes.DOUBLE,
         allowNull: false,
+        defaultValue: 0.0,
       },
       isGelded: {
         type: DataTypes.BOOLEAN,
