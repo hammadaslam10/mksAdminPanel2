@@ -66,6 +66,32 @@ exports.GetJockey = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
+exports.GetJockeyforRace = Trackerror(async (req, res, next) => {
+  const { Jockeyids, JockeyName } = req.body;
+  const data = await JockeyModel.findAll({
+    where: {
+      [Op.and]: [
+        {
+          _id: {
+            [Op.ne]: Jockeyids,
+          },
+        },
+        {
+          DescriptionEn: {
+            [Op.like]: `%${JockeyName}%`,
+          },
+          DescriptionAr: {
+            [Op.like]: `%${JockeyName}%`,
+          },
+        },
+      ],
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
 exports.EditJockey = Trackerror(async (req, res, next) => {
   const {
     NameEn,

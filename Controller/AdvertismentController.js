@@ -3,6 +3,7 @@ const AdvertismentModel = db.AdvertismentModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Ads } = require("../Utils/Path");
+const { Op } = require("sequelize");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");

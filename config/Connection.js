@@ -65,7 +65,7 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
   Db,
   DataTypes
 );
-
+db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
