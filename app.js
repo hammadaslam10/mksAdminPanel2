@@ -19,9 +19,10 @@ const HorseRoutes = require("./Routes/HorseRoutes");
 const RaceRoutes = require("./Routes/RaceRoutes");
 const NationalityRoutes = require("./Routes/NationalityRoutes");
 const BreederRoutes = require("./Routes/BreederRoutes");
+const CurrencyRoutes = require("./Routes/CurrencyRoutes");
 const ColorRoutes = require("./Routes/ColorRoutes");
 const SexRoutes = require("./Routes/SexRoutes");
-// const AdminRoutes = require("./Routes/AdminRoutes");
+const AdminRoutes = require("./Routes/AdminRoutes");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
@@ -46,8 +47,9 @@ app.use("/api/v1", NationalityRoutes);
 app.use("/api/v1", BreederRoutes);
 app.use("/api/v1", ColorRoutes);
 app.use("/api/v1", SexRoutes);
-// app.use("/api/v1", AdminRoutes);
+app.use("/api/v1", AdminRoutes);
 app.use("/api/v1", OwnerRoutes);
+app.use("/api/v1", CurrencyRoutes);
 // app.use("/api/v1", SearchRoutes);
 
 app.use(ApplyMiddleware);

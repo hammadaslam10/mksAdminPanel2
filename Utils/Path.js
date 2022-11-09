@@ -10,3 +10,4 @@ exports.RaceCourse = "RaceCourse";
 exports.Owner = "Owner";
 exports.Breeder = "Breeder";
 exports.Nationality = "Nationality";
+exports.Admin = "Admin";
