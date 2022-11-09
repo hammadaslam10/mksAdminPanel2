@@ -31,7 +31,7 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
   }
 });
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
-  const { TrackName, shortCode, NationalityId, ColorCode } = req.body;
+  const { TrackName, shortCode, NationalityId, ColorCode, GroundType } = req.body;
 
   const file = req.files.image;
   let Image = generateFileName();
@@ -40,6 +40,7 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   const data = await RaceCourseModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
     TrackName: TrackName,
+    GroundType: GroundType,
     ColorCode: ColorCode,
     NationalityId: NationalityId,
     shortCode: shortCode,
