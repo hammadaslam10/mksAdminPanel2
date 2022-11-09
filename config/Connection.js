@@ -32,12 +32,14 @@ db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
+db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
 db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
 db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
   require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
 db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
+db.SexModel = require("../Models/SexModel")(Db, DataTypes);
 db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
 db.CompetitonWinnersModel = require("../Models/CompetitonWinnersModel")(
   Db,
@@ -107,11 +109,18 @@ db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
 });
+
 db.RaceModel.belongsToMany(db.HorseModel, {
   through: "RaceAndHorseModel",
 });
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
+});
+db.RaceModel.belongsToMany(db.JockeyModel, {
+  through: "RaceAndJockeyModel",
+});
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
 });
 db.HorseModel.belongsToMany(db.OwnerModel, {
   through: "HorseOwnerComboModel",

@@ -91,7 +91,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       Earning: Earning,
       History: History,
       OverAllRating: OverAllRating,
-      ActiveJockey: ActiveJockey,
+      // ActiveJockey: ActiveJockey,
       ActiveOwner: ActiveOwner,
       NationalityId: NationalityId,
       Foal: Foal,
@@ -104,7 +104,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     if (data._id) {
       if (Owner) {
         let OwnerData = Conversion(Owner);
-        console.log(OwnerData);
+        OwnerData.push(Owner);
         await OwnerData.map(async (singleOwner) => {
           await HorseOwnerComboModel.create({
             HorseModelId: data._id,
@@ -115,7 +115,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
 
       if (Trainer) {
         let TrainerData = Conversion(Trainer);
-        console.log(TrainerData);
+        TrainerData.push(Trainer);
         await TrainerData.map(async (singleTrainer) => {
           await HorseTrainerComboModel.create({
             HorseModelId: data._id,
@@ -124,16 +124,16 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
         });
       }
 
-      if (Jockey) {
-        let JockeyData = Conversion(Jockey);
-        console.log(JockeyData);
-        await JockeyData.map(async (singleJockey) => {
-          await HorseJockeyComboModel.create({
-            HorseModelId: data._id,
-            JockeyModelId: singleJockey,
-          });
-        });
-      }
+      // if (Jockey) {
+      //   let JockeyData = Conversion(Jockey);
+      //   console.log(JockeyData);
+      //   await JockeyData.map(async (singleJockey) => {
+      //     await HorseJockeyComboModel.create({
+      //       HorseModelId: data._id,
+      //       JockeyModelId: singleJockey,
+      //     });
+      //   });
+      // }
     } else {
       return next(new HandlerCallBack("Horse creation failed", 401));
     }

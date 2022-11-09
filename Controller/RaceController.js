@@ -1,6 +1,7 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
+const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultModel = db.ResultModel;
 const Trackerror = require("../Middleware/TrackError");
@@ -149,6 +150,14 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
         GateNo: SingleEntry[0],
         RaceModelId: req.params.id,
         HorseModelId: SingleEntry[1],
+      },
+    });
+    await RaceAndJockeyModel.findOrCreate({
+      where: {
+        GateNo: SingleEntry[0],
+        RaceModelId: req.params.id,
+        JockeyModelId: SingleEntry[2],
+        JockeyWeight: SingleEntry[3],
       },
     });
   });
