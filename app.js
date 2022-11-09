@@ -1,4 +1,3 @@
-
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -18,6 +17,9 @@ const SponsorRoutes = require("./Routes/SponsorRoutes");
 const SliderRoutes = require("./Routes/SliderRoutes");
 const HorseRoutes = require("./Routes/HorseRoutes");
 const RaceRoutes = require("./Routes/RaceRoutes");
+const NationalityRoutes = require("./Routes/NationalityRoutes");
+const BreederRoutes = require("./Routes/BreederRoutes");
+const ColorRoutes = require("./Routes/ColorRoutes");
 // const AdminRoutes = require("./Routes/AdminRoutes");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -39,6 +41,9 @@ app.use("/api/v1", TrainerRoutes);
 app.use("/api/v1", HorseRoutes);
 app.use("/api/v1", RaceRoutes);
 app.use("/api/v1", SliderRoutes);
+app.use("/api/v1", NationalityRoutes);
+app.use("/api/v1", BreederRoutes);
+app.use("/api/v1", ColorRoutes);
 // app.use("/api/v1", AdminRoutes);
 app.use("/api/v1", OwnerRoutes);
 // app.use("/api/v1", SearchRoutes);

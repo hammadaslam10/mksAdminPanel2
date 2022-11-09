@@ -31,59 +31,26 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
   }
 });
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
-  const {
-    TrackName,
-    TrackLength,
-    WeatherType,
-    WeatherDegree,
-    WeatherIcon,
-    shortCode,
-    NationalityId,
-    ColorCode,
-  } = req.body;
-  if (
-    !TrackLength ||
-    TrackName ||
-    WeatherDegree ||
-    WeatherIcon ||
-    WeatherType
-  ) {
-    return next(
-      new HandlerCallBack("Please Fill Appropiate Detail Of Race Course", 404)
-    );
-  } else {
-    const file = req.files.image;
-    let Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
-    const data = await RaceCourseModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
-      TrackName: TrackName,
-      TrackLength: TrackLength,
-      WeatherType: WeatherType,
-      WeatherDegree: WeatherDegree,
-      WeatherIcon: WeatherIcon,
-      ColorCode: ColorCode,
-      NationalityId: NationalityId,
-      shortCode: shortCode,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  }
+  const { TrackName, shortCode, NationalityId, ColorCode } = req.body;
+
+  const file = req.files.image;
+  let Image = generateFileName();
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
+  const data = await RaceCourseModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
+    TrackName: TrackName,
+    ColorCode: ColorCode,
+    NationalityId: NationalityId,
+    shortCode: shortCode,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
-  const {
-    TrackName,
-    TrackLength,
-    WeatherType,
-    WeatherDegree,
-    WeatherIcon,
-    shortCode,
-    NationalityId,
-    ColorCode,
-  } = req.body;
+  const { TrackName, shortCode, NationalityId, ColorCode } = req.body;
   let data = await RaceCourseModel.findOne({
     where: { _id: req.params.id },
   });
@@ -93,10 +60,6 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
   const updateddata = {
     shortCode: shortCode || data.shortCode,
     TrackName: TrackName || data.TrackName,
-    TrackLength: TrackLength || data.TrackLength,
-    WeatherType: WeatherType || data.WeatherType,
-    WeatherDegree: WeatherDegree || data.WeatherDegree,
-    WeatherIcon: WeatherIcon || data.WeatherIcon,
     ColorCode: ColorCode || data.ColorCode,
     NationalityId: NationalityId || data.NationalityId,
   };
