@@ -25,10 +25,9 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   if (
     ArRegex.test(DescriptionAr) &&
     ArRegex.test(NameAr) &&
-    ArRegex.test(TitleAr) &&
     ArRegex.test(DescriptionEn) == false &&
-    ArRegex.test(NameEn) == false &&
-    ArRegex.test(TitleEn) == false
+    ArRegex.test(NameEn) == false
+
   ) {
     const data = await BreederModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,
@@ -57,7 +56,7 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetBreederAdmin = Trackerror(async (req, res, next) => {});
+exports.GetBreederAdmin = Trackerror(async (req, res, next) => { });
 exports.EditBreeder = Trackerror(async (req, res, next) => {
   const {
     NameEn,

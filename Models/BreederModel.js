@@ -26,17 +26,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Breeder will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Breeder will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06FF]/,
-          is: {
-            msg: "Name Must Be In Arabic",
-          },
+           is: /[\u0600-\u06FF]/,
+            is: {
+              msg: "Name Must Be In Arabic",
+            },
         },
       },
       DescriptionEn: {
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: "Breeder will have Description" },
-          notEmpty: { msg: "Description   will not be empty" },
+          notEmpty: { msg: "Description will not be empty" },
         },
       },
       DescriptionAr: {
