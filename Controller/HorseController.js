@@ -41,6 +41,7 @@ exports.SingleHorse = Trackerror(async (req, res, next) => {
 exports.CreateHorse = Trackerror(async (req, res, next) => {
   const {
     Age,
+    STARS,
     NameEn,
     NameAr,
     Owner,
@@ -68,79 +69,77 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Rds,
     ColorID,
   } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const file = req.files.image;
-    const Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
-    const data = await HorseModel.create({
-      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
-      NameEn: NameEn,
-      Age: Age,
-      NameAr: NameAr,
-      ActiveTrainer: ActiveTrainer,
-      Breeder: Breeder,
-      Remarks: Remarks,
-      HorseRating: HorseRating,
-      Sex: Sex,
-      Color: Color,
-      KindOfHorse: KindOfHorse,
-      Dam: Dam,
-      Sire: Sire,
-      GSire: GSire,
-      Earning: Earning,
-      History: History,
-      OverAllRating: OverAllRating,
-      // ActiveJockey: ActiveJockey,
-      ActiveOwner: ActiveOwner,
-      NationalityId: NationalityId,
-      Foal: Foal,
-      PurchasePrice: PurchasePrice,
-      Cap: Cap,
-      Rds: Rds,
-      ColorID: ColorID,
-    });
 
-    if (data._id) {
-      if (Owner) {
-        let OwnerData = Conversion(Owner);
-        OwnerData.push(ActiveOwner);
-        await OwnerData.map(async (singleOwner) => {
-          await HorseOwnerComboModel.create({
-            HorseModelId: data._id,
-            OwnerModelId: singleOwner,
-          });
+  const file = req.files.image;
+  const Image = generateFileName();
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
+  const data = await HorseModel.create({
+    HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
+    NameEn: NameEn,
+    Age: Age,
+    NameAr: NameAr,
+    ActiveTrainer: ActiveTrainer,
+    Breeder: Breeder,
+    Remarks: Remarks,
+    Sex: Sex,
+    Color: Color,
+    Dam: Dam,
+    Sire: Sire,
+    GSire: GSire,
+    Earning: Earning,
+    History: History,
+    OverAllRating: OverAllRating,
+    STARS: STARS,
+    // ActiveJockey: ActiveJockey,
+    ActiveOwner: ActiveOwner,
+    NationalityId: NationalityId,
+    Foal: Foal,
+    PurchasePrice: PurchasePrice,
+    Cap: Cap,
+    Rds: Rds,
+    ColorID: ColorID,
+  });
+
+  if (data._id) {
+    if (Owner) {
+      let OwnerData = Conversion(Owner);
+      // OwnerData.push(ActiveOwner);
+      await OwnerData.map(async (singleOwner) => {
+        await HorseOwnerComboModel.create({
+          HorseModelId: data._id,
+          OwnerModelId: singleOwner,
         });
-      }
-
-      if (Trainer) {
-        let TrainerData = Conversion(Trainer);
-        TrainerData.push(ActiveTrainer);
-        await TrainerData.map(async (singleTrainer) => {
-          await HorseTrainerComboModel.create({
-            HorseModelId: data._id,
-            TrainerModelId: singleTrainer,
-          });
-        });
-      }
-
-      // if (Jockey) {
-      //   let JockeyData = Conversion(Jockey);
-      //   console.log(JockeyData);
-      //   await JockeyData.map(async (singleJockey) => {
-      //     await HorseJockeyComboModel.create({
-      //       HorseModelId: data._id,
-      //       JockeyModelId: singleJockey,
-      //     });
-      //   });
-      // }
-    } else {
-      return next(new HandlerCallBack("Horse creation failed", 401));
+      });
     }
+
+    if (Trainer) {
+      let TrainerData = Conversion(Trainer);
+      // TrainerData.push(ActiveTrainer);
+      await TrainerData.map(async (singleTrainer) => {
+        await HorseTrainerComboModel.create({
+          HorseModelId: data._id,
+          TrainerModelId: singleTrainer,
+        });
+      });
+    }
+
+    // if (Jockey) {
+    //   let JockeyData = Conversion(Jockey);
+    //   console.log(JockeyData);
+    //   await JockeyData.map(async (singleJockey) => {
+    //     await HorseJockeyComboModel.create({
+    //       HorseModelId: data._id,
+    //       JockeyModelId: singleJockey,
+    //     });
+    //   });
+    // }
     res.status(200).json({
       success: true,
       data,
     });
+
+
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
