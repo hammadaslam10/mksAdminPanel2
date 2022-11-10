@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      TrackName: {
+      TrackNameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -22,12 +22,33 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "TrackName  will not be empty" },
         },
       },
-      GroundType: {
+      TrackNameAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "RaceName Must Be In Arabic",
+          },
+        },
+      },
+
+      GroundTypeEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "RaceCourse will have GroundType" },
           notEmpty: { msg: "GroundType  will not be empty" },
+        },
+      },
+      GroundTypeAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "RaceName Must Be In Arabic",
+          },
         },
       },
       NationalityId: {
@@ -54,7 +75,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
-  
     },
     {
       freezeTableName: true,

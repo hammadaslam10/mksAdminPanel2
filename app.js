@@ -23,6 +23,7 @@ const CurrencyRoutes = require("./Routes/CurrencyRoutes");
 const ColorRoutes = require("./Routes/ColorRoutes");
 const SexRoutes = require("./Routes/SexRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes");
+const SeoKeywordRoutes = require("./Routes/SeoKeywordRoutes");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
@@ -48,6 +49,7 @@ app.use("/api/v1", BreederRoutes);
 app.use("/api/v1", ColorRoutes);
 app.use("/api/v1", SexRoutes);
 app.use("/api/v1", AdminRoutes);
+app.use("/api/v1", SeoKeywordRoutes);
 app.use("/api/v1", OwnerRoutes);
 app.use("/api/v1", CurrencyRoutes);
 // app.use("/api/v1", SearchRoutes);

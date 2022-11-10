@@ -7,10 +7,13 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
+const { Op } = require("sequelize");
 exports.CreateJockey = Trackerror(async (req, res, next) => {
   const {
     NameEn,
     NameAr,
+    RemarksEn,
+    RemarksAr,
     ShortNameEn,
     ShortNameAr,
     Age,
@@ -19,8 +22,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     JockeyAllowance,
     Rating,
     DOB,
-    Remarks,
-    JockeyLicenseDate
+    JockeyLicenseDate,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -38,13 +40,15 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       ShortNameEn: ShortNameEn,
       ShortNameAr: ShortNameAr,
       MiniumumJockeyWeight: MiniumumJockeyWeight,
-      MaximumJockeyWeight,MaximumJockeyWeight,
+      MaximumJockeyWeight,
+      MaximumJockeyWeight,
       JockeyAllowance: JockeyAllowance,
       DOB: DOB,
       Age: Age,
       Rating: Rating,
-      Remarks:Remarks,
-      JockeyLicenseDate
+      RemarksEn: RemarksEn,
+      RemarksAr: RemarksAr,
+      JockeyLicenseDate: JockeyLicenseDate,
     });
     res.status(201).json({
       success: true,

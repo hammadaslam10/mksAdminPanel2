@@ -42,20 +42,34 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      Remarks: {
+      RemarksEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Jockey will have Remarks" },
+          notEmpty: { msg: "Remarks  will not be empty" },
+        },
+      },
+      RemarksAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Jockey Must Be In Arabic",
+          },
+        },
       },
       MiniumumJockeyWeight: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       MaximumJockeyWeight: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       JockeyAllowance: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
     },

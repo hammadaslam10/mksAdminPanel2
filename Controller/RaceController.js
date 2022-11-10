@@ -114,23 +114,29 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   const {
     RaceKind,
     raceName,
-    Description,
+    DescriptionEn,
     RaceCourse,
     Horses,
     Prizes,
     RaceType,
     RaceStatus,
     DayNTime,
+    DescriptionAr,
+    RaceNameEn,
+    RaceNameAr,
   } = req.body;
   const data = await RaceModel.create({
     RaceKind: RaceKind,
     raceName: raceName,
-    Description: Description,
+    DescriptionEn: DescriptionEn,
+    DescriptionAr: DescriptionAr,
     RaceCourse: RaceCourse,
     Prizes: Prizes,
     RaceStatus: RaceStatus,
     DayNTime: DayNTime,
     RaceType: RaceType,
+    RaceNameAr: RaceNameAr,
+    RaceNameEn: RaceNameEn,
   });
   res.status(200).json({
     success: true,
@@ -167,6 +173,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
   const {
+    
     Age,
     NameEn,
     NameAr,

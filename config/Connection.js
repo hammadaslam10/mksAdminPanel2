@@ -38,6 +38,7 @@ db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
   require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
+db.SeokeywordModel = require("../Models/SeoKeywordModel")(Db, DataTypes);
 db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
 db.SexModel = require("../Models/SexModel")(Db, DataTypes);
 db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);

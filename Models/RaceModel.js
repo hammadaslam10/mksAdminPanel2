@@ -14,6 +14,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      RaceNameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Race will have Race Name" },
+          notEmpty: { msg: "Race Name  will not be empty" },
+        },
+      },
+      RaceNameAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "RaceName Must Be In Arabic",
+          },
+        },
+      },
       RaceKind: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -30,7 +48,17 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "TrackLength  will not be empty" },
         },
       },
-      Description: {
+      DescriptionAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          is: /[\u0600-\u06FF]/,
+          is: {
+            msg: "Race Must Be In Arabic",
+          },
+        },
+      },
+      DescriptionEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
