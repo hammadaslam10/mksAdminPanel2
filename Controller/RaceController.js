@@ -135,6 +135,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
   const data = await RaceModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
     RaceKind: RaceKind,
     raceName: raceName,
     DescriptionEn: DescriptionEn,
