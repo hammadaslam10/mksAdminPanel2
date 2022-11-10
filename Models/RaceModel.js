@@ -43,10 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       TrackLength: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        validate: {
-          notNull: { msg: "RaceCourse will have TrackLength" },
-          notEmpty: { msg: "TrackLength  will not be empty" },
-        },
+
       },
       DescriptionAr: {
         type: DataTypes.STRING,

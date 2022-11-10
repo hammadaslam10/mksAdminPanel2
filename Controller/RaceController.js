@@ -7,10 +7,12 @@ const ResultModel = db.ResultModel;
 const { Race } = require("../Utils/Path");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const { getObjectSignedUrl, deleteFile } = require("../Utils/s3");
 const { Trainer, Jockey, Owner, Horse, RaceCourse } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { Conversion } = require("../Utils/Conversion");
+const { uploadFile, deleteFile } = require("../Utils/s3");
+const { generateFileName } = require("../Utils/FileNameGeneration");
+const { resizeImageBuffer } = require("../Utils/ImageResizing");
 
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
@@ -97,7 +99,7 @@ exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -128,11 +130,12 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherType,
     WeatherDegree,
     WeatherIcon,
+    TrackLength
   } = req.body;
   const file = req.files.image;
-  await deleteFile(`${Race}/${data.image}`);
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  console.log(req.files.image.data);
   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
   const data = await RaceModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
@@ -153,6 +156,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherDegree: WeatherDegree,
     WeatherIcon: WeatherIcon,
     RaceNameEn: RaceNameEn,
+    TrackLength: TrackLength,
   });
   res.status(200).json({
     success: true,
