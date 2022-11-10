@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /[\u0600-\u06FF]/,
           is: {
-            msg: "Race Must Be In Arabic",
+            msg: "Race Description Must Be In Arabic",
           },
         },
       },
@@ -69,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       RaceStatus: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: 0,
       },
       DayNTime: {
         type: DataTypes.DATE,
@@ -104,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have WeatherType" },
+          notNull: { msg: "Race will have WeatherType" },
           notEmpty: { msg: "WeatherType  will not be empty" },
         },
       },
@@ -112,7 +113,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have WeatherDegree" },
+          notNull: { msg: "Race will have WeatherDegree" },
           notEmpty: { msg: "WeatherDegree  will not be empty" },
         },
       },
@@ -120,7 +121,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have WeatherIcon" },
+          notNull: { msg: "Race will have WeatherIcon" },
           notEmpty: { msg: "WeatherIcon  will not be empty" },
         },
       },

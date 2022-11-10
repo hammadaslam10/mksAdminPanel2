@@ -4,6 +4,7 @@ const RaceAndHorseModel = db.RaceAndHorseModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultModel = db.ResultModel;
+const { Race } = require("../Utils/Path");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { getObjectSignedUrl, deleteFile } = require("../Utils/s3");
@@ -124,7 +125,15 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     DescriptionAr,
     RaceNameEn,
     RaceNameAr,
+    WeatherType,
+    WeatherDegree,
+    WeatherIcon,
   } = req.body;
+  const file = req.files.image;
+  await deleteFile(`${Race}/${data.image}`);
+  const Image = generateFileName();
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
   const data = await RaceModel.create({
     RaceKind: RaceKind,
     raceName: raceName,
@@ -136,6 +145,12 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     DayNTime: DayNTime,
     RaceType: RaceType,
     RaceNameAr: RaceNameAr,
+    RaceNameAr: RaceNameAr,
+    WeatherType: WeatherType,
+    WeatherType: WeatherType,
+    WeatherDegree: WeatherDegree,
+    WeatherDegree: WeatherDegree,
+    WeatherIcon: WeatherIcon,
     RaceNameEn: RaceNameEn,
   });
   res.status(200).json({
@@ -173,7 +188,6 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
   const {
-    
     Age,
     NameEn,
     NameAr,
@@ -214,13 +228,13 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     });
   } else {
     const file = req.files.image;
-    await deleteFile(`${Horse}/${data.image}`);
+    await deleteFile(`${Race}/${data.image}`);
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
+    await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
 
     const updateddata = {
-      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
       NameEn: NameEn || data.NameEn,
       Age: Age || data.Age,
       NameAr: NameAr || data.NameAr,
@@ -279,7 +293,7 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  // await deleteFile(`${Horse}/${data.image.slice(-64)}`);
+  // await deleteFile(`${Race}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
     where: { _id: req.params.id },
   });
