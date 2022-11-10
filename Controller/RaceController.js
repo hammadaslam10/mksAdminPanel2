@@ -24,6 +24,16 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.GetRaceTobeOPublished = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: { HorseFilled: false },
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
@@ -99,7 +109,7 @@ exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -130,7 +140,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherType,
     WeatherDegree,
     WeatherIcon,
-    TrackLength
+    TrackLength,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();

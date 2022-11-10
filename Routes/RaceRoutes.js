@@ -11,9 +11,11 @@ const {
   RaceOrderByCountry,
   RaceOrderByRaceCourseOnly,
   RacePrizeMoney,
+  GetRaceTobeOPublished,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
+router.route("/getracetobepublished").get(GetRaceTobeOPublished);
 router.route("/publishedracesbycountry").get(RaceOrderByCountry);
 router.route("/raceCart/:RaceCourseName").get(RaceOrderByRaceCourseOnly);
 router.route("/publishrace/:id").put(PublishRaces);
