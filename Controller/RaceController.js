@@ -180,19 +180,23 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   console.log(HorseEntryData);
   await HorseEntryData.map(async (SingleEntry, index) => {
     SingleEntry = SingleEntry.split(",");
+    console.log(SingleEntry[0]);
     console.log(SingleEntry[1]);
+    console.log(SingleEntry[2]);
+    console.log(SingleEntry[3]);
     await RaceAndHorseModel.findOrCreate({
       where: {
         GateNo: SingleEntry[0],
+        JockeyModelId: SingleEntry[2],
         RaceModelId: req.params.id,
-        HorseModelId: SingleEntry[1],
       },
+    
     });
     await RaceAndJockeyModel.findOrCreate({
       where: {
         GateNo: SingleEntry[0],
         RaceModelId: req.params.id,
-        JockeyModelId: SingleEntry[2],
+        HorseModelId: SingleEntry[1],
         JockeyWeight: SingleEntry[3],
       },
     });
