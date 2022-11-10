@@ -15,17 +15,20 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     ShortNameAr,
     Age,
     MiniumumJockeyWeight,
+    MaximumJockeyWeight,
     JockeyAllowance,
     Rating,
     DOB,
+    Remarks,
+    JockeyLicenseDate
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Jockey}/${Image}`, file.mimetype);
-  if (!Name || !Age || !Rating) {
+  if (!NameEn || !Rating) {
     return next(
-      new HandlerCallBack("Please Fill Appropiate Detail Of Trainer", 404)
+      new HandlerCallBack("Please Fill Appropiate Detail Of Jockey", 404)
     );
   } else {
     const data = await JockeyModel.create({
@@ -35,10 +38,13 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       ShortNameEn: ShortNameEn,
       ShortNameAr: ShortNameAr,
       MiniumumJockeyWeight: MiniumumJockeyWeight,
+      MaximumJockeyWeight,MaximumJockeyWeight,
       JockeyAllowance: JockeyAllowance,
       DOB: DOB,
       Age: Age,
       Rating: Rating,
+      Remarks:Remarks,
+      JockeyLicenseDate
     });
     res.status(201).json({
       success: true,
