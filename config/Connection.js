@@ -110,19 +110,19 @@ db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
 });
-
-db.RaceModel.belongsToMany(db.HorseModel, {
-  through: "RaceAndHorseModel",
-});
-db.HorseModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndHorseModel",
-});
 db.RaceModel.belongsToMany(db.JockeyModel, {
   through: "RaceAndJockeyModel",
 });
 db.JockeyModel.belongsToMany(db.RaceModel, {
   through: "RaceAndJockeyModel",
 });
+db.RaceModel.belongsToMany(db.HorseModel, {
+  through: "RaceAndHorseModel",
+});
+db.HorseModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndHorseModel",
+});
+
 db.HorseModel.belongsToMany(db.OwnerModel, {
   through: "HorseOwnerComboModel",
 });
