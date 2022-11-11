@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "BreederModel",
-          key: "_id",
-        },
+        // references: {
+        //   model: "BreederModel",
+        //   key: "_id",
+        // },
       },
       Sex: {
         type: DataTypes.STRING,
@@ -30,10 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "OwnerModel",
-          key: "_id",
-        },
+        // references: {
+        //   model: "OwnerModel",
+        //   key: "_id",
+        // },
       },
       // ActiveJockey: {
       //   type: DataTypes.UUID,
@@ -46,18 +46,18 @@ module.exports = (sequelize, DataTypes) => {
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "TrainerModel",
-          key: "_id",
-        },
+        // references: {
+        //   model: "TrainerModel",
+        //   key: "_id",
+        // },
       },
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id",
-        },
+        // references: {
+        //   model: "NationalityModel",
+        //   key: "_id",
+        // },
       },
       Dam: {
         type: DataTypes.UUID,
