@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notContains: /[\u0600-\u06FF]/,
+          notContains: /[\u0600-\u06FF\u0750-\u077F]/g,
           notContains: {
             msg: "Name Must Be In English",
           },
@@ -108,7 +108,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /[\u0600-\u06FF]/,
+          is: /[\u0600-\u06FF\u0750-\u077F]/g,
           is: {
             msg: "Title Must Be In Arabic",
           },
