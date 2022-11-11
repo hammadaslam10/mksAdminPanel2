@@ -74,19 +74,19 @@ db.sequelize.sync({ force: false }).then(() => {
 //   foreignKey: "ActiveJockeyForTheRace",
 //   as: "ActiveJockeyForTheRaceData",
 // });
-db.BreederModel.belongsTo(db.HorseModel, {
+db.BreederModel.hasMany(db.HorseModel, {
   foreignKey: "Breeder",
   as: "BreederData",
 });
-db.HorseModel.hasMany(db.BreederModel, {
+db.HorseModel.belongsTo(db.BreederModel, {
   foreignKey: "Breeder",
   as: "BreederData",
 });
-db.NationalityModel.belongsTo(db.HorseModel, {
+db.NationalityModel.hasMany(db.HorseModel, {
   foreignKey: "NationalityId",
   as: "NationalityData",
 });
-db.HorseModel.hasMany(db.NationalityModel, {
+db.HorseModel.belongsTo(db.NationalityModel, {
   foreignKey: "NationalityId",
   as: "NationalityData",
 });
@@ -135,10 +135,10 @@ db.HorseModel.belongsToMany(db.JockeyModel, {
 db.JockeyModel.belongsToMany(db.HorseModel, {
   through: "HorseJockeyComboModel",
 });
-db.HorseModel.belongsToMany(db.TrainerModel, {
+db.TrainerModel.belongsToMany(db.HorseModel, {
   through: "HorseTrainerComboModel",
 });
-db.TrainerModel.belongsToMany(db.HorseModel, {
+db.HorseModel.belongsToMany(db.TrainerModel, {
   through: "HorseTrainerComboModel",
 });
 db.HorseModel.hasMany(db.ResultModel, {
