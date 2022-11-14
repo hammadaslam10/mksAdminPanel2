@@ -24,10 +24,9 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     TrainerLicenseDate,
     ShortNameEn,
     ShortNameAr,
-    Age,
     Detail,
     Remarks,
-    Rating
+    Rating,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -48,10 +47,9 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr,
       TrainerLicenseDate: TrainerLicenseDate,
       DOB: DOB,
-      Age: Age,
       Detail: Detail,
       Remarks: Remarks,
-      Rating: Rating
+      Rating: Rating,
     });
 
     res.status(201).json({
@@ -70,10 +68,9 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     TrainerLicenseDate,
     ShortNameEn,
     ShortNameAr,
-    Age,
     Detail,
     Remarks,
-    Rating
+    Rating,
   } = req.body;
   let data = await TrainerModel.findOne({
     where: { _id: req.params.id },
@@ -92,7 +89,6 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
       DOB: DOB || data.DOB,
-      Age: Age || data.Age,
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
       Rating: Rating || data.Rating,
@@ -123,7 +119,6 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
       DOB: DOB || data.DOB,
-      Age: Age || data.Age,
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
       Rating: Rating || data.Rating,

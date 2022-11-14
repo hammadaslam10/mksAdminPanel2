@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      NationalityId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id",
+        },
+      },
       SilkColor: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -46,10 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      NationalityID: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
+   
     },
     {
       freezeTableName: true,

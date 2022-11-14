@@ -14,26 +14,33 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      RaceNameEn: {
+      MeetingType: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "MeetingTypeModel",
+          key: "_id",
+        },
+      },
+      MeetingCode: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      RaceName: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "RaceNameModel",
+          key: "_id",
+        },
         validate: {
           notNull: { msg: "Race will have Race Name" },
           notEmpty: { msg: "Race Name  will not be empty" },
         },
       },
-      RaceNameAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          is: /^[\u0621-\u064A0-9 ]+$/,
-          is: {
-            msg: "RaceName Must Be In Arabic",
-          },
-        },
-      },
+
       RaceKind: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have RaceKind" },
@@ -41,7 +48,11 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       TrackLength: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      Ground: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       DescriptionAr: {
@@ -79,11 +90,15 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       RaceType: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "RaceTypeModel",
+          key: "_id",
+        },
         validate: {
-          notNull: { msg: "Race will have RaceKind" },
-          notEmpty: { msg: "RaceKind  will not be empty" },
+          notNull: { msg: "Race will have RaceType" },
+          notEmpty: { msg: "RaceType  will not be empty" },
         },
       },
       HorseFilled: {
@@ -119,6 +134,54 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Race will have WeatherIcon" },
           notEmpty: { msg: "WeatherIcon  will not be empty" },
+        },
+      },
+      RaceType: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "RaceTypeModel",
+          key: "_id",
+        },
+        validate: {
+          notNull: { msg: "Race will have RaceType" },
+          notEmpty: { msg: "RaceType  will not be empty" },
+        },
+      },
+      FirstPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      SecondPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      ThirdPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      FourthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      FifthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      SixthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      Sponsor: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "SponsorModel",
+          key: "_id",
+        },
+        validate: {
+          notNull: { msg: "Race will have Sponsor" },
+          notEmpty: { msg: "Sponsor  will not be empty" },
         },
       },
     },

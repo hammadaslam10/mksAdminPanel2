@@ -16,11 +16,10 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     RemarksAr,
     ShortNameEn,
     ShortNameAr,
-    Age,
+    NationalityID,
     MiniumumJockeyWeight,
     MaximumJockeyWeight,
     JockeyAllowance,
-    Rating,
     DOB,
     JockeyLicenseDate,
   } = req.body;
@@ -44,8 +43,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       MaximumJockeyWeight,
       JockeyAllowance: JockeyAllowance,
       DOB: DOB,
-      Age: Age,
-      Rating: Rating,
+      NationalityID: NationalityID,
       RemarksEn: RemarksEn,
       RemarksAr: RemarksAr,
       JockeyLicenseDate: JockeyLicenseDate,
@@ -108,15 +106,14 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     NameAr,
     ShortNameEn,
     ShortNameAr,
-    Age,
+    NationalityID,
     MiniumumJockeyWeight,
     JockeyAllowance,
-    Rating,
     DOB,
   } = req.body;
   console.log(req.body);
-  // if ((Age = "")) {
-  //   Age = null;
+  // if ((NationalityID = "")) {
+  //   NationalityID = null;
   // }
   // if ((Rating = "")) {
   //   Rating = null;
@@ -137,7 +134,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       MiniumumJockeyWeight: MiniumumJockeyWeight || data.MiniumumJockeyWeight,
       DOB: DOB || data.DOB,
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
-      Age: Age || data.Age,
+      NationalityID: NationalityID || data.NationalityID,
       Rating: Rating || data.Rating,
     };
     data = await JockeyModel.update(updateddata, {
@@ -165,7 +162,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       MiniumumJockeyWeight: MiniumumJockeyWeight || data.MiniumumJockeyWeight,
       DOB: DOB || data.DOB,
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
-      Age: Age || data.Age,
+      NationalityID: NationalityID || data.NationalityID,
       Rating: Rating || data.Rating,
     };
 

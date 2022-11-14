@@ -38,6 +38,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
+      NationalityId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id",
+        },
+      },
       JockeyLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,

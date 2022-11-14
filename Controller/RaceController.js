@@ -13,8 +13,6 @@ const { Conversion } = require("../Utils/Conversion");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
- 
-
 
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
@@ -137,12 +135,22 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     RaceStatus,
     DayNTime,
     DescriptionAr,
-    RaceNameEn,
+    RaceName,
     RaceNameAr,
     WeatherType,
     WeatherDegree,
     WeatherIcon,
     TrackLength,
+    FirstPrice,
+    SecondPrice,
+    ThirdPrice,
+    FourthPrice,
+    FifthPrice,
+    SixthPrice,
+    MeetingType,
+    MeetingCode,
+    Ground,
+    Sponsor,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -167,8 +175,21 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherDegree: WeatherDegree,
     WeatherDegree: WeatherDegree,
     WeatherIcon: WeatherIcon,
-    RaceNameEn: RaceNameEn,
+    RaceName: RaceName,
     TrackLength: TrackLength,
+    TrackLength: TrackLength,
+    FirstPrice: FirstPrice,
+    FirstPrice: FirstPrice,
+    SecondPrice: SecondPrice,
+    ThirdPrice: ThirdPrice,
+    FourthPrice: FourthPrice,
+    FifthPrice: FifthPrice,
+    SixthPrice: SixthPrice,
+    MeetingType: MeetingType,
+    MeetingCode: MeetingCode,
+    TrackLength: TrackLength,
+    Ground: Ground,
+    Sponsor: Sponsor,
   });
   res.status(200).json({
     success: true,
@@ -192,7 +213,6 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
         JockeyModelId: SingleEntry[2],
         RaceModelId: req.params.id,
       },
-    
     });
     await RaceAndJockeyModel.findOrCreate({
       where: {
@@ -206,6 +226,29 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
+});
+exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
+  // const { VerdictsEntry } = req.body;
+  // console.log(req.body);
+  // let VerdictsEntryData = Conversion(VerdictsEntry);
+  // console.log(VerdictsEntryData);
+  // await VerdictsEntryData.map(async (SingleEntry, index) => {
+  //   SingleEntry = SingleEntry.split(",");
+  //   console.log(SingleEntry[0]);
+  //   console.log(SingleEntry[1]);
+  //   console.log(SingleEntry[2]);
+  //   console.log(SingleEntry[3]);
+  //   await RaceAndVerdictsModel.findOrCreate({
+  //     where: {
+  //       GateNo: SingleEntry[0],
+  //       JockeyModelId: SingleEntry[2],
+  //       RaceModelId: req.params.id,
+  //     },
+  //   });
+  // });
+  // res.status(200).json({
+  //   success: true,
+  // });
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
   const {

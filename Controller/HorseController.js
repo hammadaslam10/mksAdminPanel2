@@ -40,9 +40,9 @@ exports.SingleHorse = Trackerror(async (req, res, next) => {
 });
 exports.CreateHorse = Trackerror(async (req, res, next) => {
   const {
-    Age,
     STARS,
     NameEn,
+    DOB,
     NameAr,
     Owner,
     ActiveTrainer,
@@ -58,7 +58,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     GSire,
     Earning,
     History,
-    OverAllRating,
     ActiveJockey,
     ActiveOwner,
     Jockey,
@@ -77,7 +76,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.create({
     HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
     NameEn: NameEn,
-    Age: Age,
+    NameEn: NameEn,
+    DOB: DOB,
     NameAr: NameAr,
     ActiveTrainer: ActiveTrainer,
     Breeder: Breeder,
@@ -89,7 +89,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     GSire: GSire,
     Earning: Earning,
     History: History,
-    OverAllRating: OverAllRating,
     STARS: STARS,
     // ActiveJockey: ActiveJockey,
     ActiveOwner: ActiveOwner,
@@ -138,8 +137,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-
-
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
@@ -149,6 +146,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
 // const updateddata = await HorseModel.create({
 //   HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
 //   NameEn: NameEn || data.NameEn,
+//   NameEn: NameEn || data.NameEn,
+//   NameEn: NameEn || data.NameEn,
+//   DOB: DOB || data.DOB,
 //   Age: Age || data.Age,
 //   NameAr: NameAr || data.NameAr,
 //   Breeder: Breeder || data.Breeder,
@@ -165,8 +165,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
 // });
 exports.UpdateHorse = Trackerror(async (req, res, next) => {
   const {
-    Age,
     NameEn,
+    DOB,
     NameAr,
     Breeder,
     Remarks,
@@ -178,12 +178,13 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     Sire,
     GSire,
     Earning,
-    OverAllRating,
     Foal,
     PurchasePrice,
     Cap,
     Rds,
     ColorID,
+    NationalityId,
+    CreationId,
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -195,7 +196,9 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     const updateddata = await HorseModel.create({
       HorseImage: data.HorseImage,
       NameEn: NameEn || data.NameEn,
-      Age: Age || data.Age,
+      NameEn: NameEn || data.NameEn,
+      NameEn: NameEn || data.NameEn,
+      DOB: DOB || data.DOB,
       NameAr: NameAr || data.NameAr,
       Breeder: Breeder || data.Breeder,
       Remarks: Remarks || data.Remarks,
@@ -207,12 +210,13 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Sire: Sire || data.Sire,
       GSire: GSire || data.GSire,
       Earning: Earning || data.Earning,
-      OverAllRating: OverAllRating || data.OverAllRating,
       Foal: Foal || data.Foal,
       PurchasePrice: PurchasePrice || data.PurchasePrice,
       Cap: Cap || data.Cap,
       Rds: Rds || data.Rds,
       ColorID: ColorID || data.ColorID,
+      CreationId: CreationId || data.CreationId,
+      NationalityId: NationalityId || data.NationalityId,
     });
     data = await HorseModel.update(updateddata, {
       where: {
@@ -236,7 +240,9 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     const updateddata = await HorseModel.create({
       HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
       NameEn: NameEn || data.NameEn,
-      Age: Age || data.Age,
+      NameEn: NameEn || data.NameEn,
+      NameEn: NameEn || data.NameEn,
+      DOB: DOB || data.DOB,
       NameAr: NameAr || data.NameAr,
       Breeder: Breeder || data.Breeder,
       Remarks: Remarks || data.Remarks,
@@ -248,12 +254,13 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Sire: Sire || data.Sire,
       GSire: GSire || data.GSire,
       Earning: Earning || data.Earning,
-      OverAllRating: OverAllRating || data.OverAllRating,
       Foal: Foal || data.Foal,
       PurchasePrice: PurchasePrice || data.PurchasePrice,
       Cap: Cap || data.Cap,
       Rds: Rds || data.Rds,
       ColorID: ColorID || data.ColorID,
+      NationalityId: NationalityId || data.NationalityId,
+      CreationId: CreationId || data.CreationId,
     });
     data = await HorseModel.update(updateddata, {
       where: {

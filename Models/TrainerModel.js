@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-     TrainerLicenseDate: {
+      TrainerLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,
       },
@@ -54,24 +54,21 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Detail  will not be empty" },
         },
       },
-      Age: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      Rating: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Trainer will have Rating" },
-          notEmpty: { msg: "Rating  will not be empty" },
-        },
-      },
+
       Remarks: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Trainer will have Remarks" },
           notEmpty: { msg: "Remarks  will not be empty" },
+        },
+      },
+      NationalityId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id",
         },
       },
     },

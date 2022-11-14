@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      HorseCode: {
+        type: DataTypes.STRING,
+      },
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -23,10 +26,17 @@ module.exports = (sequelize, DataTypes) => {
         // },
       },
       Sex: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "SexModel",
+          key: "_id",
+        },
+      },
+      DOB: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
-
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -54,10 +64,18 @@ module.exports = (sequelize, DataTypes) => {
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
-        // references: {
-        //   model: "NationalityModel",
-        //   key: "_id",
-        // },
+        references: {
+          model: "NationalityModel",
+          key: "_id",
+        },
+      },
+      CreationId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id",
+        },
       },
       Dam: {
         type: DataTypes.UUID,
@@ -80,10 +98,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      Age: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
+
       Foal: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -104,6 +119,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Name   will not be empty" },
         },
       },
+      
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -114,35 +130,23 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      OverAllRating: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
       PurchasePrice: {
         type: DataTypes.DOUBLE,
         allowNull: false,
-      },
-      WinningAmount: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-        defaultValue: 0.0,
       },
       isGelded: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: 0,
       },
-      Cap: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       STARS: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       Rds: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: 0,
       },
       ColorID: {
         type: DataTypes.UUID,

@@ -12,3 +12,4 @@ exports.Breeder = "Breeder";
 exports.Nationality = "Nationality";
 exports.Admin = "Admin";
 exports.Race = "Race";
+exports.TrackLength = "TrackLength";

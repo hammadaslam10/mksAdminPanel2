@@ -1,4 +1,6 @@
 const db = require("../config/Connection");
+const sequelize = require("sequelize");
+const { QueryTypes } = require("sequelize");
 const AdvertismentModel = db.AdvertismentModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
@@ -41,7 +43,13 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   }
 });
 exports.AdsGet = Trackerror(async (req, res, next) => {
-  const data = await AdvertismentModel.findAll();
+  // "SELECT `_id`, `image`, `DescriptionEn`, `DescriptionAr`, `TitleEn`, `TitleAr`, `createdAt`, `updatedAt`, `deletedAt` FROM `AdvertismentModel` AS `AdvertismentModel` WHERE (`AdvertismentModel`.`deletedAt` IS NULL);";
+  // const [results, metadata] = await db.sequelize.query(
+  //   "SELECT * FROM `AdvertismentModel` AS `AdvertismentModel` WHERE (`AdvertismentModel`.`deletedAt` IS NULL);"
+  // );
+  const data = await AdvertismentModel.findAll({});
+  console.log(data);
+  // Results will be an empty array and metadata will contain the number of affected rows.
   res.status(200).json({
     success: true,
     data: data,

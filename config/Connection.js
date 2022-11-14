@@ -42,6 +42,18 @@ db.SeokeywordModel = require("../Models/SeoKeywordModel")(Db, DataTypes);
 db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
 db.SexModel = require("../Models/SexModel")(Db, DataTypes);
 db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
+db.MeetingTypeModel = require("../Models/MeetingTypeModel")(Db, DataTypes);
+db.TrackLengthModel = require("../Models/TrackLengthModel")(Db, DataTypes);
+db.HorseKindModel = require("../Models/HorseKindModel")(Db, DataTypes);
+db.RaceAndVerdictsModel = require("../Models/RaceAndVerdictsModel")(
+  Db,
+  DataTypes
+);
+db.RaceTypeModel = require("../Models/RaceTypeModel")(Db, DataTypes);
+db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
+db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
+db.RaceNameModel = require("../Models/RaceNameModel")(Db, DataTypes);
+
 db.CompetitonWinnersModel = require("../Models/CompetitonWinnersModel")(
   Db,
   DataTypes
@@ -74,13 +86,77 @@ db.sequelize.sync({ force: false }).then(() => {
 //   foreignKey: "ActiveJockeyForTheRace",
 //   as: "ActiveJockeyForTheRaceData",
 // });
+db.RaceKindModel.hasMany(db.RaceModel, {
+  foreignKey: "RaceKind",
+  as: "RaceKindData",
+});
+db.RaceModel.belongsTo(db.RaceKindModel, {
+  foreignKey: "RaceKind",
+  as: "RaceKindData",
+});
+db.TrackLengthModel.hasMany(db.RaceModel, {
+  foreignKey: "TrackLength",
+  as: "TrackLengthData",
+});
+db.RaceModel.belongsTo(db.TrackLengthModel, {
+  foreignKey: "TrackLength",
+  as: "TrackLengthData",
+});
+db.SponsorModel.hasMany(db.RaceModel, {
+  foreignKey: "Sponsor",
+  as: "SponsorData",
+});
+db.RaceModel.belongsTo(db.SponsorModel, {
+  foreignKey: "Sponsor",
+  as: "SponsorData",
+});
+db.MeetingTypeModel.hasMany(db.RaceModel, {
+  foreignKey: "MeetingType",
+  as: "MeetingTypeData",
+});
+db.RaceModel.belongsTo(db.MeetingTypeModel, {
+  foreignKey: "MeetingType",
+  as: "MeetingTypeData",
+});
+db.RaceTypeModel.hasMany(db.RaceModel, {
+  foreignKey: "RaceType",
+  as: "RaceTypeModelData",
+});
+db.RaceModel.belongsTo(db.RaceTypeModel, {
+  foreignKey: "RaceType",
+  as: "RaceTypeModelData",
+});
 db.BreederModel.hasMany(db.HorseModel, {
   foreignKey: "Breeder",
   as: "BreederData",
 });
+// db.HorseModel.belongsTo(db.RaceTypeModel, {
+//   foreignKey: "RaceName",
+//   as: "RaceNameData",
+// });
+// db.BreederModel.hasMany(db.HorseModel, {
+//   foreignKey: "RaceName",
+//   as: "RaceNameData",
+// });
 db.HorseModel.belongsTo(db.BreederModel, {
   foreignKey: "Breeder",
   as: "BreederData",
+});
+db.SexModel.hasMany(db.HorseModel, {
+  foreignKey: "SexModel",
+  as: "SexModelData",
+});
+db.HorseModel.belongsTo(db.SexModel, {
+  foreignKey: "SexModel",
+  as: "SexModelData",
+});
+db.NationalityModel.hasMany(db.HorseModel, {
+  foreignKey: "CreationId",
+  as: "CreationIdData",
+});
+db.HorseModel.belongsTo(db.NationalityModel, {
+  foreignKey: "CreationId",
+  as: "CreationIdData",
 });
 db.NationalityModel.hasMany(db.HorseModel, {
   foreignKey: "NationalityId",
@@ -89,6 +165,14 @@ db.NationalityModel.hasMany(db.HorseModel, {
 db.HorseModel.belongsTo(db.NationalityModel, {
   foreignKey: "NationalityId",
   as: "NationalityData",
+});
+db.NationalityModel.hasMany(db.RaceCourseModel, {
+  foreignKey: "NationalityId",
+  as: "NationalityDataRaceCourse",
+});
+db.RaceCourseModel.belongsTo(db.NationalityModel, {
+  foreignKey: "NationalityId",
+  as: "NationalityDataRaceCourse",
 });
 db.OwnerModel.belongsTo(db.ColorModel, {
   foreignKey: "SilkColor",
