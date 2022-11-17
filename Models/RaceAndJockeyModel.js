@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const RaceAndHorseModel = sequelize.define(
-    "RaceAndHorseModel",
+  const RaceAndJockeyModel = sequelize.define(
+    "RaceAndJockeyModel",
     {
       GateNo: {
         type: DataTypes.STRING,
@@ -21,5 +21,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return RaceAndHorseModel;
+  return RaceAndJockeyModel;
 };

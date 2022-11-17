@@ -166,11 +166,11 @@ db.HorseModel.belongsTo(db.BreederModel, {
   as: "BreederData",
 });
 db.SexModel.hasMany(db.HorseModel, {
-  foreignKey: "SexModel",
+  foreignKey: "Sex",
   as: "SexModelData",
 });
 db.HorseModel.belongsTo(db.SexModel, {
-  foreignKey: "SexModel",
+  foreignKey: "Sex",
   as: "SexModelData",
 });
 db.NationalityModel.hasMany(db.HorseModel, {
@@ -188,6 +188,22 @@ db.NationalityModel.hasMany(db.HorseModel, {
 db.HorseModel.belongsTo(db.NationalityModel, {
   foreignKey: "NationalityId",
   as: "NationalityData",
+});
+db.NationalityModel.hasMany(db.OwnerModel, {
+  foreignKey: "NationalityID",
+  as: "OwnerDataNationalityData",
+});
+db.OwnerModel.belongsTo(db.NationalityModel, {
+  foreignKey: "NationalityID",
+  as: "OwnerDataNationalityData",
+});
+db.NationalityModel.hasMany(db.JockeyModel, {
+  foreignKey: "NationalityID",
+  as: "JockeyNationalityData",
+});
+db.JockeyModel.belongsTo(db.NationalityModel, {
+  foreignKey: "NationalityID",
+  as: "JockeyNationalityData",
 });
 db.NationalityModel.hasMany(db.RaceCourseModel, {
   foreignKey: "NationalityId",
@@ -212,6 +228,14 @@ db.HorseModel.belongsTo(db.ColorModel, {
 db.ColorModel.hasMany(db.HorseModel, {
   foreignKey: "ColorID",
   as: "ColorIDData",
+});
+db.RaceCourseModel.belongsTo(db.ColorModel, {
+  foreignKey: "ColorCode",
+  as: "ColorCodeData",
+});
+db.ColorModel.hasMany(db.RaceCourseModel, {
+  foreignKey: "ColorCode",
+  as: "ColorCodeData",
 });
 db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",

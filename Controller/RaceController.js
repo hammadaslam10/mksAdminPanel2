@@ -210,16 +210,16 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
     await RaceAndHorseModel.findOrCreate({
       where: {
         GateNo: SingleEntry[0],
-        JockeyModelId: SingleEntry[2],
         RaceModelId: req.params.id,
+        HorseModelId: SingleEntry[1],
+        JockeyWeight: SingleEntry[3],
       },
     });
     await RaceAndJockeyModel.findOrCreate({
       where: {
         GateNo: SingleEntry[0],
+        JockeyModelId: SingleEntry[2],
         RaceModelId: req.params.id,
-        HorseModelId: SingleEntry[1],
-        JockeyWeight: SingleEntry[3],
       },
     });
   });

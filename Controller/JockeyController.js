@@ -48,7 +48,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       RemarksEn: RemarksEn,
       RemarksAr: RemarksAr,
       JockeyLicenseDate: JockeyLicenseDate,
-      Rating:Rating
+      Rating: Rating
     });
     res.status(201).json({
       success: true,
@@ -70,7 +70,9 @@ exports.SingleJockey = Trackerror(async (req, res, next) => {
   }
 });
 exports.GetJockey = Trackerror(async (req, res, next) => {
-  const data = await JockeyModel.findAll();
+  const data = await JockeyModel.findAll({
+    include: { all: true },
+  });
   res.status(200).json({
     success: true,
     data: data,
