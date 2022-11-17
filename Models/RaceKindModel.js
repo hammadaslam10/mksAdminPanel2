@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have Name" },
+          notNull: { msg: "Race Kind will have Name" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have ShortCode" },
+          notNull: { msg: "Race Kind will have ShortCode" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },

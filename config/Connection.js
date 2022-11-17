@@ -1,29 +1,29 @@
 const { Sequelize, DataTypes } = require("sequelize");
 require("dotenv").config({ path: "./config/Secrets.env" });
-var options = {
-  host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
-  port: 3306,
-  logging: console.log,
-  maxConcurrentQueries: 100,
-  dialect: "mysql",
-  ssl: "Amazon RDS",
-  pool: { maxDbions: 5, maxIdleTime: 30 },
-  language: "en",
-  Protocol: "TCP"
-};
-const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
-  ...options
-});
+// var options = {
+//   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
+//   port: 3306,
+//   logging: console.log,
+//   maxConcurrentQueries: 100,
+//   dialect: "mysql",
+//   ssl: "Amazon RDS",
+//   pool: { maxDbions: 5, maxIdleTime: 30 },
+//   language: "en",
+//   Protocol: "TCP"
+// };
+// const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
+//   ...options
+// });
 
-// const Db = new Sequelize(
-//   process.env.SQLDB,
-//   process.env.SQLHOST,
-//   process.env.SQLPASSWORD,
-//   {
-//     dialect: "mysql",
-//     // logging: false,
-//   }
-// );
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+    // logging: false,
+  }
+);
 Db.authenticate()
   .then(() => {
     console.log("connected..");
@@ -65,7 +65,7 @@ db.RaceAndVerdictsModel = require("../Models/RaceAndVerdictsModel")(
   DataTypes
 );
 db.RaceTypeModel = require("../Models/RaceTypeModel")(Db, DataTypes);
-// db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
+db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
 db.RaceNameModel = require("../Models/RaceNameModel")(Db, DataTypes);
 
@@ -94,9 +94,9 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
   DataTypes
 );
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
-// db.sequelize.sync({ force: false }).then(() => {
-//   console.log("yes re-sync done!");
-// });
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 // db.RaceModel.belongsTo(db.JockeyModel, {
 //   foreignKey: "ActiveJockeyForTheRace",
 //   as: "ActiveJockeyForTheRaceData",

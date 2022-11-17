@@ -48,7 +48,6 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   const data = await RaceCourseModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
     TrackNameAr: TrackNameAr,
-    TrackNameAr: TrackNameAr,
     TrackNameEn: TrackNameEn,
     GroundTypeEn: GroundTypeEn,
     GroundTypeAr: GroundTypeAr,

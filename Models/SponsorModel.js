@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-z][a-z\d]*$/i,
-          is: {
-            msg: "Description Must Be In English in this input",
-          },
+          // is: /^[a-z][a-z\d]*$/i,
+          // is: {
+          //   msg: "Description Must Be In English in this input",
+          // },
           notNull: { msg: "Sponsor will have description" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
