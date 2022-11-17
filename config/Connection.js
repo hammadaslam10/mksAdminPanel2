@@ -141,6 +141,14 @@ db.RaceModel.belongsTo(db.RaceTypeModel, {
   foreignKey: "RaceType",
   as: "RaceTypeModelData",
 });
+db.RaceNameModel.hasMany(db.RaceModel, {
+  foreignKey: "RaceName",
+  as: "RaceNameModelData",
+});
+db.RaceModel.belongsTo(db.RaceNameModel, {
+  foreignKey: "RaceName",
+  as: "RaceNameModelData",
+});
 db.BreederModel.hasMany(db.HorseModel, {
   foreignKey: "Breeder",
   as: "BreederData",
