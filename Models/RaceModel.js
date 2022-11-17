@@ -39,14 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      RaceKind: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Race will have RaceKind" },
-          notEmpty: { msg: "RaceKind  will not be empty" },
-        },
-      },
+      // RaceKind: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Race will have RaceKind" },
+      //     notEmpty: { msg: "RaceKind  will not be empty" },
+      //   },
+      // },
       TrackLength: {
         type: DataTypes.UUID,
         allowNull: false,

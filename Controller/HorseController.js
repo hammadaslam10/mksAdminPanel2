@@ -183,7 +183,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     Cap,
     Rds,
     ColorID,
-    NationalityId,
+    NationalityIdb    ,
     CreationId,
   } = req.body;
   let data = await HorseModel.findOne({

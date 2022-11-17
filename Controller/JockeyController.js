@@ -14,6 +14,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     NameAr,
     RemarksEn,
     RemarksAr,
+    Rating,
     ShortNameEn,
     ShortNameAr,
     NationalityID,
@@ -47,6 +48,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       RemarksEn: RemarksEn,
       RemarksAr: RemarksAr,
       JockeyLicenseDate: JockeyLicenseDate,
+      Rating:Rating
     });
     res.status(201).json({
       success: true,
@@ -109,6 +111,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     NationalityID,
     MiniumumJockeyWeight,
     JockeyAllowance,
+    Rating,
     DOB,
   } = req.body;
   console.log(req.body);

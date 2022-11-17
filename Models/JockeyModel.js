@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      NationalityId: {
+      NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {

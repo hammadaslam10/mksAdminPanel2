@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      NationalityId: {
+      NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {

@@ -65,7 +65,7 @@ db.RaceAndVerdictsModel = require("../Models/RaceAndVerdictsModel")(
   DataTypes
 );
 db.RaceTypeModel = require("../Models/RaceTypeModel")(Db, DataTypes);
-db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
+// db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
 db.RaceNameModel = require("../Models/RaceNameModel")(Db, DataTypes);
 
@@ -101,14 +101,14 @@ db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 //   foreignKey: "ActiveJockeyForTheRace",
 //   as: "ActiveJockeyForTheRaceData",
 // });
-db.RaceKindModel.hasMany(db.RaceModel, {
-  foreignKey: "RaceKind",
-  as: "RaceKindData",
-});
-db.RaceModel.belongsTo(db.RaceKindModel, {
-  foreignKey: "RaceKind",
-  as: "RaceKindData",
-});
+// db.RaceKindModel.hasMany(db.RaceModel, {
+//   foreignKey: "RaceKind",
+//   as: "RaceKindData",
+// });
+// db.RaceModel.belongsTo(db.RaceKindModel, {
+//   foreignKey: "RaceKind",
+//   as: "RaceKindData",
+// });
 db.TrackLengthModel.hasMany(db.RaceModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",

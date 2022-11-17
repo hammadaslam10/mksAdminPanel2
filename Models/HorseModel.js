@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
-        // references: {
-        //   model: "BreederModel",
-        //   key: "_id",
-        // },
+        references: {
+          model: "BreederModel",
+          key: "_id",
+        },
       },
       Sex: {
         type: DataTypes.UUID,
@@ -40,10 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
-        // references: {
-        //   model: "OwnerModel",
-        //   key: "_id",
-        // },
+        references: {
+          model: "OwnerModel",
+          key: "_id",
+        },
       },
       // ActiveJockey: {
       //   type: DataTypes.UUID,
@@ -56,10 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
-        // references: {
-        //   model: "TrainerModel",
-        //   key: "_id",
-        // },
+        references: {
+          model: "TrainerModel",
+          key: "_id",
+        },
       },
       NationalityId: {
         type: DataTypes.UUID,
@@ -151,6 +151,10 @@ module.exports = (sequelize, DataTypes) => {
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "ColorModel",
+          key: "_id",
+        },
       },
     },
     {
@@ -162,6 +166,7 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: "Dam",
     as: "DamData",
   });
+
   HorseModel.belongsTo(HorseModel, {
     foreignKey: "Sire",
     as: "SireData",
@@ -180,10 +185,12 @@ module.exports = (sequelize, DataTypes) => {
 
 // HorseModel.belongsToMany(TrainerModel, {
 //   through: "Trainer",
+//   as: "TrainerData",
 // });
 
 // HorseModel.belongsToMany(OwnerModel, {
 //   through: "Owner",
+//   as: "OwnerData",
 // });
 // HorseModel.sync();
 

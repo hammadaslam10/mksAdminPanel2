@@ -26,13 +26,14 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     ShortNameAr,
     Detail,
     Remarks,
+    NationalityId,
     Rating,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Trainer}/${Image}`, file.mimetype);
-  if (!NameEn || !Age || !Detail || !Remarks) {
+  if (!NameEn || !Detail || !Remarks) {
     return next(
       new HandlerCallBack("Please Fill Appropiate Detail Of Trainer", 404)
     );
@@ -50,6 +51,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail,
       Remarks: Remarks,
       Rating: Rating,
+      NationalityId:NationalityId
     });
 
     res.status(201).json({
@@ -71,6 +73,7 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     Detail,
     Remarks,
     Rating,
+    NationalityId
   } = req.body;
   let data = await TrainerModel.findOne({
     where: { _id: req.params.id },
@@ -92,6 +95,7 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
       Rating: Rating || data.Rating,
+      NationalityId:NationalityId || data.NationalityId
     };
     data = await TrainerModel.update(updateddata, {
       where: {
