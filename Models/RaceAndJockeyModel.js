@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      JockeyCap:{
-        type: DataTypes.STRING,
-        allowNull: false,
-      }
+      // JockeyCap:{
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // }
     },
     {
       freezeTableName: true,

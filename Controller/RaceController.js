@@ -16,7 +16,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    where: { HorseFilled: true },
+    // where: { HorseFilled: true },
     include: { all: true },
   });
   res.status(200).json({
@@ -198,9 +198,9 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
 });
 exports.IncludeHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
-  console.log(req.body);
+  console.log(HorseEntry);
   let HorseEntryData = Conversion(HorseEntry);
-  console.log(HorseEntryData);
+  console.log(...HorseEntryData, "dsad");
   await HorseEntryData.map(async (SingleEntry, index) => {
     SingleEntry = SingleEntry.split(",");
     console.log(SingleEntry[0]);
@@ -212,7 +212,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
         GateNo: SingleEntry[0],
         RaceModelId: req.params.id,
         HorseModelId: SingleEntry[1],
-        JockeyWeight: SingleEntry[3],
+
       },
     });
     await RaceAndJockeyModel.findOrCreate({
@@ -220,6 +220,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
         GateNo: SingleEntry[0],
         JockeyModelId: SingleEntry[2],
         RaceModelId: req.params.id,
+        JockeyWeight: SingleEntry[3],
       },
     });
   });
