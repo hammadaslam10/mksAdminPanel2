@@ -10,30 +10,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      NameEn: {
+      RaceCardNameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Horse Kind will have Name" },
+          notNull: { msg: "Ad will have description" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-      shortCode: {
+      RaceCardNameAr: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Horse Kind will have ShortCode" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
-        },
-      },
-      NameAr: {
-        type: DataTypes.STRING,
         validate: {
           is: /^[\u0621-\u064A0-9 ]+$/,
           is: {
-            msg: "Name Must Be In Arabic",
+            msg: "Description Must Be In Arabic",
           },
         },
+      },
+      RaceCardCourse: {
+        type: DataTypes.UUID,
+        allowNull: false,
       },
     },
     {
