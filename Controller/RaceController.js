@@ -232,11 +232,11 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   });
 });
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
-  const { RaceAndVerdictsModel } = req.body;
+  const { VerdictEntry } = req.body;
   console.log(req.body);
-  let RaceAndVerdictsModelData = Conversion(RaceAndVerdictsModel);
-  console.log(RaceAndVerdictsModelData, "dsad");
-  await RaceAndVerdictsModelData.map(async (singlehorse) => {
+  let VerdictEntryData = Conversion(VerdictEntry);
+  console.log(VerdictEntryData, "dsad");
+  await VerdictEntryData.map(async (singlehorse) => {
     await singleverdict.map(async (singleverdictdetail) => {
       singleverdictdetail = singleverdictdetail.split(",");
       console.log(singleverdictdetail[0], "0 INDEX");
@@ -251,6 +251,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
           JockeyModelId: singleverdictdetail[2],
         },
       });
+   
       await RaceAndVerdictsHorseModel.findOrCreate({
         where: {
           VerdictName: singleverdictdetail[0],
