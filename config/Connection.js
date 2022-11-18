@@ -61,10 +61,15 @@ db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
 db.MeetingTypeModel = require("../Models/MeetingTypeModel")(Db, DataTypes);
 db.TrackLengthModel = require("../Models/TrackLengthModel")(Db, DataTypes);
 db.HorseKindModel = require("../Models/HorseKindModel")(Db, DataTypes);
-db.RaceAndVerdictsModel = require("../Models/RaceAndVerdictsModel")(
+db.RaceAndVerdictsJockeyModel = require("../Models/RaceAndVerdictsJockeyModel")(
   Db,
   DataTypes
 );
+db.RaceAndVerdictsHorseModel = require("../Models/RaceAndVerdictsHorseModel")(
+  Db,
+  DataTypes
+);
+
 db.RaceTypeModel = require("../Models/RaceTypeModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
@@ -94,6 +99,7 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
   Db,
   DataTypes
 );
+
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
@@ -270,7 +276,6 @@ db.RaceModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
 });
-
 db.HorseModel.belongsToMany(db.OwnerModel, {
   through: "HorseOwnerComboModel",
 });
@@ -279,6 +284,18 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
 });
 db.HorseModel.belongsToMany(db.JockeyModel, {
   through: "HorseJockeyComboModel",
+});
+db.RaceModel.belongsToMany(db.HorseModel, {
+  through: "RaceAndVerdictsHorseModel",
+});
+db.HorseModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndVerdictsHorseModel",
+});
+db.RaceModel.belongsToMany(db.JockeyModel, {
+  through: "RaceAndVerdictsJockeyModel",
+});
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndVerdictsJockeyModel",
 });
 db.JockeyModel.belongsToMany(db.HorseModel, {
   through: "HorseJockeyComboModel",

@@ -4,6 +4,8 @@ const RaceAndHorseModel = db.RaceAndHorseModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultModel = db.ResultModel;
+const RaceAndVerdictsHorseModel = db.RaceAndVerdictsHorseModel;
+const RaceAndVerdictsJockeyModel = db.RaceAndVerdictsJockeyModel;
 const { Race } = require("../Utils/Path");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
@@ -16,7 +18,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    // where: { HorseFilled: true },
+    where: { HorseFilled: true },
     include: { all: true },
   });
   res.status(200).json({
@@ -109,7 +111,7 @@ exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -201,57 +203,67 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
   console.log(HorseEntryData, "dsad");
-  await HorseEntryData.map(async(singlehorse) => {
-    await singlehorse.map(async(singlehorsedetail) => {
+  await HorseEntryData.map(async (singlehorse) => {
+    await singlehorse.map(async (singlehorsedetail) => {
       singlehorsedetail = singlehorsedetail.split(",");
       console.log(singlehorsedetail[0], "0 INDEX");
       console.log(singlehorsedetail[1], "1 INDEX");
       console.log(singlehorsedetail[2], "2 INDEX");
       console.log(singlehorsedetail[3], "3 INDEX");
-        await RaceAndHorseModel.findOrCreate({
-          where: {
-            GateNo: singlehorsedetail[0],
-            RaceModelId: req.params.id,
-            HorseModelId: singlehorsedetail[1],
-
-          },
-        });
-        await RaceAndJockeyModel.findOrCreate({
-          where: {
-            GateNo: singlehorsedetail[0],
-            JockeyModelId: singlehorsedetail[2],
-            RaceModelId: req.params.id,
-            JockeyWeight: singlehorsedetail[3],
-          },
-        });
+      await RaceAndHorseModel.findOrCreate({
+        where: {
+          GateNo: singlehorsedetail[0],
+          RaceModelId: req.params.id,
+          HorseModelId: singlehorsedetail[1],
+        },
+      });
+      await RaceAndJockeyModel.findOrCreate({
+        where: {
+          GateNo: singlehorsedetail[0],
+          JockeyModelId: singlehorsedetail[2],
+          RaceModelId: req.params.id,
+          JockeyWeight: singlehorsedetail[3],
+        },
+      });
     });
   });
-   res.status(200).json({
+  res.status(200).json({
     success: true,
   });
 });
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
-  // const { VerdictsEntry } = req.body;
-  // console.log(req.body);
-  // let VerdictsEntryData = Conversion(VerdictsEntry);
-  // console.log(VerdictsEntryData);
-  // await VerdictsEntryData.map(async (SingleEntry, index) => {
-  //   SingleEntry = SingleEntry.split(",");
-  //   console.log(SingleEntry[0]);
-  //   console.log(SingleEntry[1]);
-  //   console.log(SingleEntry[2]);
-  //   console.log(SingleEntry[3]);
-  //   await RaceAndVerdictsModel.findOrCreate({
-  //     where: {
-  //       GateNo: SingleEntry[0],
-  //       JockeyModelId: SingleEntry[2],
-  //       RaceModelId: req.params.id,
-  //     },
-  //   });
-  // });
-  // res.status(200).json({
-  //   success: true,
-  // });
+  const { RaceAndVerdictsModel } = req.body;
+  console.log(req.body);
+  let RaceAndVerdictsModelData = Conversion(RaceAndVerdictsModel);
+  console.log(RaceAndVerdictsModelData, "dsad");
+  await RaceAndVerdictsModelData.map(async (singlehorse) => {
+    await singleverdict.map(async (singleverdictdetail) => {
+      singleverdictdetail = singleverdictdetail.split(",");
+      console.log(singleverdictdetail[0], "0 INDEX");
+      console.log(singleverdictdetail[1], "1 INDEX");
+      console.log(singleverdictdetail[2], "2 INDEX");
+      console.log(singleverdictdetail[3], "3 INDEX");
+      await RaceAndVerdictsJockeyModel.findOrCreate({
+        where: {
+          VerdictName: singleverdictdetail[0],
+          Rank: singleverdictdetail[1],
+          RaceModelId: req.params.id,
+          JockeyModelId: singleverdictdetail[2],
+        },
+      });
+      await RaceAndVerdictsHorseModel.findOrCreate({
+        where: {
+          VerdictName: singleverdictdetail[0],
+          Rank: singleverdictdetail[1],
+          RaceModelId: req.params.id,
+          HorseModelId: singleverdictdetail[3],
+        },
+      });
+    });
+  });
+  res.status(200).json({
+    success: true,
+  });
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
   // const {
@@ -299,7 +311,6 @@ exports.EditRace = Trackerror(async (req, res, next) => {
   //   const Image = generateFileName();
   //   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   //   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
-
   //   const updateddata = {
   //     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
   //     NameEn: NameEn || data.NameEn,
