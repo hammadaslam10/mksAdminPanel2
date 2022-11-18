@@ -24,7 +24,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   });
 });
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
-  const data = await TrackLengthModel.findAll();
+  const data = await TrackLengthModel.findAll({ include: { all: true } });
   res.status(200).json({
     success: true,
     data: data,
