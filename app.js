@@ -28,6 +28,8 @@ const MeetingTypeRoutes = require("./Routes/MeetingTypeRoute");
 const RaceNameRoutes = require("./Routes/RaceNameRoute");
 const RaceTypeRoutes = require("./Routes/RaceTypeRoute");
 const TrackLengthRoutes = require("./Routes/TrackLengthRoute");
+const HorseKindRoutes = require("./Routes/HorseKindRoutes");
+const RaceKindRoutes = require("./Routes/RaceKindRoutes");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
@@ -60,6 +62,8 @@ app.use("/api/v1", MeetingTypeRoutes);
 app.use("/api/v1", RaceNameRoutes);
 app.use("/api/v1", RaceTypeRoutes);
 app.use("/api/v1", TrackLengthRoutes);
+app.use("/api/v1", HorseKindRoutes);
+app.use("/api/v1", RaceKindRoutes);
 // app.use("/api/v1", SearchRoutes);
 
 app.use(ApplyMiddleware);

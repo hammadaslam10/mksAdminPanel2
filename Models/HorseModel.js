@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       HorseCode: {
         type: DataTypes.STRING,
       },
+      HorseKind: {
+        type: DataTypes.UUID,
+      },
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -119,7 +122,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Name   will not be empty" },
         },
       },
-      
+
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
