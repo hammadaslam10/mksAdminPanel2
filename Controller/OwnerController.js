@@ -8,6 +8,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
+const OwnerSilkColorModel = require("../Models/OwnerSilkColorModel");
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -22,10 +23,14 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     RegistrationDate,
     NationalityID,
   } = req.body;
-  const file = req.files.image;
+  const file1 = req.files.Ownerimage;
   const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
+  const fileBuffer = await resizeImageBuffer(
+    req.files.Ownerimage.data,
+    214,
+    212
+  );
+  await uploadFile(fileBuffer, `${Owner}/${Image}`, file1.mimetype);
   const data = await OwnerModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${Image}`,
     NameEn: NameEn,
@@ -36,10 +41,29 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     TitleAr: TitleAr,
     TitleEn: TitleEn,
     NationalityID: NationalityID,
-    SilkColor: SilkColor,
     RegistrationDate: RegistrationDate,
   });
-  console.log(data);
+
+  if (data._id) {
+    const file = req.files.image;
+    await file.map(async (singleimage) => {
+      let Image = generateFileName();
+      let fileBuffer = await resizeImageBuffer(
+        singleimage.image.data,
+        214,
+        212
+      );
+      await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
+      await OwnerSilkColorModel.findOrCreate({
+        where: {
+          OwnerID: data._id,
+          OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${singleimage}`,
+        },
+      });
+    });
+  } else {
+    return next(new HandlerCallBack("Owner Creation Failed", 404));
+  }
   res.status(201).json({
     success: true,
     data,

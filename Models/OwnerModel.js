@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
-      SilkColor: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -54,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-   
     },
     {
       freezeTableName: true,

@@ -179,7 +179,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherIcon: WeatherIcon,
     RaceName: RaceName,
     TrackLength: TrackLength,
-    TrackLength: TrackLength,
     FirstPrice: FirstPrice,
     FirstPrice: FirstPrice,
     SecondPrice: SecondPrice,
@@ -251,7 +250,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
           JockeyModelId: singleverdictdetail[2],
         },
       });
-   
+
       await RaceAndVerdictsHorseModel.findOrCreate({
         where: {
           VerdictName: singleverdictdetail[0],

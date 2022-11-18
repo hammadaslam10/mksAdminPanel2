@@ -61,6 +61,11 @@ db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
 db.MeetingTypeModel = require("../Models/MeetingTypeModel")(Db, DataTypes);
 db.TrackLengthModel = require("../Models/TrackLengthModel")(Db, DataTypes);
 db.HorseKindModel = require("../Models/HorseKindModel")(Db, DataTypes);
+db.OwnerSilkColorModel = require("../Models/OwnerSilkColorModel")(
+  Db,
+  DataTypes
+);
+
 db.RaceAndVerdictsJockeyModel = require("../Models/RaceAndVerdictsJockeyModel")(
   Db,
   DataTypes
@@ -121,8 +126,16 @@ db.TrackLengthModel.hasMany(db.RaceModel, {
   as: "TrackLengthData",
 });
 db.RaceModel.belongsTo(db.TrackLengthModel, {
-  foreignKey: "TrackLength",
-  as: "TrackLengthData",
+  foreignKey: "OwnerID",
+  as: "OwnerIDData",
+});
+db.OwnerModel.hasMany(db.OwnerSilkColorModel, {
+  foreignKey: "OwnerID",
+  as: "OwnerIDData",
+});
+db.OwnerSilkColorModel.belongsTo(db.OwnerModel, {
+  foreignKey: "OwnerID",
+  as: "OwnerIDData",
 });
 db.RaceKindModel.hasMany(db.RaceModel, {
   foreignKey: "RaceKind",
