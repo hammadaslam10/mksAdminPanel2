@@ -127,7 +127,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
 });
 exports.CreateRace = Trackerror(async (req, res, next) => {
   const {
-    // RaceKind,
+    RaceKind,
     raceName,
     DescriptionEn,
     RaceCourse,
@@ -161,7 +161,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
   const data = await RaceModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
-    // RaceKind: RaceKind,
+    RaceKind: RaceKind,
     raceName: raceName,
     DescriptionEn: DescriptionEn,
     DescriptionAr: DescriptionAr,
