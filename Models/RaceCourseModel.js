@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       ColorCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "RaceCourse will have ColorCode" },
