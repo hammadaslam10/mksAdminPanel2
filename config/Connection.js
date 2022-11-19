@@ -110,6 +110,12 @@ db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
+// db.RaceModel.belongsToMany(db.ResultModel, {
+//   through: "ResultsModel",
+// });
+// db.ResultModel.belongsToMany(db.RaceModel, {
+//   through: "ResultsModel",
+// });
 // db.RaceModel.belongsTo(db.JockeyModel, {
 //   foreignKey: "ActiveJockeyForTheRace",
 //   as: "ActiveJockeyForTheRaceData",
@@ -122,11 +128,11 @@ db.sequelize.sync({ force: false }).then(() => {
 //   foreignKey: "RaceKind",
 //   as: "RaceKindData",
 // });
-db.RaceCourseModel.hasOne(db.RaceCardModel, {
+db.RaceCardModel.hasOne(db.RaceCourseModel, {
   foreignKey: "RaceCardCourse",
   as: "RaceCardCourseData",
 });
-db.RaceCardModel.belongsTo(db.RaceCourseModel, {
+db.RaceCourseModel.belongsTo(db.RaceCardModel, {
   foreignKey: "RaceCardCourse",
   as: "RaceCardCourseData",
 });
@@ -138,6 +144,7 @@ db.RaceModel.belongsTo(db.TrackLengthModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
 });
+
 db.RaceCourseModel.hasMany(db.TrackLengthModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
@@ -343,20 +350,20 @@ db.HorseModel.belongsToMany(db.TrainerModel, {
   through: "HorseTrainerComboModel",
 });
 db.HorseModel.hasMany(db.ResultModel, {
-  foreignKey: "HorseId",
-  as: "HorseIdData",
+  foreignKey: "HorseID",
+  as: "HorseIDData",
 });
 db.ResultModel.belongsTo(db.HorseModel, {
-  foreignKey: "HorseId",
-  as: "HorseIdDataHorse",
+  foreignKey: "HorseID",
+  as: "HorseIDDataHorse",
 });
 db.RaceModel.hasMany(db.ResultModel, {
-  foreignKey: "RaceId",
-  as: "RaceIdData",
+  foreignKey: "RaceID",
+  as: "RaceIDData",
 });
 db.ResultModel.belongsTo(db.RaceModel, {
-  foreignKey: "RaceId",
-  as: "RaceIdDataHorse",
+  foreignKey: "RaceID",
+  as: "RaceIDDataHorse",
 });
 // var options = {
 //   host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",

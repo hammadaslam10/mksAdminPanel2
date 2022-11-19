@@ -94,18 +94,38 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RacePrizeMoney = Trackerror(async (req, res, next) => {
-  const { Rank, PrizeAmount, Points, HorseId, BonusPoints, RaceType } =
-    req.body;
-  const data = await ResultModel.create({
-    RaceId: req.params.RaceId,
-    HorseId: HorseId,
-    Rank: Rank,
-    PrizeAmount: PrizeAmount,
-    Points: Points,
-    BonusPoints: BonusPoints,
-    RaceType: RaceType,
+exports.ResultCreation = Trackerror(async (req, res, next) => {
+  const { ResultEntry } = req.body;
+  ResultEntry=[
+    {
+      RaceID: req.params.RaceId,
+      HorseID: SingleResultEntry.HorseId,
+      Rank: SingleResultEntry.Rank,
+      Prize: SingleResultEntry.Prize,
+      Points: SingleResultEntry.Points,
+      BonusPoints: SingleResultEntry.BonusPoints,
+    }
+  ]
+  await ResultEntry.map(async (SingleResultEntry) => {
+    await SingleResultEntry.findOrCreate({
+      where: {
+        RaceID: req.params.RaceId,
+        HorseID: SingleResultEntry.HorseId,
+        Rank: SingleResultEntry.Rank,
+        Prize: SingleResultEntry.Prize,
+        Points: SingleResultEntry.Points,
+        BonusPoints: SingleResultEntry.BonusPoints,
+      },
+    });
   });
+  // const data = await ResultModel.create({
+  //   RaceID: req.params.RaceId,
+  //   HorseID: HorseId,
+  //   Rank: Rank,
+  //   Prize: Prize,
+  //   Points: Points,
+  //   BonusPoints: BonusPoints,
+  // });
   res.status(200).json({
     success: true,
     data,

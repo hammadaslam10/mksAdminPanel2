@@ -4,41 +4,30 @@ module.exports = (sequelize, DataTypes) => {
     "ResultsModel",
 
     {
-      _id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+      RaceID: {
+        type: DataTypes.UUID, 
         allowNull: false,
-        primaryKey: true,
+      },
+      HorseID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      Prize: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
       },
       Rank: {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      PrizeAmount: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Race will have PrizeAmount" },
-          notEmpty: { msg: "PrizeAmount  will not be empty" },
-        },
-      },
       Points: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Race will have Points" },
-          notEmpty: { msg: "Points  will not be empty" },
-        },
       },
       BonusPoints: {
         type: DataTypes.BIGINT,
+        allowNull: false,
         defaultValue: 0,
-        allowNull: true,
-      },
-      Distance: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-        allowNull: true,
       },
     },
 
