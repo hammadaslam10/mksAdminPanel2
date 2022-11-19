@@ -8,7 +8,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-const OwnerSilkColorModel = require("../Models/OwnerSilkColorModel");
+const OwnerSilkColorModel = db.OwnerSilkColorModel;
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -23,7 +23,10 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     RegistrationDate,
     NationalityID,
   } = req.body;
+  const file = req.files.image;
+  console.log(file, "file");
   const file1 = req.files.Ownerimage;
+  console.log(file1, "file1");
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(
     req.files.Ownerimage.data,
@@ -46,19 +49,19 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
 
   if (data._id) {
     const file = req.files.image;
-    console.log(file);
     await file.map(async (singleimage) => {
-      let Image = generateFileName();
-      let fileBuffer = await resizeImageBuffer(
-        singleimage.image.data,
+      console.log(singleimage, "dsadsa");
+      let SingleImage = generateFileName();
+      let SingleimagefileBuffer = await resizeImageBuffer(
+        singleimage.data,
         214,
         212
       );
-      await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
+      await uploadFile(SingleimagefileBuffer, `${Owner}/${SingleImage}`, singleimage.mimetype);
       await OwnerSilkColorModel.findOrCreate({
         where: {
           OwnerID: data._id,
-          OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${singleimage}`,
+          OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${SingleImage}`,
         },
       });
     });
