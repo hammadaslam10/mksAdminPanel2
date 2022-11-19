@@ -110,6 +110,14 @@ db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
+db.RaceCardModel.belongsTo(db.RaceCourseModel, {
+  foreignKey: "RaceCardCourse",
+  as: "RaceCardCourseData",
+});
+db.RaceCourseModel.hasMany(db.RaceCardModel, {
+  foreignKey: "RaceCardCourse",
+  as: "RaceCardCourseData",
+});
 // db.RaceModel.belongsToMany(db.ResultModel, {
 //   through: "ResultsModel",
 // });
@@ -128,14 +136,14 @@ db.sequelize.sync({ force: false }).then(() => {
 //   foreignKey: "RaceKind",
 //   as: "RaceKindData",
 // });
-db.RaceCardModel.hasOne(db.RaceCourseModel, {
-  foreignKey: "RaceCardCourse",
-  as: "RaceCardCourseData",
-});
-db.RaceCourseModel.belongsTo(db.RaceCardModel, {
-  foreignKey: "RaceCardCourse",
-  as: "RaceCardCourseData",
-});
+// db.RaceCardModel.hasOne(db.RaceCourseModel, {
+//   foreignKey: "RaceCardCourse",
+//   as: "RaceCardCourseData",
+// });
+// db.RaceCourseModel.belongsTo(db.RaceCardModel, {
+//   foreignKey: "RaceCardCourse",
+//   as: "RaceCardCourseData",
+// });
 db.TrackLengthModel.hasMany(db.RaceModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",

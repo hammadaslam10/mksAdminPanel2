@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const RaceCardRacesModel = sequelize.define(
     "RaceCardRacesModel",
 
-    {},
+    {
+      
+    },
     {
       freezeTableName: true,
       paranoid: true,

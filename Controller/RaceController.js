@@ -26,6 +26,16 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: { RaceStatus: "Awaited" },
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetRaceTobeOPublished = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: false },
@@ -96,16 +106,6 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
-  ResultEntry=[
-    {
-      RaceID: req.params.RaceId,
-      HorseID: SingleResultEntry.HorseId,
-      Rank: SingleResultEntry.Rank,
-      Prize: SingleResultEntry.Prize,
-      Points: SingleResultEntry.Points,
-      BonusPoints: SingleResultEntry.BonusPoints,
-    }
-  ]
   await ResultEntry.map(async (SingleResultEntry) => {
     await SingleResultEntry.findOrCreate({
       where: {
