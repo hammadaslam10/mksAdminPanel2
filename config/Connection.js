@@ -122,6 +122,14 @@ db.sequelize.sync({ force: false }).then(() => {
 //   foreignKey: "RaceKind",
 //   as: "RaceKindData",
 // });
+db.RaceCourseModel.hasOne(db.RaceCardModel, {
+  foreignKey: "RaceCardCourse",
+  as: "RaceCardCourseData",
+});
+db.RaceCardModel.belongsTo(db.RaceCourseModel, {
+  foreignKey: "RaceCardCourse",
+  as: "RaceCardCourseData",
+});
 db.TrackLengthModel.hasMany(db.RaceModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
@@ -129,14 +137,6 @@ db.TrackLengthModel.hasMany(db.RaceModel, {
 db.RaceModel.belongsTo(db.TrackLengthModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
-});
-db.RaceCourseModel.hasMany(db.RaceCardModel, {
-  foreignKey: "RaceCardCourse",
-  as: "RaceCardCourseData",
-});
-db.RaceCardModel.belongsTo(db.RaceCourseModel, {
-  foreignKey: "RaceCardCourse",
-  as: "RaceCardCourseData",
 });
 db.RaceCourseModel.hasMany(db.TrackLengthModel, {
   foreignKey: "RaceCourse",

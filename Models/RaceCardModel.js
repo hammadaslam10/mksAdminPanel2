@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Ad will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Race Card will have RaceCardNameEn" },
+          notEmpty: { msg: "RaceCardNameEn  will not be empty" },
         },
       },
       RaceCardNameAr: {
@@ -24,13 +24,17 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A0-9 ]+$/,
           is: {
-            msg: "Description Must Be In Arabic",
+            msg: "RaceCardNameAr Must Be In Arabic",
           },
         },
       },
       RaceCardCourse: {
         type: DataTypes.UUID,
         allowNull: false,
+        reference:{
+          model: "RaceCourseModel",
+          key: "_id",
+        }
       },
     },
     {
