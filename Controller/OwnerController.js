@@ -46,6 +46,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
 
   if (data._id) {
     const file = req.files.image;
+    console.log(file);
     await file.map(async (singleimage) => {
       let Image = generateFileName();
       let fileBuffer = await resizeImageBuffer(
@@ -162,7 +163,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     });
   }
 });
-exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
+exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => { });
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({ include: { all: true } });
   res.status(200).json({
