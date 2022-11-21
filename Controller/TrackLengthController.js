@@ -6,7 +6,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
-const { TrackLength } = require("../Utils/Path");
+const { TrackLengths } = require("../Utils/Path");
 exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   const { RaceCourse, TrackLength } = req.body;
   const file = req.files.image;
@@ -15,7 +15,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   await uploadFile(fileBuffer, `${TrackLength}/${Image}`, file.mimetype);
   const data = await TrackLengthModel.create({
     TrackLength: TrackLength,
-    RaceCourseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${TrackLength}/${Image}`,
+    RaceCourseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${TrackLengths}/${Image}`,
     RaceCourse: RaceCourse,
   });
   res.status(201).json({
