@@ -8,6 +8,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Owner } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
+const { Conversion } = require("../Utils/Conversion");
 const OwnerSilkColorModel = db.OwnerSilkColorModel;
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {
@@ -48,10 +49,11 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
   });
 
   if (data._id) {
-    const file = req.files.image;
+    let file = [req.files.image];
     await file.map(async (singleimage) => {
       console.log(singleimage, "dsadsa");
       let SingleImage = generateFileName();
+      console.log(singleimage);
       let SingleimagefileBuffer = await resizeImageBuffer(
         singleimage.data,
         214,
