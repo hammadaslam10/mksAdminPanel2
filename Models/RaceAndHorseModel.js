@@ -7,6 +7,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      Equipment: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        reference: {
+          references: {
+            model: "EquipmnetModel",
+            key: "_id",
+          },
+        },
+      },
     },
     {
       freezeTableName: true,

@@ -8,7 +8,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { TrackLengths } = require("../Utils/Path");
 exports.CreateTrackLength = Trackerror(async (req, res, next) => {
-  const { RaceCourse, TrackLength } = req.body;
+  const { RaceCourse, TrackLength, RailPosition, GroundType } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -17,6 +17,8 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
     TrackLength: TrackLength,
     RaceCourseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${TrackLengths}/${Image}`,
     RaceCourse: RaceCourse,
+    RailPosition: RailPosition,
+    GroundType: GroundType,
   });
   res.status(201).json({
     success: true,

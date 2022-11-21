@@ -33,23 +33,27 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      GroundTypeEn: {
-        type: DataTypes.STRING,
+      // GroundTypeEn: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "RaceCourse will have GroundType" },
+      //     notEmpty: { msg: "GroundType  will not be empty" },
+      //   },
+      // },
+      // GroundTypeAr: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     is: /^[\u0621-\u064A0-9 ]+$/,
+      //     is: {
+      //       msg: "RaceName Must Be In Arabic",
+      //     },
+      //   },
+      // },
+      GroundType: {
+        type: DataTypes.UUID,
         allowNull: false,
-        validate: {
-          notNull: { msg: "RaceCourse will have GroundType" },
-          notEmpty: { msg: "GroundType  will not be empty" },
-        },
-      },
-      GroundTypeAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          is: /^[\u0621-\u064A0-9 ]+$/,
-          is: {
-            msg: "RaceName Must Be In Arabic",
-          },
-        },
       },
       NationalityId: {
         type: DataTypes.UUID,

@@ -1,11 +1,11 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const RaceAndVerdictsHorseModel = sequelize.define(
-    "RaceAndVerdictsHorseModel",
+  const RaceAndVerdictsJockeyModel = sequelize.define(
+    "RaceAndVerdictsJockeyModel",
 
     {
       VerdictName: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Verdict will have Name" },
@@ -20,11 +20,19 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Rank  will not be empty" },
         },
       },
+      JockeyID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      VerdictJockeyRaceID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
       paranoid: true,
     }
   );
-  return RaceAndVerdictsHorseModel;
+  return RaceAndVerdictsJockeyModel;
 };

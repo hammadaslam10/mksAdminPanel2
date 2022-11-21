@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     "RaceCardRacesModel",
 
     {
-      
+      RaceID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,

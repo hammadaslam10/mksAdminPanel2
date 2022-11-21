@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const RaceCardModel = sequelize.define(
-    "RaceCardModel",
+  const GroundTypeModel = sequelize.define(
+    "GroundTypeModel",
 
     {
       _id: {
@@ -10,38 +10,36 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      RaceCardNameEn: {
+      NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Race Card will have RaceCardNameEn" },
-          notEmpty: { msg: "RaceCardNameEn  will not be empty" },
+          notNull: { msg: "Color will have Name" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-      RaceCardNameAr: {
+      shortCode: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Color will have ShortCode" },
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
+      },
+      NameAr: {
+        type: DataTypes.STRING,
         validate: {
           is: /^[\u0621-\u064A0-9 ]+$/,
           is: {
-            msg: "RaceCardNameAr Must Be In Arabic",
+            msg: "Name Must Be In Arabic",
           },
         },
       },
-      RaceCardCourse: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        reference: {
-          model: "RaceCourseModel",
-          key: "_id",
-        },
-      },
-    
     },
     {
       freezeTableName: true,
       paranoid: true,
     }
   );
-  return RaceCardModel;
+  return GroundTypeModel;
 };

@@ -172,6 +172,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         defaultValue: 0,
       },
+      RaceCard: {
+        type: DataTypes.UUID,
+      },
+      Competition: {
+        type: DataTypes.UUID,
+      },
       Sponsor: {
         type: DataTypes.UUID,
         allowNull: false,

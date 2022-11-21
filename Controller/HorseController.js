@@ -68,6 +68,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Cap,
     Rds,
     ColorID,
+    HorseStatus,
   } = req.body;
 
   const file = req.files.image;
@@ -99,7 +100,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Cap: Cap,
     Rds: Rds,
     ColorID: ColorID,
-    CreationId: CreationId
+    CreationId: CreationId,
+    HorseStatus: HorseStatus,
   });
 
   if (data._id) {

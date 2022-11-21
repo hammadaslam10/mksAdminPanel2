@@ -25,12 +25,24 @@ module.exports = (sequelize, DataTypes) => {
           key: "_id",
         },
       },
+      GroundType: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       RaceCourseImage: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "TrackLength Kind will have RaceCourseImage" },
-          notEmpty: { msg: "RaceCourseImage  will not be empty" },
+          notEmpty: { msg: "TrackLength  will not be empty" },
+        },
+      },
+      RailPosition: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "TrackLength Kind will have RailPosition" },
+          notEmpty: { msg: "TrackLength  will not be empty" },
         },
       },
     },

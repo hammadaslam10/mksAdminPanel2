@@ -151,6 +151,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0,
       },
+      HorseStatus: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0,
+      },
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,

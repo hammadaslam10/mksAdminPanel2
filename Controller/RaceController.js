@@ -21,9 +21,11 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     where: { HorseFilled: true },
     include: { all: true },
   });
+  let data1 = await RaceAndVerdictsHorseModel.findAll();
   res.status(200).json({
     success: true,
     data,
+    data1,
   });
 });
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
@@ -255,7 +257,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   console.log(req.body);
   let VerdictEntryData = Conversion(VerdictEntry);
   console.log(VerdictEntryData, "dsad");
-  await VerdictEntryData.map(async (singlehorse) => {
+  await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
       singleverdictdetail = singleverdictdetail.split(",");
       console.log(singleverdictdetail[0], "0 INDEX");
@@ -266,7 +268,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
         where: {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
-          RaceModelId: req.params.id,
+          RaceModelId2: req.params.id,
           JockeyModelId: singleverdictdetail[2],
         },
       });

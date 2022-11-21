@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
     {
       VerdictName: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Verdict will have Name" },
