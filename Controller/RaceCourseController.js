@@ -37,8 +37,7 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     shortCode,
     NationalityId,
     ColorCode,
-    GroundTypeEn,
-    GroundTypeAr,
+
   } = req.body;
 
   const file = req.files.image;
@@ -49,8 +48,6 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
     TrackNameAr: TrackNameAr,
     TrackNameEn: TrackNameEn,
-    GroundTypeEn: GroundTypeEn,
-    GroundTypeAr: GroundTypeAr,
     ColorCode: ColorCode,
     NationalityId: NationalityId,
     shortCode: shortCode,

@@ -27,7 +27,7 @@ router.route("/getsinglerace/:id").get(SingleRace);
 router.route("/createrace", upload.single("image")).post(CreateRace);
 router.route("/createraceresult/:RaceId").post(ResultCreation);
 router.route("/addracehorses/:id").post(IncludeHorses);
-router.route("/addverdicts/:id").post(IncludeVerdicts);
+router.route("/addverdicts/:id").post(IncludeVerdicts); 
 router.route("/updaterace/:id").put(EditRace);
 router.route("/deleterace/:id").delete(DeleteRace);
 module.exports = router;
