@@ -75,7 +75,6 @@ exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
     include: {
       model: RaceCourseModel,
       as: "RaceCourseData",
-
       // where: { TrackName: req.params.RaceCourseName },
       attributes: ["Country", "TrackName"],
     },
@@ -111,8 +110,8 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
   await ResultEntry.map(async (SingleResultEntry) => {
     await SingleResultEntry.findOrCreate({
       where: {
-        RaceID: req.params.RaceId,
-        HorseID: SingleResultEntry.HorseId,
+        RaceID: req.params.RaceCardId,
+        RaceID: SingleResultEntry.HorseId,
         Rank: SingleResultEntry.Rank,
         Prize: SingleResultEntry.Prize,
         Points: SingleResultEntry.Points,
@@ -120,14 +119,6 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
       },
     });
   });
-  // const data = await ResultModel.create({
-  //   RaceID: req.params.RaceId,
-  //   HorseID: HorseId,
-  //   Rank: Rank,
-  //   Prize: Prize,
-  //   Points: Points,
-  //   BonusPoints: BonusPoints,
-  // });
   res.status(200).json({
     success: true,
     data,
@@ -401,5 +392,19 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "data Delete Successfully",
+  });
+});
+exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: {
+      [Op.and]: [
+        { RaceCourse: req.params.RaceCourseid },
+        { DayNTime: req.params.DayNTime },
+      ],
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
   });
 });

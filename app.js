@@ -77,5 +77,9 @@ app.use("/api/v1", VerdictRoute);
 cron.schedule("* * * * *", () => {
   console.log("cron job working");
 });
+cron.schedule("* * * * *", () => {
+  console.log("cron job working1");
+});
+
 app.use(ApplyMiddleware);
 module.exports = app;

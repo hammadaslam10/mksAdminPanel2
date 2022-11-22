@@ -461,12 +461,12 @@ db.HorseModel.belongsToMany(db.JockeyModel, {
 // db.RaceModel.belongsToMany(db.JockeyModel, {
 //   through: "RaceAndVerdictsJockeyModel",
 // });
-// db.RaceCardModel.belongsToMany(db.RaceModel, {
-//   through: "RaceCardRacesModel",
-// });
-// db.RaceModel.belongsToMany(db.RaceCardModel, {
-//   through: "RaceCardRacesModel",
-// });
+db.RaceCardModel.belongsToMany(db.RaceModel, {
+  through: "RaceCardRacesModel",
+});
+db.RaceModel.belongsToMany(db.RaceCardModel, {
+  through: "RaceCardRacesModel",
+});
 // db.JockeyModel.belongsToMany(db.RaceModel, {
 //   through: "RaceAndVerdictsJockeyModel",
 // });

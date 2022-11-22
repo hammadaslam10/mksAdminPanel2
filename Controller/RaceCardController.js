@@ -108,3 +108,21 @@ exports.SoftDeleteRaceCard = Trackerror(async (req, res, next) => {
     message: "Soft Delete Successfully",
   });
 });
+exports.AddRacesInRaceCard = Trackerror(async(req,res,next)=>{
+  let RaceCardID = await RaceCardModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!RaceCardID) {
+    return next(new HandlerCallBack("Race Card not found", 404));
+  } else {
+    let { RaceEntry } = req.body;
+    await RaceEntry.map(async (singlerace) => {
+      await RaceCardModel.findOrCreate({
+        where: {
+          RaceCardModelId: RaceCardID,
+          RaceModelId: singlerace,
+        },
+      });
+    });
+  }
+})

@@ -13,9 +13,34 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const bcrypt = require("bcrypt");
 const SubscriberAndHorsesModel = db.SubscriberAndHorsesModel;
-exports.TrackHorses=Trackerror(async(req,res,next)=>{
-  
-})
+exports.TrackHorses = Trackerror(async (req, res, next) => {
+  const { Horse } = req.body;
+  const { token } = req.cookies;
+  if (!token) {
+    return next(
+      new HandlerCallBack("Please login to access this resource", 401)
+    );
+  }
+
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  let verify = await SubscriberModel.findOne({
+    where: { _id: decodedData.id },
+  });
+  if (!verify) {
+    return next(new HandlerCallBack(`Error during Resgistration `));
+  } else {
+    const data = await SubscriberAndHorsesModel.findOrCreate({
+      where: {
+        SubscriberModelId: verify._id,
+        HorseModelId: Horse,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+});
 exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
   const Features = require("../Utils/Features");
   const { FirstName, LastName, PassportNo, PhoneNumber, password, Email } =
