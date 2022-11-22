@@ -12,6 +12,10 @@ const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const bcrypt = require("bcrypt");
+const SubscriberAndHorsesModel = db.SubscriberAndHorsesModel;
+exports.TrackHorses=Trackerror(async(req,res,next)=>{
+  
+})
 exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
   const Features = require("../Utils/Features");
   const { FirstName, LastName, PassportNo, PhoneNumber, password, Email } =
@@ -150,6 +154,7 @@ exports.logOut = Trackerror(async (req, res, next) => {
     message: "Logged Out",
   });
 });
+exports.TrackHorses = Trackerror(async (req, res, next) => {});
 // exports.TrackHorse = Trackerror(async (req, res, next) => {
 //   let Horse = await HorseModel.findById(req.params.id);
 //   const { token } = req.cookies;

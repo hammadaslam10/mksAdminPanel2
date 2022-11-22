@@ -65,6 +65,7 @@ db.OwnerSilkColorModel = require("../Models/OwnerSilkColorModel")(
   Db,
   DataTypes
 );
+db.EmailTemplateModel = require("../Models/EmailTemplateModel")(Db, DataTypes);
 db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
 db.RaceAndVerdictsJockeyModel = require("../Models/RaceAndVerdictsJockeyModel")(
   Db,
@@ -80,6 +81,10 @@ db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.RaceNameModel = require("../Models/RaceNameModel")(Db, DataTypes);
 db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
 db.VerdictModel = require("../Models/VerdictModel")(Db, DataTypes);
+db.SubscriberAndHorsesModel = require("../Models/SubscriberAndHorsesModel")(
+  Db,
+  DataTypes
+);
 
 db.RaceCardRacesModel = require("../Models/RaceCardRacesModel")(Db, DataTypes);
 
@@ -145,6 +150,14 @@ db.RaceModel.belongsTo(db.TrackLengthModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
 });
+// db.SubscriberModel.hasMany(db.RaceModel, {
+//   foreignKey: "TrackLength",
+//   as: "TrackLengthData",
+// });
+// db.RaceModel.belongsTo(db.SubscriberModel, {
+//   foreignKey: "TrackLength",
+//   as: "TrackLengthData",
+// });
 // db.HorseModel.hasMany(db.RaceAndVerdictsHorseModel, {
 //   foreignKey: "HorseModelId",
 //   as: "HorseModelIdData",
@@ -394,6 +407,18 @@ db.RaceModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndVerdictsHorseModel",
 });
+db.SubscriberModel.belongsToMany(db.HorseModel, {
+  through: "SubscriberAndHorsesModel",
+});
+db.HorseModel.belongsToMany(db.SubscriberModel, {
+  through: "SubscriberAndHorsesModel",
+});
+// db.SubscriberModel.belongsToMany(db.EmailTemplateModel, {
+//   through: "EmailAndSubscriberModel",
+// });
+// db.EmailTemplateModel.belongsToMany(db.SubscriberModel, {
+//   through: "EmailAndSubscriberModel",
+// });
 // db.RaceModel.belongsToMany(db.JockeyModel, {
 //   through: "RaceAndVerdictsJockeyModel",
 // });
