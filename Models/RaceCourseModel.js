@@ -51,14 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       //     },
       //   },
       // },
-      GroundType: {
-        type: DataTypes.UUID,
-        allowNull: true,
-        references: {
-          model: "GroundTypeModel",
-          key: "_id",
-        },
-      },
+ 
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
