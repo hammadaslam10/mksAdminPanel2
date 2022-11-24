@@ -14,7 +14,7 @@ const {
   GetRaceTobeOPublished,
   IncludeVerdicts,
   GetRaceResultToBeAnnounced,
-  GetRaceonTimeAndRaceCourse
+  GetRaceonTimeAndRaceCourse,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
@@ -28,8 +28,10 @@ router.route("/getsinglerace/:id").get(SingleRace);
 router.route("/createrace", upload.single("image")).post(CreateRace);
 router.route("/createraceresult/:RaceId").post(ResultCreation);
 router.route("/addracehorses/:id").post(IncludeHorses);
-router.route("/addverdicts/:id").post(IncludeVerdicts); 
+router.route("/addverdicts/:id").post(IncludeVerdicts);
 router.route("/updaterace/:id").put(EditRace);
 router.route("/deleterace/:id").delete(DeleteRace);
-router.route("/getracesthroughracecourseandtime/:RaceCourseid/:DayNTime").delete(GetRaceonTimeAndRaceCourse);
+router
+  .route("/getracesthroughracecourseandtime/:RaceCourseid/:DayNTime")
+  .post(GetRaceonTimeAndRaceCourse);
 module.exports = router;
