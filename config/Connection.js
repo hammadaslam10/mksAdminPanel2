@@ -24,6 +24,7 @@ const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
 //     // logging: false,
 //   }
 // );
+
 Db.authenticate()
   .then(() => {
     console.log("connected..");
