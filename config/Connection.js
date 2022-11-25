@@ -1,19 +1,24 @@
 const { Sequelize, DataTypes } = require("sequelize");
 require("dotenv").config({ path: "./config/Secrets.env" });
 var options = {
-  host: "database-2.cgk4a7qwslgi.us-west-1.rds.amazonaws.com",
+  host: process.env.RDSHOST,
   port: 3306,
   logging: console.log,
   maxConcurrentQueries: 100,
   dialect: "mysql",
-  ssl: "Amazon RDS",
+  ssl: process.env.RDSSSL,
   pool: { maxDbions: 5, maxIdleTime: 30 },
   language: "en",
   Protocol: "TCP",
 };
-const Db = new Sequelize("mksracingdevtest", "admin", "abc.12345", {
-  ...options,
-});
+const Db = new Sequelize(
+  process.env.RDSDB,
+  process.env.RDSUSER,
+  process.env.RDSPASSWORD,
+  {
+    ...options,
+  }
+);
 
 // const Db = new Sequelize(
 //   process.env.SQLDB,
