@@ -359,6 +359,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
 exports.DeleteRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
+    include: { all: true },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
