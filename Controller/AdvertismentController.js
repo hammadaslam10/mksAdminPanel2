@@ -47,10 +47,11 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
   // const [results, metadata] = await db.sequelize.query(
   //   "SELECT * FROM `AdvertismentModel` AS `AdvertismentModel` WHERE (`AdvertismentModel`.`deletedAt` IS NULL);"
   // );
-  const data = await db.sequelize.query(
-    ` SELECT _id, image, DescriptionEn, DescriptionAr, TitleEn, TitleAr, createdAt, updatedAt,TIMEDIFF(createdAt, updatedAt)  As TimeInMinutes, deletedAt FROM AdvertismentModel AS AdvertismentModel WHERE (AdvertismentModel.deletedAt IS NULL);`
-  );
+  // const data = await db.sequelize.query(
+  //   ` SELECT _id, image, DescriptionEn, DescriptionAr, TitleEn, TitleAr, createdAt, updatedAt,TIMEDIFF(createdAt, updatedAt)  As TimeInMinutes, deletedAt FROM AdvertismentModel AS AdvertismentModel WHERE (AdvertismentModel.deletedAt IS NULL);`
+  // );
   // Results will be an empty array and metadata will contain the number of affected rows.
+  const data = await AdvertismentModel.findAll();
   res.status(200).json({
     success: true,
     data: data,

@@ -10,6 +10,7 @@ const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { Conversion } = require("../Utils/Conversion");
 const OwnerSilkColorModel = db.OwnerSilkColorModel;
+const { Op } = require("sequelize");
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -59,7 +60,11 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
         214,
         212
       );
-      await uploadFile(SingleimagefileBuffer, `${Owner}/${SingleImage}`, singleimage.mimetype);
+      await uploadFile(
+        SingleimagefileBuffer,
+        `${Owner}/${SingleImage}`,
+        singleimage.mimetype
+      );
       await OwnerSilkColorModel.findOrCreate({
         where: {
           OwnerID: data._id,
@@ -168,7 +173,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     });
   }
 });
-exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => { });
+exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({ include: { all: true } });
   res.status(200).json({
