@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false, 
+        allowNull: false,
       },
       DescriptionEn: {
         type: DataTypes.STRING,
@@ -52,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Title Must Be In Arabic",
           },
         },
+      },
+      Url: {
+        type: DataTypes.STRING,
       },
     },
     {

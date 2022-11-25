@@ -9,7 +9,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const Features = require("../Utils/Features");
 exports.CreateSlider = Trackerror(async (req, res, next) => {
-  const { TitleEn, TitleAr } = req.body;
+  const { TitleEn, TitleAr,Url } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -19,6 +19,7 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${Image}`,
       TitleEn: TitleEn,
       TitleAr: TitleAr,
+      Url: Url,
     });
     res.status(201).json({
       success: true,
@@ -39,7 +40,7 @@ exports.SliderGet = Trackerror(async (req, res, next) => {
 });
 exports.GetSliderAdmin = Trackerror(async (req, res, next) => {});
 exports.EditSlider = Trackerror(async (req, res, next) => {
-  const { TitleEn, TitleAr } = req.body;
+  const { TitleEn, TitleAr,Url } = req.body;
   let data = await SliderModel.findOne({
     where: { _id: req.params.id },
   });
@@ -52,6 +53,7 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
         image: data.image,
         TitleEn: TitleEn || data.TitleEn,
         TitleAr: TitleAr || data.TitleAr,
+        Url: Url || data.Url,
       };
       data = await SliderModel.update(updateddata, {
         where: {
