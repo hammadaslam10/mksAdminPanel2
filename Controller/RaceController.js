@@ -227,6 +227,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
           GateNo: singlehorsedetail[0],
           RaceModelId: req.params.id,
           HorseModelId: singlehorsedetail[1],
+          Equipment:singlehorsedetail[4]
         },
       });
       await RaceAndJockeyModel.findOrCreate({
@@ -255,21 +256,21 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
       console.log(singleverdictdetail[1], "1 INDEX");
       console.log(singleverdictdetail[2], "2 INDEX");
       console.log(singleverdictdetail[3], "3 INDEX");
-      await RaceAndVerdictsJockeyModel.findOrCreate({
-        where: {
-          VerdictName: singleverdictdetail[0],
-          Rank: singleverdictdetail[1],
-          RaceModelId2: req.params.id,
-          JockeyModelId: singleverdictdetail[2],
-        },
-      });
+      // await RaceAndVerdictsJockeyModel.findOrCreate({
+      //   where: {
+      //     VerdictName: singleverdictdetail[0],
+      //     Rank: singleverdictdetail[1],
+      //     RaceModelId2: req.params.id,
+      //     JockeyModelId: singleverdictdetail[2],
+      //   },
+      // });
 
       await RaceAndVerdictsHorseModel.findOrCreate({
         where: {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
           RaceModelId: req.params.id,
-          HorseModelId: singleverdictdetail[3],
+          HorseModelId: singleverdictdetail[2],
         },
       });
     });
