@@ -19,13 +19,8 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
-    include: [{ 
-      model: Invoice, 
-      include: [{
-        model: City,
-        where: { id: 1 } 
-      }] 
-    }],
+    include: { all: true },
+    
   });
 
   res.status(200).json({
