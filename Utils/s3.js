@@ -2,7 +2,7 @@ const {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
-  GetObjectCommand,
+  GetObjectCommand
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 require("dotenv").config({ path: "./config/Secrets.env" });
@@ -15,8 +15,8 @@ const s3Client = new S3Client({
   region,
   credentials: {
     accessKeyId,
-    secretAccessKey,
-  },
+    secretAccessKey
+  }
 });
 
 exports.uploadFile = (fileBuffer, fileName, mimetype) => {
@@ -24,16 +24,16 @@ exports.uploadFile = (fileBuffer, fileName, mimetype) => {
     Bucket: bucketName,
     Body: fileBuffer,
     Key: fileName,
-    ContentType: mimetype,
+    ContentType: mimetype
   };
-
+  console.log(uploadParams);
   return s3Client.send(new PutObjectCommand(uploadParams));
 };
 
 exports.deleteFile = (fileName) => {
   const deleteParams = {
     Bucket: bucketName,
-    Key: fileName,
+    Key: fileName
   };
   console.log(deleteParams);
 
@@ -43,7 +43,7 @@ exports.deleteFile = (fileName) => {
 exports.getObjectSignedUrl = async (key) => {
   const params = {
     Bucket: bucketName,
-    Key: key,
+    Key: key
   };
   const command = new GetObjectCommand(params);
   const seconds = 86400;

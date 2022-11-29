@@ -397,23 +397,9 @@ db.GroundTypeModel.hasMany(db.TrackLengthModel, {
   foreignKey: "GroundType",
   as: "GroundTypeModelData",
 });
-db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryModelData",
-});
-db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryModelData",
-});
 db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
-});
-db.RaceModel.belongsToMany(db.CompetitonModel, {
-  through: "CompetitionRacesPointsModel",
-});
-db.CompetitonModel.belongsToMany(db.RaceModel, {
-  through: "CompetitionRacesPointsModel",
 });
 db.RaceModel.belongsToMany(db.JockeyModel, {
   through: "RaceAndJockeyModel",
@@ -487,6 +473,13 @@ db.RaceCardModel.belongsToMany(db.RaceModel, {
 db.RaceModel.belongsToMany(db.RaceCardModel, {
   through: "RaceCardRacesModel",
 });
+db.RaceCardModel.belongsToMany(db.RaceModel, {
+  through: "CompetitionRacesPointsModel",
+});
+db.RaceModel.belongsToMany(db.RaceCardModel, {
+  through: "CompetitionRacesPointsModel",
+});
+
 // db.JockeyModel.belongsToMany(db.RaceModel, {
 //   through: "RaceAndVerdictsJockeyModel",
 // });

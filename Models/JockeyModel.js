@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A0-9 ]+$/,
+          is: /[\u0600-\u06FF]/,
           is: {
             msg: "Jockey Must Be In Arabic",
           },
