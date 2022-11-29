@@ -19,33 +19,33 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
-    include: { all: true },
+    include: { all: true }
   });
   let data1 = await RaceAndVerdictsHorseModel.findAll();
   res.status(200).json({
     success: true,
     data,
-    data1,
+    data1
   });
 });
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { RaceStatus: "Awaited" },
-    include: { all: true },
+    include: { all: true }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.GetRaceTobeOPublished = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: false },
-    include: { all: true },
+    include: { all: true }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
@@ -54,20 +54,20 @@ exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
     // order: [["RaceCourse", "DESC"]],
     include: {
       model: RaceCourseModel,
-      as: "RaceCourseData",
+      as: "RaceCourseData"
     },
-    order: [["RaceCourseData", "Country", "DESC"]],
+    order: [["RaceCourseData", "Country", "DESC"]]
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
   const RaceCourseName = await RaceCourseModel.findAll({
     include: { all: true },
     attributes: ["Country"],
-    group: "Country",
+    group: "Country"
   });
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
@@ -76,18 +76,18 @@ exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
       model: RaceCourseModel,
       as: "RaceCourseData",
       // where: { TrackName: req.params.RaceCourseName },
-      attributes: ["Country", "TrackName"],
-    },
+      attributes: ["Country", "TrackName"]
+    }
   });
   res.status(200).json({
     success: true,
     RaceCourseName,
-    data,
+    data
   });
 });
 exports.PublishRaces = Trackerror(async (req, res, next) => {
   let data = await RaceModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("Race Is Not Available", 404));
@@ -96,13 +96,13 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
     { HorseFilled: true },
     {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     }
   );
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
@@ -115,26 +115,27 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
         Rank: SingleResultEntry.Rank,
         Prize: SingleResultEntry.Prize,
         Points: SingleResultEntry.Points,
-        BonusPoints: SingleResultEntry.BonusPoints,
-      },
+        BonusPoints: SingleResultEntry.BonusPoints
+      }
     });
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
+    include: { all: true }
   });
   if (!data) {
     return next(new HandlerCallBack("Race is Not Available", 404));
   } else {
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
@@ -165,7 +166,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     MeetingType,
     MeetingCode,
     Ground,
-    Sponsor,
+    Sponsor
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -203,11 +204,11 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     MeetingCode: MeetingCode,
     TrackLength: TrackLength,
     Ground: Ground,
-    Sponsor: Sponsor,
+    Sponsor: Sponsor
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.IncludeHorses = Trackerror(async (req, res, next) => {
@@ -227,21 +228,21 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
           GateNo: singlehorsedetail[0],
           RaceModelId: req.params.id,
           HorseModelId: singlehorsedetail[1],
-          Equipment:singlehorsedetail[4]
-        },
+          Equipment: singlehorsedetail[4]
+        }
       });
       await RaceAndJockeyModel.findOrCreate({
         where: {
           GateNo: singlehorsedetail[0],
           JockeyModelId: singlehorsedetail[2],
           RaceModelId: req.params.id,
-          JockeyWeight: singlehorsedetail[3],
-        },
+          JockeyWeight: singlehorsedetail[3]
+        }
       });
     });
   });
   res.status(200).json({
-    success: true,
+    success: true
   });
 });
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
@@ -270,13 +271,13 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
           RaceModelId: req.params.id,
-          HorseModelId: singleverdictdetail[2],
-        },
+          HorseModelId: singleverdictdetail[2]
+        }
       });
     });
   });
   res.status(200).json({
-    success: true,
+    success: true
   });
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
@@ -360,7 +361,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
 exports.DeleteRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true },
+    include: { all: true }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -369,17 +370,17 @@ exports.DeleteRace = Trackerror(async (req, res, next) => {
   console.log(data);
   await RaceModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -388,12 +389,12 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   console.log(data);
   // await deleteFile(`${Race}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
@@ -401,12 +402,12 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
     where: {
       [Op.and]: [
         { RaceCourse: req.params.RaceCourseid },
-        { DayNTime: req.params.DayNTime },
-      ],
-    },
+        { DayNTime: req.params.DayNTime }
+      ]
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });

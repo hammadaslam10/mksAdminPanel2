@@ -1,34 +1,34 @@
 const { Sequelize, DataTypes } = require("sequelize");
 require("dotenv").config({ path: "./config/Secrets.env" });
-var options = {
-  host: process.env.RDSHOST,
-  port: 3306,
-  logging: console.log,
-  maxConcurrentQueries: 100,
-  dialect: "mysql",
-  ssl: process.env.RDSSSL,
-  pool: { maxDbions: 5, maxIdleTime: 30 },
-  language: "en",
-  Protocol: "TCP",
-};
-const Db = new Sequelize(
-  process.env.RDSDB,
-  process.env.RDSUSER,
-  process.env.RDSPASSWORD,
-  {
-    ...options,
-  }
-);
-
+// var options = {
+//   host: process.env.RDSHOST,
+//   port: 3306,
+//   logging: console.log,
+//   maxConcurrentQueries: 100,
+//   dialect: "mysql",
+//   ssl: process.env.RDSSSL,
+//   pool: { maxDbions: 5, maxIdleTime: 30 },
+//   language: "en",
+//   Protocol: "TCP",
+// };
 // const Db = new Sequelize(
-//   process.env.SQLDB,
-//   process.env.SQLHOST,
-//   process.env.SQLPASSWORD,
+//   process.env.RDSDB,
+//   process.env.RDSUSER,
+//   process.env.RDSPASSWORD,
 //   {
-//     dialect: "mysql",
-//     // logging: false,
+//     ...options,
 //   }
 // );
+
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+    // logging: false,
+  }
+);
 
 Db.authenticate()
   .then(() => {
@@ -397,9 +397,23 @@ db.GroundTypeModel.hasMany(db.TrackLengthModel, {
   foreignKey: "GroundType",
   as: "GroundTypeModelData",
 });
+db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryModelData",
+});
+db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryModelData",
+});
 db.RaceModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
+});
+db.RaceModel.belongsToMany(db.CompetitonModel, {
+  through: "CompetitionRacesPointsModel",
+});
+db.CompetitonModel.belongsToMany(db.RaceModel, {
+  through: "CompetitionRacesPointsModel",
 });
 db.RaceModel.belongsToMany(db.JockeyModel, {
   through: "RaceAndJockeyModel",

@@ -34,6 +34,8 @@ const RaceCardRoutes = require("./Routes/RaceCardRoutes");
 const EquipmentRoutes = require("./Routes/EquipmentRoutes");
 const GroundTypeRoutes = require("./Routes/GroundTypeRoutes");
 const VerdictRoute = require("./Routes/VerdictRoute");
+const ComeptitionRoute=require("./Routes/CompetitionRoutes")
+const CompetitionCategoryRoutes=require("./Routes/CompetitionCategoryRoutes")
 let cron = require("node-cron");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -73,6 +75,8 @@ app.use("/api/v1", RaceCardRoutes);
 app.use("/api/v1", EquipmentRoutes);
 app.use("/api/v1", GroundTypeRoutes);
 app.use("/api/v1", VerdictRoute);
+app.use("/api/v1", ComeptitionRoute);
+// app.use("/api/v1", CompetitionCategoryRoutes);
 // app.use("/api/v1", SearchRoutes);
 cron.schedule("* * * * *", () => {
   console.log("cron job working");
