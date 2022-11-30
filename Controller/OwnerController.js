@@ -186,7 +186,7 @@ exports.ViewASingleOwner = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (!data) {
-    return new next("horse is not available", 404);
+    return new next("Owner is not available", 404);
   } else {
     res.status(200).json({
       success: true,

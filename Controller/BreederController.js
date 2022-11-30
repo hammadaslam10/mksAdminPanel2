@@ -16,7 +16,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     DescriptionAr,
     TitleEn,
     TitleAr,
-    shortCode,
+    shortCode
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -27,7 +27,6 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     ArRegex.test(NameAr) &&
     ArRegex.test(DescriptionEn) == false &&
     ArRegex.test(NameEn) == false
-
   ) {
     const data = await BreederModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,
@@ -37,11 +36,11 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn,
       TitleAr: TitleAr,
       NameEn: NameEn,
-      NameAr: NameAr,
+      NameAr: NameAr
     });
     res.status(201).json({
       success: true,
-      data,
+      data
     });
   } else {
     return next(
@@ -53,10 +52,10 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll();
   res.status(200).json({
     success: true,
-    data: data,
+    data: data
   });
 });
-exports.GetBreederAdmin = Trackerror(async (req, res, next) => { });
+exports.GetBreederAdmin = Trackerror(async (req, res, next) => {});
 exports.EditBreeder = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -65,10 +64,10 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
     DescriptionAr,
     TitleEn,
     TitleAr,
-    shortCode,
+    shortCode
   } = req.body;
   let data = await BreederModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -82,16 +81,16 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
       NameEn: NameEn || data.NameEn,
-      NameAr: NameAr || data.NameAr,
+      NameAr: NameAr || data.NameAr
     };
     data = await BreederModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } else {
     const file = req.files.image;
@@ -107,23 +106,37 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
       NameEn: NameEn || data.NameEn,
-      NameAr: NameAr || data.NameAr,
+      NameAr: NameAr || data.NameAr
     };
     data = await BreederModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
 
     res.status(200).json({
       success: true,
-      data,
+      data
+    });
+  }
+});
+exports.SingleBreeder = Trackerror(async (req, res, next) => {
+  const data = await BreederModel.findOne({
+    where: { _id: req.params.id },
+    include: { all: true }
+  });
+  if (!data) {
+    return next(new HandlerCallBack("Race is Not Available", 404));
+  } else {
+    res.status(200).json({
+      success: true,
+      data
     });
   }
 });
 exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -133,28 +146,28 @@ exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   await deleteFile(`${Breeder}/${data.image.slice(-64)}`);
   await BreederModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await BreederModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully",
+    message: "Soft Delete Successfully"
   });
 });

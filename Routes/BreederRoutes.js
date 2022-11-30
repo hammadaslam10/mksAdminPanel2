@@ -6,9 +6,12 @@ const {
   EditBreeder,
   DeleteBreeder,
   SoftDeleteBreeder,
+  SingleBreeder
 } = require("../Controller/BreederController");
 const { upload } = require("../Utils/ImageUpload");
 
+
+router.route("/getsinglebreeder/:id").get(SingleBreeder);
 router.route("/uploadBreeder", upload.single("image")).post(CreateBreeder);
 router.route("/Breederget").get(BreederGet);
 router.route("/deleteBreeder/:id").delete(DeleteBreeder);
