@@ -6,9 +6,10 @@ const {
   EditRaceKind,
   DeleteRaceKind,
   SoftDeleteRaceKind,
+  GetRaceKindMaxShortCode
 } = require("../Controller/RaceKindController");
 const { upload } = require("../Utils/ImageUpload");
-
+router.route("/getracekindshortcode").get(GetRaceKindMaxShortCode);
 router.route("/uploadRaceKind", upload.single("image")).post(CreateRaceKind);
 router.route("/RaceKindget").get(RaceKindGet);
 router.route("/deleteRaceKind/:id").delete(DeleteRaceKind);

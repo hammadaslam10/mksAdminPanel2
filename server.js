@@ -25,7 +25,6 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 
 const server = app.listen(process.env.PORT || 8081, () => {
   console.log(`Server is working on port http:localhost:${process.env.PORT}`);
-  console.log(`Server is working on port http:localhost:${process.env.JWT_EXPIRE}`);
 });
 const io = new Server(server);
 io.on("connection", (socket) => {

@@ -8,6 +8,7 @@ const {
   ViewAllOwner,
   DeleteOwner,
   SoftDeleteOwner,
+  
 } = require("../Controller/OwnerController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getsingleowner/:id").get(ViewASingleOwner);

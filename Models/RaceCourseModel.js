@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       //     },
       //   },
       // },
- 
+
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -69,13 +69,18 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       shortCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: { msg: "RaceCourse will have shortCode" },
           notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
+    },
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

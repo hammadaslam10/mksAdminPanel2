@@ -31,7 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       shortCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: { msg: "Competition Category will have Name" },
@@ -47,6 +49,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+    },
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

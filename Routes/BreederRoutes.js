@@ -6,11 +6,12 @@ const {
   EditBreeder,
   DeleteBreeder,
   SoftDeleteBreeder,
-  SingleBreeder
+  SingleBreeder,
+  GetBreederMaxShortCode
 } = require("../Controller/BreederController");
 const { upload } = require("../Utils/ImageUpload");
 
-
+router.route("/getbreedershortcode").get(GetBreederMaxShortCode);
 router.route("/getsinglebreeder/:id").get(SingleBreeder);
 router.route("/uploadBreeder", upload.single("image")).post(CreateBreeder);
 router.route("/Breederget").get(BreederGet);

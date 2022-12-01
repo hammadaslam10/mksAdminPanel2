@@ -7,7 +7,18 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await BreederModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateBreeder = Trackerror(async (req, res, next) => {
   const {
     NameEn,

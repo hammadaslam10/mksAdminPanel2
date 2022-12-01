@@ -3,7 +3,18 @@ const CurrencyModel = db.CurrencyModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetCurrencyMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await CurrencyModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateCurrency = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode, Rate } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {

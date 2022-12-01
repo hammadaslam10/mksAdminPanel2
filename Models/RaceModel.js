@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Ground: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       DescriptionAr: {
@@ -183,6 +183,9 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Sponsor  will not be empty" },
         },
       },
+    },
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

@@ -6,9 +6,11 @@ const {
   EditRaceType,
   DeleteRaceType,
   SoftDeleteRaceType,
+  GetRaceTypeMaxShortCode
 } = require("../Controller/RaceTypeController");
 const { upload } = require("../Utils/ImageUpload");
 
+router.route("/getracetypeshortcode").get(GetRaceTypeMaxShortCode);
 router.route("/uploadRaceType", upload.single("image")).post(CreateRaceType);
 router.route("/RaceTypeget").get(RaceTypeGet);
 router.route("/deleteRaceType/:id").delete(DeleteRaceType);

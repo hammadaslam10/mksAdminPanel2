@@ -11,10 +11,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
-      // JockeyCap:{
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // }
+    },
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

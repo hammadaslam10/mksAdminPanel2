@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       shortCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: { msg: "Currency will have ShortCode" },
@@ -43,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Rate  will not be empty" },
         },
       },
+    },
+  
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

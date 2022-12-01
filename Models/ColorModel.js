@@ -20,12 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       shortCode: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.BIGINT,
         autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
           notNull: { msg: "Color will have ShortCode" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notEmpty: { msg: "ShortCode  will not be empty" },
         },
       },
       NameAr: {
@@ -37,6 +38,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+    },
+    {
+      initialAutoIncrement: 1000,
     },
     {
       freezeTableName: true,

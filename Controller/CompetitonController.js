@@ -4,7 +4,18 @@ const CompetitionRacesPointsModel = db.CompetitionRacesPointsModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await CompetitonModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,

@@ -3,7 +3,18 @@ const RaceKindModel = db.RaceKindModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetRaceKindMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await RaceKindModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateRaceKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {

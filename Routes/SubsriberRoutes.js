@@ -14,6 +14,7 @@ const {
   SubscriberApproval,
   forgotPassword,
   resetPassword,
+
 } = require("../Controller/SubscriberController");
 router.route("/getsubscriber").get(GetAllSubscriber);
 router.route("/register").post(RegisterSubscriber);

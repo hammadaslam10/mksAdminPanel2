@@ -6,9 +6,10 @@ const {
   EditSex,
   DeleteSex,
   SoftDeleteSex,
+  GetSexMaxShortCode
 } = require("../Controller/SexController");
 const { upload } = require("../Utils/ImageUpload");
-
+router.route("/getsexshortcode").get(GetSexMaxShortCode);
 router.route("/uploadSex", upload.single("image")).post(CreateSex);
 router.route("/Sexget").get(SexGet);
 router.route("/deleteSex/:id").delete(DeleteSex);

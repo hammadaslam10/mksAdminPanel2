@@ -7,7 +7,18 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetNationalityMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await NationalityModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateNationality = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, Abbrev, AltName, Label, Offset, Value, shortCode } =
     req.body;

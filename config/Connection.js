@@ -40,6 +40,7 @@ Db.authenticate()
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = Db;
+db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
 db.SubscriberModel = require("../Models/SubscriberModel")(Db, DataTypes);
 db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
 db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
@@ -55,7 +56,6 @@ db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
 db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
 db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
-db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
     {
       RaceID: {
-        type: DataTypes.UUID, 
+        type: DataTypes.UUID,
         allowNull: false,
       },
       HorseID: {
@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
 
+    {
+      initialAutoIncrement: 1000,
+    },
     {
       freezeTableName: true,
       paranoid: true,

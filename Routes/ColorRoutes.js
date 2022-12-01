@@ -6,11 +6,13 @@ const {
   EditColor,
   DeleteColor,
   SoftDeleteColor,
-  SingleColor
+  SingleColor,
+  GetColorMaxShortCode,
 } = require("../Controller/ColorController");
 const { upload } = require("../Utils/ImageUpload");
 
 router.route("/getsinglecolor/:id").get(SingleColor);
+router.route("/getcolorshortcode").get(GetColorMaxShortCode);
 router.route("/uploadColor", upload.single("image")).post(CreateColor);
 router.route("/Colorget").get(ColorGet);
 router.route("/deleteColor/:id").delete(DeleteColor);

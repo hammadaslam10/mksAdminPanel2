@@ -9,7 +9,6 @@ const {
   SingleCompetitonCategoryGet
 } = require("../Controller/CompetitionCategoryController");
 const { upload } = require("../Utils/ImageUpload");
-
 router
   .route("/uploadCompetitionCategory", upload.single("image"))
   .post(CreateCompetitionCategory);

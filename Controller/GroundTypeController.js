@@ -3,7 +3,18 @@ const GroundTypeModel = db.GroundTypeModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
-
+const sequelize = require("sequelize");
+exports.GetGroundTypeMaxShortCode = Trackerror(async (req, res, next) => {
+  const data = await GroundTypeModel.findAll({
+    attributes: [
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.CreateGroundType = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
