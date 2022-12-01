@@ -20,33 +20,31 @@ exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
     include: { all: true },
-    
   });
 
   res.status(200).json({
     success: true,
-    data
-
+    data,
   });
 });
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { RaceStatus: "Awaited" },
-    include: { all: true }
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.GetRaceTobeOPublished = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: false },
-    include: { all: true }
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
@@ -55,20 +53,20 @@ exports.RaceOrderByCountry = Trackerror(async (req, res, next) => {
     // order: [["RaceCourse", "DESC"]],
     include: {
       model: RaceCourseModel,
-      as: "RaceCourseData"
+      as: "RaceCourseData",
     },
-    order: [["RaceCourseData", "Country", "DESC"]]
+    order: [["RaceCourseData", "Country", "DESC"]],
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
   const RaceCourseName = await RaceCourseModel.findAll({
     include: { all: true },
     attributes: ["Country"],
-    group: "Country"
+    group: "Country",
   });
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
@@ -77,18 +75,18 @@ exports.RaceOrderByRaceCourseOnly = Trackerror(async (req, res, next) => {
       model: RaceCourseModel,
       as: "RaceCourseData",
       // where: { TrackName: req.params.RaceCourseName },
-      attributes: ["Country", "TrackName"]
-    }
+      attributes: ["Country", "TrackName"],
+    },
   });
   res.status(200).json({
     success: true,
     RaceCourseName,
-    data
+    data,
   });
 });
 exports.PublishRaces = Trackerror(async (req, res, next) => {
   let data = await RaceModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("Race Is Not Available", 404));
@@ -97,13 +95,13 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
     { HorseFilled: true },
     {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     }
   );
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
@@ -116,38 +114,35 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
         Rank: SingleResultEntry.Rank,
         Prize: SingleResultEntry.Prize,
         Points: SingleResultEntry.Points,
-        BonusPoints: SingleResultEntry.BonusPoints
-      }
+        BonusPoints: SingleResultEntry.BonusPoints,
+      },
     });
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true }
+    include: { all: true },
   });
   if (!data) {
     return next(new HandlerCallBack("Race is Not Available", 404));
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.CreateRace = Trackerror(async (req, res, next) => {
   const {
     RaceKind,
-    raceName,
     DescriptionEn,
     RaceCourse,
-    Horses,
-    Prizes,
     RaceType,
     RaceStatus,
     DayNTime,
@@ -167,7 +162,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     MeetingType,
     MeetingCode,
     Ground,
-    Sponsor
+    Sponsor,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -177,15 +172,12 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
     RaceKind: RaceKind,
-    raceName: raceName,
     DescriptionEn: DescriptionEn,
     DescriptionAr: DescriptionAr,
     RaceCourse: RaceCourse,
-    Prizes: Prizes,
     RaceStatus: RaceStatus,
     DayNTime: DayNTime,
     RaceType: RaceType,
-    RaceNameAr: RaceNameAr,
     RaceNameAr: RaceNameAr,
     WeatherType: WeatherType,
     WeatherType: WeatherType,
@@ -205,11 +197,11 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     MeetingCode: MeetingCode,
     TrackLength: TrackLength,
     Ground: Ground,
-    Sponsor: Sponsor
+    Sponsor: Sponsor,
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.IncludeHorses = Trackerror(async (req, res, next) => {
@@ -229,21 +221,21 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
           GateNo: singlehorsedetail[0],
           RaceModelId: req.params.id,
           HorseModelId: singlehorsedetail[1],
-          Equipment: singlehorsedetail[4]
-        }
+          Equipment: singlehorsedetail[4],
+        },
       });
       await RaceAndJockeyModel.findOrCreate({
         where: {
           GateNo: singlehorsedetail[0],
           JockeyModelId: singlehorsedetail[2],
           RaceModelId: req.params.id,
-          JockeyWeight: singlehorsedetail[3]
-        }
+          JockeyWeight: singlehorsedetail[3],
+        },
       });
     });
   });
   res.status(200).json({
-    success: true
+    success: true,
   });
 });
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
@@ -272,97 +264,104 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
           RaceModelId: req.params.id,
-          HorseModelId: singleverdictdetail[2]
-        }
+          HorseModelId: singleverdictdetail[2],
+        },
       });
     });
   });
   res.status(200).json({
-    success: true
+    success: true,
   });
 });
 exports.EditRace = Trackerror(async (req, res, next) => {
-  // const {
-  //   Age,
-  //   NameEn,
-  //   NameAr,
-  //   Owner,
-  //   ActiveTrainer,
-  //   Breeder,
-  //   Trainer,
-  //   Remarks,
-  //   HorseRating,
-  //   Sex,
-  //   Color,
-  //   KindOfHorse,
-  //   Dam,
-  //   Sire,
-  //   GSire,
-  //   Earning,
-  //   History,
-  //   OverAllRating,
-  //   ActiveJockey,
-  //   ActiveOwner,
-  //   Jockey,
-  // } = req.body;
-  // let data = await HorseModel.findOne({
-  //   where: { _id: req.params.id },
-  // });
-  // if (data === null) {
-  //   return next(new HandlerCallBack("data not found", 404));
-  // }
-  // if (req.files == null) {
-  //   data = await HorseModel.update(req.body, {
-  //     where: {
-  //       _id: req.params.id,
-  //     },
-  //   });
-  //   res.status(200).json({
-  //     success: true,
-  //     data,
-  //   });
-  // } else {
-  //   const file = req.files.image;
-  //   await deleteFile(`${Race}/${data.image}`);
-  //   const Image = generateFileName();
-  //   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  //   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
-  //   const updateddata = {
-  //     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
-  //     NameEn: NameEn || data.NameEn,
-  //     Age: Age || data.Age,
-  //     NameAr: NameAr || data.NameAr,
-  //     ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
-  //     Breeder: Breeder || data.Breeder,
-  //     Remarks: Remarks || data.Remarks,
-  //     HorseRating: HorseRating || data.HorseRating,
-  //     Sex: Sex || data.Sex,
-  //     Color: Color || data.Color,
-  //     KindOfHorse: KindOfHorse || data.KindOfHorse,
-  //     Dam: Dam || data.Dam,
-  //     Sire: Sire || data.Sire,
-  //     GSire: GSire || data.GSire,
-  //     Earning: Earning || data.Earning,
-  //     History: History || data.History,
-  //     OverAllRating: OverAllRating || data.OverAllRating,
-  //     ActiveJockey: ActiveJockey || data.ActiveJockey,
-  //     ActiveOwner: ActiveOwner || data.ActiveOwner,
-  //   };
-  //   data = await HorseModel.update(updateddata, {
-  //     where: {
-  //       _id: req.params.id,
-  //     },
-  //   });
-  //   res.status(200).json({
-  //     success: true,
-  //     data,
-  //   });
-  // }
+  const {
+    RaceKind,
+    DescriptionEn,
+    RaceCourse,
+    RaceType,
+    RaceStatus,
+    DayNTime,
+    DescriptionAr,
+    RaceName,
+    RaceNameAr,
+    WeatherType,
+    WeatherDegree,
+    WeatherIcon,
+    TrackLength,
+    FirstPrice,
+    SecondPrice,
+    ThirdPrice,
+    FourthPrice,
+    FifthPrice,
+    SixthPrice,
+    MeetingType,
+    MeetingCode,
+    Ground,
+    Sponsor,
+  } = req.body;
+  let data = await HorseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  if (req.files == null) {
+    data = await HorseModel.update(req.body, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } else {
+    const file = req.files.image;
+    await deleteFile(`${Race}/${data.image}`);
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
+    const updateddata = {
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
+      RaceKind: RaceKind || data.RaceKind,
+      RaceName: RaceName || data.RaceName,
+      DescriptionEn: DescriptionEn || data.DescriptionEn,
+      RaceCourse: RaceCourse || data.RaceCourse,
+      RaceType: RaceType || data.RaceType,
+      RaceStatus: RaceStatus || data.RaceStatus,
+      DayNTime: DayNTime || data.DayNTime,
+      DescriptionAr: DescriptionAr || data.DescriptionAr,
+      RaceNameAr: RaceNameAr || data.RaceNameAr,
+      WeatherType: WeatherType || data.WeatherType,
+      WeatherDegree: WeatherDegree || data.WeatherDegree,
+      WeatherIcon: WeatherIcon || data.WeatherIcon,
+      TrackLength: TrackLength || data.TrackLength,
+      FirstPrice: FirstPrice || data.FirstPrice,
+      SecondPrice: SecondPrice || data.SecondPrice,
+      ThirdPrice: ThirdPrice || data.ThirdPrice,
+      FourthPrice: FourthPrice || data.FourthPrice,
+      FifthPrice: FifthPrice || data.FifthPrice,
+      SixthPrice: SixthPrice || data.SixthPrice,
+      MeetingType: MeetingType || data.MeetingType,
+      MeetingCode: MeetingCode || data.MeetingCode,
+      Ground: Ground || data.Ground,
+      Sponsor: Sponsor || data.Sponsor,
+    };
+    data = await HorseModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
 });
 exports.DeleteRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true }
+    include: { all: true },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -371,17 +370,17 @@ exports.DeleteRace = Trackerror(async (req, res, next) => {
   console.log(data);
   await RaceModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -390,12 +389,12 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   console.log(data);
   // await deleteFile(`${Race}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
@@ -403,12 +402,12 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
     where: {
       [Op.and]: [
         { RaceCourse: req.params.RaceCourseid },
-        { DayNTime: req.params.DayNTime }
-      ]
-    }
+        { DayNTime: req.params.DayNTime },
+      ],
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });

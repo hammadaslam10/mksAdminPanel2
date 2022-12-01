@@ -105,13 +105,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      ActiveJockeyForTheRace: {
-        type: DataTypes.UUID,
-        references: {
-          model: "JockeyModel",
-          key: "_id",
-        },
-      },
       WeatherType: {
         type: DataTypes.STRING,
         allowNull: false,
