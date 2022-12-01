@@ -345,7 +345,6 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       MeetingType: MeetingType || data.MeetingType,
       MeetingCode: MeetingCode || data.MeetingCode,
       Ground: Ground || data.Ground,
-      Sponsor: Sponsor || data.Sponsor,
     };
     data = await HorseModel.update(updateddata, {
       where: {

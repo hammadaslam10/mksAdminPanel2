@@ -4,10 +4,10 @@ var options = {
   host: process.env.RDSHOST,
   port: 3306,
   logging: console.log,
-  maxConcurrentQueries: 100,
+  // maxConcurrentQueries: 100,
   dialect: "mysql",
   ssl: process.env.RDSSSL,
-  pool: { maxDbions: 5, maxIdleTime: 30 },
+  // pool: { maxDbions: 5, maxIdleTime: 30 },
   language: "en",
   Protocol: "TCP",
 };
@@ -125,21 +125,15 @@ db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
 });
+db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryData",
+});
+db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryData",
+});
 
-// db.RaceAndHorseModel.sync({ alter: true });
-// db.RaceCourseModel.sync({ alter: true });
-// db.RaceModel.belongsTo(db.JockeyModel, {
-//   foreignKey: "ActiveJockeyForTheRace",
-//   as: "ActiveJockeyForTheRaceData",
-// });
-// db.RaceKindModel.hasMany(db.RaceModel, {
-//   foreignKey: "RaceKind",
-//   as: "RaceKindData",
-// });
-// db.RaceModel.belongsTo(db.RaceKindModel, {
-//   foreignKey: "RaceKind",
-//   as: "RaceKindData",
-// });
 db.RaceCourseModel.hasOne(db.RaceCardModel, {
   foreignKey: "RaceCardCourse",
   as: "RaceCardCourseData",
@@ -156,55 +150,6 @@ db.RaceModel.belongsTo(db.TrackLengthModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
 });
-// db.SubscriberModel.hasMany(db.RaceModel, {
-//   foreignKey: "TrackLength",
-//   as: "TrackLengthData",
-// });
-// db.RaceModel.belongsTo(db.SubscriberModel, {
-//   foreignKey: "TrackLength",
-//   as: "TrackLengthData",
-// });
-// db.HorseModel.hasMany(db.RaceAndVerdictsHorseModel, {
-//   foreignKey: "HorseModelId",
-//   as: "HorseModelIdData",
-// });
-// db.RaceAndVerdictsHorseModel.hasMany(db.HorseModel, {
-//   foreignKey: "HorseModelId",
-//   as: "HorseModelIdData",
-// });
-// db.JockeyModel.hasMany(db.RaceAndJockeyModel, {
-//   foreignKey: "JockeyModelId",
-//   as: "JockeyModelIdData",
-// });
-// db.RaceAndJockeyModel.belongsTo(db.JockeyModel, {
-//   foreignKey: "JockeyModelId",
-//   as: "JockeyModelIdData",
-// });
-// db.RaceModel.hasMany(db.RaceAndJockeyModel, {
-//   foreignKey: "RaceModelId2",
-//   as: "RaceModelId2Data",
-// });
-// db.RaceAndJockeyModel.belongsTo(db.RaceModel, {
-//   foreignKey: "RaceModelId2",
-//   as: "RaceModelId2Data",
-// });
-// db.RaceModel.hasMany(db.RaceAndHorseModel, {
-//   foreignKey: "RaceModelId",
-//   as: "RaceModelIdData",
-// });
-// db.RaceAndHorseModel.belongsTo(db.RaceModel, {
-//   foreignKey: "RaceModelId",
-//   as: "RaceModelIdData",
-// });
-// db.RaceCardRacesModel.hasMany(db.RaceModel, {
-//   foreignKey: "RaceCard",
-//   as: "RaceCardData",
-// });
-// db.RaceModel.belongsTo(db.RaceCardRacesModel, {
-//   foreignKey: "RaceCard",
-//   as: "RaceCardData",
-// });
-
 db.RaceCourseModel.hasMany(db.TrackLengthModel, {
   foreignKey: "RaceCourse",
   as: "RaceCourseData",
@@ -285,22 +230,6 @@ db.RaceModel.belongsTo(db.RaceCardModel, {
   foreignKey: "RaceCard",
   as: "RaceCardData",
 });
-// db.HorseModel.belongsTo(db.RaceTypeModel, {
-//   foreignKey: "RaceName",
-//   as: "RaceNameData",
-// });
-// db.BreederModel.hasMany(db.HorseModel, {
-//   foreignKey: "RaceName",
-//   as: "RaceNameData",
-// });
-// db.RaceModel.hasMany(db.RaceModel, {
-//   foreignKey: "HorseID",
-//   as: "HorseIDModelData",
-// });
-// db.RaceModel.belongsTo(db.RaceModel, {
-//   foreignKey: "HorseID",
-//   as: "HorseIDModelData",
-// });
 db.SexModel.hasMany(db.HorseModel, {
   foreignKey: "Sex",
   as: "SexModelData",
@@ -419,36 +348,12 @@ db.SubscriberModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.SubscriberModel, {
   through: "SubscriberAndHorsesModel",
 });
-// db.SubscriberModel.belongsToMany(db.EmailTemplateModel, {
-//   through: "EmailAndSubscriberModel",
-// });
-// db.EmailTemplateModel.belongsToMany(db.SubscriberModel, {
-//   through: "EmailAndSubscriberModel",
-// });
-// db.RaceModel.belongsToMany(db.JockeyModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
-// db.JockeyModel.belongsToMany(db.RaceAndVerdictsJockeyModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
-// db.RaceAndVerdictsJockeyModel.belongsToMany(db.JockeyModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
 db.RaceModel.belongsToMany(db.HorseModel, {
   through: "RaceAndHorseModel",
 });
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
 });
-// db.RaceModel.belongsToMany(db.HorseModel, {
-//   through: "RaceAndVerdictsHorseModel",
-// });
-// db.HorseModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndVerdictsHorseModel",
-// });
 db.HorseModel.belongsToMany(db.OwnerModel, {
   through: "HorseOwnerComboModel",
 });
@@ -458,15 +363,7 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.JockeyModel, {
   through: "HorseJockeyComboModel",
 });
-// db.RaceModel.belongsToMany(db.HorseModel, {
-//   through: "RaceAndVerdictsHorseModel",
-// });
-// db.HorseModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndVerdictsHorseModel",
-// });
-// db.RaceModel.belongsToMany(db.JockeyModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
+
 db.RaceCardModel.belongsToMany(db.RaceModel, {
   through: "RaceCardRacesModel",
 });
@@ -480,9 +377,6 @@ db.RaceModel.belongsToMany(db.RaceCardModel, {
   through: "CompetitionRacesPointsModel",
 });
 
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndVerdictsJockeyModel",
-// });
 db.JockeyModel.belongsToMany(db.HorseModel, {
   through: "HorseJockeyComboModel",
 });
@@ -516,75 +410,5 @@ db.RaceAndVerdictsHorseModel.belongsTo(db.RaceModel, {
   foreignKey: "RaceModelId",
   as: "RaceModelIdData",
 });
-// db.RaceModel.hasMany(db.RaceAndVerdictsHorseModel, {
-//   foreignKey: "HorseModelId",
-//   as: "HorseModelIdData",
-// });
-// db.RaceAndVerdictsHorseModel.belongsTo(db.RaceModel, {
-//   foreignKey: "HorseModelId",
-//   as: "HorseModelIdData",
-// });
 
 module.exports = db;
-
-// db.HorseModel.belongsTo(db.JockeyModel, {
-//   foreignKey: "ActiveJockey",
-//   as: "ActiveJockeyData",
-// });
-// db.JockeyModel.hasOne(db.HorseModel, {
-//   foreignKey: "ActiveJockey",
-//   as: "ActiveJockeyData",
-// });
-// db.HorseModel.belongsTo(db.OwnerModel, {
-//   foreignKey: "ActiveOwner",
-//   as: "ActiveOwnerData",
-// });
-// db.OwnerModel.hasOne(db.HorseModel, {
-//   foreignKey: "ActiveOwner",
-//   as: "ActiveOwnerData",
-// });
-// db.HorseModel.belongsTo(db.TrainerModel, {
-//   foreignKey: "ActiveTrainer",
-//   as: "ActiveTrainerData",
-// });
-// db.TrainerModel.hasOne(db.HorseModel, {
-//   foreignKey: "ActiveTrainer",
-//   as: "ActiveTrainerData",
-
-// db.HorseModel.belongsTo(db.JockeyModel, {
-//   foreignKey: "ActiveJockey",
-//   as: "ActiveJockeyData",
-// });
-// db.HorseModel.belongsTo(db.OwnerModel, {
-//   foreignKey: "ActiveOwner",
-//   as: "ActiveOwnerData",
-// });
-// db.HorseModel.belongsTo(db.TrainerModel, {
-//   foreignKey: "ActiveTrainer",
-//   as: "ActiveTrainerData",
-// });
-// db.HorseModel.hasMany(db.OwnerModel, {
-//   foreignKey: "Owner",
-//   as: "OwnerData",
-// });
-// db.OwnerModel.hasMany(db.HorseModel, {
-//   foreignKey: "Owner",
-//   as: "OwnerData",
-// });
-// db.HorseModel.hasMany(db.JockeyModel, {
-//   foreignKey: "Jockey",
-//   as: "JockeyData",
-// });
-// db.JockeyModel.belongsTo(db.HorseModel, {
-//   foreignKey: "Jockey",
-//   as: "JockeyData",
-// });
-// db.HorseModel.hasMany(db.TrainerModel, {
-//   foreignKey: "Trainer",
-//   as: "TrainerData",
-// });
-// db.TrainerModel.belongsTo(db.HorseModel, {
-//   foreignKey: "Trainer",
-//   as: "TrainerDataHorse",
-// });
-// });
