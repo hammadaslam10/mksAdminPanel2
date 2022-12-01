@@ -60,10 +60,6 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.JockeyModel,
         include: { all: true },
       },
-      {
-        model: db.RaceAndVerdictsHorseModel,
-        as: "RaceModelIdData",
-      },
     ],
   });
 
@@ -77,6 +73,7 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
     where: { RaceStatus: "Awaited" },
     include: { all: true },
   });
+
   res.status(200).json({
     success: true,
     data,

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[ء-ي\d\s]+$/,
+          is: /"^[ء-يds]+$"/,
           is: {
             msg: "Name Must Be In Arabic",
           },

@@ -23,8 +23,8 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   // console.log(
   //   `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`
   // );
-  console.log(EnglishRegex.test(DescriptionEn));
-  console.log(EnglishRegex.test(TitleEn));
+  console.log(ArRegex.test(DescriptionAr));
+  console.log(ArRegex.test(TitleAr));
   if (
     ArRegex.test(DescriptionAr) &&
     ArRegex.test(TitleAr) &&

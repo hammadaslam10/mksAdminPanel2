@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -19,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       shortCode: {
-        type: DataTypes.STRING,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         allowNull: false,
         validate: {
           notNull: { msg: "Color will have ShortCode" },
