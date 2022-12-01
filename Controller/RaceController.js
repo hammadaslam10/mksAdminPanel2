@@ -62,7 +62,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       },
       {
         model: db.RaceAndVerdictsHorseModel,
-        as:"RaceModelIdData"
+        as: "RaceModelIdData",
       },
     ],
   });
@@ -344,14 +344,14 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Ground,
     Sponsor,
   } = req.body;
-  let data = await HorseModel.findOne({
+  let data = await RaceModel.findOne({
     where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    data = await HorseModel.update(req.body, {
+    data = await RaceModel.update(req.body, {
       where: {
         _id: req.params.id,
       },
@@ -390,8 +390,9 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       MeetingType: MeetingType || data.MeetingType,
       MeetingCode: MeetingCode || data.MeetingCode,
       Ground: Ground || data.Ground,
+      Sponsor: Sponsor || data.Sponsor,
     };
-    data = await HorseModel.update(updateddata, {
+    data = await RaceModel.update(updateddata, {
       where: {
         _id: req.params.id,
       },
