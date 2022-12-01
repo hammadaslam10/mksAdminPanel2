@@ -15,6 +15,13 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
+exports.PedigreeHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findAll({});
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findAll({
     include: { all: true },
