@@ -19,7 +19,52 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
-    include: { all: true },
+    include: [
+      {
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData",
+      },
+      {
+        model: db.GroundTypeModel,
+        as: "GroundData",
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+      },
+      {
+        model: db.TrackLengthModel,
+        as: "TrackLengthData",
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+      {
+        model: db.RaceKindModel,
+        as: "RaceKindData",
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData",
+      },
+      {
+        model: db.SponsorModel,
+        as: "SponsorData",
+      },
+      {
+        model: db.HorseModel,
+        include: { all: true },
+      },
+      {
+        model: db.JockeyModel,
+        include: { all: true },
+      },
+      {
+        model: db.RaceAndVerdictsHorseModel,
+        as:"RaceModelIdData"
+      },
+    ],
   });
 
   res.status(200).json({

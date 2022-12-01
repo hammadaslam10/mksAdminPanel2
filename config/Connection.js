@@ -133,6 +133,14 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
   foreignKey: "CompetitionCategory",
   as: "CompetitionCategoryData",
 });
+db.GroundTypeModel.hasMany(db.RaceModel, {
+  foreignKey: "Ground",
+  as: "GroundData",
+});
+db.RaceModel.belongsTo(db.GroundTypeModel, {
+  foreignKey: "Ground",
+  as: "GroundData",
+});
 
 db.RaceCourseModel.hasOne(db.RaceCardModel, {
   foreignKey: "RaceCardCourse",
