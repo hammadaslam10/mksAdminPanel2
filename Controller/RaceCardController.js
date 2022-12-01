@@ -4,6 +4,7 @@ const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { Conversion } = require("../Utils/Conversion");
+const { Op } = require("sequelize");
 exports.CreateRaceCard = Trackerror(async (req, res, next) => {
   const { RaceCardNameEn, RaceCardNameAr, RaceCardCourse } = req.body;
   if (ArRegex.test(RaceCardNameAr) && ArRegex.test(RaceCardNameEn) == false) {
