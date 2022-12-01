@@ -37,7 +37,6 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     shortCode,
     NationalityId,
     ColorCode,
-
   } = req.body;
 
   const file = req.files.image;
@@ -58,7 +57,13 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   });
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
-  const { TrackName, shortCode, NationalityId, ColorCode } = req.body;
+  const {
+    TrackNameAr,
+    TrackNameEn,
+    shortCode,
+    NationalityId,
+    ColorCode,
+  } = req.body;
   let data = await RaceCourseModel.findOne({
     where: { _id: req.params.id },
   });
@@ -67,7 +72,8 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
   }
   const updateddata = {
     shortCode: shortCode || data.shortCode,
-    TrackName: TrackName || data.TrackName,
+    TrackNameAr: TrackNameAr || data.TrackNameAr,
+    TrackNameEn: TrackNameEn || data.TrackNameEn,
     ColorCode: ColorCode || data.ColorCode,
     NationalityId: NationalityId || data.NationalityId,
   };

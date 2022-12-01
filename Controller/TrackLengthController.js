@@ -34,27 +34,28 @@ exports.TrackLengthGet = Trackerror(async (req, res, next) => {
 });
 exports.GetTrackLengthAdmin = Trackerror(async (req, res, next) => {});
 exports.EditTrackLength = Trackerror(async (req, res, next) => {
-  // const { NameEn, NameAr, shortCode } = req.body;
-  // let data = await TrackLengthModel.findOne({
-  //   where: { _id: req.params.id },
-  // });
-  // if (data === null) {
-  //   return next(new HandlerCallBack("data not found", 404));
-  // }
-  // const updateddata = {
-  //   shortCode: shortCode || data.shortCode,
-  //   NameEn: NameEn || data.NameEn,
-  //   NameAr: NameAr || data.NameAr,
-  // };
-  // data = await TrackLengthModel.update(updateddata, {
-  //   where: {
-  //     _id: req.params.id,
-  //   },
-  // });
-  // res.status(200).json({
-  //   success: true,
-  //   data,
-  // });
+  const { RaceCourse, TrackLength, RailPosition, GroundType } = req.body;
+  let data = await TrackLengthModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const updateddata = {
+    RaceCourse: RaceCourse || data.RaceCourse,
+    TrackLength: TrackLength || data.TrackLength,
+    RailPosition: RailPosition || data.RailPosition,
+    GroundType: GroundType || data.GroundType,
+  };
+  data = await TrackLengthModel.update(updateddata, {
+    where: {
+      _id: req.params.id,
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
 });
 exports.DeleteTrackLength = Trackerror(async (req, res, next) => {
   const data = await TrackLengthModel.findOne({
