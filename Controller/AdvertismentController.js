@@ -10,6 +10,7 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
+const { EnglishRegex } = require("../Utils/EnglishLanguageRegex");
 const Features = require("../Utils/Features");
 const io = require("../socket");
 
@@ -19,12 +20,14 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
-  console.log(`https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`)
+  console.log(
+    `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`
+  );
   if (
     ArRegex.test(DescriptionAr) &&
     ArRegex.test(TitleAr) &&
-    ArRegex.test(DescriptionEn) == false &&
-    ArRegex.test(TitleEn) == false
+    EnglishRegex.test(DescriptionEn) &&
+    EnglishRegex.test(TitleEn)
   ) {
     const data = await AdvertismentModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
