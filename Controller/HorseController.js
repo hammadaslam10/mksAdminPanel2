@@ -71,7 +71,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.create({
     HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
     NameEn: NameEn,
-    NameEn: NameEn,
     DOB: DOB,
     NameAr: NameAr,
     ActiveTrainer: ActiveTrainer,
@@ -79,7 +78,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Remarks: Remarks,
     Sex: Sex,
     Color: Color,
-     Earning: Earning,
+    Earning: Earning,
     History: History,
     STARS: STARS,
     ActiveOwner: ActiveOwner,
@@ -182,14 +181,14 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
   });
+
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    const updateddata = await HorseModel.create({
+    const updateddata = {
       HorseImage: data.HorseImage,
       NameEn: NameEn || data.NameEn,
-
       DOB: DOB || data.DOB,
       NameAr: NameAr || data.NameAr,
       Breeder: Breeder || data.Breeder,
@@ -209,7 +208,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       ColorID: ColorID || data.ColorID,
       CreationId: CreationId || data.CreationId,
       NationalityId: NationalityId || data.NationalityId,
-    });
+    };
     data = await HorseModel.update(updateddata, {
       where: {
         _id: req.params.id,
@@ -229,7 +228,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       212
     );
     await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
-    const updateddata = await HorseModel.create({
+    const updateddata = {
       HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
       NameEn: NameEn || data.NameEn,
       NameEn: NameEn || data.NameEn,
@@ -253,7 +252,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       ColorID: ColorID || data.ColorID,
       NationalityId: NationalityId || data.NationalityId,
       CreationId: CreationId || data.CreationId,
-    });
+    };
     data = await HorseModel.update(updateddata, {
       where: {
         _id: req.params.id,
