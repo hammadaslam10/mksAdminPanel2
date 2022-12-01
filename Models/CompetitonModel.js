@@ -8,79 +8,79 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       CompetitionCategory: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       CompetitionCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Competition will have CompetitionCode" },
-          notEmpty: { msg: "CompetitionCode  will not be empty" }
-        }
+          notEmpty: { msg: "CompetitionCode  will not be empty" },
+        },
       },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Competition will have Name" },
-          notEmpty: { msg: "Name  will not be empty" }
-        }
+          notEmpty: { msg: "Name  will not be empty" },
+        },
       },
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06FF]/,
+          is: /^[ء-ي\s]*$/,
           is: {
-            msg: "Name Must Be In Arabic"
-          }
-        }
+            msg: "Name Must Be In Arabic",
+          },
+        },
       },
       DescEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Competition will have Desc" },
-          notEmpty: { msg: "Descritpion  will not be empty" }
-        }
+          notEmpty: { msg: "Descritpion  will not be empty" },
+        },
       },
       DescAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06FF]/,
+          is: /^[ء-ي\s]*$/,
           is: {
-            msg: "Desc Must Be In Arabic"
-          }
-        }
+            msg: "Desc Must Be In Arabic",
+          },
+        },
       },
       shortCode: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Competition will have shortCode" },
-          notEmpty: { msg: "shortCode  will not be empty" }
-        }
+          notEmpty: { msg: "shortCode  will not be empty" },
+        },
       },
 
       pickCount: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
       },
       TriCount: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
       },
       StartDate: {
         type: DataTypes.DATE,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
-      paranoid: true
+      paranoid: true,
     }
   );
   return CompetitonModel;

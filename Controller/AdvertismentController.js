@@ -19,10 +19,12 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
-  console.log(
-    `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`
-  );
+  // await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  // console.log(
+  //   `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`
+  // );
+  console.log(EnglishRegex.test(DescriptionEn));
+  console.log(EnglishRegex.test(TitleEn));
   if (
     ArRegex.test(DescriptionAr) &&
     ArRegex.test(TitleAr) &&
