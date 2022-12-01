@@ -41,12 +41,8 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = Db;
 db.ColorModel = require("../Models/ColorModel")(Db, DataTypes);
+db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
 db.SubscriberModel = require("../Models/SubscriberModel")(Db, DataTypes);
-db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
-db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
-db.JockeyModel = require("../Models/JockeyModel")(Db, DataTypes);
-db.TrainerModel = require("../Models/TrainerModel")(Db, DataTypes);
-db.RaceCourseModel = require("../Models/RaceCourseModel")(Db, DataTypes);
 db.AdvertismentModel = require("../Models/AdvertismentModel")(Db, DataTypes);
 db.NewsModel = require("../Models/NewsModel")(Db, DataTypes);
 db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
@@ -55,24 +51,28 @@ db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
 db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
-db.BreederModel = require("../Models/BreederModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
-  require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
+require("../Models/CompetitionRacesPointsModel")(Db, DataTypes);
 db.SeokeywordModel = require("../Models/SeoKeywordModel")(Db, DataTypes);
 db.CompetitonModel = require("../Models/CompetitonModel")(Db, DataTypes);
 db.SexModel = require("../Models/SexModel")(Db, DataTypes);
 db.NationalityModel = require("../Models/NationalityModel")(Db, DataTypes);
 db.MeetingTypeModel = require("../Models/MeetingTypeModel")(Db, DataTypes);
-db.TrackLengthModel = require("../Models/TrackLengthModel")(Db, DataTypes);
 db.HorseKindModel = require("../Models/HorseKindModel")(Db, DataTypes);
 db.OwnerSilkColorModel = require("../Models/OwnerSilkColorModel")(
   Db,
   DataTypes
-);
-db.EmailTemplateModel = require("../Models/EmailTemplateModel")(Db, DataTypes);
-db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
+  );
+  db.RaceCourseModel = require("../Models/RaceCourseModel")(Db, DataTypes);
+  db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
+  db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
+  db.JockeyModel = require("../Models/JockeyModel")(Db, DataTypes);
+  db.TrainerModel = require("../Models/TrainerModel")(Db, DataTypes);
+  db.TrackLengthModel = require("../Models/TrackLengthModel")(Db, DataTypes);
+  db.EmailTemplateModel = require("../Models/EmailTemplateModel")(Db, DataTypes);
+  db.RaceCardModel = require("../Models/RaceCardModel")(Db, DataTypes);
 db.RaceAndVerdictsJockeyModel = require("../Models/RaceAndVerdictsJockeyModel")(
   Db,
   DataTypes
@@ -80,8 +80,8 @@ db.RaceAndVerdictsJockeyModel = require("../Models/RaceAndVerdictsJockeyModel")(
 db.RaceAndVerdictsHorseModel = require("../Models/RaceAndVerdictsHorseModel")(
   Db,
   DataTypes
-);
-
+  );
+  
 db.RaceTypeModel = require("../Models/RaceTypeModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.RaceNameModel = require("../Models/RaceNameModel")(Db, DataTypes);

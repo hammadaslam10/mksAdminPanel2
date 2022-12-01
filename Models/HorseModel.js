@@ -159,10 +159,10 @@ module.exports = (sequelize, DataTypes) => {
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
-        // references: {
-        //   model: "ColorModel",
-        //   key: "_id",
-        // },
+        references: {
+          model: "ColorModel",
+          key: "_id",
+        },
       },
     },
     {
