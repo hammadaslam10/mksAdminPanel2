@@ -76,7 +76,7 @@ app.use("/api/v1", EquipmentRoutes);
 app.use("/api/v1", GroundTypeRoutes);
 app.use("/api/v1", VerdictRoute);
 app.use("/api/v1", ComeptitionRoute);
-// app.use("/api/v1", CompetitionCategoryRoutes);
+app.use("/api/v1", CompetitionCategoryRoutes);
 // app.use("/api/v1", SearchRoutes);
 cron.schedule("* * * * *", () => {
   console.log("cron job working");
