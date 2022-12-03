@@ -63,13 +63,9 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Remarks  will not be empty" },
         },
       },
-      NationalityId: {
+      NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id",
-        },
       },
     },
     {

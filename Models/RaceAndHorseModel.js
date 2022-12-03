@@ -10,12 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       Equipment: {
         type: DataTypes.UUID,
         allowNull: false,
-        reference: {
-          references: {
-            model: "EquipmnetModel",
-            key: "_id",
-          },
-        },
       },
     },
     {

@@ -31,10 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       RaceCardCourse: {
         type: DataTypes.UUID,
         allowNull: false,
-        reference: {
-          model: "RaceCourseModel",
-          key: "_id",
-        },
       },
     },
     {

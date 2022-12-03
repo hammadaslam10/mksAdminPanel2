@@ -62,7 +62,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Earning,
     History,
     ActiveOwner,
-    NationalityId,
+    NationalityID,
     Foal,
     PurchasePrice,
     Cap,
@@ -89,7 +89,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     History: History,
     STARS: STARS,
     ActiveOwner: ActiveOwner,
-    NationalityId: NationalityId,
+    NationalityID: NationalityID,
     Foal: Foal,
     PurchasePrice: PurchasePrice,
     Cap: Cap,
@@ -182,7 +182,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     Cap,
     Rds,
     ColorID,
-    NationalityId,
+    NationalityID,
     CreationId,
   } = req.body;
   let data = await HorseModel.findOne({
@@ -214,7 +214,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Rds: Rds || data.Rds,
       ColorID: ColorID || data.ColorID,
       CreationId: CreationId || data.CreationId,
-      NationalityId: NationalityId || data.NationalityId,
+      NationalityID: NationalityID || data.NationalityID,
     };
     data = await HorseModel.update(updateddata, {
       where: {
@@ -257,7 +257,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Cap: Cap || data.Cap,
       Rds: Rds || data.Rds,
       ColorID: ColorID || data.ColorID,
-      NationalityId: NationalityId || data.NationalityId,
+      NationalityID: NationalityID || data.NationalityID,
       CreationId: CreationId || data.CreationId,
     };
     data = await HorseModel.update(updateddata, {

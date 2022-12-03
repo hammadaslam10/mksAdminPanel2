@@ -20,11 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       RaceCourse: {
         type: DataTypes.UUID,
-        references: {
-          model: "RaceCourseModel",
-          key: "_id",
-        },
-      },
+          },
       GroundType: {
         type: DataTypes.UUID,
         allowNull: false,

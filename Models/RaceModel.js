@@ -17,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       MeetingType: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "MeetingTypeModel",
-          key: "_id",
-        },
       },
       MeetingCode: {
         type: DataTypes.STRING,
@@ -29,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       RaceName: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "RaceNameModel",
-          key: "_id",
-        },
         validate: {
           notNull: { msg: "Race will have Race Name" },
           notEmpty: { msg: "Race Name  will not be empty" },
@@ -84,18 +76,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       RaceCourse: {
         type: DataTypes.UUID,
-        references: {
-          model: "RaceCourseModel",
-          key: "_id",
-        },
       },
       RaceType: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "RaceTypeModel",
-          key: "_id",
-        },
         validate: {
           notNull: { msg: "Race will have RaceType" },
           notEmpty: { msg: "RaceType  will not be empty" },
@@ -132,10 +116,6 @@ module.exports = (sequelize, DataTypes) => {
       RaceType: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "RaceTypeModel",
-          key: "_id",
-        },
         validate: {
           notNull: { msg: "Race will have RaceType" },
           notEmpty: { msg: "RaceType  will not be empty" },
@@ -174,11 +154,7 @@ module.exports = (sequelize, DataTypes) => {
       Sponsor: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "SponsorModel",
-          key: "_id",
-        },
-        validate: {
+          validate: {
           notNull: { msg: "Race will have Sponsor" },
           notEmpty: { msg: "Sponsor  will not be empty" },
         },

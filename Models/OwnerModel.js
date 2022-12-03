@@ -21,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id",
-        },
       },
       NameAr: {
         type: DataTypes.STRING,

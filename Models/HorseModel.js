@@ -23,18 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "BreederModel",
-          key: "_id",
-        },
       },
       Sex: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "SexModel",
-          key: "_id",
-        },
       },
       DOB: {
         type: DataTypes.DATE,
@@ -43,63 +35,27 @@ module.exports = (sequelize, DataTypes) => {
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "OwnerModel",
-          key: "_id",
-        },
       },
-      // ActiveJockey: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "JockeyModel",
-      //     key: "_id",
-      //   },
-      // },
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "TrainerModel",
-          key: "_id",
-        },
       },
-      NationalityId: {
+      NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id",
-        },
       },
       CreationId: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id",
-        },
       },
       Dam: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id",
-        },
       },
       Sire: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id",
-        },
       },
       GSire: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id",
-        },
       },
 
       Foal: {
@@ -159,10 +115,6 @@ module.exports = (sequelize, DataTypes) => {
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "ColorModel",
-          key: "_id",
-        },
       },
     },
     {
@@ -173,19 +125,6 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  HorseModel.belongsTo(HorseModel, {
-    foreignKey: "Dam",
-    as: "DamData",
-  });
-
-  HorseModel.belongsTo(HorseModel, {
-    foreignKey: "Sire",
-    as: "SireData",
-  });
-  HorseModel.belongsTo(HorseModel, {
-    foreignKey: "GSire",
-    as: "GSireData",
-  });
 
   return HorseModel;
 };
