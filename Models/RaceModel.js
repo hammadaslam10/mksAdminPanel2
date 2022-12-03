@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /"^[ء-يds]+$"/,
+          is: /(\w*[ء-ي]\w*)/gm,
           is: {
             msg: "Race Description Must Be In Arabic",
           },
@@ -154,7 +154,7 @@ module.exports = (sequelize, DataTypes) => {
       Sponsor: {
         type: DataTypes.UUID,
         allowNull: false,
-          validate: {
+        validate: {
           notNull: { msg: "Race will have Sponsor" },
           notEmpty: { msg: "Sponsor  will not be empty" },
         },
