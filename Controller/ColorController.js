@@ -78,15 +78,25 @@ exports.EditColor = Trackerror(async (req, res, next) => {
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
   };
-  data = await ColorModel.update(updateddata, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  try {
+    data = await ColorModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({ status: "error", message: "short code already exists" });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
+  }
 });
 exports.DeleteColor = Trackerror(async (req, res, next) => {
   const data = await ColorModel.findOne({
