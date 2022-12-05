@@ -142,15 +142,7 @@ db.RaceModel.belongsTo(db.CompetitonModel, {
   foreignKey: "Competition",
   as: "CompetitionData",
 });
-// -------------------------------------Jockey----------------------------
-db.NationalityModel.hasMany(db.JockeyModel, {
-  foreignKey: "NationalityID",
-  as: "JockeyNationalityData",
-});
-db.JockeyModel.belongsTo(db.NationalityModel, {
-  foreignKey: "NationalityID",
-  as: "JockeyNationalityData",
-});
+
 // -------------------------------------HorseandJockey----------------------------
 db.JockeyModel.belongsToMany(db.HorseModel, {
   through: "HorseJockeyComboModel",
@@ -162,6 +154,9 @@ db.RaceModel.belongsToMany(db.JockeyModel, {
   through: "RaceAndJockeyModel",
 });
 // -------------------------------------RaceandJockey----------------------------
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
+});
 db.JockeyModel.belongsToMany(db.RaceModel, {
   through: "RaceAndJockeyModel",
 });
@@ -456,5 +451,14 @@ db.RaceModel.belongsToMany(db.HorseModel, {
 });
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
+});
+// -------------------------------------Jockey----------------------------
+db.NationalityModel.hasMany(db.JockeyModel, {
+  foreignKey: "NationalityID",
+  as: "JockeyNationalityData",
+});
+db.JockeyModel.belongsTo(db.NationalityModel, {
+  foreignKey: "NationalityID",
+  as: "JockeyNationalityData",
 });
 module.exports = db;

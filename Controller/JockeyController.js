@@ -48,7 +48,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       RemarksEn: RemarksEn,
       RemarksAr: RemarksAr,
       JockeyLicenseDate: JockeyLicenseDate,
-      Rating: Rating
+      Rating: Rating,
     });
     res.status(201).json({
       success: true,
