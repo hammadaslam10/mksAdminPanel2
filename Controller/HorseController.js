@@ -236,7 +236,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     );
     await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);
     const updateddata = {
-      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
+      HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${Image}`,
       NameEn: NameEn || data.NameEn,
       NameEn: NameEn || data.NameEn,
       NameEn: NameEn || data.NameEn,
