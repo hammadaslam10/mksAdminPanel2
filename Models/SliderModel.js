@@ -37,11 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      initialAutoIncrement: 1000,
-    },
-    {
       freezeTableName: true,
       paranoid: true,
+      initialAutoIncrement: 1000,
     }
   );
   return SliderModel;

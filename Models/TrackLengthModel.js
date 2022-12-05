@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       RaceCourse: {
         type: DataTypes.UUID,
-          },
+      },
       GroundType: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -43,11 +43,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      initialAutoIncrement: 1000,
-    },
-    {
       freezeTableName: true,
       paranoid: true,
+      initialAutoIncrement: 1000,
     }
   );
   return TrackLengthModel;
