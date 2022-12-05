@@ -227,10 +227,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.JockeyModel,
         include: { all: true },
       },
-      {
-        model: db.RaceAndVerdictsHorseModel,
-        as: "RaceModelIdData",
-      },
     ],
   });
   if (!data) {
