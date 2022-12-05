@@ -112,6 +112,8 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
         NameEn: NameEn || data.NameEn,
         NameAr: NameAr || data.NameAr,
         ShortEn: ShortEn || data.ShortEn,
+        TitleAr: TitleAr || data.TitleAr,
+        TitleEn: TitleEn || data.TitleEn,
         ShortAr: ShortAr || data.ShortAr,
         RegistrationDate: RegistrationDate || data.RegistrationDate,
         NationalityID: NationalityID || data.NationalityID,
@@ -150,6 +152,8 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       SilkColor: SilkColor || data.SilkColor,
       Horses: Horses || data.Horses,
       Rating: Rating || data.Rating,
+      TitleAr: TitleAr || data.TitleAr,
+      TitleEn: TitleEn || data.TitleEn,
     };
     if (
       ArRegex.test(updateddata.NameAr) &&
