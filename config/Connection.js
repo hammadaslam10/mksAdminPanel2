@@ -449,4 +449,12 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
   foreignKey: "CompetitionCategory",
   as: "CompetitionCategoryData",
 });
+// db.RaceModel.hasOne(db.RaceCardModel, {
+//   foreignKey: "RaceCardCourse",
+//   as: "RaceCardCourseData",
+// });
+// db.RaceCardModel.belongsTo(db.RaceCourseModel, {
+//   foreignKey: "RaceCardCourse",
+//   as: "RaceCardCourseData",
+// });
 module.exports = db;

@@ -15,6 +15,7 @@ const {
   IncludeVerdicts,
   GetRaceResultToBeAnnounced,
   GetRaceonTimeAndRaceCourse,
+  SoftDeleteRace,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
@@ -31,6 +32,7 @@ router.route("/addracehorses/:id").post(IncludeHorses);
 router.route("/addverdicts/:id").post(IncludeVerdicts);
 router.route("/updaterace/:id").put(EditRace);
 router.route("/deleterace/:id").delete(DeleteRace);
+router.route("/softdeleterace/:id").delete(SoftDeleteRace);
 router
   .route("/getracesthroughracecourseandtime/:RaceCourseid/:DayNTime")
   .post(GetRaceonTimeAndRaceCourse);

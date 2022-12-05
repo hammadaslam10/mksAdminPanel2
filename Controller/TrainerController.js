@@ -180,7 +180,6 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
   });

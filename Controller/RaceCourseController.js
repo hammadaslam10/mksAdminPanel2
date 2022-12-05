@@ -86,10 +86,28 @@ exports.DeleteCourse = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${RaceCourse}/${data.image.slice(-64)}`);
   await RaceCourseModel.destroy({
     where: { _id: req.params.id },
     force: true,
+  });
+
+  await deleteFile(`${RaceCourse}/${data.image.slice(-64)}`);
+  res.status(200).json({
+    success: true,
+    message: "data Delete Successfully",
+  });
+});
+exports.SoftDeleteCourse = Trackerror(async (req, res, next) => {
+  const data = await RaceCourseModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  console.log(data);
+  await RaceCourseModel.destroy({
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
