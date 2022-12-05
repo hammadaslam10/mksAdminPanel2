@@ -26,7 +26,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     ShortNameAr,
     Detail,
     Remarks,
-    NationalityId,
+    NationalityID,
     Rating,
   } = req.body;
   const file = req.files.image;
@@ -51,7 +51,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail,
       Remarks: Remarks,
       Rating: Rating,
-      NationalityId:NationalityId
+      NationalityID: NationalityID,
     });
 
     res.status(201).json({
@@ -73,7 +73,7 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     Detail,
     Remarks,
     Rating,
-    NationalityId
+    NationalityID,
   } = req.body;
   let data = await TrainerModel.findOne({
     where: { _id: req.params.id },
@@ -95,7 +95,7 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
       Rating: Rating || data.Rating,
-      NationalityId:NationalityId || data.NationalityId
+      NationalityID: NationalityID || data.NationalityID,
     };
     data = await TrainerModel.update(updateddata, {
       where: {
