@@ -122,9 +122,9 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
-// db.sequelize.sync({ force: false }).then(() => {
-//   console.log("yes re-sync done!");
-// });
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("yes re-sync done!");
+});
 // -------------------------------------Competition----------------------------
 db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
   foreignKey: "CompetitionCategory",

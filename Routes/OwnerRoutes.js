@@ -15,5 +15,5 @@ router.route("/createowner", upload.array("image")).post(CreateOwner);
 router.route("/Ownerget").get(ViewAllOwner);
 router.route("/deleteOwner/:id").delete(DeleteOwner);
 router.route("/updateOwner/:id", upload.single("image")).put(UpdateOwnerDetail);
-router.post("/softdeleteOwner/:id").delete(SoftDeleteOwner);
+router.route("/softdeleteowner/:id").delete(SoftDeleteOwner);
 module.exports = router;
