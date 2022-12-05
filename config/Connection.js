@@ -11,24 +11,24 @@ let options = {
   language: "en",
   Protocol: "TCP",
 };
-const Db = new Sequelize(
-  process.env.RDSDB,
-  process.env.RDSUSER,
-  process.env.RDSPASSWORD,
-  {
-    ...options,
-  }
-);
-
 // const Db = new Sequelize(
-//   process.env.SQLDB,
-//   process.env.SQLHOST,
-//   process.env.SQLPASSWORD,
+//   process.env.RDSDB,
+//   process.env.RDSUSER,
+//   process.env.RDSPASSWORD,
 //   {
-//     dialect: "mysql",
-//     // logging: false,
+//     ...options,
 //   }
 // );
+
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+    // logging: false,
+  }
+);
 
 Db.authenticate()
   .then(() => {
@@ -124,6 +124,23 @@ db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done!");
+});
+// -------------------------------------Competition----------------------------
+db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryData",
+});
+db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
+  foreignKey: "CompetitionCategory",
+  as: "CompetitionCategoryData",
+});
+db.CompetitonModel.hasMany(db.RaceModel, {
+  foreignKey: "Competition",
+  as: "CompetitionData",
+});
+db.RaceModel.belongsTo(db.CompetitonModel, {
+  foreignKey: "Competition",
+  as: "CompetitionData",
 });
 // -------------------------------------Jockey----------------------------
 db.NationalityModel.hasMany(db.JockeyModel, {
@@ -440,21 +457,4 @@ db.RaceModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
 });
-// -------------------------------------Competition----------------------------
-db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryData",
-});
-db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryData",
-});
-// db.RaceModel.hasOne(db.RaceCardModel, {
-//   foreignKey: "RaceCardCourse",
-//   as: "RaceCardCourseData",
-// });
-// db.RaceCardModel.belongsTo(db.RaceCourseModel, {
-//   foreignKey: "RaceCardCourse",
-//   as: "RaceCardCourseData",
-// });
 module.exports = db;

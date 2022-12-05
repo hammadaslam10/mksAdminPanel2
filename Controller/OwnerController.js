@@ -108,7 +108,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       ArRegex.test(TitleEn) == false
     ) {
       const updateddata = {
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
+        image: data.Ownerimage,
         NameEn: NameEn || data.NameEn,
         NameAr: NameAr || data.NameAr,
         ShortEn: ShortEn || data.ShortEn,
@@ -134,13 +134,13 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       );
     }
   } else {
-    const file = req.files.image;
-    await deleteFile(`${Owner}/${data.image}`);
+    const file = req.files.Ownerimage;
+    await deleteFile(`${Owner}/${data.Ownerimage}`);
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${Owner}/${Image}`, file.mimetype);
     const updateddata = {
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${data.image}`,
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${Image}`,
       NameEn: NameEn || data.NameEn,
       NameAr: NameAr || data.NameAr,
       ShortEn: ShortEn || data.ShortEn,
