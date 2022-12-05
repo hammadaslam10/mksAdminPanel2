@@ -122,7 +122,7 @@ db.HorseOwnerComboModel = require("../Models/HorseOwnerComboModel")(
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: false, alter: false }).then(() => {
   console.log("yes re-sync done!");
 });
 // -------------------------------------Competition----------------------------

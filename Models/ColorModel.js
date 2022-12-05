@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Color will have ShortCode" },
           notEmpty: { msg: "ShortCode  will not be empty" },
+          // unique: { msg: "Already Existed" },
         },
       },
       NameAr: {

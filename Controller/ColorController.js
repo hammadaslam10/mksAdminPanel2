@@ -18,15 +18,25 @@ exports.GetColorMaxShortCode = Trackerror(async (req, res, next) => {
 exports.CreateColor = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await ColorModel.create({
-      shortCode: shortCode,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await ColorModel.create({
+        shortCode: shortCode,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({ status: "error", message: "short code already exists" });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
