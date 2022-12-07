@@ -407,9 +407,9 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
   through: "HorseOwnerComboModel",
 });
 
-db.HorseModel.belongsToMany(db.JockeyModel, {
-  through: "HorseJockeyComboModel",
-});
+// db.HorseModel.belongsToMany(db.JockeyModel, {
+//   through: "HorseJockeyComboModel",
+// });
 // -------------------------------------RaceandHorse----------------------------
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
