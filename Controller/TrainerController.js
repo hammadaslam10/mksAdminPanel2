@@ -8,10 +8,12 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
 exports.GetTrainer = Trackerror(async (req, res, next) => {
-  const data = await TrainerModel.findAll();
+  const data = await TrainerModel.findAll({
+    include: { all: true }
+  });
   res.status(200).json({
     success: true,
-    data: data,
+    data: data
   });
 });
 exports.CreateTrainer = Trackerror(async (req, res, next) => {
@@ -27,7 +29,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     Detail,
     Remarks,
     NationalityID,
-    Rating,
+    Rating
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -51,12 +53,12 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail,
       Remarks: Remarks,
       Rating: Rating,
-      NationalityID: NationalityID,
+      NationalityID: NationalityID
     });
 
     res.status(201).json({
       success: true,
-      data,
+      data
     });
   }
 });
@@ -73,10 +75,10 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     Detail,
     Remarks,
     Rating,
-    NationalityID,
+    NationalityID
   } = req.body;
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -95,16 +97,16 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
       Rating: Rating || data.Rating,
-      NationalityID: NationalityID || data.NationalityID,
+      NationalityID: NationalityID || data.NationalityID
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } else {
     const file = req.files.image;
@@ -125,35 +127,35 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       DOB: DOB || data.DOB,
       Detail: Detail || data.Detail,
       Remarks: Remarks || data.Remarks,
-      Rating: Rating || data.Rating,
+      Rating: Rating || data.Rating
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.SingleTrainer = Trackerror(async (req, res, next) => {
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return new next("Trainer is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -163,17 +165,17 @@ exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -181,11 +183,11 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
 
   console.log(data);
   await TrainerModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });

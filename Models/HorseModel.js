@@ -8,119 +8,167 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
       HorseImage: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       HorseCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
       },
       HorseKind: {
-        type: DataTypes.UUID,
+        type: DataTypes.UUID
       },
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "BreederModel",
+          key: "_id"
+        }
       },
       Sex: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "SexModel",
+          key: "_id"
+        }
       },
       DOB: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: false
       },
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "OwnerModel",
+          key: "_id"
+        }
       },
+      // ActiveJockey: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   references: {
+      //     model: "JockeyModel",
+      //     key: "_id",
+      //   },
+      // },
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "TrainerModel",
+          key: "_id"
+        }
       },
-      NationalityID: {
+      NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id"
+        }
       },
       CreationId: {
         type: DataTypes.UUID,
         allowNull: false,
+        references: {
+          model: "NationalityModel",
+          key: "_id"
+        }
       },
       Dam: {
         type: DataTypes.UUID,
+        references: {
+          model: "HorseModel",
+          key: "_id"
+        }
       },
       Sire: {
         type: DataTypes.UUID,
+        references: {
+          model: "HorseModel",
+          key: "_id"
+        }
       },
       GSire: {
         type: DataTypes.UUID,
+        references: {
+          model: "HorseModel",
+          key: "_id"
+        }
       },
 
       Foal: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: true
       },
       Remarks: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notContains: /(\w*[ء-ي]\w*)/gm,
+          notContains: /"^[ء-يds]+$"/,
           notContains: {
-            msg: "Name Must Be In English",
+            msg: "Name Must Be In English"
           },
           notNull: { msg: "Horse will have Name" },
-          notEmpty: { msg: "Name   will not be empty" },
-        },
+          notEmpty: { msg: "Name   will not be empty" }
+        }
       },
 
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /(\w*[ء-ي]\w*)/gm,
+          is: /"^[ء-يds]+$"/,
           is: {
-            msg: "Title Must Be In Arabic",
-          },
-        },
+            msg: "Title Must Be In Arabic"
+          }
+        }
       },
       PurchasePrice: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
+        allowNull: false
       },
       isGelded: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0
       },
       STARS: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
       Rds: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0
       },
       HorseStatus: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0
       },
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
-      },
+        references: {
+          model: "ColorModel",
+          key: "_id"
+        }
+      }
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 1000,
+      initialAutoIncrement: 1000
     }
   );
 
