@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       Offset: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       Value: {
