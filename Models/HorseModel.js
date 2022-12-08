@@ -23,18 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "BreederModel",
-          key: "_id"
-        }
+      
       },
       Sex: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "SexModel",
-          key: "_id"
-        }
+        
       },
       DOB: {
         type: DataTypes.DATE,
@@ -43,10 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "OwnerModel",
-          key: "_id"
-        }
+       
       },
       // ActiveJockey: {
       //   type: DataTypes.UUID,
@@ -59,47 +50,29 @@ module.exports = (sequelize, DataTypes) => {
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "TrainerModel",
-          key: "_id"
-        }
+      
       },
       NationalityId: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id"
-        }
+       
       },
       CreationId: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "NationalityModel",
-          key: "_id"
-        }
+       
       },
       Dam: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id"
-        }
+       
       },
       Sire: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id"
-        }
+        
       },
       GSire: {
         type: DataTypes.UUID,
-        references: {
-          model: "HorseModel",
-          key: "_id"
-        }
+       
       },
 
       Foal: {
@@ -114,7 +87,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notContains: /"^[ء-يds]+$"/,
+          notContains: /(\w*[ء-ي]\w*)/gm,
           notContains: {
             msg: "Name Must Be In English"
           },
@@ -127,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /"^[ء-يds]+$"/,
+          is: /(\w*[ء-ي]\w*)/gm,
           is: {
             msg: "Title Must Be In Arabic"
           }
@@ -159,10 +132,7 @@ module.exports = (sequelize, DataTypes) => {
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
-        references: {
-          model: "ColorModel",
-          key: "_id"
-        }
+       
       }
     },
     {
