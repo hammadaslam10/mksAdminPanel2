@@ -16,6 +16,7 @@ const {
   GetRaceResultToBeAnnounced,
   GetRaceonTimeAndRaceCourse,
   SoftDeleteRace,
+  RaceWithTime,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
