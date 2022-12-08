@@ -411,9 +411,9 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
 //   through: "HorseJockeyComboModel",
 // });
 // -------------------------------------RaceandHorse----------------------------
-db.HorseModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndHorseModel",
-});
+// db.HorseModel.belongsToMany(db.RaceModel, {
+//   through: "RaceAndHorseModel",
+// });
 
 // -------------------------------------SubscriberAndRace----------------------------
 db.SubscriberModel.belongsToMany(db.HorseModel, {
@@ -473,9 +473,11 @@ db.EquipmentModel.hasMany(db.RaceAndHorseModel, {
 });
 db.RaceModel.belongsToMany(db.HorseModel, {
   through: "RaceAndHorseModel",
+  as: "RaceAndHorseModelData",
 });
 db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
+  as: "RaceAndHorseModelData",
 });
 // -------------------------------------Jockey----------------------------
 db.NationalityModel.hasMany(db.JockeyModel, {

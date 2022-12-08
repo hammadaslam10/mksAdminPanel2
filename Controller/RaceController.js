@@ -16,17 +16,27 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
+
 exports.GetHorsesofraces = Trackerror(async (req, res, next) => {
   let raceid = await RaceModel.findOne({
     where: {
       _id: req.params.id,
     },
   });
+  if (raceid == null) {
+    return next(new HandlerCallBack("Race not found", 404));
+  }
   const data = await db.RaceModel.findAll({
     where: {
       _id: req.params.id,
     },
-    // include:[db.HorseModel]
+    include: [
+      {
+        model: db.HorseModel,
+        as: "RaceCardRacesModelData",
+        include: { all: true },
+      },
+    ],
   });
   res.status(200).json({
     success: true,

@@ -17,10 +17,12 @@ const {
   GetRaceonTimeAndRaceCourse,
   SoftDeleteRace,
   RaceWithTime,
+  GetHorsesofraces,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
 router.route("/getracewithtime").get(RaceWithTime);
+router.route("/GetHorsesofraces").get(GetHorsesofraces);
 router.route("/GetRaceResultToBeAnnounced").get(GetRaceResultToBeAnnounced);
 router.route("/GetRaceTobeOPublished").get(GetRaceTobeOPublished);
 router.route("/getracetobepublished").get(GetRaceTobeOPublished);

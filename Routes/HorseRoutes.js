@@ -6,8 +6,10 @@ const {
   UpdateHorse,
   DeleteHorse,
   SingleHorse,
+  SearchName,
 } = require("../Controller/HorseController");
 router.route("/gethorse").get(GetHorse);
+router.route("/searchhorse_trainer_jockey").get(SearchName);
 router.route("/getsinglehorse/:id").get(SingleHorse);
 router.route("/createhorse").post(CreateHorse);
 router.route("/updatehorse/:id").put(UpdateHorse);

@@ -15,6 +15,37 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
+const { Op } = require("sequelize");
+exports.SearchName = Trackerror(async (req, res, next) => {
+  const { Query } = req.body;
+  const data1 = await HorseModel.findAll({
+    where: {
+      NameEn: {
+        [Op.like]: `%${Query}%`,
+      },
+    },
+  });
+  const data2 = await TrainerModel.findAll({
+    where: {
+      NameEn: {
+        [Op.like]: `%${Query}%`,
+      },
+    },
+  });
+  const data3 = await OwnerModel.findAll({
+    where: {
+      NameEn: {
+        [Op.like]: `%${Query}%`,
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data1,
+    data2,
+    data3,
+  });
+});
 exports.PedigreeHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findAll({});
   res.status(200).json({
