@@ -20,33 +20,17 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
-  console.log(
-    `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`
-  );
-  console.log(ArRegex.test(DescriptionAr));
-  console.log(ArRegex.test(TitleAr));
-  if (
-    ArRegex.test(DescriptionAr) &&
-    ArRegex.test(TitleAr) &&
-    EnglishRegex.test(DescriptionEn) &&
-    EnglishRegex.test(TitleEn)
-  ) {
-    const data = await AdvertismentModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-      DescriptionEn: DescriptionEn.trim(),
-      DescriptionAr: DescriptionAr.trim(),
-      TitleEn: TitleEn.trim(),
-      TitleAr: TitleAr.trim(),
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+  const data = await AdvertismentModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
+    DescriptionEn: DescriptionEn.trim(),
+    DescriptionAr: DescriptionAr.trim(),
+    TitleEn: TitleEn.trim(),
+    TitleAr: TitleAr.trim(),
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.AdsGet = Trackerror(async (req, res, next) => {
   // "SELECT `_id`, `image`, `DescriptionEn`, `DescriptionAr`, `TitleEn`, `TitleAr`, `createdAt`, `updatedAt`, `deletedAt` FROM `AdvertismentModel` AS `AdvertismentModel` WHERE (`AdvertismentModel`.`deletedAt` IS NULL);";
