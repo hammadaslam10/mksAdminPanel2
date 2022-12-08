@@ -187,6 +187,7 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
       },
       {
         model: db.HorseModel,
+        as: "RaceAndHorseModelData",
         include: { all: true },
       },
       {
@@ -326,6 +327,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
       },
       {
         model: db.HorseModel,
+        as: "RaceAndHorseModelData",
         include: { all: true },
       },
       {
