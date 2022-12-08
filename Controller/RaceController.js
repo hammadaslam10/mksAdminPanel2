@@ -22,11 +22,11 @@ exports.GetHorsesofraces = Trackerror(async (req, res, next) => {
       _id: req.params.id,
     },
   });
-  const data = await RaceAndHorseModel.findAll({
+  const data = await db.RaceModel.findAll({
     where: {
       _id: req.params.id,
     },
-    include: { all: true },
+    // include:[db.HorseModel]
   });
   res.status(200).json({
     success: true,
