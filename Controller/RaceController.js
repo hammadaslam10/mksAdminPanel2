@@ -85,6 +85,58 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.RaceWithTime = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    order: [["DayNTime", "ASC"]],
+    include: [
+      {
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData",
+      },
+      {
+        model: db.GroundTypeModel,
+        as: "GroundData",
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+      },
+      {
+        model: db.TrackLengthModel,
+        as: "TrackLengthData",
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+      {
+        model: db.RaceKindModel,
+        as: "RaceKindData",
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData",
+      },
+      {
+        model: db.SponsorModel,
+        as: "SponsorData",
+      },
+      {
+        model: db.HorseModel,
+        include: { all: true },
+      },
+      {
+        model: db.JockeyModel,
+        include: { all: true },
+      },
+    ],
+  });
+
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { RaceStatus: "End" },
