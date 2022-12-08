@@ -456,9 +456,11 @@ db.RaceCardModel.belongsTo(db.RaceCourseModel, {
 // });
 db.RaceCardModel.belongsToMany(db.RaceModel, {
   through: "RaceCardRacesModel",
+  as: "RaceCardRacesModelData",
 });
 db.RaceModel.belongsToMany(db.RaceCardModel, {
   through: "RaceCardRacesModel",
+  as: "RaceCardRacesModelData",
 });
 // -------------------------------------RaceandHorse----------------------------
 db.RaceAndHorseModel.belongsTo(db.EquipmentModel, {

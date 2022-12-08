@@ -26,7 +26,17 @@ exports.CreateRaceCard = Trackerror(async (req, res, next) => {
 });
 exports.RaceCardGet = Trackerror(async (req, res, next) => {
   const data = await RaceCardModel.findAll({
-    include: { all: true  },
+    include: [
+      {
+        model: db.RaceModel,
+        as: "RaceCardRacesModelData",
+        include: { all: true },
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCardCourseData",
+      },
+    ],
   });
   res.status(200).json({
     success: true,
