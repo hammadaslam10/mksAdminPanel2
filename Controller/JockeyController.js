@@ -166,6 +166,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       ShortNameEn: ShortNameEn || data.ShortNameEn,
       ShortNameAr: ShortNameAr || data.ShortNameAr,
       MiniumumJockeyWeight: MiniumumJockeyWeight || data.MiniumumJockeyWeight,
+      MaximumJockeyWeight: MaximumJockeyWeight || data.MaximumJockeyWeight,
       DOB: DOB || data.DOB,
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       NationalityID: NationalityID || data.NationalityID,
