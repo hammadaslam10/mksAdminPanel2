@@ -69,6 +69,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Rds,
     ColorID,
     HorseStatus,
+    Dam,
+    Sire,
+    GSire,
   } = req.body;
 
   const file = req.files.image;
@@ -97,6 +100,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     ColorID: ColorID,
     CreationId: CreationId,
     HorseStatus: HorseStatus,
+    Dam: Dam,
+    Sire: Sire,
+    GSire: GSire,
   });
 
   if (data._id) {
@@ -184,6 +190,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     ColorID,
     NationalityID,
     CreationId,
+    
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -311,4 +318,3 @@ exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
     message: "data Delete Successfully",
   });
 });
-
