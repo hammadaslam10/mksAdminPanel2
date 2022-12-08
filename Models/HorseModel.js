@@ -124,6 +124,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
+      Height: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,

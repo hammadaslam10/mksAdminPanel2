@@ -63,31 +63,7 @@ exports.CompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-// let CompetitionID = await CompetitonModel.findOne({
-//   where: { _id: req.params.id }
-// });
-// if (!CompetitionID) {
-//   return next(new HandlerCallBack("Race Card not found", 404));
-// } else {
 
-//   await RaceEntryData.map(async (singlerace) => {
-//     await singlerace.map(async (singleracedetail) => {
-//       singleracedetail = singleracedetail.split(",");
-//       await CompetitionRacesPointsModel.findOrCreate({
-//         where: {
-//           CompetitionModelId: CompetitionID,
-//           RaceModelId: singleracedetail[0],
-//           Points: singleracedetail[1],
-//           BonusPoints: BonusPoints[2]
-//         }
-//       });
-//     });
-//   });
-// }
-// res.status(200).json({
-//   success: true,
-//   message: "Comeptition Races Added"
-// });
 exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
   let CompetitionID = await CompetitonModel.findOne({
     where: { _id: req.params.id },
