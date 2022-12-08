@@ -480,6 +480,18 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
     success: true,
   });
 });
+exports.GetRaceWithDayntime = Trackerror(async (req, res, next) => {
+  const { DayNTime } = req.body;
+  const data = RaceModel.findAll({
+    where: {
+      DayNTime: DayNTime,
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.EditRace = Trackerror(async (req, res, next) => {
   const {
     RaceKind,
