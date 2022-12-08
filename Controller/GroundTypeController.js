@@ -18,15 +18,25 @@ exports.GetGroundTypeMaxShortCode = Trackerror(async (req, res, next) => {
 exports.CreateGroundType = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await GroundTypeModel.create({
-      shortCode: shortCode,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await GroundTypeModel.create({
+        shortCode: shortCode,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({ status: "error", message: "short code already exists" });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
@@ -49,6 +59,7 @@ exports.EditGroundType = Trackerror(async (req, res, next) => {
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
+  try{
   const updateddata = {
     shortCode: shortCode || data.shortCode,
     NameEn: NameEn || data.NameEn,
@@ -63,6 +74,15 @@ exports.EditGroundType = Trackerror(async (req, res, next) => {
     success: true,
     data,
   });
+} catch (error) {
+  if (error.name === "SequelizeUniqueConstraintError") {
+    res.status(403);
+    res.send({ status: "error", message: "short code already exists" });
+  } else {
+    res.status(500);
+    res.send({ status: "error", message: "Something went wrong" });
+  }
+}
 });
 exports.DeleteGroundType = Trackerror(async (req, res, next) => {
   const data = await GroundTypeModel.findOne({

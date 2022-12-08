@@ -29,22 +29,32 @@ exports.EditEmailTemplate = Trackerror(async (req, res, next) => {
   let data = await EmailTemplateModel.findOne({
     where: { _id: req.params.id },
   });
-  if (data === null) {
-    return next(new HandlerCallBack("data not found", 404));
+  try {
+    if (data === null) {
+      return next(new HandlerCallBack("data not found", 404));
+    }
+    const updateddata = {
+      TemplateName: TemplateName || data.TemplateName,
+      Subject: Subject || data.Subject,
+    };
+    data = await EmailTemplateModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({ status: "error", message: "short code already exists" });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
   }
-  const updateddata = {
-    TemplateName: TemplateName || data.TemplateName,
-    Subject: Subject || data.Subject,
-  };
-  data = await EmailTemplateModel.update(updateddata, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
 });
 exports.DeleteEmailTemplate = Trackerror(async (req, res, next) => {
   const data = await EmailTemplateModel.findOne({

@@ -18,15 +18,25 @@ exports.GetEquipmentMaxShortCode = Trackerror(async (req, res, next) => {
 exports.CreateEquipment = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await EquipmentModel.create({
-      shortCode: shortCode,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await EquipmentModel.create({
+        shortCode: shortCode,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({ status: "error", message: "short code already exists" });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
@@ -49,20 +59,30 @@ exports.EditEquipment = Trackerror(async (req, res, next) => {
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const updateddata = {
-    shortCode: shortCode || data.shortCode,
-    NameEn: NameEn || data.NameEn,
-    NameAr: NameAr || data.NameAr,
-  };
-  data = await EquipmentModel.update(updateddata, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  try {
+    const updateddata = {
+      shortCode: shortCode || data.shortCode,
+      NameEn: NameEn || data.NameEn,
+      NameAr: NameAr || data.NameAr,
+    };
+    data = await EquipmentModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({ status: "error", message: "short code already exists" });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
+  }
 });
 exports.DeleteEquipment = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findOne({

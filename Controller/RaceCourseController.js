@@ -40,23 +40,32 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   const { TrackNameAr, TrackNameEn, shortCode, NationalityID, ColorCode } =
     req.body;
-
-  const file = req.files.image;
-  let Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
-  const data = await RaceCourseModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
-    TrackNameAr: TrackNameAr,
-    TrackNameEn: TrackNameEn,
-    ColorCode: ColorCode,
-    NationalityID: NationalityID,
-    shortCode: shortCode,
-  });
-  res.status(201).json({
-    success: true,
-    data,
-  });
+  try {
+    const file = req.files.image;
+    let Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
+    const data = await RaceCourseModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
+      TrackNameAr: TrackNameAr,
+      TrackNameEn: TrackNameEn,
+      ColorCode: ColorCode,
+      NationalityID: NationalityID,
+      shortCode: shortCode,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({ status: "error", message: "short code already exists" });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
+  }
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
   const { TrackNameAr, TrackNameEn, shortCode, NationalityID, ColorCode } =
@@ -67,22 +76,32 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const updateddata = {
-    shortCode: shortCode || data.shortCode,
-    TrackNameAr: TrackNameAr || data.TrackNameAr,
-    TrackNameEn: TrackNameEn || data.TrackNameEn,
-    ColorCode: ColorCode || data.ColorCode,
-    NationalityID: NationalityID || data.NationalityID,
-  };
-  data = await RaceCourseModel.update(updateddata, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  try {
+    const updateddata = {
+      shortCode: shortCode || data.shortCode,
+      TrackNameAr: TrackNameAr || data.TrackNameAr,
+      TrackNameEn: TrackNameEn || data.TrackNameEn,
+      ColorCode: ColorCode || data.ColorCode,
+      NationalityID: NationalityID || data.NationalityID,
+    };
+    data = await RaceCourseModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({ status: "error", message: "short code already exists" });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
+  }
 });
 exports.DeleteCourse = Trackerror(async (req, res, next) => {
   const data = await RaceCourseModel.findOne({
