@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       
       },
-      NationalityId: {
+      NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
        
