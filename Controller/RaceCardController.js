@@ -1,5 +1,6 @@
 const db = require("../config/Connection");
 const RaceCardModel = db.RaceCardModel;
+const RaceCardRacesModel = db.RaceCardRacesModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
@@ -40,13 +41,18 @@ exports.AddRaces = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
     let { RaceEntry } = req.body;
-    await RaceEntry.map(async (singlerace) => {
-      await RaceCardModel.findOrCreate({
+    let RaceEntryData = Conversion(RaceEntry);
+    await RaceEntryData.map(async (singlerace) => {
+      await RaceCardRacesModel.findOrCreate({
         where: {
           RaceCardModelId: req.params.id,
           RaceModelId: singlerace,
         },
       });
+    });
+    res.status(200).json({
+      success: true,
+      msg: "Races Get Added",
     });
   }
 });
@@ -109,7 +115,7 @@ exports.SoftDeleteRaceCard = Trackerror(async (req, res, next) => {
     message: "Soft Delete Successfully",
   });
 });
-exports.AddRacesInRaceCard = Trackerror(async(req,res,next)=>{
+exports.AddRacesInRaceCard = Trackerror(async (req, res, next) => {
   let RaceCardID = await RaceCardModel.findOne({
     where: { _id: req.params.id },
   });
@@ -117,13 +123,18 @@ exports.AddRacesInRaceCard = Trackerror(async(req,res,next)=>{
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
     let { RaceEntry } = req.body;
-    await RaceEntry.map(async (singlerace) => {
+    let RaceEntryData = Conversion(RaceEntry);
+    await RaceEntryData.map(async (singlerace) => {
       await RaceCardModel.findOrCreate({
         where: {
-          RaceCardModelId: RaceCardID,
+          RaceCardModelId: req.params.id,
           RaceModelId: singlerace,
         },
       });
     });
+    res.status(200).json({
+      success: true,
+      msg: "Races Get Added",
+    });
   }
-})
+});
