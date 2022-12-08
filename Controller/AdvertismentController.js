@@ -33,10 +33,10 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   ) {
     const data = await AdvertismentModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-      DescriptionEn: DescriptionEn,
-      DescriptionAr: DescriptionAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
+      DescriptionEn: DescriptionEn.trim(),
+      DescriptionAr: DescriptionAr.trim(),
+      TitleEn: TitleEn.trim(),
+      TitleAr: TitleAr.trim(),
     });
     res.status(201).json({
       success: true,

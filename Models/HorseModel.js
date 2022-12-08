@@ -8,36 +8,33 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       HorseImage: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       HorseCode: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       HorseKind: {
-        type: DataTypes.UUID
+        type: DataTypes.UUID,
       },
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
-      
       },
       Sex: {
         type: DataTypes.UUID,
         allowNull: false,
-        
       },
       DOB: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
       },
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
-       
       },
       // ActiveJockey: {
       //   type: DataTypes.UUID,
@@ -50,95 +47,88 @@ module.exports = (sequelize, DataTypes) => {
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
-      
       },
       NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
-       
       },
       CreationId: {
         type: DataTypes.UUID,
         allowNull: false,
-       
       },
       Dam: {
         type: DataTypes.UUID,
-       
       },
       Sire: {
         type: DataTypes.UUID,
-        
       },
       GSire: {
         type: DataTypes.UUID,
-       
       },
 
       Foal: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
       },
       Remarks: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notContains: /(\w*[ء-ي]\w*)/gm,
+          notContains: /[\u0600-\u06FF]/gm,
           notContains: {
-            msg: "Name Must Be In English"
+            msg: "Name Must Be In English",
           },
           notNull: { msg: "Horse will have Name" },
-          notEmpty: { msg: "Name   will not be empty" }
-        }
+          notEmpty: { msg: "Name   will not be empty" },
+        },
       },
 
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /(\w*[ء-ي]\w*)/gm,
+          is: /[\u0600-\u06FF]/gm,
           is: {
-            msg: "Title Must Be In Arabic"
-          }
-        }
+            msg: "Title Must Be In Arabic",
+          },
+        },
       },
       PurchasePrice: {
         type: DataTypes.DOUBLE,
-        allowNull: false
+        allowNull: false,
       },
       isGelded: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       STARS: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       Rds: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       HorseStatus: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
-       
-      }
+      },
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 1000
+      initialAutoIncrement: 1000,
     }
   );
 

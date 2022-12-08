@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /(\w*[ء-ي]\w*)/gm,
+          is: /[\u0600-\u06FF]/gm,
           is: {
             msg: "RaceName Must Be In Arabic",
           },
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       //   type: DataTypes.STRING,
       //   allowNull: false,
       //   validate: {
-      //     is: /(\w*[ء-ي]\w*)/gm,
+      //     is: /[\u0600-\u06FF]/gm,
       //     is: {
       //       msg: "RaceName Must Be In Arabic",
       //     },

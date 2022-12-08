@@ -1,4 +1,4 @@
-exports.ArRegex = /(\w*[ء-ي]\w*)/gm;
-// //(\w*[ء-ي]\w*)/gm/
+exports.ArRegex = /[\u0600-\u06FF]/gm;
+// //[\u0600-\u06FF]/gm/
 // gi
-// "^[ء-ي\d\s]+$";
+// "/[\u0600-\u06FF]/gm";
