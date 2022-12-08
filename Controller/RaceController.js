@@ -15,7 +15,7 @@ const { Conversion } = require("../Utils/Conversion");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 exports.GetHorsesofraces = Trackerror(async (req, res, next) => {
   let raceid = await RaceModel.findOne({
@@ -482,11 +482,68 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
 });
 exports.GetRaceWithDayntime = Trackerror(async (req, res, next) => {
   const { DayNTime } = req.body;
-  const data = RaceModel.findAll({
+  console.log(DayNTime);
+  console.log(req.body);
+  const [results, metadata] = await db.sequelize.query(`SELECT
+  *
+FROM
+  mksracing.RaceModel
+WHERE
+  DayNTime >= '${DayNTime}'
+  AND DayNTime < ('${DayNTime}' + INTERVAL 1 DAY);`);
+  let arrayof_ids = [];
+  console.log(
+    results.map((singleresult) => arrayof_ids.push(singleresult._id))
+  );
+  const data = await RaceModel.findAll({
     where: {
-      DayNTime: DayNTime,
+      _id: arrayof_ids,
     },
+    include: [
+      {
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData",
+      },
+      {
+        model: db.GroundTypeModel,
+        as: "GroundData",
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+      },
+      {
+        model: db.TrackLengthModel,
+        as: "TrackLengthData",
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+      {
+        model: db.RaceKindModel,
+        as: "RaceKindData",
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData",
+      },
+      {
+        model: db.SponsorModel,
+        as: "SponsorData",
+      },
+      {
+        model: db.HorseModel,
+        as: "RaceAndHorseModelData",
+        include: { all: true },
+      },
+      {
+        model: db.JockeyModel,
+        include: [{ model: db.NationalityModel, as: "JockeyNationalityData" }],
+      },
+    ],
   });
+  console.log(data.length);
   res.status(200).json({
     success: true,
     data,
