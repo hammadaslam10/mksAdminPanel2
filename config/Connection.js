@@ -446,14 +446,14 @@ db.RaceCardModel.belongsTo(db.RaceCourseModel, {
   foreignKey: "RaceCardCourse",
   as: "RaceCardCourseData",
 });
-db.RaceCardModel.hasMany(db.RaceModel, {
-  foreignKey: "RaceCard",
-  as: "RaceCardData",
-});
-db.RaceModel.belongsTo(db.RaceCardModel, {
-  foreignKey: "RaceCard",
-  as: "RaceCardData",
-});
+// db.RaceCardModel.hasMany(db.RaceModel, {
+//   foreignKey: "RaceCard",
+//   as: "RaceCardData",
+// });
+// db.RaceModel.belongsTo(db.RaceCardModel, {
+//   foreignKey: "RaceCard",
+//   as: "RaceCardData",
+// });
 db.RaceCardModel.belongsToMany(db.RaceModel, {
   through: "RaceCardRacesModel",
 });

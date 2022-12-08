@@ -26,7 +26,7 @@ exports.CreateRaceCard = Trackerror(async (req, res, next) => {
 });
 exports.RaceCardGet = Trackerror(async (req, res, next) => {
   const data = await RaceCardModel.findAll({
-    include: { all: true },
+    include: { all: true  },
   });
   res.status(200).json({
     success: true,
@@ -125,7 +125,7 @@ exports.AddRacesInRaceCard = Trackerror(async (req, res, next) => {
     let { RaceEntry } = req.body;
     let RaceEntryData = Conversion(RaceEntry);
     await RaceEntryData.map(async (singlerace) => {
-      await RaceCardModel.findOrCreate({
+      await RaceCardRacesModel.findOrCreate({
         where: {
           RaceCardModelId: req.params.id,
           RaceModelId: singlerace,
