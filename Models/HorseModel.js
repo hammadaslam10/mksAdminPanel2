@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       HorseKind: {
         type: DataTypes.UUID,
+        allowNull:false
       },
       Breeder: {
         type: DataTypes.UUID,

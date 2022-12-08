@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
+      // CompetitionStatus: {
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: false,
+      //   defaultValue: 0,
+      // },
       CompetitionCode: {
         type: DataTypes.STRING,
         allowNull: false,

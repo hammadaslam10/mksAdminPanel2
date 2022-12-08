@@ -7,6 +7,7 @@ const {
   DeleteCompetiton,
   SoftDeleteCompetiton,
   SingleCompetitonGet,
+  AddRacesInCompetition,
 } = require("../Controller/CompetitonController");
 const { upload } = require("../Utils/ImageUpload");
 router
@@ -19,4 +20,5 @@ router
   .put(EditCompetiton);
 router.route("/softdeleteCompetiton/:id").delete(SoftDeleteCompetiton);
 router.route("/getCompetiton/:id").get(SingleCompetitonGet);
+router.route("/addraceincompetition/:id").post(AddRacesInCompetition);
 module.exports = router;
