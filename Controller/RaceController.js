@@ -134,6 +134,7 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
       },
       {
         model: db.HorseModel,
+        as: "RaceAndHorseModelData",
         include: { all: true },
       },
       {
