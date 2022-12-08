@@ -43,7 +43,7 @@ exports.AddRaces = Trackerror(async (req, res, next) => {
     await RaceEntry.map(async (singlerace) => {
       await RaceCardModel.findOrCreate({
         where: {
-          RaceCardModelId: RaceCardID,
+          RaceCardModelId: req.params.id,
           RaceModelId: singlerace,
         },
       });
