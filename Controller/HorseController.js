@@ -18,12 +18,14 @@ const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
 exports.SearchName = Trackerror(async (req, res, next) => {
   const { Query } = req.body;
+  console.log(Query);
   const data1 = await HorseModel.findAll({
     where: {
       NameEn: {
         [Op.like]: `%${Query}%`,
       },
     },
+    include: { all: true },
   });
   const data2 = await TrainerModel.findAll({
     where: {
@@ -31,6 +33,7 @@ exports.SearchName = Trackerror(async (req, res, next) => {
         [Op.like]: `%${Query}%`,
       },
     },
+    include: { all: true },
   });
   const data3 = await OwnerModel.findAll({
     where: {
@@ -38,6 +41,7 @@ exports.SearchName = Trackerror(async (req, res, next) => {
         [Op.like]: `%${Query}%`,
       },
     },
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
