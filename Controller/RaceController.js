@@ -81,6 +81,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       },
       {
         model: db.HorseModel,
+        as: "RaceAndHorseModelData",
         include: { all: true },
       },
       {
