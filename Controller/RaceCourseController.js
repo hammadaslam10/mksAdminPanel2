@@ -10,7 +10,14 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetCourse = Trackerror(async (req, res, next) => {
   const data = await RaceCourseModel.findAll({
-    include: { all: true },
+    include: [
+      { model: db.NationalityModel, as: "NationalityDataRaceCourse" },
+      {
+        model: db.ColorModel,
+        as: "ColorCodeData",
+      },
+      { model: db.RaceModel, as: "RaceCourseData", include: { all: true } },
+    ],
   });
   res.status(200).json({
     success: true,
