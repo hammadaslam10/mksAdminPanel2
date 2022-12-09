@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/gm,
+          is: /^[\u0621-\u064A\u0660-\u0669]*$/gm,
           is: {
             msg: "RaceCardNameAr Must Be In Arabic",
           },
