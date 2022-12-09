@@ -108,6 +108,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Sire,
     GSire,
     Height,
+    HorseKind
   } = req.body;
 
   const file = req.files.image;
@@ -140,6 +141,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Sire: Sire,
     GSire: GSire,
     Height: Height,
+    HorseKind: HorseKind,
   });
 
   if (data._id) {
@@ -228,6 +230,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     NationalityID,
     CreationId,
     Height,
+    HorseKind
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -260,6 +263,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       CreationId: CreationId || data.CreationId,
       Height: Height || data.Height,
       NationalityID: NationalityID || data.NationalityID,
+      HorseKind: HorseKind || data.HorseKind,
     };
     data = await HorseModel.update(updateddata, {
       where: {
@@ -305,6 +309,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       NationalityID: NationalityID || data.NationalityID,
       CreationId: CreationId || data.CreationId,
       Height: Height || data.Height,
+      HorseKind: HorseKind || data.HorseKind,
     };
     data = await HorseModel.update(updateddata, {
       where: {
