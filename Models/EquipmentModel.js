@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
-        
+
         validate: {
           notNull: { msg: "Color will have Name" },
           notEmpty: { msg: "Descritpion  will not be empty" },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06FF]/gm,
+          is: /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[\u0200]|[\u00A0]/g,
           is: {
             msg: "Name Must Be In Arabic",
           },
