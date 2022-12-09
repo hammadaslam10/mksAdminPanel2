@@ -20,7 +20,6 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   console.log(ArRegex.test(DescriptionAr));
   console.log(ArRegex.test(TitleAr));
-
   const data = await AdvertismentModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
     DescriptionEn: DescriptionEn,
@@ -28,8 +27,9 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
     TitleEn: TitleEn,
     TitleAr: TitleAr,
   });
-  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  // await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+
   res.status(201).json({
     success: true,
     data,
