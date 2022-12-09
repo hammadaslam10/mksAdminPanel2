@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       KeywordAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[\u0200]|[\u00A0]/g,
+          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/gm,
           is: {
             msg: "Keyword Must Be In Arabic",
           },
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[\u0200]|[\u00A0]/g,
+          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/gm,
           is: {
             msg: "Title Must Be In Arabic",
           },

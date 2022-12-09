@@ -16,16 +16,19 @@ const io = require("../socket");
 
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
-  const file = req.files.image;
-  const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  // const file = req.files.image;
+  // const Image = generateFileName();
+  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  // await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  // https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}
+  console.log(ArRegex.test(DescriptionAr));
+  console.log(ArRegex.test(TitleAr.trim()));
   const data = await AdvertismentModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-    DescriptionEn: DescriptionEn.trim(),
-    DescriptionAr: DescriptionAr.trim(),
-    TitleEn: TitleEn.trim(),
-    TitleAr: TitleAr.trim(),
+    image: `a`,
+    DescriptionEn: DescriptionEn,
+    DescriptionAr: DescriptionAr,
+    TitleEn: TitleEn,
+    TitleAr: TitleAr,
   });
   res.status(201).json({
     success: true,

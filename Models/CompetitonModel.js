@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[\u0200]|[\u00A0]/g,
+          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/gm,
           is: {
             msg: "Name Must Be In Arabic",
           },
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       DescAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[\u0200]|[\u00A0]/g,
+          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/gm,
           is: {
             msg: "Desc Must Be In Arabic",
           },
