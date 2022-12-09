@@ -492,9 +492,7 @@ WHERE
   DayNTime >= '${DayNTime}'
   AND DayNTime < ('${DayNTime}' + INTERVAL 1 DAY);`);
   let arrayof_ids = [];
-  console.log(
-    results.map((singleresult) => arrayof_ids.push(singleresult._id))
-  );
+  results.map((singleresult) => arrayof_ids.push(singleresult._id));
   const data = await RaceModel.findAll({
     where: {
       _id: arrayof_ids,

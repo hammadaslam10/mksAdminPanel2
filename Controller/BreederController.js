@@ -57,7 +57,11 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
         res.status(403);
-        res.send({ status: "error", message: "short code already exists" });
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
       } else {
         res.status(500);
         res.send({ status: "error", message: "Something went wrong" });
@@ -148,7 +152,11 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
-      res.send({ status: "error", message: "short code already exists" });
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
+      });
     } else {
       res.status(500);
       res.send({ status: "error", message: "Something went wrong" });
