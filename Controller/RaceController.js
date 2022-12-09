@@ -46,7 +46,7 @@ exports.GetHorsesofraces = Trackerror(async (req, res, next) => {
 exports.GetRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { HorseFilled: true },
-    paranoid: true,
+
     include: [
       {
         model: db.MeetingTypeModel,
@@ -59,6 +59,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
+        paranoid: true,
       },
       {
         model: db.TrackLengthModel,
