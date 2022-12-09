@@ -101,6 +101,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     order: [["DayNTime", "ASC"]],
+    paranoid: true,
     include: [
       {
         model: db.MeetingTypeModel,
