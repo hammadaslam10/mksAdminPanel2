@@ -114,6 +114,7 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
+        paranoid: true,
       },
       {
         model: db.TrackLengthModel,
