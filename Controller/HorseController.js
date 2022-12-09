@@ -110,7 +110,15 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Height,
     KindHorse,
   } = req.body;
-
+  if (Dam === undefined) {
+    Dam = null;
+  }
+  if (Sire === undefined) {
+    Sire = null;
+  }
+  if (GSire === undefined) {
+    GSire = null;
+  }
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);

@@ -1,4 +1,6 @@
 const Sequelize = require("sequelize");
+const validator = require("validator");
+
 module.exports = (sequelize, DataTypes) => {
   const AdvertismentModel = sequelize.define(
     "AdvertismentModel",
