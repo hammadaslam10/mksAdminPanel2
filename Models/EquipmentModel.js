@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        
         validate: {
           notNull: { msg: "Color will have Name" },
           notEmpty: { msg: "Descritpion  will not be empty" },
@@ -46,3 +47,4 @@ module.exports = (sequelize, DataTypes) => {
   );
   return EquipmentModel;
 };
+// jslingua for arabic ?
