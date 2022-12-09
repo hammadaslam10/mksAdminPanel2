@@ -32,22 +32,36 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
     CompetitionCategory,
   } = req.body;
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await CompetitonModel.create({
-      shortCode: shortCode,
-      NameEn: NameEn,
-      NameAr: NameAr,
-      DescEn: DescEn,
-      DescAr: DescAr,
-      pickCount: pickCount,
-      TriCount: TriCount,
-      StartDate: StartDate,
-      CompetitionCode: CompetitionCode,
-      CompetitionCategory: CompetitionCategory,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await CompetitonModel.create({
+        shortCode: shortCode,
+        NameEn: NameEn,
+        NameAr: NameAr,
+        DescEn: DescEn,
+        DescAr: DescAr,
+        pickCount: pickCount,
+        TriCount: TriCount,
+        StartDate: StartDate,
+        CompetitionCode: CompetitionCode,
+        CompetitionCategory: CompetitionCategory,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
@@ -132,15 +146,29 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
     StartDate: StartDate || data.StartDate,
     CompetitionCategory: CompetitionCategory || data.CompetitionCategory,
   };
-  data = await CompetitonModel.update(updateddata, {
-    where: {
-      _id: req.params.id,
-    },
-  });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  try {
+    data = await CompetitonModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
+      });
+    } else {
+      res.status(500);
+      res.send({ status: "error", message: "Something went wrong" });
+    }
+  }
 });
 exports.DeleteCompetiton = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findOne({
