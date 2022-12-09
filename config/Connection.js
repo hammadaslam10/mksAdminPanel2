@@ -203,12 +203,12 @@ db.OwnerSilkColorModel.belongsTo(db.OwnerModel, {
 });
 // -------------------------------------Horse----------------------------
 db.HorseKindModel.hasMany(db.HorseModel, {
-  foreignKey: "HorseKind",
-  as: "HorseKindData",
+  foreignKey: "KindHorse",
+  as: "KindHorseData",
 });
 db.HorseModel.belongsTo(db.HorseKindModel, {
-  foreignKey: "HorseKind",
-  as: "HorseKindData",
+  foreignKey: "KindHorse",
+  as: "KindHorseData",
 });
 db.BreederModel.hasMany(db.HorseModel, {
   foreignKey: "Breeder",

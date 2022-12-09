@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       HorseCode: {
         type: DataTypes.STRING,
       },
-      HorseKind: {
+      KindHorse: {
         type: DataTypes.UUID,
-        allowNull:false
+        allowNull: false,
       },
       Breeder: {
         type: DataTypes.UUID,
