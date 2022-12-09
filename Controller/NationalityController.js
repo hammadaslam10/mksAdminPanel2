@@ -27,21 +27,35 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await NationalityModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
-      Abbrev: Abbrev,
-      shortCode: shortCode,
-      AltName: AltName,
-      Label: Label,
-      Offset: Offset,
-      Value: Value,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await NationalityModel.create({
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
+        Abbrev: Abbrev,
+        shortCode: shortCode,
+        AltName: AltName,
+        Label: Label,
+        Offset: Offset,
+        Value: Value,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
@@ -62,6 +76,7 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
   let data = await NationalityModel.findOne({
     where: { _id: req.params.id },
   });
+
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
   }
@@ -77,15 +92,29 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       NameAr: NameAr || data.NameAr,
       Value: Value || data.Value,
     };
-    data = await NationalityModel.update(updateddata, {
-      where: {
-        _id: req.params.id,
-      },
-    });
-    res.status(200).json({
-      success: true,
-      data,
-    });
+    try {
+      data = await NationalityModel.update(updateddata, {
+        where: {
+          _id: req.params.id,
+        },
+      });
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     const file = req.files.image;
     await deleteFile(`${Nationality}/${data.image}`);
@@ -103,16 +132,30 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       NameAr: NameAr || data.NameAr,
       Value: Value || data.Value,
     };
-    data = await NationalityModel.update(updateddata, {
-      where: {
-        _id: req.params.id,
-      },
-    });
+    try {
+      data = await NationalityModel.update(updateddata, {
+        where: {
+          _id: req.params.id,
+        },
+      });
 
-    res.status(200).json({
-      success: true,
-      data,
-    });
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   }
 });
 exports.DeleteNationality = Trackerror(async (req, res, next) => {

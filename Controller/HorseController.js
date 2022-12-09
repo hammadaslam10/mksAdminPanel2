@@ -108,7 +108,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Sire,
     GSire,
     Height,
-    HorseKind
+    HorseKind,
   } = req.body;
 
   const file = req.files.image;
@@ -230,7 +230,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     NationalityID,
     CreationId,
     Height,
-    HorseKind
+    HorseKind,
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
