@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       NationalityID: {
         type: DataTypes.UUID,
@@ -25,22 +33,62 @@ module.exports = (sequelize, DataTypes) => {
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       TitleEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       TitleAr: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       ShortEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       ShortAr: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       RegistrationDate: {
         type: DataTypes.DATE,

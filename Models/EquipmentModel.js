@@ -13,10 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
-
         validate: {
-          notNull: { msg: "Color will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Please enter Equipment Name in English",
+          },
+          notNull: { msg: "Equipment will have Name" },
+          notEmpty: { msg: "Equipment  will not be empty" },
         },
       },
       shortCode: {
@@ -25,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have ShortCode" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Equipment will have ShortCode" },
+          notEmpty: { msg: "Equipment  will not be empty" },
         },
       },
       NameAr: {
@@ -34,8 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
-            msg: "Name Must Be In Arabic",
+            msg: "Please enter Equipment Name in Arabic",
           },
+          notNull: { msg: "Equipment will have ShortCode" },
+          notEmpty: { msg: "Equipment  will not be empty" },
         },
       },
     },

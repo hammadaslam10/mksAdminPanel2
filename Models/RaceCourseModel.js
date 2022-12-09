@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
           notNull: { msg: "RaceCourse will have TrackName" },
           notEmpty: { msg: "TrackName  will not be empty" },
         },

@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: " Please enter the Gender Name in English",
+          },
           notNull: { msg: "Sex will have Name" },
           notEmpty: { msg: "Name  will not be empty" },
         },
@@ -33,8 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
-            msg: "Name Must Be In Arabic",
+            msg: "Please enter the Gender Name in  Arabic",
           },
+          notNull: { msg: "Sex will have ShortCode" },
+          notEmpty: { msg: "Name  will not be empty" },
         },
       },
     },

@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -29,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
       ShortNameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
+          notNull: { msg: "Ad will have Title" },
+          notEmpty: { msg: "Title   will not be empty" },
+        },
       },
       ShortNameAr: {
         type: DataTypes.STRING,
@@ -50,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
+          is: /^[a-z0-9_.-\s]+$/i,
+          is: {
+            msg: "Title English Must Be In English",
+          },
           notNull: { msg: "Jockey will have Remarks" },
           notEmpty: { msg: "Remarks  will not be empty" },
         },
