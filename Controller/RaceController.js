@@ -100,50 +100,59 @@ exports.GetRace = Trackerror(async (req, res, next) => {
 });
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    order: [["DayNTime", "ASC"]],
-    paranoid: true,
+    order: [["DayNTime", "DESC"]],
+    paranoid: false,
     include: [
       {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData",
+        paranoid: false,
       },
       {
         model: db.GroundTypeModel,
         as: "GroundData",
+        paranoid: false,
       },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
-        paranoid: true,
+        paranoid: false,
       },
       {
         model: db.TrackLengthModel,
         as: "TrackLengthData",
+        paranoid: false,
       },
       {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
+        paranoid: false,
       },
       {
         model: db.RaceKindModel,
         as: "RaceKindData",
+        paranoid: false,
       },
       {
         model: db.RaceTypeModel,
         as: "RaceTypeModelData",
+        paranoid: false,
       },
       {
         model: db.SponsorModel,
         as: "SponsorData",
+        paranoid: false,
       },
       {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.JockeyModel,
         include: { all: true },
+        paranoid: false,
       },
     ],
   });
