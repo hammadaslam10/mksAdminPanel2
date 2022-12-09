@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669]*$/gm,
+          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
             msg: "Name Must Be In Arabic",
           },
