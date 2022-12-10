@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-z0-9_.-\s]+$/i,
-          is: {
-            msg: "Please enter the Nationality Name in English",
-          },
           notNull: { msg: "Nationality Category will have NameEn" },
           notEmpty: { msg: "NameEn  will not be empty" },
         },
@@ -27,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         unique: true,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Nationality Category will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" },
+        },
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -34,23 +34,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
-            msg: "Please enter the Nationality Name in Arabic",
-          },
-          validate: {
-            notNull: { msg: "Nationality  will have Name" },
-            notEmpty: { msg: "Name  will not be empty" },
+            msg: "Name Must Be In Arabic",
           },
         },
       },
       Abbrev: {
         type: DataTypes.STRING,
         allowNull: false,
-        is: /^[a-z0-9_.-\s]+$/i,
-        is: {
-          msg: " Please enter the Abbreviation in in English",
-        },
         validate: {
-          notNull: { msg: "Nationality Abbreviation will have Abbrev" },
+          notNull: { msg: "Nationality Category will have Abbrev" },
           notEmpty: { msg: "Abbrev  will not be empty" },
         },
       },
