@@ -298,7 +298,6 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    data,
   });
 });
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
