@@ -288,23 +288,28 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
-  await ResultEntry.map(async (SingleResultEntry) => {
-    await ResultsModel.findOrCreate({
-      where: {
-        RaceID: req.params.RaceCardId,
-        HorseID: SingleResultEntry.HorseId,
-        Rank: SingleResultEntry.Rank,
-        Prize: SingleResultEntry.Prize,
-        Points: SingleResultEntry.Points,
-        BonusPoints: SingleResultEntry.BonusPoints,
-      },
+  console.log(ResultEntry);
+  let ResultEntryData = Conversion(ResultEntry);
+  await ResultEntryData.map(async (SingleResultEntry) => {
+    await SingleResultEntry.map(async (SingleResultEntryDetail) => {
+      SingleResultEntryDetail = SingleResultEntryDetail.split(",");
+      await ResultsModel.findOrCreate({
+        where: {
+          RaceID: req.params.RaceCardId,
+          Rank: SingleResultEntryDetail[0],
+          HorseID: SingleResultEntryDetail[1],
+          Prize: SingleResultEntryDetail[2],
+          Points: SingleResultEntryDetail[3],
+          BonusPoints: SingleResultEntryDetail[4],
+        },
+      });
     });
   });
   res.status(200).json({
     success: true,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
