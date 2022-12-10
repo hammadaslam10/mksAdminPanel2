@@ -29,17 +29,26 @@ exports.GetRaceforCompetition = Trackerror(async (req, res, next) => {
             [Op.ne]: Raceids,
           },
         },
-        {
-          DescriptionEn: {
-            [Op.like]: `%${RaceName}%`,
-          },
-          DescriptionAr: {
-            [Op.like]: `%${RaceName}%`,
-          },
-        },
       ],
     },
-    inlucude: [{ model: db.RaceNameModel, as: "RaceNameModelData" }],
+    inlucude: [
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+        where: {
+          [Op.and]: [
+            {
+              NameEn: {
+                [Op.like]: `%${RaceName}%`,
+              },
+              NameEn: {
+                [Op.like]: `%${RaceName}%`,
+              },
+            },
+          ],
+        },
+      },
+    ],
   });
   res.status(200).json({
     success: true,
