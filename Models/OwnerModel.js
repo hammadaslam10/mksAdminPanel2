@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Owner Name Must Be In Arabic",
           },
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Title English Must Be In Arabic",
           },
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Title English Must Be In English",
           },

@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       DescriptionAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Description Must Be In Arabic",
           },
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Title Must Be In Arabic",
           },
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+          is: /^[\u0621-\u064A\s]+$/,
           is: {
             msg: "Title Must Be In Arabic",
           },
