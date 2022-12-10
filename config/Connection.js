@@ -134,13 +134,20 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
   foreignKey: "CompetitionCategory",
   as: "CompetitionCategoryData",
 });
-db.CompetitonModel.hasMany(db.RaceModel, {
-  foreignKey: "Competition",
-  as: "CompetitionData",
+// db.CompetitonModel.hasMany(db.RaceModel, {
+//   foreignKey: "Competition",
+//   as: "CompetitionData",
+// });
+// db.RaceModel.belongsTo(db.CompetitonModel, {
+//   foreignKey: "Competition",
+//   as: "CompetitionData",
+// });
+// CompetitionRacesPointsModel
+db.CompetitonModel.belongsToMany(db.RaceModel, {
+  through: "CompetitionRacesPointsModel",
 });
-db.RaceModel.belongsTo(db.CompetitonModel, {
-  foreignKey: "Competition",
-  as: "CompetitionData",
+db.RaceModel.belongsToMany(db.CompetitonModel, {
+  through: "CompetitionRacesPointsModel",
 });
 
 // -------------------------------------HorseandJockey----------------------------

@@ -86,18 +86,38 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
   if (!CompetitionID) {
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
-    let { RaceEntry } = req.body;
-    let RaceEntryData = Conversion(RaceEntry);
-    await RaceEntryData.map(async (singlerace) => {
-      await RaceModel.update(
-        { Competition: CompetitionID },
-        {
-          where: {
-            _id: singlerace,
-          },
-        }
-      );
-    });
+    let { CastRaces, PickRaces } = req.body;
+
+    if (CastRaces.Length > 0) {
+      let CastRacesData = Conversion(CastRaces);
+      console.log(CastRacesData, "CastRacesData");
+      await CastRacesData.map(async (singlerace) => {
+        await CompetitionRacesPointsModel.findorCreate({
+          Points: singlerace.Points,
+          BonusPoints: single.BonusPoints,
+          Type: "cast",
+          Length: single.Length,
+        });
+      });
+    } else {
+    }
+    if (PickRaces.Length > 0) {
+      if (CompetitionID.pickCount === PickRaces.Length) {
+        let PickRacesData = Conversion(PickRaces);
+        console.log(PickRacesData, "PickRacesData");
+        await PickRacesData.map(async (singlerace) => {
+          await CompetitionRacesPointsModel.findorCreate({
+            Points: singlerace.Points,
+            BonusPoints: single.BonusPoints,
+            Type: "pick",
+            Length: single.Length,
+          });
+        });
+      } else {
+        return next(new HandlerCallBack("Pick Races Length Is Exceeded", 404));
+      }
+    } else {
+    }
   }
   res.status(200).json({
     success: true,

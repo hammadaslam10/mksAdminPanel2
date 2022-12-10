@@ -8,23 +8,30 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
-
       Points: {
         type: DataTypes.DOUBLE,
-        allowNull: false
+        allowNull: false,
       },
       BonusPoints: {
         type: DataTypes.DOUBLE,
         allowNull: false,
-        defaultValue: 0.0
-      }
+        defaultValue: 0.0,
+      },
+      Type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      Length: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
     },
-    
+
     {
       freezeTableName: true,
-      paranoid: true
+      paranoid: true,
     }
   );
   return CompetitionRacesPointsModel;

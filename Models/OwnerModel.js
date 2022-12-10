@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[a-z0-9_.-\s]+$/i,
           is: {
-            msg: "Title English Must Be In English",
+            msg: "Owner Name Must Be In English",
           },
           notNull: { msg: "Ad will have Title" },
           notEmpty: { msg: "Title   will not be empty" },
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
-            msg: "Title English Must Be In English",
+            msg: "Owner Name Must Be In Arabic",
           },
           notNull: { msg: "Ad will have Title" },
           notEmpty: { msg: "Title   will not be empty" },
@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
           is: {
-            msg: "Title English Must Be In English",
+            msg: "Title English Must Be In Arabic",
           },
           notNull: { msg: "Ad will have Title" },
           notEmpty: { msg: "Title   will not be empty" },
