@@ -128,11 +128,16 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
       let CastRacesData = Conversion(CastRaces);
       console.log(CastRacesData, "CastRacesData");
       await CastRacesData.map(async (singlerace) => {
-        await CompetitionRacesPointsModel.findorCreate({
-          Points: singlerace.Points,
-          BonusPoints: single.BonusPoints,
-          Type: "cast",
-          Length: single.Length,
+        await singlerace.map(async (singleracedetail) => {
+          singleracedetail = singleracedetail.split(",");
+          await CompetitionRacesPointsModel.findorCreate({
+            HorseID: singlerace[0],
+            RaceID: singlerace[1],
+            Points: singlerace[2],
+            BonusPoints: single[3],
+            Type: "cast",
+            Length: single[4],
+          });
         });
       });
     } else {
@@ -142,11 +147,16 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
         let PickRacesData = Conversion(PickRaces);
         console.log(PickRacesData, "PickRacesData");
         await PickRacesData.map(async (singlerace) => {
-          await CompetitionRacesPointsModel.findorCreate({
-            Points: singlerace.Points,
-            BonusPoints: single.BonusPoints,
-            Type: "pick",
-            Length: single.Length,
+          await singlerace.map(async (singleracedetail) => {
+            singleracedetail = singleracedetail.split(",");
+            await CompetitionRacesPointsModel.findorCreate({
+              HorseID: singlerace[0],
+              RaceID: singlerace[1],
+              Points: singlerace[2],
+              BonusPoints: single[3],
+              Type: "pick",
+              Length: single[4],
+            });
           });
         });
       } else {
