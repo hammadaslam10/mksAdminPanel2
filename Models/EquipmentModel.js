@@ -53,4 +53,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return EquipmentModel;
 };
-// jslingua for arabic ?
