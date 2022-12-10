@@ -136,9 +136,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     ColorID: ColorID,
     CreationId: CreationId,
     HorseStatus: HorseStatus,
-    Dam: Dam,
-    Sire: Sire,
-    GSire: GSire,
+    Dam: Dam || null,
+    Sire: Sire || null,
+    GSire: GSire || null,
     Height: Height,
     KindHorse: KindHorse,
   });

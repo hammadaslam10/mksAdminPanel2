@@ -19,6 +19,32 @@ exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.GetRaceforCompetition = Trackerror(async (req, res, next) => {
+  const { Raceids, RaceName } = req.body;
+  const data = await RaceModel.findAll({
+    where: {
+      [Op.and]: [
+        {
+          _id: {
+            [Op.ne]: Raceids,
+          },
+        },
+        {
+          DescriptionEn: {
+            [Op.like]: `%${RaceName}%`,
+          },
+          DescriptionAr: {
+            [Op.like]: `%${RaceName}%`,
+          },
+        },
+      ],
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
 exports.CreateCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,
