@@ -132,6 +132,7 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
         await singlerace.map(async (singleracedetail) => {
           singleracedetail = singleracedetail.split(",");
           await CompetitionRacesPointsModel.findorCreate({
+            CompetitionModelID: req.params.id,
             HorseID: singlerace[0],
             RaceID: singlerace[1],
             Points: singlerace[2],
@@ -151,6 +152,7 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
           await singlerace.map(async (singleracedetail) => {
             singleracedetail = singleracedetail.split(",");
             await CompetitionRacesPointsModel.findorCreate({
+              CompetitionModelID: req.params.id,
               HorseID: singlerace[0],
               RaceID: singlerace[1],
               Points: singlerace[2],
