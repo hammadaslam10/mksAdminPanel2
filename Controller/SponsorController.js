@@ -9,7 +9,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const Features = require("../Utils/Features");
 exports.CreateSponsor = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr ,Url} = req.body;
+  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -47,7 +47,7 @@ exports.SponsorGet = Trackerror(async (req, res, next) => {
 });
 exports.GetSponsorAdmin = Trackerror(async (req, res, next) => {});
 exports.EditSponsor = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr,Url } = req.body;
+  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   let data = await SponsorModel.findOne({
     where: { _id: req.params.id },
   });
@@ -96,6 +96,7 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
+      Url: Url || data.Url,
     };
     if (
       ArRegex.test(updateddata.DescriptionAr) &&

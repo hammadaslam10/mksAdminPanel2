@@ -14,25 +14,33 @@ const { EnglishRegex } = require("../Utils/EnglishLanguageRegex");
 const Features = require("../Utils/Features");
 const io = require("../socket");
 const validator = require("validator");
+const language = require("lang-validate");
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
-  const file = req.files.image;
-  const Image = generateFileName();
-  console.log(ArRegex.test(DescriptionAr));
-  console.log(ArRegex.test(TitleAr));
-  const data = await AdvertismentModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-    DescriptionEn: DescriptionEn,
-    DescriptionAr: DescriptionAr,
-    TitleEn: TitleEn,
-    TitleAr: TitleAr,
-  });
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  // console.log(language.getAll());
+  const array = [
+    { languagecode: "en", text: "Foo" },
+    { languagecode: "ar", text: "Bar" },
+  ];
+  let a = language.validate('en-US');;
+
+  // const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
+  // const file = req.files.image;
+  // const Image = generateFileName();
+  // // console.log(ArRegex.test(DescriptionAr));
+  // // console.log(ArRegex.test(TitleAr));
+  // const data = await AdvertismentModel.create({
+  //   image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
+  //   DescriptionEn: DescriptionEn,
+  //   DescriptionAr: DescriptionAr,
+  //   TitleEn: TitleEn,
+  //   TitleAr: TitleAr,
+  // });
+  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  // await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
 
   res.status(201).json({
     success: true,
-    data,
+    a,
   });
 });
 exports.AdsGet = Trackerror(async (req, res, next) => {
