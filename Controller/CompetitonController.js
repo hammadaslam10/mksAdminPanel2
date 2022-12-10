@@ -8,7 +8,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Race } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
-const {Op} = require("sequelize")
+const { Op } = require("sequelize");
 exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
     attributes: [
@@ -37,7 +37,7 @@ exports.GetRaceforCompetition = Trackerror(async (req, res, next) => {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
         where: {
-          [Op.and]: [
+          [Op.or]: [
             {
               NameEn: {
                 [Op.like]: `%${RaceName}%`,
