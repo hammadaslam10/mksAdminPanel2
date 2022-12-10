@@ -22,26 +22,41 @@ exports.GetNationalityMaxShortCode = Trackerror(async (req, res, next) => {
 exports.CreateNationality = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, Abbrev, AltName, Label, Offset, Value, shortCode } =
     req.body;
+
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
   if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    const data = await NationalityModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
-      Abbrev: Abbrev,
-      shortCode: shortCode,
-      AltName: AltName,
-      Label: Label,
-      Offset: Offset,
-      Value: Value,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await NationalityModel.create({
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
+        Abbrev: Abbrev,
+        shortCode: shortCode,
+        AltName: AltName,
+        Label: Label,
+        Offset: Offset,
+        Value: Value,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500);
+        res.send({ status: "error", message: "Something went wrong" });
+      }
+    }
   } else {
     return next(
       new HandlerCallBack("Please Fill Data To appropiate fields", 404)
