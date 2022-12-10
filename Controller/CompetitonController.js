@@ -39,6 +39,7 @@ exports.GetRaceforCompetition = Trackerror(async (req, res, next) => {
         },
       ],
     },
+    inlucude: [{ model: db.RaceNameModel, as: "RaceNameModelData" }],
   });
   res.status(200).json({
     success: true,

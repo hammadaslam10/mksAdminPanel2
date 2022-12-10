@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-z0-9_.-\s]+$/i,
+          is: /^[a-z][a-z0-9]*[a-z0-9\s]*[a-z\s]*$/i,
           is: {
             msg: "Title English Must Be In English",
           },
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-z0-9_.-\s]+$/i,
+          is: /^[a-z][a-z0-9]*[a-z0-9\s]*[a-z\s]*$/i,
           is: {
             msg: "Title English Must Be In English",
           },
@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[a-z0-9_.-\s]+$/i,
+          is: /^[a-z][a-z0-9]*[a-z0-9\s]*[a-z\s]*$/i,
           is: {
             msg: "Title English Must Be In English",
           },
