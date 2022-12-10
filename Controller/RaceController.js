@@ -3,6 +3,7 @@ const RaceModel = db.RaceModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
+const ResultsModel = db.ResultsModel;
 const ResultModel = db.ResultModel;
 const RaceAndVerdictsHorseModel = db.RaceAndVerdictsHorseModel;
 const RaceAndVerdictsJockeyModel = db.RaceAndVerdictsJockeyModel;
@@ -154,6 +155,9 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
         include: { all: true },
         paranoid: false,
       },
+      {
+
+      }
     ],
   });
 
@@ -285,7 +289,7 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   await ResultEntry.map(async (SingleResultEntry) => {
-    await SingleResultEntry.findOrCreate({
+    await ResultsModel.findOrCreate({
       where: {
         RaceID: req.params.RaceCardId,
         HorseID: SingleResultEntry.HorseId,
