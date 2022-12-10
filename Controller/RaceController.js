@@ -288,7 +288,7 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
     await SingleResultEntry.findOrCreate({
       where: {
         RaceID: req.params.RaceCardId,
-        RaceID: SingleResultEntry.HorseId,
+        HorseID: SingleResultEntry.HorseId,
         Rank: SingleResultEntry.Rank,
         Prize: SingleResultEntry.Prize,
         Points: SingleResultEntry.Points,
