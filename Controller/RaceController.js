@@ -91,6 +91,11 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.JockeyModel,
         include: { all: true },
       },
+      {
+        model: db.ResultModel,
+        as:"RaceResultData",
+        include: { all: true },
+      },
     ],
   });
 
@@ -289,13 +294,14 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   console.log(ResultEntry);
+  console.log(req.params.RaceId);
   let ResultEntryData = Conversion(ResultEntry);
   await ResultEntryData.map(async (SingleResultEntry) => {
     await SingleResultEntry.map(async (SingleResultEntryDetail) => {
       SingleResultEntryDetail = SingleResultEntryDetail.split(",");
       await ResultsModel.findOrCreate({
         where: {
-          RaceID: req.params.RaceCardId,
+          RaceID: req.params.RaceId,
           Rank: SingleResultEntryDetail[0],
           HorseID: SingleResultEntryDetail[1],
           Prize: SingleResultEntryDetail[2],
