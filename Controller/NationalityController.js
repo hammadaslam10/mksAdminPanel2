@@ -22,7 +22,6 @@ exports.GetNationalityMaxShortCode = Trackerror(async (req, res, next) => {
 exports.CreateNationality = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, Abbrev, AltName, Label, Offset, Value, shortCode } =
     req.body;
-
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);

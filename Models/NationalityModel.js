@@ -27,10 +27,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         unique: true,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Nationality Category will have shortCode" },
-          notEmpty: { msg: "shortCode  will not be empty" },
-        },
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -49,9 +45,9 @@ module.exports = (sequelize, DataTypes) => {
       Abbrev: {
         type: DataTypes.STRING,
         allowNull: false,
-        is: /^[\u0621-\u064A\u0660-\u0669\d\s]+$/m,
+        is: /^[a-z0-9_.-\s]+$/i,
         is: {
-          msg: " Please enter the Abbreviation in in Arabic",
+          msg: " Please enter the Abbreviation in in English",
         },
         validate: {
           notNull: { msg: "Nationality Abbreviation will have Abbrev" },
