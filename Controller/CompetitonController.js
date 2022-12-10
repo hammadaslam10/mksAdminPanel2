@@ -124,49 +124,55 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
     let { CastRaces, PickRaces } = req.body;
+    let CastRacesData = Conversion(CastRaces);
+    let PickRacesData = Conversion(PickRaces);
 
-    if (CastRaces.Length > 0) {
+    if (CastRacesData[0].length > 0) {
       let CastRacesData = Conversion(CastRaces);
       console.log(CastRacesData, "CastRacesData");
       await CastRacesData.map(async (singlerace) => {
         await singlerace.map(async (singleracedetail) => {
           singleracedetail = singleracedetail.split(",");
-          await CompetitionRacesPointsModel.findorCreate({
-            CompetitionModelID: req.params.id,
-            HorseID: singlerace[0],
-            RaceID: singlerace[1],
-            Points: singlerace[2],
-            BonusPoints: single[3],
-            Type: "cast",
-            Length: single[4],
+          await CompetitionRacesPointsModel.findOrCreate({
+            where: {
+              CompetitonModelId: req.params.id,
+              RaceModelId: singleracedetail[0],
+              Points: singleracedetail[1],
+              BonusPoints: singleracedetail[2],
+              Type: "cast",
+              Length: CastRacesData[0].length,
+            }
           });
         });
       });
     } else {
     }
-    if (PickRaces.Length > 0) {
-      if (CompetitionID.pickCount === PickRaces.Length) {
-        let PickRacesData = Conversion(PickRaces);
-        console.log(PickRacesData, "PickRacesData");
-        await PickRacesData.map(async (singlerace) => {
-          await singlerace.map(async (singleracedetail) => {
-            singleracedetail = singleracedetail.split(",");
-            await CompetitionRacesPointsModel.findorCreate({
-              CompetitionModelID: req.params.id,
-              HorseID: singlerace[0],
-              RaceID: singlerace[1],
-              Points: singlerace[2],
-              BonusPoints: single[3],
-              Type: "pick",
-              Length: single[4],
-            });
-          });
-        });
-      } else {
-        return next(new HandlerCallBack("Pick Races Length Is Exceeded", 404));
-      }
-    } else {
-    }
+    // if ((PickRaces.length === 0) == false) {
+    //   if (PickRacesData[0].length > 0) {
+    //     if (CompetitionID.pickCount === PickRacesData[0].Length) {
+    //       let PickRacesData = Conversion(PickRaces);
+    //       console.log(PickRacesData, "PickRacesData");
+    //       await PickRacesData.map(async (singlerace) => {
+    //         await singlerace.map(async (singleracedetail) => {
+    //           singleracedetail = singleracedetail.split(",");
+    //           await CompetitionRacesPointsModel.findOrCreate({
+    //             where: {
+    //               CompetitionModelID: req.params.id,
+    //               RaceModelId: singleracedetail[0],
+    //               Points: singleracedetail[2],
+    //               BonusPoints: singleracedetail[3],
+    //               Type: "pick",
+    //               Length: PickRacesData[0].Length,
+    //             }
+    //           });
+    //         });
+    //       });
+    //     } else {
+    //       return next(new HandlerCallBack("Pick Races Length Is Exceeded", 404));
+    //     }
+      // }
+    // } else {
+    // }
   }
   res.status(200).json({
     success: true,
@@ -183,7 +189,7 @@ exports.SingleCompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => {});
+exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => { });
 exports.EditCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,
