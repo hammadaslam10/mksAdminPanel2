@@ -19,23 +19,25 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
-  console.log(DescriptionAr);
-  console.log(TitleAr);
-  console.log(ArRegex.test(DescriptionAr), "DescriptionAr");
-  console.log(ArRegex.test(TitleAr), "TitleAr");
-  // const data = await AdvertismentModel.create({
-  //   image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
-  //   DescriptionEn: DescriptionEn,
-  //   DescriptionAr: DescriptionAr,
-  //   TitleEn: TitleEn,
-  //   TitleAr: TitleAr,
-  // });
-  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  // await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
+  // console.log(DescriptionAr);
+  // console.log(TitleAr);
+  // console.log(ArRegex.test(DescriptionAr), "DescriptionAr");
+  // console.log(EnglishRegex.test(DescriptionEn), "DescriptionEn");
+  // console.log(ArRegex.test(TitleAr), "TitleAr");
+  // console.log(EnglishRegex.test(TitleEn), "TitleEn");
+  const data = await AdvertismentModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
+    DescriptionEn: DescriptionEn,
+    DescriptionAr: DescriptionAr,
+    TitleEn: TitleEn,
+    TitleAr: TitleAr,
+  });
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
 
   res.status(201).json({
     success: true,
-    // data,
+    data,
   });
 });
 exports.AdsGet = Trackerror(async (req, res, next) => {
