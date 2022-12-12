@@ -88,10 +88,10 @@ exports.GetJockeyforRace = Trackerror(async (req, res, next) => {
           },
         },
         {
-          DescriptionEn: {
+          NameEn: {
             [Op.like]: `%${JockeyName}%`,
           },
-          DescriptionAr: {
+          NameAr: {
             [Op.like]: `%${JockeyName}%`,
           },
         },
