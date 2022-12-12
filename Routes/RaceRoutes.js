@@ -19,9 +19,13 @@ const {
   RaceWithTime,
   GetHorsesofraces,
   GetRaceWithDayntime,
+  ResultLatest,
+  VerdictLatest,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/getrace").get(GetRace);
+router.route("/getlatestraceresult").get(ResultLatest);
+router.route("/raceprediction").get(VerdictLatest);
 router.route("/getracewithtime").get(RaceWithTime);
 router.route("/GetRaceWithDayntime").post(GetRaceWithDayntime);
 router.route("/GetHorsesofraces").get(GetHorsesofraces);

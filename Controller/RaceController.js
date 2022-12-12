@@ -316,8 +316,90 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
     success: true,
   });
 });
+exports.VerdictLatest = Trackerror(async (req, res, next) => {
+  const result = await RaceAndVerdictsHorseModel.findOne({
+    order: [["createdAt", "DESC"]],
+  });
+  const data = await RaceModel.findOne({
+    where: {
+      _id: result.RaceModelId,
+    },
+    include: [
+      {
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData",
+      },
+      {
+        model: db.GroundTypeModel,
+        as: "GroundData",
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+      },
+      {
+        model: db.TrackLengthModel,
+        as: "TrackLengthData",
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+      {
+        model: db.RaceKindModel,
+        as: "RaceKindData",
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData",
+      },
+      {
+        model: db.SponsorModel,
+        as: "SponsorData",
+      },
+      {
+        model: db.HorseModel,
+        as: "RaceAndHorseModelData",
+        include: { all: true },
+      },
+      {
+        model: db.CompetitonModel,
+        as: "CompetitionRacesPointsModelData",
+        include: { all: true },
+      },
+      {
+        model: db.JockeyModel,
+        include: [
+          {
+            model: db.NationalityModel,
+            as: "JockeyNationalityData",
+            paranoid: false,
+          },
+        ],
+      },
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.ResultLatest = Trackerror(async (req, res, next) => {
-  const data = RaceModel.findOne({});
+  const result = await ResultModel.findOne({
+    order: [["createdAt", "DESC"]],
+  });
+  const data = await RaceModel.findOne({
+    include: [
+      {
+        where: {
+          RaceID: result.RaceID,
+        },
+        model: db.ResultModel,
+        as: "RaceResultData",
+        include: { all: true },
+      },
+    ],
+  });
   res.status(200).json({
     success: true,
     data,
