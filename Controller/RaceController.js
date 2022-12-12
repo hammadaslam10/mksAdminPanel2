@@ -93,7 +93,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       },
       {
         model: db.ResultModel,
-        as:"RaceResultData",
+        as: "RaceResultData",
         include: { all: true },
       },
     ],
@@ -109,16 +109,16 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
     order: [["DayNTime", "DESC"]],
     paranoid: false,
     include: [
-      {
-        model: db.MeetingTypeModel,
-        as: "MeetingTypeData",
-        paranoid: false,
-      },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData",
-        paranoid: false,
-      },
+      // {
+      //   model: db.MeetingTypeModel,
+      //   as: "MeetingTypeData",
+      //   paranoid: false,
+      // },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData",
+      //   paranoid: false,
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -134,35 +134,32 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
         as: "RaceNameModelData",
         paranoid: false,
       },
-      {
-        model: db.RaceKindModel,
-        as: "RaceKindData",
-        paranoid: false,
-      },
-      {
-        model: db.RaceTypeModel,
-        as: "RaceTypeModelData",
-        paranoid: false,
-      },
-      {
-        model: db.SponsorModel,
-        as: "SponsorData",
-        paranoid: false,
-      },
-      {
-        model: db.HorseModel,
-        as: "RaceAndHorseModelData",
-        include: { all: true },
-        paranoid: false,
-      },
-      {
-        model: db.JockeyModel,
-        include: { all: true },
-        paranoid: false,
-      },
-      {
-
-      }
+      // {
+      //   model: db.RaceKindModel,
+      //   as: "RaceKindData",
+      //   paranoid: false,
+      // },
+      // {
+      //   model: db.RaceTypeModel,
+      //   as: "RaceTypeModelData",
+      //   paranoid: false,
+      // },
+      // {
+      //   model: db.SponsorModel,
+      //   as: "SponsorData",
+      //   paranoid: false,
+      // },
+      // {
+      //   model: db.HorseModel,
+      //   as: "RaceAndHorseModelData",
+      //   include: { all: true },
+      //   paranoid: false,
+      // },
+      // {
+      //   model: db.JockeyModel,
+      //   include: { all: true },
+      //   paranoid: false,
+      // },
     ],
   });
 
@@ -315,7 +312,7 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
     success: true,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id },
