@@ -161,8 +161,9 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     } else {
     }
     if (PickRaces.length > 0) {
-      if (PickRacesData[0].length > 0) {
-        if (CompetitionID.pickCount === PickRacesData[0].Length) {
+      if (PickRacesData.length > 0) {
+        console.log(CompetitionID.pickCount)
+        if (CompetitionID.pickCount === PickRacesData.length) {
           let PickRacesData = Conversion(PickRaces);
           console.log(PickRacesData, "PickRacesData");
           await PickRacesData.map(async (singlerace) => {
@@ -170,12 +171,12 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
               singleracedetail = singleracedetail.split(",");
               await CompetitionRacesPointsModel.findOrCreate({
                 where: {
-                  CompetitionModelID: req.params.id,
+                  CompetitonModelId: req.params.id,
                   RaceModelId: singleracedetail[0],
-                  Points: singleracedetail[2],
-                  BonusPoints: singleracedetail[3],
+                  Points: singleracedetail[1],
+                  BonusPoints: singleracedetail[2],
                   Type: "pick",
-                  Length: PickRacesData[0].Length,
+                  Length: PickRacesData[0].length,
                 },
               });
             });
