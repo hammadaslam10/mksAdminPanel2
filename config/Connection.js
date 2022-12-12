@@ -145,9 +145,11 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
 // CompetitionRacesPointsModel
 db.CompetitonModel.belongsToMany(db.RaceModel, {
   through: "CompetitionRacesPointsModel",
+  as: "CompetitionRacesPointsModelData",
 });
 db.RaceModel.belongsToMany(db.CompetitonModel, {
   through: "CompetitionRacesPointsModel",
+  as: "CompetitionRacesPointsModelData",
 });
 
 // -------------------------------------HorseandJockey----------------------------

@@ -360,7 +360,13 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
       },
       {
         model: db.JockeyModel,
-        include: [{ model: db.NationalityModel, as: "JockeyNationalityData" }],
+        include: [
+          {
+            model: db.NationalityModel,
+            as: "JockeyNationalityData",
+            paranoid: false,
+          },
+        ],
       },
     ],
   });
