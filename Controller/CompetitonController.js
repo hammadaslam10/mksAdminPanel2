@@ -105,7 +105,23 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
 });
 exports.CompetitonGet = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
-    include: { all: true },
+    include: [
+      {
+        model: db.CompetitionCategoryModel,
+        as: "CompetitionCategoryData",
+      },
+      {
+        model: db.RaceModel,
+        as: "CompetitionRacesPointsModelData",
+
+        include: [
+          {
+            model: db.RaceNameModel,
+            as: "RaceNameModelData",
+          },
+        ],
+      },
+    ],
   });
   res.status(200).json({
     success: true,

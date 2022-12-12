@@ -21,10 +21,10 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   // console.log(DescriptionAr);
   // console.log(TitleAr);
-  // console.log(ArRegex.test(DescriptionAr), "DescriptionAr");
-  // console.log(EnglishRegex.test(DescriptionEn), "DescriptionEn");
-  // console.log(ArRegex.test(TitleAr), "TitleAr");
-  // console.log(EnglishRegex.test(TitleEn), "TitleEn");
+  console.log(ArRegex.test(DescriptionAr), "DescriptionAr");
+  console.log(EnglishRegex.test(DescriptionEn), "DescriptionEn");
+  console.log(ArRegex.test(TitleAr), "TitleAr");
+  console.log(EnglishRegex.test(TitleEn), "TitleEn");
   const data = await AdvertismentModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
     DescriptionEn: DescriptionEn,
