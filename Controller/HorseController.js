@@ -230,6 +230,8 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     CreationId,
     Height,
     KindHorse,
+    ActiveTrainer,
+    STARS,
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -263,6 +265,8 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Height: Height || data.Height,
       NationalityID: NationalityID || data.NationalityID,
       KindHorse: KindHorse || data.KindHorse,
+      ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
+      STARS: STARS || data.STARS,
     };
     data = await HorseModel.update(updateddata, {
       where: {
@@ -309,6 +313,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       CreationId: CreationId || data.CreationId,
       Height: Height || data.Height,
       KindHorse: KindHorse || data.KindHorse,
+      ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
     };
     data = await HorseModel.update(updateddata, {
       where: {
@@ -334,7 +339,6 @@ exports.DeleteHorse = Trackerror(async (req, res, next) => {
   await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
     where: { _id: req.params.id },
-    force: true,
   });
 
   res.status(200).json({
@@ -354,6 +358,7 @@ exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
   await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
     where: { _id: req.params.id },
+    force: true,
   });
 
   res.status(200).json({

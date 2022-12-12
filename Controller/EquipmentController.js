@@ -31,10 +31,11 @@ exports.CreateEquipment = Trackerror(async (req, res, next) => {
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
         res.status(403);
-        res.send({ status: "error", message: "This Short Code already exists, Please enter a different one." });
-      } else {
-        res.status(500);
-        res.send({ status: "error", message: "Something went wrong" });
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
       }
     }
   } else {
@@ -77,7 +78,11 @@ exports.EditEquipment = Trackerror(async (req, res, next) => {
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
-      res.send({ status: "error", message: "This Short Code already exists, Please enter a different one." });
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
+      });
     } else {
       res.status(500);
       res.send({ status: "error", message: "Something went wrong" });

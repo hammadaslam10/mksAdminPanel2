@@ -86,15 +86,18 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.JockeyModel,
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
+        paranoid: false,
       },
     ],
   });

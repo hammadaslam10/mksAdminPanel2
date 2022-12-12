@@ -37,9 +37,6 @@ exports.CreateCurrency = Trackerror(async (req, res, next) => {
           message:
             "This Short Code already exists, Please enter a different one.",
         });
-      } else {
-        res.status(500);
-        res.send({ status: "error", message: "Something went wrong" });
       }
     }
   } else {

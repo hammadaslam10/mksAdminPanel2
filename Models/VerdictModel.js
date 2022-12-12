@@ -14,15 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have Name" },
+          notNull: { msg: "Verdict will have Name" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
       shortCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have ShortCode" },
+          notNull: { msg: "Verdict will have ShortCode" },
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },

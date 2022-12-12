@@ -34,10 +34,11 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
         res.status(403);
-        res.send({ status: "error", message: "This Short Code already exists, Please enter a different one." });
-      } else {
-        res.status(500);
-        res.send({ status: "error", message: "Something went wrong" });
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
       }
     }
   } else {
@@ -93,7 +94,11 @@ exports.EditCompetitionCategory = Trackerror(async (req, res, next) => {
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
-      res.send({ status: "error", message: "This Short Code already exists, Please enter a different one." });
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
+      });
     } else {
       res.status(500);
       res.send({ status: "error", message: "Something went wrong" });
@@ -107,17 +112,16 @@ exports.DeleteCompetitionCategory = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
- 
-    await CompetitionCategoryModel.destroy({
-      where: { _id: req.params.id },
-      force: true,
-    });
 
-    res.status(200).json({
-      success: true,
-      message: "data Delete Successfully",
-    });
- 
+  await CompetitionCategoryModel.destroy({
+    where: { _id: req.params.id },
+    force: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "data Delete Successfully",
+  });
 });
 exports.SoftDeleteCompetitionCategory = Trackerror(async (req, res, next) => {
   const data = await CompetitionCategoryModel.findOne({
@@ -126,7 +130,6 @@ exports.SoftDeleteCompetitionCategory = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  
 
   await CompetitionCategoryModel.destroy({
     where: { _id: req.params.id },
@@ -136,5 +139,4 @@ exports.SoftDeleteCompetitionCategory = Trackerror(async (req, res, next) => {
     success: true,
     message: "Soft Delete Successfully",
   });
-  
 });
