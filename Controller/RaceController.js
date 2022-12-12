@@ -316,6 +316,13 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
     success: true,
   });
 });
+exports.ResultLatest = Trackerror(async (req, res, next) => {
+  const data = RaceModel.findOne({});
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
@@ -356,6 +363,11 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
+        include: { all: true },
+      },
+      {
+        model: db.CompetitonModel,
+        as: "CompetitionRacesPointsModelData",
         include: { all: true },
       },
       {
