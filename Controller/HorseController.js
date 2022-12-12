@@ -358,7 +358,6 @@ exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
   await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
     where: { _id: req.params.id },
-    force: true,
   });
 
   res.status(200).json({

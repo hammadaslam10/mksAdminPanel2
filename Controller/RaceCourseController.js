@@ -11,7 +11,11 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 exports.GetCourse = Trackerror(async (req, res, next) => {
   const data = await RaceCourseModel.findAll({
     include: [
-      { model: db.NationalityModel, as: "NationalityDataRaceCourse" },
+      {
+        model: db.NationalityModel,
+        as: "NationalityDataRaceCourse",
+        paranoid: false,
+      },
       {
         model: db.ColorModel,
         as: "ColorCodeData",

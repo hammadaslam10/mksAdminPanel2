@@ -60,7 +60,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
-        paranoid: true,
+        paranoid: false,
       },
       {
         model: db.TrackLengthModel,
@@ -107,6 +107,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.GetLatestResult = Trackerror();
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     order: [["DayNTime", "DESC"]],
