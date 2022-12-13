@@ -119,6 +119,12 @@ exports.CompetitonGet = Trackerror(async (req, res, next) => {
             model: db.RaceNameModel,
             as: "RaceNameModelData",
           },
+          
+          {
+            model: db.HorseModel,
+            as: "RaceAndHorseModelData",
+          },
+          
         ],
       },
     ],
