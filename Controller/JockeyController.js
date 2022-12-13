@@ -115,6 +115,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     MaximumJockeyWeight,
     Rating,
     DOB,
+    JockeyLicenseDate
   } = req.body;
   console.log(req.body);
   // if ((NationalityID = "")) {
@@ -142,6 +143,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       NationalityID: NationalityID || data.NationalityID,
       Rating: Rating || data.Rating,
+      JockeyLicenseDate: JockeyLicenseDate || data.JockeyLicenseDate,
     };
     data = await JockeyModel.update(updateddata, {
       where: {
