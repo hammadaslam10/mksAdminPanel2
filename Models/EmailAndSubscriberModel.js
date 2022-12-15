@@ -28,12 +28,20 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-      NameAr: {
+       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Name Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+            ) {
+            } else {
+              throw new Error("Name Arabic Validation Failed");
+            }
           },
         },
       },

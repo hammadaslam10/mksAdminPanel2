@@ -102,10 +102,10 @@ db.CompetitionCategoryModel = require("../Models/CompetitionCategoryModel")(
   Db,
   DataTypes
 );
-db.CompetitionRacesModel = require("../Models/CompetitionRacesModel")(
-  Db,
-  DataTypes
-);
+// db.CompetitionRacesModel = require("../Models/CompetitionRacesModel")(
+//   Db,
+//   DataTypes
+// );
 db.HorseJockeyComboModel = require("../Models/HorseJockeyComboModel")(
   Db,
   DataTypes
@@ -185,14 +185,6 @@ db.TrainerModel.belongsTo(db.NationalityModel, {
   as: "TrainerNationalityData",
 });
 
-// db.HorseModel.hasMany(db.TrainerModel, {
-//   foreignKey: "NationalityID",
-//   as: "TrainerNationalityData",
-// });
-// db.TrainerModel.belongsTo(db.HorseModel, {
-//   foreignKey: "NationalityID",
-//   as: "TrainerNationalityData",
-// });
 // -------------------------------------Owner----------------------------
 db.NationalityModel.hasMany(db.OwnerModel, {
   foreignKey: "NationalityID",

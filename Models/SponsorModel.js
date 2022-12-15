@@ -13,29 +13,46 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Sponsor" },
+          notEmpty: {
+            msg: "Without Image Sponsor Will not be get submit",
+          },
+        },
       },
       DescriptionEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.DescriptionEn.trim() == "") {
+              throw new Error("Please Enter Description in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DescriptionEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.DescriptionEn)
+            ) {
+            } else {
+              throw new Error("Description English Validation Failed");
+            }
           },
-          // is: /^[a-z][a-z\d]*$/i,
-          // is: {
-          //   msg: "Description Must Be In English in this input",
-          // },
-          notNull: { msg: "Sponsor will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
       DescriptionAr: {
         type: DataTypes.STRING,
+        allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Description Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.DescriptionAr.trim() == "") {
+              throw new Error("Please Enter  Description in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DescriptionAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.DescriptionAr)
+            ) {
+            } else {
+              throw new Error("Description Arabic Validation Failed");
+            }
           },
         },
       },

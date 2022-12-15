@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           EnglishLanguageVerification() {
             if (this.DescriptionEn.trim() == "") {
-              throw new Error("Description English is Empty");
+              throw new Error("Please Enter Description in English ");
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DescriptionEn) ||
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           ArabicLanguageVerification() {
             if (this.DescriptionAr.trim() == "") {
-              throw new Error("Description Arabic is Empty");
+              throw new Error("Please Enter  Description in  Arabic ");
             }
             if (
               /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DescriptionAr) ||
@@ -64,14 +64,14 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           EnglishLanguageVerification() {
             if (this.TitleEn.trim() == "") {
-              throw new Error("Description English is Empty");
+              throw new Error("Please Enter Title in English ");
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
               /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
             ) {
             } else {
-              throw new Error("Description English Validation Failed");
+              throw new Error("Title English Validation Failed");
             }
           },
         },
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           ArabicLanguageVerification() {
             if (this.TitleAr.trim() == "") {
-              throw new Error("Title Arabic is Empty");
+              throw new Error("Please Enter Title in  Arabic ");
             }
             if (
               /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TitleAr) ||

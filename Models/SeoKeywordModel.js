@@ -15,20 +15,34 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.KeywordEn.trim() == "") {
+              throw new Error("Please Enter Keyword in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.KeywordEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.KeywordEn)
+            ) {
+            } else {
+              throw new Error("Kyword English Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Keyword" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
       KeywordAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Keyword Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.KeywordAr.trim() == "") {
+              throw new Error("Please Enter  Keyword in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.KeywordAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.KeywordAr)
+            ) {
+            } else {
+              throw new Error("Keyword Arabic Validation Failed");
+            }
           },
         },
       },
@@ -36,21 +50,35 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.TitleEn.trim() == "") {
+              throw new Error("Please Enter Title in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+            ) {
+            } else {
+              throw new Error("Title English Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       TitleAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.TitleAr.trim() == "") {
+              throw new Error("Please Enter Title in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TitleAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TitleAr)
+            ) {
+            } else {
+              throw new Error("Title Arabic Validation Failed");
+            }
           },
         },
       },

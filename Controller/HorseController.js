@@ -91,7 +91,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     ActiveTrainer,
     Breeder,
     Trainer,
-    Remarks,
     Sex,
     Color,
     Earning,
@@ -109,6 +108,9 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     GSire,
     Height,
     KindHorse,
+    shortCode,
+    RemarksAr,
+    RemarksEn,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
@@ -121,7 +123,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     NameAr: NameAr,
     ActiveTrainer: ActiveTrainer,
     Breeder: Breeder,
-    Remarks: Remarks,
+    RemarksEn: RemarksEn,
     Sex: Sex,
     Color: Color,
     Earning: Earning,
@@ -141,6 +143,8 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     GSire: GSire || null,
     Height: Height,
     KindHorse: KindHorse,
+    shortCode: shortCode,
+    RemarksAr: RemarksAr,
   });
 
   if (data._id) {
@@ -186,36 +190,17 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     );
   }
 });
-// const updateddata = await HorseModel.create({
-//   HorseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Horse}/${data.HorseImage}`,
-//   NameEn: NameEn || data.NameEn,
-//   NameEn: NameEn || data.NameEn,
-//   NameEn: NameEn || data.NameEn,
-//   DOB: DOB || data.DOB,
-//   Age: Age || data.Age,
-//   NameAr: NameAr || data.NameAr,
-//   Breeder: Breeder || data.Breeder,
-//   Remarks: Remarks || data.Remarks,
-//   HorseRating: HorseRating || data.HorseRating,
-//   Sex: Sex || data.Sex,
-//   Color: Color || data.Color,
-//   KindOfHorse: KindOfHorse || data.KindOfHorse,
-//   Dam: Dam || data.Dam,
-//   Sire: Sire || data.Sire,
-//   GSire: GSire || data.GSire,
-//   Earning: Earning || data.Earning,
-//   OverAllRating: OverAllRating || data.OverAllRating,
-// });
 exports.UpdateHorse = Trackerror(async (req, res, next) => {
   const {
     NameEn,
     DOB,
     NameAr,
     Breeder,
-    Remarks,
+    RemarksEn,
     HorseRating,
     Sex,
     Color,
+    RemarksAr,
     KindOfHorse,
     Dam,
     Sire,
@@ -232,6 +217,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     KindHorse,
     ActiveTrainer,
     STARS,
+    shortCode,
   } = req.body;
   let data = await HorseModel.findOne({
     where: { _id: req.params.id },
@@ -247,7 +233,8 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       DOB: DOB || data.DOB,
       NameAr: NameAr || data.NameAr,
       Breeder: Breeder || data.Breeder,
-      Remarks: Remarks || data.Remarks,
+      RemarksEn: RemarksEn || data.RemarksEn,
+      RemarksAr: RemarksAr || data.RemarksAr,
       HorseRating: HorseRating || data.HorseRating,
       Sex: Sex || data.Sex,
       Color: Color || data.Color,
@@ -267,6 +254,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       KindHorse: KindHorse || data.KindHorse,
       ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
       STARS: STARS || data.STARS,
+      shortCode: shortCode || data.shortCode,
     };
     data = await HorseModel.update(updateddata, {
       where: {
@@ -295,7 +283,7 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       DOB: DOB || data.DOB,
       NameAr: NameAr || data.NameAr,
       Breeder: Breeder || data.Breeder,
-      Remarks: Remarks || data.Remarks,
+      RemarksEn: RemarksEn || data.RemarksEn,
       HorseRating: HorseRating || data.HorseRating,
       Sex: Sex || data.Sex,
       Color: Color || data.Color,
@@ -314,6 +302,8 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       Height: Height || data.Height,
       KindHorse: KindHorse || data.KindHorse,
       ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
+      shortCode: shortCode || data.shortCode,
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await HorseModel.update(updateddata, {
       where: {

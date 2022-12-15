@@ -14,12 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: " Please enter the Gender Name in English",
+          EnglishLanguageVerification() {
+            if (this.NameEn.trim() == "") {
+              throw new Error("Please Enter  Name in English is Empty");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+            ) {
+            } else {
+              throw new Error("Name in English Validation Failed");
+            }
           },
-          notNull: { msg: "Sex will have Name" },
-          notEmpty: { msg: "Name  will not be empty" },
         },
       },
       shortCode: {
@@ -36,12 +42,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Please enter the Gender Name in  Arabic",
+          ArabicLanguageVerification() {
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+            ) {
+            } else {
+              throw new Error("Name Arabic Validation Failed");
+            }
           },
-          notNull: { msg: "Sex will have ShortCode" },
-          notEmpty: { msg: "Name  will not be empty" },
         },
       },
     },

@@ -14,12 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.NameEn.trim() == "") {
+              throw new Error("Please Enter Name in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+            ) {
+            } else {
+              throw new Error("Name English Validation Failed");
+            }
           },
-          notNull: { msg: "Color will have Name" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
       shortCode: {
@@ -28,16 +34,24 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
         validate: {
-          notNull: { msg: "Color will have ShortCode" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Ground Type will have ShortCode" },
+          notEmpty: { msg: "ShortCode  will not be empty" },
         },
       },
       NameAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Name Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+            ) {
+            } else {
+              throw new Error("Name Arabic Validation Failed");
+            }
           },
         },
       },

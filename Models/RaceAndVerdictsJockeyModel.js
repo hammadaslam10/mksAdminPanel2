@@ -8,16 +8,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
-          notNull: { msg: "Verdict will have Name" },
-          notEmpty: { msg: "Name  will not be empty" },
+          notNull: { msg: "Please Add Name Of Verdict" },
+          notEmpty: {
+            msg: "Without Name Verdict Will not be get submit",
+          },
         },
       },
       Rank: {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "Verdict will have Rank" },
-          notEmpty: { msg: "Rank  will not be empty" },
+          notNull: { msg: "Please Add Rank Of Horse" },
+          notEmpty: {
+            msg: "Without Rank Horse Will not be get submit",
+          },
         },
       },
       JockeyID: {

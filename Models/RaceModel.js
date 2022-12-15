@@ -13,14 +13,32 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Breeder" },
+          notEmpty: {
+            msg: "Without Image Breeder Will not be get submit",
+          },
+        },
       },
       MeetingType: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add MeetingType Of Race" },
+          notEmpty: {
+            msg: "Without MeetingType Race Will not be get submit",
+          },
+        },
       },
       MeetingCode: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add MeetingCode Of Race" },
+          notEmpty: {
+            msg: "Without MeetingCode Race Will not be get submit",
+          },
+        },
       },
       RaceName: {
         type: DataTypes.UUID,
@@ -42,18 +60,38 @@ module.exports = (sequelize, DataTypes) => {
       TrackLength: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add TrackLength Of Race" },
+          notEmpty: {
+            msg: "Without TrackLength Race Will not be get submit",
+          },
+        },
       },
       Ground: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add GroundType Of Race" },
+          notEmpty: {
+            msg: "Without GroundType Race Will not be get submit",
+          },
+        },
       },
       DescriptionAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Race Description Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.DescriptionAr.trim() == "") {
+              throw new Error("Please Enter  Description in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DescriptionAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.DescriptionAr)
+            ) {
+            } else {
+              throw new Error("Description Arabic Validation Failed");
+            }
           },
         },
       },
@@ -61,21 +99,51 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Race will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          EnglishLanguageVerification() {
+            if (this.DescriptionEn.trim() == "") {
+              throw new Error("Please Enter Description in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DescriptionEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.DescriptionEn)
+            ) {
+            } else {
+              throw new Error("Description English Validation Failed");
+            }
+          },
         },
       },
       RaceStatus: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 0,
+        isIn: [["Completed", "Cancelled", "Live", "Due"]],
+        defaultValue: "Due",
+      },
+      ResultStatus: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        isIn: [["Announced", "Awaited", "Cancelled"]],
+        defaultValue: "Awaited",
       },
       DayNTime: {
         type: DataTypes.DATE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add DayNTime Of Race" },
+          notEmpty: {
+            msg: "Without DayNTime Race Will not be get submit",
+          },
+        },
       },
       RaceCourse: {
         type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add RaceCourse Of Race" },
+          notEmpty: {
+            msg: "Without RaceCourse Race Will not be get submit",
+          },
+        },
       },
       RaceType: {
         type: DataTypes.UUID,

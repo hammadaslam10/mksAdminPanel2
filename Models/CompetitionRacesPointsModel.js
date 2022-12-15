@@ -13,11 +13,23 @@ module.exports = (sequelize, DataTypes) => {
       Points: {
         type: DataTypes.DOUBLE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Points Of Competion Race" },
+          notEmpty: {
+            msg: "Without Points Competion Race Will not be get submit",
+          },
+        },
       },
       BonusPoints: {
         type: DataTypes.DOUBLE,
         allowNull: false,
         defaultValue: 0.0,
+        validate: {
+          notNull: { msg: "Please Add Points Of Competion Race" },
+          notEmpty: {
+            msg: "Without Points Competion Race Will not be get submit",
+          },
+        },
       },
       Type: {
         type: DataTypes.STRING,

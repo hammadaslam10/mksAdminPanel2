@@ -13,86 +13,140 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Owner Image Of Owner" },
+          notEmpty: {
+            msg: "Without Owner Image Owner Will not be get submit",
+          },
+        },
       },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Owner Name Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.NameEn.trim() == "") {
+              throw new Error("Please Enter Name in English is Empty");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+            ) {
+            } else {
+              throw new Error("Name in English Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Nationality" },
+          notEmpty: {
+            msg: "Without Image Nationality Will not be get submit",
+          },
+        },
       },
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Owner Name Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+            ) {
+            } else {
+              throw new Error("Name Arabic Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       TitleEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.TitleEn.trim() == "") {
+              throw new Error("Please Enter Title in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+            ) {
+            } else {
+              throw new Error("Title English Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       TitleAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title English Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.TitleAr.trim() == "") {
+              throw new Error("Please Enter Title in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TitleAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TitleAr)
+            ) {
+            } else {
+              throw new Error("Title Arabic Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       ShortEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.TitleEn.trim() == "") {
+              throw new Error("Please Enter Short Name in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+            ) {
+            } else {
+              throw new Error("Short Name English Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       ShortAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title English Must Be In English",
+          ArabicLanguageVerification() {
+            if (this.ShortAr.trim() == "") {
+              throw new Error("Please Enter Short Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.ShortAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.ShortAr)
+            ) {
+            } else {
+              throw new Error("Short Name Arabic Validation Failed");
+            }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       RegistrationDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Registration Date Of Advertisment" },
+          notEmpty: {
+            msg: "Without Registration Date Advertisment Will not be get submit",
+          },
+        },
       },
     },
     {

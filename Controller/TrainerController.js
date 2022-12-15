@@ -9,11 +9,11 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
 exports.GetTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
-    include: { all: true }
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
   });
 });
 exports.CreateTrainer = Trackerror(async (req, res, next) => {
@@ -26,18 +26,20 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     TrainerLicenseDate,
     ShortNameEn,
     ShortNameAr,
-    Detail,
-    Remarks,
+    DetailEn,
+    RemarksEn,
     NationalityID,
-    Rating
+    Rating,
+    DetailAr,
+    RemarksAr,
   } = req.body;
   const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Trainer}/${Image}`, file.mimetype);
-  if (!NameEn || !Detail || !Remarks) {
+  if (!NameEn || !DetailEn || !RemarksEn) {
     return next(
-      new HandlerCallBack("Please Fill Appropiate Detail Of Trainer", 404)
+      new HandlerCallBack("Please Fill Appropiate DetailEn Of Trainer", 404)
     );
   } else {
     const data = await TrainerModel.create({
@@ -50,15 +52,17 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr,
       TrainerLicenseDate: TrainerLicenseDate,
       DOB: DOB,
-      Detail: Detail,
-      Remarks: Remarks,
+      DetailEn: DetailEn,
+      RemarksEn: RemarksEn,
       Rating: Rating,
-      NationalityID: NationalityID
+      NationalityID: NationalityID,
+      DetailAr: DetailAr,
+      RemarksAr: RemarksAr,
     });
 
     res.status(201).json({
       success: true,
-      data
+      data,
     });
   }
 });
@@ -72,13 +76,15 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     TrainerLicenseDate,
     ShortNameEn,
     ShortNameAr,
-    Detail,
-    Remarks,
+    DetailEn,
+    RemarksEn,
     Rating,
-    NationalityID
+    NationalityID,
+    DetailAr,
+    RemarksAr,
   } = req.body;
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -94,19 +100,21 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
       DOB: DOB || data.DOB,
-      Detail: Detail || data.Detail,
-      Remarks: Remarks || data.Remarks,
+      DetailEn: DetailEn || data.DetailEn,
+      RemarksEn: RemarksEn || data.RemarksEn,
       Rating: Rating || data.Rating,
-      NationalityID: NationalityID || data.NationalityID
+      NationalityID: NationalityID || data.NationalityID,
+      DetailAr: DetailAr || data.DetailAr,
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.image;
@@ -125,37 +133,38 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       TrainerLicenseDate: TrainerLicenseDate || data.TrainerLicenseDate,
       DOB: DOB || data.DOB,
-      Detail: Detail || data.Detail,
-      Remarks: Remarks || data.Remarks,
-      Rating: Rating || data.Rating
+      DetailEn: DetailEn || data.DetailEn,
+      RemarksEn: RemarksEn || data.RemarksEn,
+      Rating: Rating || data.Rating,
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.SingleTrainer = Trackerror(async (req, res, next) => {
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return new next("Trainer is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -165,17 +174,17 @@ exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -183,11 +192,11 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
 
   console.log(data);
   await TrainerModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });

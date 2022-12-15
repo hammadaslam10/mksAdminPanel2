@@ -13,49 +13,98 @@ module.exports = (sequelize, DataTypes) => {
       HorseImage: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Horse" },
+          notEmpty: {
+            msg: "Without Image Horse Will not be get submit",
+          },
+        },
       },
-      HorseCode: {
-        type: DataTypes.STRING,
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
+        allowNull: false,
       },
       KindHorse: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Kind Of Horse" },
+          notEmpty: {
+            msg: "Without Kind Horse Will not be get submit",
+          },
+        },
       },
       Breeder: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Breeder Of Horse" },
+          notEmpty: {
+            msg: "Without Breeder Horse Will not be get submit",
+          },
+        },
       },
       Sex: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Sex Of Horse" },
+          notEmpty: {
+            msg: "Without Sex Horse Will not be get submit",
+          },
+        },
       },
       DOB: {
         type: DataTypes.DATE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Date of birth Of Horse" },
+          notEmpty: {
+            msg: "Without Date of birth Horse Will not be get submit",
+          },
+        },
       },
       ActiveOwner: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Owner Of Horse" },
+          notEmpty: {
+            msg: "Without Owner Horse Will not be get submit",
+          },
+        },
       },
-      // ActiveJockey: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "JockeyModel",
-      //     key: "_id",
-      //   },
-      // },
       ActiveTrainer: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Trainer Of Horse" },
+          notEmpty: {
+            msg: "Without Trainer Horse Will not be get submit",
+          },
+        },
       },
       NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Nationality Of Horse" },
+          notEmpty: {
+            msg: "Without Nationality Horse Will not be get submit",
+          },
+        },
       },
       CreationId: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Creation Of Horse" },
+          notEmpty: {
+            msg: "Without Creation Horse Will not be get submit",
+          },
+        },
       },
       Dam: {
         type: DataTypes.UUID,
@@ -71,20 +120,54 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      Remarks: {
+      RemarksEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        EnglishLanguageVerification() {
+          if (this.RemarksEn.trim() == "") {
+            throw new Error("Please Enter remarks in English ");
+          }
+          if (
+            /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.RemarksEn) ||
+            /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.RemarksEn)
+          ) {
+          } else {
+            throw new Error("remarks English Validation Failed");
+          }
+        },
+      },
+      RemarksAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        ArabicLanguageVerification() {
+          if (this.RemarksAr.trim() == "") {
+            throw new Error("Please Enter  Remarks in  Arabic ");
+          }
+          if (
+            /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.RemarksAr) ||
+            /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.RemarksAr)
+          ) {
+          } else {
+            throw new Error("Remarks Arabic Validation Failed");
+          }
+        },
       },
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notContains: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          notContains: {
-            msg: "Name Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.NameEn.trim() == "") {
+              throw new Error("Please Enter Name in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+            ) {
+            } else {
+              throw new Error("Name English Validation Failed");
+            }
           },
-          notNull: { msg: "Horse will have Name" },
-          notEmpty: { msg: "Name   will not be empty" },
         },
       },
 
@@ -92,9 +175,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+            ) {
+            } else {
+              throw new Error("Name Arabic Validation Failed");
+            }
           },
         },
       },
@@ -124,6 +215,12 @@ module.exports = (sequelize, DataTypes) => {
       ColorID: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Horse" },
+          notEmpty: {
+            msg: "Without Image Horse Will not be get submit",
+          },
+        },
       },
       Height: {
         type: DataTypes.BIGINT,
@@ -139,20 +236,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return HorseModel;
 };
-
-// HorseModel.belongsToMany(JockeyModel, {
-//   through: "Jockey",
-// });
-
-// HorseModel.belongsToMany(TrainerModel, {
-//   through: "Trainer",
-//   as: "TrainerData",
-// });
-
-// HorseModel.belongsToMany(OwnerModel, {
-//   through: "Owner",
-//   as: "OwnerData",
-// });
-// HorseModel.sync();
-
-// module.exports = HorseModel;

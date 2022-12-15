@@ -13,59 +13,66 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        notNull: { msg: "Please Add Image Of Race Course" },
+        notEmpty: {
+          msg: "Without Image Race Course Will not be get submit",
+        },
       },
       TrackNameEn: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[A-Za-z\s]*$/,
-          is: {
-            msg: "Title English Must Be In English",
+          EnglishLanguageVerification() {
+            if (this.TrackNameEn.trim() == "") {
+              throw new Error("Please Enter Track Name in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TrackNameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TrackNameEn)
+            ) {
+            } else {
+              throw new Error("Track Name English Validation Failed");
+            }
           },
-          notNull: { msg: "RaceCourse will have TrackName" },
-          notEmpty: { msg: "TrackName  will not be empty" },
         },
       },
       TrackNameAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "RaceName Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.TrackNameAr.trim() == "") {
+              throw new Error("Please Enter  Track Name in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TrackNameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TrackNameAr)
+            ) {
+            } else {
+              throw new Error("Track Name Arabic Validation Failed");
+            }
           },
         },
       },
 
-      // GroundTypeEn: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      //   validate: {
-      //     notNull: { msg: "RaceCourse will have GroundType" },
-      //     notEmpty: { msg: "GroundType  will not be empty" },
-      //   },
-      // },
-      // GroundTypeAr: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      //   validate: {
-      //     is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-      //     is: {
-      //       msg: "RaceName Must Be In Arabic",
-      //     },
-      //   },
-      // },
-
       NationalityID: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Nationality Of Race Course" },
+          notEmpty: {
+            msg: "Without Nationality Race Course Will not be get submit",
+          },
+        },
       },
       ColorCode: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
-          notNull: { msg: "RaceCourse will have ColorCode" },
-          notEmpty: { msg: "ColorCode  will not be empty" },
+          notNull: { msg: "Please Add ColorCode Of Race Course" },
+          notEmpty: {
+            msg: "Without ColorCode Race Course Will not be get submit",
+          },
         },
       },
       shortCode: {

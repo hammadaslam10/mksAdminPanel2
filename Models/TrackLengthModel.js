@@ -14,31 +14,40 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "TrackLength Kind will have TrackLength" },
-          notEmpty: { msg: "TrackLength  will not be empty" },
+          notNull: { msg: "TrackLength  will have TrackLength Total Lenght" },
+          notEmpty: { msg: "TrackLength  Total Lenght will not be empty" },
         },
       },
       RaceCourse: {
         type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "TrackLength  will have RaceCourse" },
+          notEmpty: { msg: "RaceCourse  will not be empty" },
+        },
       },
       GroundType: {
         type: DataTypes.UUID,
         allowNull: false,
+        validate: {
+          notNull: { msg: "TrackLength  will have GroundType" },
+          notEmpty: { msg: "GroundType  will not be empty" },
+        },
       },
       RaceCourseImage: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "TrackLength Kind will have RaceCourseImage" },
-          notEmpty: { msg: "TrackLength  will not be empty" },
+          notNull: { msg: "TrackLength  will have RaceCourseImage" },
+          notEmpty: { msg: "RaceCourseImage  will not be empty" },
         },
       },
       RailPosition: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "TrackLength Kind will have RailPosition" },
-          notEmpty: { msg: "TrackLength  will not be empty" },
+          notNull: { msg: "TrackLength  will have RailPosition" },
+          notEmpty: { msg: "RailPosition  will not be empty" },
         },
       },
     },

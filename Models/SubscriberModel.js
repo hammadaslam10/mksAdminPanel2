@@ -25,14 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Status: {
+      ApprovedStatus: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      role: {
-        type: DataTypes.STRING,
-        defaultValue: "notapproveduser",
-      },
+
       password: {
         type: DataTypes.STRING,
         allowNull: false,
