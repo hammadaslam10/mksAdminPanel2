@@ -80,9 +80,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.TitleAr.trim() == "") {
+              throw new Error("Title Arabic is Empty");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TitleAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TitleAr)
+            ) {
+            } else {
+              throw new Error("Title Arabic Validation Failed");
+            }
           },
         },
       },
