@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Image Of Advertisment" },
+          notEmpty: { msg: "Without Image Advertisment Will not be get submit" },
+        },
       },
       DescriptionEn: {
         type: DataTypes.STRING,
@@ -22,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           is: /^[A-Za-z\s]*$/,
           is: {
-            msg: "Description English Must Be In English",
+            msg: "Please enter the Description in English",
           },
-          notNull: { msg: "Ad will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          notNull: { msg: "Description in English is Null" },
+          notEmpty: { msg: "Description in English is Empty" },
         },
       },
       DescriptionAr: {

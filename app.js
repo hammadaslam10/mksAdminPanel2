@@ -34,8 +34,9 @@ const RaceCardRoutes = require("./Routes/RaceCardRoutes");
 const EquipmentRoutes = require("./Routes/EquipmentRoutes");
 const GroundTypeRoutes = require("./Routes/GroundTypeRoutes");
 const VerdictRoute = require("./Routes/VerdictRoute");
-const ComeptitionRoute=require("./Routes/CompetitionRoutes")
-const CompetitionCategoryRoutes=require("./Routes/CompetitionCategoryRoutes")
+const ComeptitionRoute = require("./Routes/CompetitionRoutes");
+const CompetitionCategoryRoutes = require("./Routes/CompetitionCategoryRoutes");
+const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
 let cron = require("node-cron");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -77,13 +78,12 @@ app.use("/api/v1", GroundTypeRoutes);
 app.use("/api/v1", VerdictRoute);
 app.use("/api/v1", ComeptitionRoute);
 app.use("/api/v1", CompetitionCategoryRoutes);
-// app.use("/api/v1", SearchRoutes);
-cron.schedule("* * * * *", () => {
-  console.log("cron job working");
-});
-cron.schedule("* * * * *", () => {
-  console.log("cron job working1");
-});
-
+app.use("/api/v1", NewsLetterRoutes);
+// cron.schedule("* * * * *", () => {
+//   console.log("cron job working");
+// });
+// cron.schedule("* * * * *", () => {
+//   console.log("cron job working1");
+// });
 app.use(ApplyMiddleware);
 module.exports = app;
