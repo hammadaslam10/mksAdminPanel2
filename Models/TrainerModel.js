@@ -24,16 +24,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          ArabicLanguageVerification() {
+          EnglishLanguageVerification() {
             if (this.NameEn.trim() == "") {
-              throw new Error("Please Enter  Name in  Arabic ");
+              throw new Error("Please Enter Name in English ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameEn) ||
-              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
             ) {
             } else {
-              throw new Error("Name Arabic Validation Failed");
+              throw new Error("Name English Validation Failed");
             }
           },
         },
