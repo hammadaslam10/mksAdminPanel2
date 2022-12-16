@@ -34,11 +34,11 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     AbbrevAr,
   } = req.body;
 
-  const file = req.files.image;
-  const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
-  try {
+  
+    const file = req.files.image;
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
     const data = await NationalityModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
       AbbrevEn: AbbrevEn,
@@ -57,16 +57,7 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(403);
-      res.send({
-        status: "error",
-        message:
-          "This Short Code already exists, Please enter a different one.",
-      });
-    }
-  }
+ 
 });
 exports.NationalityGet = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll();
