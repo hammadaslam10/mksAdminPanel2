@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add Points Of Competiton Race" },
+          notNull: { msg: "Please Add Points Of Competition Race" },
           notEmpty: {
-            msg: "Without Points Competiton Race Will not be get submit",
+            msg: "Without Points Competition Race Will not be get submit",
           },
         },
       },
@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 0.0,
         validate: {
-          notNull: { msg: "Please Add Points Of Competiton Race" },
+          notNull: { msg: "Please Add Points Of Competition Race" },
           notEmpty: {
-            msg: "Without Points Competiton Race Will not be get submit",
+            msg: "Without Points Competition Race Will not be get submit",
           },
         },
       },
