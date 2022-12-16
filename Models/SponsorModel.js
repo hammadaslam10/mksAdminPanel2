@@ -60,17 +60,35 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Ad will have description" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
+          EnglishLanguageVerification() {
+            if (this.TitleEn.trim() == "") {
+              throw new Error("Please Enter Title in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
+            ) {
+            } else {
+              throw new Error("Title English Validation Failed");
+            }
+          },
         },
       },
       TitleAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Title Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.TitleAr.trim() == "") {
+              throw new Error("Please Enter Title in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TitleAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TitleAr)
+            ) {
+            } else {
+              throw new Error("Title Arabic Validation Failed");
+            }
           },
         },
       },

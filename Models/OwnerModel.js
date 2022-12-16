@@ -107,12 +107,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
-            if (this.TitleEn.trim() == "") {
+            if (this.ShortEn.trim() == "") {
               throw new Error("Please Enter Short Name in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ShortEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ShortEn)
             ) {
             } else {
               throw new Error("Short Name English Validation Failed");

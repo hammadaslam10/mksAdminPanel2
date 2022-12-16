@@ -44,15 +44,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           ArabicLanguageVerification() {
-            if (this.DescriptionAr.trim() == "") {
-              throw new Error("Please Enter  Description in  Arabic ");
+            if (this.NameAr.trim() == "") {
+              throw new Error("Please Enter  Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DescriptionAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.DescriptionAr)
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
             ) {
             } else {
-              throw new Error("Description Arabic Validation Failed");
+              throw new Error("Name Arabic Validation Failed");
             }
           },
         },

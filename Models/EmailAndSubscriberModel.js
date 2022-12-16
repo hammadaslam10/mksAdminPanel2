@@ -28,7 +28,25 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Descritpion  will not be empty" },
         },
       },
-       NameAr: {
+      NameEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          EnglishLanguageVerification() {
+            if (this.NameEn.trim() == "") {
+              throw new Error("Please Enter Name in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
+            ) {
+            } else {
+              throw new Error("Name English Validation Failed");
+            }
+          },
+        },
+      },
+      NameAr: {
         type: DataTypes.STRING,
         validate: {
           ArabicLanguageVerification() {

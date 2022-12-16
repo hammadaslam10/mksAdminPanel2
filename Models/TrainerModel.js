@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add Image Of Image" },
+          notNull: { msg: "Please Add Image Of Trainer" },
           notEmpty: {
-            msg: "Without Image Image Will not be get submit",
+            msg: "Without Image Trainer Will not be get submit",
           },
         },
       },

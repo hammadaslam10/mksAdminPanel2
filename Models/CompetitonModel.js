@@ -78,9 +78,17 @@ module.exports = (sequelize, DataTypes) => {
       DescAr: {
         type: DataTypes.STRING,
         validate: {
-          is: /^[\u0621-\u064A\u0660-\u0669 ]+$/,
-          is: {
-            msg: "Desc Must Be In Arabic",
+          ArabicLanguageVerification() {
+            if (this.DescAr.trim() == "") {
+              throw new Error("Please Enter  Description in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DescAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.DescAr)
+            ) {
+            } else {
+              throw new Error("Description Arabic Validation Failed");
+            }
           },
         },
       },
