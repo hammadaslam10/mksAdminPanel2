@@ -33,9 +33,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add Nationality Of Trainer" },
+          notNull: { msg: "Please Add Nationality Of Subscriber" },
           notEmpty: {
-            msg: "Without Nationality Trainer Will not be get submit",
+            msg: "Without Nationality Subscriber Will not be get submit",
           },
         },
       },
