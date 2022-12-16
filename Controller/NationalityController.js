@@ -25,39 +25,39 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     NameAr,
     AbbrevEn,
     AltNameEn,
-    Label,
+    LabelEn,
     Offset,
     ValueAr,
     shortCode,
     AltNameAr,
     ValueEn,
     AbbrevAr,
+    LabelAr,
   } = req.body;
 
-  
-    const file = req.files.image;
-    const Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
-    const data = await NationalityModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
-      AbbrevEn: AbbrevEn,
-      AbbrevAr: AbbrevAr,
-      shortCode: shortCode,
-      AltNameEn: AltNameEn,
-      AltNameAr: AltNameAr,
-      Label: Label,
-      Offset: Offset,
-      ValueAr: ValueAr,
-      ValueEn: ValueEn,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
- 
+  const file = req.files.image;
+  const Image = generateFileName();
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
+  const data = await NationalityModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
+    AbbrevEn: AbbrevEn,
+    AbbrevAr: AbbrevAr,
+    shortCode: shortCode,
+    AltNameEn: AltNameEn,
+    AltNameAr: AltNameAr,
+    LabelEn: LabelEn,
+    Offset: Offset,
+    ValueAr: ValueAr,
+    ValueEn: ValueEn,
+    NameEn: NameEn,
+    NameAr: NameAr,
+    LabelAr: LabelAr,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.NationalityGet = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll();
@@ -74,12 +74,13 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
     AbbrevEn,
     AltNameEn,
     AltNameAr,
-    Label,
+    LabelEn,
     Offset,
     ValueAr,
     ValueEn,
     shortCode,
     AbbrevAr,
+    LabelAr,
   } = req.body;
   let data = await NationalityModel.findOne({
     where: { _id: req.params.id },
@@ -94,7 +95,7 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       AbbrevEn: AbbrevEn || data.AbbrevEn,
       AltNameEn: AltNameEn || data.AltNameEn,
       shortCode: shortCode || data.shortCode,
-      Label: Label || data.Label,
+      LabelEn: LabelEn || data.LabelEn,
       Offset: Offset || data.Offset,
       NameEn: NameEn || data.NameEn,
       NameAr: NameAr || data.NameAr,
@@ -102,6 +103,7 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       ValueEn: ValueEn || data.ValueEn,
       AbbrevAr: AbbrevAr || data.AbbrevAr,
       AltNameAr: AltNameAr || data.AltNameAr,
+      LabelAr: LabelAr || data.LabelAr,
     };
     try {
       data = await NationalityModel.update(updateddata, {
@@ -134,12 +136,13 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       AbbrevEn: AbbrevEn || data.AbbrevEn,
       AltNameEn: AltNameEn || data.AltNameEn,
       shortCode: shortCode || data.shortCode,
-      Label: Label || data.Label,
+      LabelEn: LabelEn || data.LabelEn,
       Offset: Offset || data.Offset,
       NameEn: NameEn || data.NameEn,
       NameAr: NameAr || data.NameAr,
       ValueAr: ValueAr || data.ValueAr,
       AltNameAr: AltNameAr || data.AltNameAr,
+      LabelAr: LabelAr || data.LabelAr,
     };
     try {
       data = await NationalityModel.update(updateddata, {
