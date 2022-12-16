@@ -7,9 +7,12 @@ const {
   DeleteRaceCard,
   SoftDeleteRaceCard,
   AddRacesInRaceCard,
-  
+  GetDeletedRaceCard,
+  RestoreSoftDeletedRaceCard,
 } = require("../Controller/RaceCardController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/racecardgetdeleted").get(GetDeletedRaceCard);
+router.route("/restoresoftdeleteracecard/:id").post(RestoreSoftDeletedRaceCard);
 router.route("/uploadRaceCard", upload.single("image")).post(CreateRaceCard);
 router.route("/RaceCardget").get(RaceCardGet);
 router.route("/deleteRaceCard/:id").delete(DeleteRaceCard);

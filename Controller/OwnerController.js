@@ -11,6 +11,35 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { Conversion } = require("../Utils/Conversion");
 const OwnerSilkColorModel = db.OwnerSilkColorModel;
 const { Op } = require("sequelize");
+exports.GetDeletedOwner = Trackerror(async (req, res, next) => {
+  const data = await OwnerModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedOwner = Trackerror(async (req, res, next) => {
+  const data = await OwnerModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await OwnerModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {
     NameEn,

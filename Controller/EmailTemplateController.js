@@ -3,6 +3,35 @@ const EmailTemplateModel = db.EmailTemplateModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
+const { Op } = require("sequelize");
+exports.GetDeletedEmailTemplate = Trackerror(async (req, res, next) => {
+  const data = await EmailTemplateModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedEmailTemplate = Trackerror(async (req, res, next) => {
+  const data = await EmailTemplateModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await EmailTemplateModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
 
 exports.CreateEmailTemplate = Trackerror(async (req, res, next) => {
   const { TemplateName, Subject } = req.body;

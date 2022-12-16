@@ -13,6 +13,36 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const bcrypt = require("bcrypt");
 const SubscriberAndHorsesModel = db.SubscriberAndHorsesModel;
+const { Op } = require("sequelize");
+exports.GetDeletedSubscriber = Trackerror(async (req, res, next) => {
+  const data = await SubscriberModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedSubscriber = Trackerror(async (req, res, next) => {
+  const data = await SubscriberModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await SubscriberModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.TrackHorses = Trackerror(async (req, res, next) => {
   const { Horse } = req.body;
   const { token } = req.cookies;

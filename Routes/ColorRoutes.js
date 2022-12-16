@@ -8,9 +8,12 @@ const {
   SoftDeleteColor,
   SingleColor,
   GetColorMaxShortCode,
+  GetDeletedColor,
+  RestoreSoftDeletedColor,
 } = require("../Controller/ColorController");
 const { upload } = require("../Utils/ImageUpload");
-
+router.route("/colorgetdeleted").get(GetDeletedColor);
+router.route("/restoresoftdeletecolor/:id").post(RestoreSoftDeletedColor);
 router.route("/getsinglecolor/:id").get(SingleColor);
 router.route("/getcolorshortcode").get(GetColorMaxShortCode);
 router.route("/uploadColor", upload.single("image")).post(CreateColor);

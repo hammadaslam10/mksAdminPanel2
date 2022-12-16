@@ -8,6 +8,36 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+exports.GetDeletedNationality = Trackerror(async (req, res, next) => {
+  const data = await NationalityModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedNationality = Trackerror(async (req, res, next) => {
+  const data = await NationalityModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await NationalityModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.GetNationalityMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll({
     attributes: [

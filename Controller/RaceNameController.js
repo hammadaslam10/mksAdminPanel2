@@ -4,6 +4,36 @@ const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+exports.GetDeletedRaceName = Trackerror(async (req, res, next) => {
+  const data = await RaceNameModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedRaceName = Trackerror(async (req, res, next) => {
+  const data = await RaceNameModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await RaceNameModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.GetRaceNameMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await RaceNameModel.findAll({
     attributes: [

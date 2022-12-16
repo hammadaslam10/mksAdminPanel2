@@ -7,7 +7,11 @@ const {
   DeleteCourse,
   SingleRaceCourse,
   SoftDeleteCourse,
+  GetDeletedRaceCourse,
+  RestoreSoftDeletedRaceCourse,
 } = require("../Controller/RaceCourseController");
+router.route("/racecoursegetdeleted").get(GetDeletedRaceCourse);
+router.route("/restoresoftdeleteracecourse/:id").post(RestoreSoftDeletedRaceCourse);
 router.route("/getracecourse").get(GetCourse);
 router.route("/createcourse").post(CreateRaceCourse);
 router.route("/singleracecourse/:id").get(SingleRaceCourse);

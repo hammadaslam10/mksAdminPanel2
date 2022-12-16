@@ -8,8 +8,12 @@ const {
   ViewAllOwner,
   DeleteOwner,
   SoftDeleteOwner,
+  GetDeletedOwner,
+  RestoreSoftDeletedOwner,
 } = require("../Controller/OwnerController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/ownergetdeleted").get(GetDeletedOwner);
+router.route("/restoresoftdeleteowner/:id").post(RestoreSoftDeletedOwner);
 router.route("/getsingleowner/:id").get(ViewASingleOwner);
 router.route("/createowner", upload.array("image")).post(CreateOwner);
 router.route("/Ownerget").get(ViewAllOwner);

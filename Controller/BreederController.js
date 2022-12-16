@@ -8,6 +8,36 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
+  const data = await BreederModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
+  const data = await BreederModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await BreederModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     attributes: [
@@ -19,6 +49,7 @@ exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
     data,
   });
 });
+
 exports.CreateBreeder = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -33,33 +64,32 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
-  
-    try {
-      const data = await BreederModel.create({
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,
-        DescriptionEn: DescriptionEn,
-        DescriptionAr: DescriptionAr,
-        shortCode: shortCode,
-        TitleEn: TitleEn,
-        TitleAr: TitleAr,
-        NameEn: NameEn,
-        NameAr: NameAr,
+
+  try {
+    const data = await BreederModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,
+      DescriptionEn: DescriptionEn,
+      DescriptionAr: DescriptionAr,
+      shortCode: shortCode,
+      TitleEn: TitleEn,
+      TitleAr: TitleAr,
+      NameEn: NameEn,
+      NameAr: NameAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
- 
+  }
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll();

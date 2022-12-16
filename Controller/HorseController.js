@@ -16,6 +16,35 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
+exports.GetDeletedHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedHorse = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await HorseModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.SearchName = Trackerror(async (req, res, next) => {
   const { Query } = req.body;
   console.log(Query);

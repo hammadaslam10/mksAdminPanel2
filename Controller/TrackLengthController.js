@@ -7,6 +7,36 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { TrackLengths } = require("../Utils/Path");
+const { Op } = require("sequelize");
+exports.GetDeletedTrackLength = Trackerror(async (req, res, next) => {
+  const data = await TrackLengthModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedTrackLength = Trackerror(async (req, res, next) => {
+  const data = await TrackLengthModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await TrackLengthModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   const { RaceCourse, TrackLength, RailPosition, GroundType } = req.body;
   const file = req.files.image;

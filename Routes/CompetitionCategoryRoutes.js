@@ -6,8 +6,16 @@ const {
   EditCompetitionCategory,
   DeleteCompetitionCategory,
   SoftDeleteCompetitionCategory,
-  SingleCompetitonCategoryGet
+  SingleCompetitonCategoryGet,
+  RestoreSoftDeletedCompetitionCategory,
+  GetDeletedCompetitionCategory,
 } = require("../Controller/CompetitionCategoryController");
+router
+  .route("/competitioncategorygetdeleted")
+  .get(GetDeletedCompetitionCategory);
+router
+  .route("/restoresoftdeletecompetitioncategory/:id")
+  .post(RestoreSoftDeletedCompetitionCategory);
 const { upload } = require("../Utils/ImageUpload");
 router
   .route("/uploadCompetitionCategory", upload.single("image"))

@@ -5,7 +5,6 @@ const AdvertismentModel = db.AdvertismentModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Ads } = require("../Utils/Path");
-const { Op } = require("sequelize");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -14,14 +13,35 @@ const { EnglishRegex } = require("../Utils/EnglishLanguageRegex");
 const Features = require("../Utils/Features");
 const io = require("../socket");
 const validator = require("validator");
+const { Op } = require("sequelize");
 exports.GetDeletedAdvertisment = Trackerror(async (req, res, next) => {
-  const data = await AdvertismentModel.findAll({});
+  const data = await AdvertismentModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
   res.status(200).json({
     success: true,
     data,
   });
 });
-
+exports.RestoreSoftDeletedAd = Trackerror(async (req, res, next) => {
+  const data = await AdvertismentModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await AdvertismentModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
   const file = req.files.image;

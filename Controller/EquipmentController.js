@@ -4,6 +4,36 @@ const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+exports.GetDeletedEquipment = Trackerror(async (req, res, next) => {
+  const data = await EquipmentModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedEquipment = Trackerror(async (req, res, next) => {
+  const data = await EquipmentModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await EquipmentModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.GetEquipmentMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findAll({
     attributes: [
@@ -17,28 +47,27 @@ exports.GetEquipmentMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateEquipment = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
- 
-    try {
-      const data = await EquipmentModel.create({
-        shortCode: shortCode,
-        NameEn: NameEn,
-        NameAr: NameAr,
+
+  try {
+    const data = await EquipmentModel.create({
+      shortCode: shortCode,
+      NameEn: NameEn,
+      NameAr: NameAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
- 
+  }
 });
 exports.EquipmentGet = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findAll();

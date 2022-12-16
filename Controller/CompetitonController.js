@@ -9,6 +9,35 @@ const sequelize = require("sequelize");
 const { Race } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
+exports.GetDeletedCompetiton = Trackerror(async (req, res, next) => {
+  const data = await CompetitonModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedCompetiton = Trackerror(async (req, res, next) => {
+  const data = await CompetitonModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await CompetitonModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
     attributes: [

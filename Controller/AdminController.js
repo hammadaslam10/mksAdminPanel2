@@ -12,6 +12,36 @@ const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
+exports.GetDeletedAdmin = Trackerror(async (req, res, next) => {
+  const data = await AdminModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedAdmin = Trackerror(async (req, res, next) => {
+  const data = await AdminModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await AdminModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.RegisterAdmin = Trackerror(async (req, res, next) => {
   const Features = require("../Utils/Features");
   const { FirstName, LastName, PassportNo, PhoneNumber, password, Email } =

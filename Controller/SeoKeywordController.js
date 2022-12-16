@@ -3,6 +3,35 @@ const SeokeywordModel = db.SeokeywordModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
+const { Op } = require("sequelize");
+exports.GetDeletedSeokeyword = Trackerror(async (req, res, next) => {
+  const data = await SeokeywordModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedSeokeyword = Trackerror(async (req, res, next) => {
+  const data = await SeokeywordModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await SeokeywordModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
 
 exports.CreateSeoKeyword = Trackerror(async (req, res, next) => {
   const { KeywordEn, KeywordAr, TitleEn, TitleAr } = req.body;

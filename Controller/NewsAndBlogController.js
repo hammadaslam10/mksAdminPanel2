@@ -8,6 +8,36 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const Features = require("../Utils/Features");
+const { Op } = require("sequelize");
+exports.GetDeletedNews = Trackerror(async (req, res, next) => {
+  const data = await NewsModel.findAll({
+    paranoid: false,
+    where: {
+      [Op.not]: { deletedAt: null },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
+exports.RestoreSoftDeletedNews = Trackerror(async (req, res, next) => {
+  const data = await NewsModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const restoredata = await NewsModel.restore({
+    where: { _id: req.params.id },
+  });
+  res.status(200).json({
+    success: true,
+    restoredata,
+  });
+});
+
 exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
   const {
     DescriptionEn,

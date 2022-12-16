@@ -14,8 +14,13 @@ const {
   SubscriberApproval,
   forgotPassword,
   resetPassword,
-
+  GetDeletedSubscriber,
+  RestoreSoftDeletedSubscriber,
 } = require("../Controller/SubscriberController");
+router.route("/subscribergetdeleted").get(GetDeletedSubscriber);
+router
+  .route("/restoresoftdeletesubscriber/:id")
+  .post(RestoreSoftDeletedSubscriber);
 router.route("/getsubscriber").get(GetAllSubscriber);
 router.route("/register").post(RegisterSubscriber);
 router.route("/login").post(LoginSubscriber);

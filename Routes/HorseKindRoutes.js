@@ -6,9 +6,12 @@ const {
   EditHorseKind,
   DeleteHorseKind,
   SoftDeleteHorseKind,
+  GetDeletedHorseKind,
+  RestoreSoftDeletedHorseKind,
 } = require("../Controller/HorseKindController");
 const { upload } = require("../Utils/ImageUpload");
-
+router.route("/horsekindgetdeleted").get(GetDeletedHorseKind);
+router.route("/restoresoftdeletehorsekind/:id").post(RestoreSoftDeletedHorseKind);
 router.route("/uploadHorseKind", upload.single("image")).post(CreateHorseKind);
 router.route("/HorseKindget").get(HorseKindGet);
 router.route("/deleteHorseKind/:id").delete(DeleteHorseKind);

@@ -7,8 +7,12 @@ const {
   DeleteMeetingType,
   SoftDeleteMeetingType,
   GetMeetingTypeMaxShortCode,
+  GetDeletedMeetingType,
+  RestoreSoftDeletedMeetingType,
 } = require("../Controller/MeetingTypeController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/meetingtypegetdeleted").get(GetDeletedMeetingType);
+router.route("/restoresoftdeletemeetingtype/:id").post(RestoreSoftDeletedMeetingType);
 router.route("/getmeetingtypeshortcode").get(GetMeetingTypeMaxShortCode);
 router
   .route("/uploadMeetingType", upload.single("image"))

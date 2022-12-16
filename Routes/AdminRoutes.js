@@ -14,7 +14,11 @@ const {
   AdminApproval,
   forgotPassword,
   resetPassword,
+  RestoreSoftDeletedAdmin,
+  GetDeletedAdmin,
 } = require("../Controller/AdminController");
+router.route("/Admingetdeleted").get(GetDeletedAdmin);
+router.route("/restoresoftdeleteAdmin/:id").post(RestoreSoftDeletedAdmin);
 router.route("/getAdmin").get(GetAllAdmin);
 router.route("/adminregister").post(RegisterAdmin);
 router.route("/adminlogin").post(LoginAdmin);

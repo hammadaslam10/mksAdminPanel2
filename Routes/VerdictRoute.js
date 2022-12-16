@@ -6,9 +6,13 @@ const {
   EditVerdict,
   DeleteVerdict,
   SoftDeleteVerdict,
-  GetVerdictMaxShortCode
+  GetVerdictMaxShortCode,
+  GetDeletedVerdict,
+  RestoreSoftDeletedVerdict,
 } = require("../Controller/VerdictController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/verdictgetdeleted").get(GetDeletedVerdict);
+router.route("/restoresoftdeleteverdict/:id").post(RestoreSoftDeletedVerdict);
 router.route("/getverdictshortcode").get(GetVerdictMaxShortCode);
 router.route("/uploadVerdict", upload.single("image")).post(CreateVerdict);
 router.route("/Verdictget").get(VerdictGet);

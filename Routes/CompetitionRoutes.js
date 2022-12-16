@@ -9,8 +9,15 @@ const {
   SingleCompetitonGet,
   AddRacesInCompetition,
   GetRaceforCompetition,
+  GetDeletedCompetiton,
+  RestoreSoftDeletedCompetiton,
 } = require("../Controller/CompetitonController");
+
 const { upload } = require("../Utils/ImageUpload");
+router.route("/competitiongetdeleted").get(GetDeletedCompetiton);
+router
+  .route("/restoresoftdeletecompetition/:id")
+  .post(RestoreSoftDeletedCompetiton);
 router
   .route("/uploadCompetiton", upload.single("image"))
   .post(CreateCompetiton);

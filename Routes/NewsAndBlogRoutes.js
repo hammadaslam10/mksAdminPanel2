@@ -7,9 +7,12 @@ const {
   EditNews,
   SearchNews,
   SoftDeleteNews,
-  
+  GetDeletedNews,
+  RestoreSoftDeletedNews,
 } = require("../Controller/NewsAndBlogController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/newsgetdeleted").get(GetDeletedNews);
+router.route("/restoresoftdeletenews/:id").post(RestoreSoftDeletedNews);
 
 router.route("/uploadnews", upload.single("image")).post(CreateNewsAndBlog);
 router.route("/newsget").get(NewsGet);

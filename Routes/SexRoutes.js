@@ -6,9 +6,13 @@ const {
   EditSex,
   DeleteSex,
   SoftDeleteSex,
-  GetSexMaxShortCode
+  GetSexMaxShortCode,
+  RestoreSoftDeletedSex,
+  GetDeletedSex,
 } = require("../Controller/SexController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/Adsgetdeleted").get(GetDeletedSex);
+router.route("/restoresoftdeleteAds/:id").post(RestoreSoftDeletedSex);
 router.route("/getsexshortcode").get(GetSexMaxShortCode);
 router.route("/uploadSex", upload.single("image")).post(CreateSex);
 router.route("/Sexget").get(SexGet);

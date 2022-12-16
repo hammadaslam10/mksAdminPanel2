@@ -7,9 +7,12 @@ const {
   EditSponsor,
   DeleteSponsor,
   SoftDeleteSponsor,
+  GetDeletedSponsor,
+  RestoreSoftDeletedSponsor
 } = require("../Controller/SponsorController");
 const { upload } = require("../Utils/ImageUpload");
-
+router.route("/sponsorgetdeleted").get(GetDeletedSponsor);
+router.route("/restoresoftdeletesponsor/:id").post(RestoreSoftDeletedSponsor);
 router.route("/uploadSponsor", upload.single("image")).post(CreateSponsor);
 
 router.route("/Sponsorget").get(SponsorGet);
