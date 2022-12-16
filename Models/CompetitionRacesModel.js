@@ -60,7 +60,7 @@
 //             }
 //             if (
 //               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-//               /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+//               /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
 //             ) {
 //             } else {
 //               throw new Error("Name in English Validation Failed");

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
             ) {
             } else {
               throw new Error("Name in English Validation Failed");
@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Title English Validation Failed");
@@ -112,7 +112,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Short Name English Validation Failed");

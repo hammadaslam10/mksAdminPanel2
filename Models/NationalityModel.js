@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
             ) {
             } else {
               throw new Error("Name English Validation Failed");
@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.AbbrevEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.AbbrevEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.AbbrevEn)
             ) {
             } else {
               throw new Error("Abbreviation Name English Validation Failed");
@@ -102,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.AltNameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.AltNameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.AltNameEn)
             ) {
             } else {
               throw new Error("Alternate Name English Validation Failed");
@@ -138,7 +138,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.LabelEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.LabelEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.LabelEn)
             ) {
             } else {
               throw new Error("Description English Validation Failed");
@@ -179,7 +179,7 @@ module.exports = (sequelize, DataTypes) => {
           }
           if (
             /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ValueEn) ||
-            /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.ValueEn)
+            /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ValueEn)
           ) {
           } else {
             throw new Error("Value English Validation Failed");

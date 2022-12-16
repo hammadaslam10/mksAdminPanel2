@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.KeywordEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.KeywordEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.KeywordEn)
             ) {
             } else {
               throw new Error("Kyword English Validation Failed");
@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Title English Validation Failed");

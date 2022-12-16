@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DescriptionEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.DescriptionEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.DescriptionEn)
             ) {
             } else {
               throw new Error("Description English Validation Failed");
@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.TitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Title English Validation Failed");
@@ -101,7 +101,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.SecondTitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.SecondTitleEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.SecondTitleEn)
             ) {
             } else {
               throw new Error("Second Title English Validation Failed");

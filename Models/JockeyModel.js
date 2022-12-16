@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.NameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
             ) {
             } else {
               throw new Error("Name in English Validation Failed");
@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ShortNameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.ShortNameEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ShortNameEn)
             ) {
             } else {
               throw new Error("ShortName English Validation Failed");
@@ -130,7 +130,7 @@ module.exports = (sequelize, DataTypes) => {
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.RemarksEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]/.test(this.RemarksEn)
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.RemarksEn)
             ) {
             } else {
               throw new Error("Remarks English Validation Failed");
@@ -165,7 +165,6 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Without MiniumumJockeyWeight Jockey Will not be get submit",
           },
         },
-        
       },
       MaximumJockeyWeight: {
         type: DataTypes.BIGINT,
