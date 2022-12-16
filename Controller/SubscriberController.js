@@ -43,8 +43,17 @@ exports.TrackHorses = Trackerror(async (req, res, next) => {
 });
 exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
   const Features = require("../Utils/Features");
-  const { FirstName, LastName, PassportNo, PhoneNumber, password, Email } =
-    req.body;
+  const {
+    FirstName,
+    LastName,
+    PassportNo,
+    PhoneNumber,
+    password,
+    Email,
+    Address,
+    NationalityID,
+    DOB,
+  } = req.body;
   const file = req.files.PassportPicture;
   let Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(
@@ -61,7 +70,10 @@ exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
       PhoneNumber: PhoneNumber,
       password: await bcrypt.hash(password, 10),
       Email: Email,
-      PassportPicture: Image,
+      PassportPicture: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Subscriber}/${Image}`,
+      Address: Address,
+      NationalityID: NationalityID,
+      DOB: DOB,
     });
     TokenCreation(data, 201, res);
   }
