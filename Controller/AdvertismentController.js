@@ -14,6 +14,13 @@ const { EnglishRegex } = require("../Utils/EnglishLanguageRegex");
 const Features = require("../Utils/Features");
 const io = require("../socket");
 const validator = require("validator");
+exports.GetDeletedAdvertisment = Trackerror(async (req, res, next) => {
+  const data = await AdvertismentModel.findAll({});
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;

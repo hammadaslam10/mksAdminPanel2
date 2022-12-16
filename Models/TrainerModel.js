@@ -152,16 +152,36 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Trainer will have Detail" },
-          notEmpty: { msg: "Detail  will not be empty" },
+          EnglishLanguageVerification() {
+            if (this.DetailEn.trim() == "") {
+              throw new Error("Please Enter Detail in English ");
+            }
+            if (
+              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DetailEn) ||
+              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.DetailEn)
+            ) {
+            } else {
+              throw new Error("Detail English Validation Failed");
+            }
+          },
         },
       },
       DetailAr: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Trainer will have Detail" },
-          notEmpty: { msg: "Detail  will not be empty" },
+          ArabicLanguageVerification() {
+            if (this.DetailAr.trim() == "") {
+              throw new Error("Please Enter  Detail in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.DetailAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.DetailAr)
+            ) {
+            } else {
+              throw new Error("Detail Arabic Validation Failed");
+            }
+          },
         },
       },
 
