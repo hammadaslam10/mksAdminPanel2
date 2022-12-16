@@ -490,3 +490,35 @@ db.JockeyModel.belongsTo(db.NationalityModel, {
   as: "JockeyNationalityData",
 });
 module.exports = db;
+// with recursive cte (Dam,Sire, shortCode, _id) as (
+//   select     Dam,  Sire,
+//              shortCode,
+//              _id
+//   from       mksracing.HorseModel
+//   where      _id = '7847c435-6af0-411b-ab7a-3ee008cdf1aa'
+//   union all
+//   select     p.Dam,
+//              p.Sire,
+//              p.shortCode,
+//              p._id
+//   from       HorseModel p
+//   inner join cte
+//           on p._id = cte.Dam
+// )
+// select * from cte;
+// with recursive cte (Dam,Sire, shortCode, _id) as (
+//   select     Dam,  Sire,
+//              shortCode,
+//              _id
+//   from       mksracing.HorseModel
+//   where      _id = '7847c435-6af0-411b-ab7a-3ee008cdf1aa'
+//   union all
+//   select     p.Dam,
+//              p.Sire,
+//              p.shortCode,
+//              p._id
+//   from       HorseModel p
+//   inner join cte
+//           on p._id = cte.Sire
+// )
+// select * from cte;
