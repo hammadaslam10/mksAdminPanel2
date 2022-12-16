@@ -20,7 +20,7 @@ exports.GetCompetitionCategoryMaxShortCode = Trackerror(
 exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
 
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+
     try {
       const data = await CompetitionCategoryModel.create({
         shortCode: shortCode,
@@ -41,11 +41,7 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.CompetitionCategoryGet = Trackerror(async (req, res, next) => {
   const data = await CompetitionCategoryModel.findAll({

@@ -185,9 +185,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       data,
     });
   } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
+    return next(new HandlerCallBack("Error Occured", 404));
   }
 });
 exports.UpdateHorse = Trackerror(async (req, res, next) => {

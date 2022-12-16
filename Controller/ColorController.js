@@ -17,7 +17,7 @@ exports.GetColorMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateColor = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+  
     try {
       const data = await ColorModel.create({
         shortCode: shortCode,
@@ -38,11 +38,7 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.ColorGet = Trackerror(async (req, res, next) => {
   const data = await ColorModel.findAll();

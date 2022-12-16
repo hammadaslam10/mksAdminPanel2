@@ -17,7 +17,7 @@ exports.GetSexMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateSex = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+  
     try {
       const data = await SexModel.create({
         shortCode: shortCode,
@@ -38,11 +38,7 @@ exports.CreateSex = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+
 });
 exports.SexGet = Trackerror(async (req, res, next) => {
   const data = await SexModel.findAll();

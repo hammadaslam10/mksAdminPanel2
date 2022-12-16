@@ -17,14 +17,7 @@ exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
     SecondTitleEn,
     SecondTitleAr,
   } = req.body;
-  if (
-    ArRegex.test(DescriptionAr) &&
-    ArRegex.test(TitleAr) &&
-    ArRegex.test(SecondTitleAr) &&
-    ArRegex.test(DescriptionEn) == false &&
-    ArRegex.test(TitleEn) == false &&
-    ArRegex.test(SecondTitleEn) == false
-  ) {
+ 
     const file = req.files.image;
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
@@ -42,11 +35,7 @@ exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.SearchNews = Trackerror(async (req, res, next) => {});
 exports.NewsGet = Trackerror(async (req, res, next) => {

@@ -5,7 +5,7 @@ const crypto = require("crypto");
 module.exports = (sequelize, DataTypes) => {
   const SubscriberModel = sequelize.define(
     "SubscriberModel",
-
+    //dob address
     {
       _id: {
         type: Sequelize.UUID,
@@ -29,7 +29,30 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-
+      NationalityID: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Nationality Of Trainer" },
+          notEmpty: {
+            msg: "Without Nationality Trainer Will not be get submit",
+          },
+        },
+      },
+      DOB: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Date of birth Of Subscriber" },
+          notEmpty: {
+            msg: "Without Date of birth Subscriber Will not be get submit",
+          },
+        },
+      },
+      Address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: false,

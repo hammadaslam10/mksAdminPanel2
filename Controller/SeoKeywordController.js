@@ -6,7 +6,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 
 exports.CreateSeoKeyword = Trackerror(async (req, res, next) => {
   const { KeywordEn, KeywordAr, TitleEn, TitleAr } = req.body;
-  if (ArRegex.test(KeywordAr) && ArRegex.test(KeywordEn) == false) {
+ 
     const data = await SeokeywordModel.create({
       TitleEn: TitleEn,
       KeywordEn: KeywordEn,
@@ -17,11 +17,7 @@ exports.CreateSeoKeyword = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.SeoKeywordGet = Trackerror(async (req, res, next) => {
   const data = await SeokeywordModel.findAll();

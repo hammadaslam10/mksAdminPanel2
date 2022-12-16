@@ -17,31 +17,26 @@ exports.GetVerdictMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateVerdict = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    try {
-      const data = await VerdictModel.create({
-        shortCode: shortCode,
-        NameEn: NameEn,
-        NameAr: NameAr,
+
+  try {
+    const data = await VerdictModel.create({
+      shortCode: shortCode,
+      NameEn: NameEn,
+      NameAr: NameAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
   }
 });
 exports.VerdictGet = Trackerror(async (req, res, next) => {

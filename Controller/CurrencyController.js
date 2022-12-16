@@ -17,7 +17,7 @@ exports.GetCurrencyMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateCurrency = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode, Rate } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+ 
     try {
       const data = await CurrencyModel.create({
         shortCode: shortCode,
@@ -39,11 +39,7 @@ exports.CreateCurrency = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.CurrencyGet = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findAll();

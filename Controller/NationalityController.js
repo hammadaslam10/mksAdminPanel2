@@ -38,40 +38,34 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
-    try {
-      const data = await NationalityModel.create({
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
-        AbbrevEn: AbbrevEn,
-        AbbrevAr: AbbrevAr,
-        shortCode: shortCode,
-        AltNameEn: AltNameEn,
-        AltNameAr: AltNameAr,
-        Label: Label,
-        Offset: Offset,
-        ValueAr: ValueAr,
-        ValueEn: ValueEn,
-        NameEn: NameEn,
-        NameAr: NameAr,
+  try {
+    const data = await NationalityModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
+      AbbrevEn: AbbrevEn,
+      AbbrevAr: AbbrevAr,
+      shortCode: shortCode,
+      AltNameEn: AltNameEn,
+      AltNameAr: AltNameAr,
+      Label: Label,
+      Offset: Offset,
+      ValueAr: ValueAr,
+      ValueEn: ValueEn,
+      NameEn: NameEn,
+      NameAr: NameAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
   }
 });
 exports.NationalityGet = Trackerror(async (req, res, next) => {

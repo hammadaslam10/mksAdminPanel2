@@ -175,15 +175,16 @@ exports.logOut = Trackerror(async (req, res, next) => {
 //   });
 // });
 exports.forgotPassword = Trackerror(async (req, res, next) => {
-  const user = await AdminModel.findOne({ email: req.body.email });
-
+  const { Email } = req.body;
+  const user = await AdminModel.findOne({
+    where: { Email: Email },
+  });
+  console.log(user);
   if (!user) {
     return next(new HandlerCallBack("User not found", 404));
   }
 
   const resetToken = user.getResetPasswordToken();
-
-  await user.save({ validateBeforeSave: false });
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
@@ -193,20 +194,19 @@ exports.forgotPassword = Trackerror(async (req, res, next) => {
 
   try {
     await EmailDispatch({
-      email: user.email,
+      email: user.Email,
       subject: "Mks  Racing password recovery",
       message,
     });
 
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.email} successfully`,
+      message: `Email sent to ${user.Email} successfully`,
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new HandlerCallBack(err.message, 500));
+    return next(new HandlerCallBack(error.message, 500));
   }
 });
 

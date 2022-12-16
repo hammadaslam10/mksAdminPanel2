@@ -6,7 +6,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 
 exports.CreateHorseKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortName } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+ 
     const data = await HorseKindModel.create({
       shortName: shortName,
       NameEn: NameEn,
@@ -16,11 +16,7 @@ exports.CreateHorseKind = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.HorseKindGet = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findAll();

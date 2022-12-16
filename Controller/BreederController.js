@@ -33,12 +33,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
-  if (
-    ArRegex.test(DescriptionAr) &&
-    ArRegex.test(NameAr) &&
-    ArRegex.test(DescriptionEn) == false &&
-    ArRegex.test(NameEn) == false
-  ) {
+  
     try {
       const data = await BreederModel.create({
         image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,
@@ -64,11 +59,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+ 
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll();

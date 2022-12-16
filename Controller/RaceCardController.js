@@ -8,7 +8,7 @@ const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
 exports.CreateRaceCard = Trackerror(async (req, res, next) => {
   const { RaceCardNameEn, RaceCardNameAr, RaceCardCourse } = req.body;
-  if (ArRegex.test(RaceCardNameAr) && ArRegex.test(RaceCardNameEn) == false) {
+  
     const data = await RaceCardModel.create({
       RaceCardCourse: RaceCardCourse,
       RaceCardNameEn: RaceCardNameEn,
@@ -18,11 +18,7 @@ exports.CreateRaceCard = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+  
 });
 exports.RaceCardGet = Trackerror(async (req, res, next) => {
   const data = await RaceCardModel.findAll({

@@ -69,7 +69,7 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
     StartDate,
     CompetitionCategory,
   } = req.body;
-  if (ArRegex.test(NameAr) && ArRegex.test(NameEn) == false) {
+
     try {
       const data = await CompetitonModel.create({
         shortCode: shortCode,
@@ -97,11 +97,7 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
         });
       }
     }
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+  
 });
 exports.CompetitonGet = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({

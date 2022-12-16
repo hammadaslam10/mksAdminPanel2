@@ -14,12 +14,7 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
-  if (
-    ArRegex.test(DescriptionAr) &&
-    ArRegex.test(TitleAr) &&
-    ArRegex.test(DescriptionEn) == false &&
-    ArRegex.test(TitleEn) == false
-  ) {
+ 
     const data = await SponsorModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
       DescriptionEn: DescriptionEn,
@@ -32,11 +27,7 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findAll();

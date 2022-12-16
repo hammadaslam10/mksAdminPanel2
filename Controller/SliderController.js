@@ -14,7 +14,7 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Slider}/${Image}`, file.mimetype);
-  if (ArRegex.test(TitleAr) && ArRegex.test(TitleEn) == false) {
+ 
     const data = await SliderModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${Image}`,
       TitleEn: TitleEn,
@@ -25,11 +25,7 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
       success: true,
       data,
     });
-  } else {
-    return next(
-      new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-    );
-  }
+  
 });
 exports.SliderGet = Trackerror(async (req, res, next) => {
   const data = await SliderModel.findAll();
