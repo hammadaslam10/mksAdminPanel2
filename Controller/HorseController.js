@@ -15,7 +15,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 exports.GetDeletedHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findAll({
     paranoid: false,
@@ -80,10 +80,27 @@ exports.SearchName = Trackerror(async (req, res, next) => {
   });
 });
 exports.PedigreeHorse = Trackerror(async (req, res, next) => {
-  const data = await HorseModel.findAll({});
+  const [results, metadata] = await db.sequelize.query(
+    `with recursive cte (Dam,Sire, shortCode, _id) as (
+      select     Dam,  Sire,
+                 shortCode,
+                 _id
+      from       mksracing.HorseModel
+      where      _id = '${"7847c435-6af0-411b-ab7a-3ee008cdf1aa"}'
+      union all
+      select     p.Dam,
+                 p.Sire,
+                 p.shortCode,
+                 p._id
+      from       HorseModel p
+      inner join cte
+              on p._id = cte.Dam
+    )
+    select * from cte;`
+  );
   res.status(200).json({
     success: true,
-    data,
+    results,
   });
 });
 exports.GetHorse = Trackerror(async (req, res, next) => {

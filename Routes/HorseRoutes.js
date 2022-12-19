@@ -8,9 +8,11 @@ const {
   SingleHorse,
   SearchName,
   GetDeletedHorse,
-  RestoreSoftDeletedHorse
+  RestoreSoftDeletedHorse,
+  PedigreeHorse,
 } = require("../Controller/HorseController");
 router.route("/horsegetdeleted").get(GetDeletedHorse);
+router.route("/pedigreehorse/:id").get(PedigreeHorse);
 router.route("/restoresoftdeletehorse/:id").post(RestoreSoftDeletedHorse);
 router.route("/gethorse").get(GetHorse);
 router.route("/searchhorse_trainer_jockey").post(SearchName);

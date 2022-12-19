@@ -23,6 +23,58 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
     where: {
       [Op.not]: { deletedAt: null },
     },
+    include: [
+      {
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData",
+      },
+      {
+        model: db.GroundTypeModel,
+        as: "GroundData",
+      },
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+        paranoid: false,
+      },
+      {
+        model: db.TrackLengthModel,
+        as: "TrackLengthData",
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+      {
+        model: db.RaceKindModel,
+        as: "RaceKindData",
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData",
+      },
+      {
+        model: db.SponsorModel,
+        as: "SponsorData",
+      },
+      {
+        model: db.HorseModel,
+        as: "RaceAndHorseModelData",
+        include: { all: true },
+        paranoid: false,
+      },
+      {
+        model: db.JockeyModel,
+        include: { all: true },
+        paranoid: false,
+      },
+      {
+        model: db.ResultModel,
+        as: "RaceResultData",
+        include: { all: true },
+        paranoid: false,
+      },
+    ],
   });
   res.status(200).json({
     success: true,
