@@ -1,10 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const {
-//   authorizedRoles,
-//   isAuthenticatedUser,
-// } = require("../Middleware/AuthenticationAndValidation");
-// isAuthenticatedUser, authorizedRoles("approveduser"),
 const {
   RegisterSubscriber,
   GetAllSubscriber,
@@ -16,6 +11,8 @@ const {
   resetPassword,
   GetDeletedSubscriber,
   RestoreSoftDeletedSubscriber,
+  TrackHorses,
+  UpdateProfile,
 } = require("../Controller/SubscriberController");
 router.route("/subscribergetdeleted").get(GetDeletedSubscriber);
 router
@@ -23,11 +20,12 @@ router
   .post(RestoreSoftDeletedSubscriber);
 router.route("/getsubscriber").get(GetAllSubscriber);
 router.route("/register").post(RegisterSubscriber);
+router.route("/trackhorse").post(TrackHorses);
 router.route("/login").post(LoginSubscriber);
-router.route("/register").post(RegisterSubscriber);
 router.route("/logout").get(logOut);
 router.route("/ChangeStatus/:id").put(SubscriberApproval);
 router.route("/singlesubscriber/:id").get(GetonlyoneSusbcriber);
+router.route("/updatesubscriber/:id").get(UpdateProfile);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
 

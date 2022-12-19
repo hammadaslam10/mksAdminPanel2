@@ -138,7 +138,7 @@ exports.DeleteSubscriber = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  await deleteFile(`${Ads}/${data.image.slice(-64)}`);
+  await deleteFile(`${Subscriber}/${data.image.slice(-64)}`);
   await SubscriberModel.destroy({
     where: { _id: req.params.id },
     force: true,
@@ -221,40 +221,6 @@ exports.logOut = Trackerror(async (req, res, next) => {
     message: "Logged Out",
   });
 });
-exports.TrackHorses = Trackerror(async (req, res, next) => {});
-// exports.TrackHorse = Trackerror(async (req, res, next) => {
-//   let Horse = await HorseModel.findById(req.params.id);
-//   const { token } = req.cookies;
-//   if (!token) {
-//     return next(
-//       new HandlerCallBack("Please login to access this resource", 401)
-//     );
-//   }
-
-//   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-
-//   req.user = await SubscriberModel.findById(decodedData.id).select("+role");
-
-//   let data = await SubscriberModel.findById(req.params.id, {
-//     SoftDelete: 0,
-//   }).select("+SoftDelete");
-//   if (!data) {
-//     return next(new HandlerCallBack(`user not found`));
-//   }
-//   data = await SubscriberModel.findByIdAndUpdate(
-//     req.user._id,
-//     { TrackHorse: `${Horse}` },
-//     {
-//       new: true,
-//       runValidators: true,
-//       useFindAndModify: false,
-//     }
-//   ).select("+SoftDelete");
-//   res.status(200).json({
-//     success: true,
-//     message: "user status update successfull",
-//   });
-// });
 exports.forgotPassword = Trackerror(async (req, res, next) => {
   const user = await SubscriberModel.findOne({ email: req.body.email });
 
@@ -319,4 +285,71 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
   await user.save();
 
   TokenCreation(user, 200, res);
+});
+exports.UpdateProfile = Trackerror(async (req, res, next) => {
+  const {
+    FirstName,
+    LastName,
+    PassportNo,
+    PhoneNumber,
+    Email,
+    Address,
+    NationalityID,
+    DOB,
+  } = req.body;
+  let data = await SubscriberModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  if (req.files == null) {
+    const updateddata = {
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Subscriber}/${data.image}`,
+      FirstName: FirstName || data.FirstName,
+      LastName: LastName || data.LastName,
+      PassportNo: PassportNo || data.PassportNo,
+      PhoneNumber: PhoneNumber || data.PhoneNumber,
+      Email: Email || data.Email,
+      Address: Address || data.Address,
+      NationalityID: NationalityID || data.NationalityID,
+      DOB: DOB || data.DOB,
+    };
+    data = await SubscriberModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } else {
+    const file = req.files.image;
+    await deleteFile(`${Breeder}/${data.image}`);
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
+    const updateddata = {
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Subscriber}/${Image}`,
+      FirstName: FirstName || data.FirstName,
+      LastName: LastName || data.LastName,
+      PassportNo: PassportNo || data.PassportNo,
+      PhoneNumber: PhoneNumber || data.PhoneNumber,
+      Email: Email || data.Email,
+      Address: Address || data.Address,
+      NationalityID: NationalityID || data.NationalityID,
+      DOB: DOB || data.DOB,
+    };
+    data = await SubscriberModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
 });
