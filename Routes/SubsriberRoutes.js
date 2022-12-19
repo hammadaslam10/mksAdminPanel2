@@ -25,7 +25,7 @@ router.route("/login").post(LoginSubscriber);
 router.route("/logout").get(logOut);
 router.route("/ChangeStatus/:id").put(SubscriberApproval);
 router.route("/singlesubscriber/:id").get(GetonlyoneSusbcriber);
-router.route("/updatesubscriber/:id").get(UpdateProfile);
+router.route("/updatesubscriber/:id").put(UpdateProfile);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
 

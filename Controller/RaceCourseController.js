@@ -76,6 +76,9 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     req.body;
   try {
     const file = req.files.image;
+    if (file == null) {
+      return next(new HandlerCallBack("Please upload an image", 404));
+    }
     let Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
@@ -100,8 +103,12 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });
@@ -140,8 +147,12 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Subscriber" },
           notEmpty: {
-            msg: "Without Nationality Subscriber Will not be get submit",
+            msg: "Without Nationality Subscriber Will not get submitted",
           },
         },
       },
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Subscriber" },
           notEmpty: {
-            msg: "Without Date of birth Subscriber Will not be get submit",
+            msg: "Without Date of birth Subscriber Will not get submitted",
           },
         },
       },

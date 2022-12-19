@@ -210,7 +210,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Nationality" },
           notEmpty: {
-            msg: "Without Image Nationality Will not be get submit",
+            msg: "Without Image Nationality Will not get submitted",
           },
         },
       },

@@ -54,6 +54,9 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     JockeyLicenseDate,
   } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Jockey}/${Image}`, file.mimetype);
@@ -144,7 +147,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     MaximumJockeyWeight,
     Rating,
     DOB,
-    JockeyLicenseDate
+    JockeyLicenseDate,
   } = req.body;
   console.log(req.body);
   // if ((NationalityID = "")) {

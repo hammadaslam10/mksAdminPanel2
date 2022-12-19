@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         notNull: { msg: "Please Add Image Of Race Course" },
         notEmpty: {
-          msg: "Without Image Race Course Will not be get submit",
+          msg: "Without Image Race Course Will not get submitted",
         },
       },
       TrackNameEn: {
@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Race Course" },
           notEmpty: {
-            msg: "Without Nationality Race Course Will not be get submit",
+            msg: "Without Nationality Race Course Will not get submitted",
           },
         },
       },
@@ -71,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add ColorCode Of Race Course" },
           notEmpty: {
-            msg: "Without ColorCode Race Course Will not be get submit",
+            msg: "Without ColorCode Race Course Will not get submitted",
           },
         },
       },

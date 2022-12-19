@@ -47,28 +47,34 @@ exports.GetRaceTypeMaxShortCode = Trackerror(async (req, res, next) => {
 });
 exports.CreateRaceType = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
-  
-    try {
-      const data = await RaceTypeModel.create({
-        shortCode: shortCode,
-        NameEn: NameEn,
-        NameAr: NameAr,
+
+  try {
+    const data = await RaceTypeModel.create({
+      shortCode: shortCode,
+      NameEn: NameEn,
+      NameAr: NameAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
       });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
- 
+  }
 });
 exports.RaceTypeGet = Trackerror(async (req, res, next) => {
   const data = await RaceTypeModel.findAll();
@@ -110,8 +116,12 @@ exports.EditRaceType = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Sponsor" },
           notEmpty: {
-            msg: "Without Image Sponsor Will not be get submit",
+            msg: "Without Image Sponsor Will not get submitted",
           },
         },
       },

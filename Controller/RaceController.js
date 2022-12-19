@@ -534,6 +534,9 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
   } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   console.log(req.files.image.data);

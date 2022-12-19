@@ -45,13 +45,10 @@ exports.RestoreSoftDeletedAd = Trackerror(async (req, res, next) => {
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
-  // console.log(DescriptionAr);
-  // console.log(TitleAr);
-  console.log(ArRegex.test(DescriptionAr), "DescriptionAr");
-  console.log(EnglishRegex.test(DescriptionEn), "DescriptionEn");
-  console.log(ArRegex.test(TitleAr), "TitleAr");
-  console.log(EnglishRegex.test(TitleEn), "TitleEn");
   const data = await AdvertismentModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`,
     DescriptionEn: DescriptionEn,

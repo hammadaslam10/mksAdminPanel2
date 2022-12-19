@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Horse" },
           notEmpty: {
-            msg: "Without Image Horse Will not be get submit",
+            msg: "Without Image Horse Will not get submitted",
           },
         },
       },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Kind Of Horse" },
           notEmpty: {
-            msg: "Without Kind Horse Will not be get submit",
+            msg: "Without Kind Horse Will not get submitted",
           },
         },
       },
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Breeder Of Horse" },
           notEmpty: {
-            msg: "Without Breeder Horse Will not be get submit",
+            msg: "Without Breeder Horse Will not get submitted",
           },
         },
       },
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Sex Of Horse" },
           notEmpty: {
-            msg: "Without Sex Horse Will not be get submit",
+            msg: "Without Sex Horse Will not get submitted",
           },
         },
       },
@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Horse" },
           notEmpty: {
-            msg: "Without Date of birth Horse Will not be get submit",
+            msg: "Without Date of birth Horse Will not get submitted",
           },
         },
       },
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Owner Of Horse" },
           notEmpty: {
-            msg: "Without Owner Horse Will not be get submit",
+            msg: "Without Owner Horse Will not get submitted",
           },
         },
       },
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Trainer Of Horse" },
           notEmpty: {
-            msg: "Without Trainer Horse Will not be get submit",
+            msg: "Without Trainer Horse Will not get submitted",
           },
         },
       },
@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Horse" },
           notEmpty: {
-            msg: "Without Nationality Horse Will not be get submit",
+            msg: "Without Nationality Horse Will not get submitted",
           },
         },
       },
@@ -102,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Creation Of Horse" },
           notEmpty: {
-            msg: "Without Creation Horse Will not be get submit",
+            msg: "Without Creation Horse Will not get submitted",
           },
         },
       },
@@ -218,7 +218,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Horse" },
           notEmpty: {
-            msg: "Without Image Horse Will not be get submit",
+            msg: "Without Image Horse Will not get submitted",
           },
         },
       },

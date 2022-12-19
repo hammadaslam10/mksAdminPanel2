@@ -16,7 +16,7 @@
 //         validate: {
 //           notNull: { msg: "Please Add Competition " },
 //           notEmpty: {
-//             msg: "Without Competition Races Will not be get submit",
+//             msg: "Without Competition Races Will not get submitted",
 //           },
 //         },
 //       },
@@ -26,7 +26,7 @@
 //         validate: {
 //           notNull: { msg: "Please Add Race Of Competition" },
 //           notEmpty: {
-//             msg: "Without Race Competion`s races Will not be get submit",
+//             msg: "Without Race Competion`s races Will not get submitted",
 //           },
 //         },
 //       },
@@ -36,7 +36,7 @@
 //         validate: {
 //           notNull: { msg: "Please Add Start Date Of Advertisment" },
 //           notEmpty: {
-//             msg: "Without Start Date Advertisment Will not be get submit",
+//             msg: "Without Start Date Advertisment Will not get submitted",
 //           },
 //         },
 //       },
@@ -46,7 +46,7 @@
 //         validate: {
 //           notNull: { msg: "Please Add End Data Of Advertisment" },
 //           notEmpty: {
-//             msg: "Without End Data Advertisment Will not be get submit",
+//             msg: "Without End Data Advertisment Will not get submitted",
 //           },
 //         },
 //       },

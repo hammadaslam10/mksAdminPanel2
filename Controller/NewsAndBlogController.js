@@ -47,25 +47,27 @@ exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
     SecondTitleEn,
     SecondTitleAr,
   } = req.body;
- 
-    const file = req.files.image;
-    const Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${News}/${Image}`, file.mimetype);
-    const data = await NewsModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${Image}`,
-      DescriptionEn: DescriptionEn,
-      DescriptionAr: DescriptionAr,
-      SecondTitleEn: SecondTitleEn,
-      SecondTitleAr: SecondTitleAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
- 
+
+  const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
+  const Image = generateFileName();
+  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  await uploadFile(fileBuffer, `${News}/${Image}`, file.mimetype);
+  const data = await NewsModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${News}/${Image}`,
+    DescriptionEn: DescriptionEn,
+    DescriptionAr: DescriptionAr,
+    SecondTitleEn: SecondTitleEn,
+    SecondTitleAr: SecondTitleAr,
+    TitleEn: TitleEn,
+    TitleAr: TitleAr,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.SearchNews = Trackerror(async (req, res, next) => {});
 exports.NewsGet = Trackerror(async (req, res, next) => {

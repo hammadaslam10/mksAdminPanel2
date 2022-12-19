@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Breeder" },
           notEmpty: {
-            msg: "Without Image Breeder Will not be get submit",
+            msg: "Without Image Breeder Will not get submitted",
           },
         },
       },
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add MeetingType Of Race" },
           notEmpty: {
-            msg: "Without MeetingType Race Will not be get submit",
+            msg: "Without MeetingType Race Will not get submitted",
           },
         },
       },
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add MeetingCode Of Race" },
           notEmpty: {
-            msg: "Without MeetingCode Race Will not be get submit",
+            msg: "Without MeetingCode Race Will not get submitted",
           },
         },
       },
@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add TrackLength Of Race" },
           notEmpty: {
-            msg: "Without TrackLength Race Will not be get submit",
+            msg: "Without TrackLength Race Will not get submitted",
           },
         },
       },
@@ -73,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add GroundType Of Race" },
           notEmpty: {
-            msg: "Without GroundType Race Will not be get submit",
+            msg: "Without GroundType Race Will not get submitted",
           },
         },
       },
@@ -131,7 +131,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add DayNTime Of Race" },
           notEmpty: {
-            msg: "Without DayNTime Race Will not be get submit",
+            msg: "Without DayNTime Race Will not get submitted",
           },
         },
       },
@@ -141,7 +141,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add RaceCourse Of Race" },
           notEmpty: {
-            msg: "Without RaceCourse Race Will not be get submit",
+            msg: "Without RaceCourse Race Will not get submitted",
           },
         },
       },

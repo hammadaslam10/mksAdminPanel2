@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Name Of Verdict" },
           notEmpty: {
-            msg: "Without Name Verdict Will not be get submit",
+            msg: "Without Name Verdict Will not get submitted",
           },
         },
       },
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Rank Of Horse" },
           notEmpty: {
-            msg: "Without Rank Horse Will not be get submit",
+            msg: "Without Rank Horse Will not get submitted",
           },
         },
       },

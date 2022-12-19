@@ -54,19 +54,27 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
       NameEn: NameEn,
       NameAr: NameAr,
     });
+    console.log(data);
     res.status(201).json({
       success: true,
       data,
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
+     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
       res.send({
         status: "error",
         message:
           "This Short Code already exists, Please enter a different one.",
       });
-    }
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
+    } 
   }
 });
 exports.ColorGet = Trackerror(async (req, res, next) => {
@@ -115,7 +123,7 @@ exports.EditColor = Trackerror(async (req, res, next) => {
       data,
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
+     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
       res.send({
         status: "error",
@@ -123,8 +131,12 @@ exports.EditColor = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

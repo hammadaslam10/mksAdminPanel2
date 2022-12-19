@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Owner Image Of Owner" },
           notEmpty: {
-            msg: "Without Owner Image Owner Will not be get submit",
+            msg: "Without Owner Image Owner Will not get submitted",
           },
         },
       },
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Nationality" },
           notEmpty: {
-            msg: "Without Image Nationality Will not be get submit",
+            msg: "Without Image Nationality Will not get submitted",
           },
         },
       },
@@ -144,7 +144,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Registration Date Of Advertisment" },
           notEmpty: {
-            msg: "Without Registration Date Advertisment Will not be get submit",
+            msg: "Without Registration Date Advertisment Will not get submitted",
           },
         },
       },

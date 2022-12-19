@@ -99,34 +99,40 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
     CompetitionCategory,
   } = req.body;
 
-    try {
-      const data = await CompetitonModel.create({
-        shortCode: shortCode,
-        NameEn: NameEn,
-        NameAr: NameAr,
-        DescEn: DescEn,
-        DescAr: DescAr,
-        pickCount: pickCount,
-        TriCount: TriCount,
-        StartDate: StartDate,
-        CompetitionCode: CompetitionCode,
-        CompetitionCategory: CompetitionCategory,
+  try {
+    const data = await CompetitonModel.create({
+      shortCode: shortCode,
+      NameEn: NameEn,
+      NameAr: NameAr,
+      DescEn: DescEn,
+      DescAr: DescAr,
+      pickCount: pickCount,
+      TriCount: TriCount,
+      StartDate: StartDate,
+      CompetitionCode: CompetitionCode,
+      CompetitionCategory: CompetitionCategory,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message:
+          "This Short Code already exists, Please enter a different one.",
       });
-      res.status(201).json({
-        success: true,
-        data,
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
       });
-    } catch (error) {
-      if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(403);
-        res.send({
-          status: "error",
-          message:
-            "This Short Code already exists, Please enter a different one.",
-        });
-      }
     }
-  
+  }
 });
 exports.CompetitonGet = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
@@ -144,12 +150,11 @@ exports.CompetitonGet = Trackerror(async (req, res, next) => {
             model: db.RaceNameModel,
             as: "RaceNameModelData",
           },
-          
+
           {
             model: db.HorseModel,
             as: "RaceAndHorseModelData",
           },
-          
         ],
       },
     ],
@@ -193,7 +198,7 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     }
     if (PickRaces.length > 0) {
       if (PickRacesData.length > 0) {
-        console.log(CompetitionID.pickCount)
+        console.log(CompetitionID.pickCount);
         if (CompetitionID.pickCount === PickRacesData.length) {
           let PickRacesData = Conversion(PickRaces);
           console.log(PickRacesData, "PickRacesData");
@@ -288,8 +293,12 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

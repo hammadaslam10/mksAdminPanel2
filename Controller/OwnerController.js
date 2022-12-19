@@ -55,6 +55,12 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     NationalityID,
   } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   console.log(file, "file");
   const file1 = req.files.Ownerimage;
   console.log(file1, "file1");

@@ -66,6 +66,13 @@ exports.CreateVerdict = Trackerror(async (req, res, next) => {
         message:
           "This Short Code already exists, Please enter a different one.",
       });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });
@@ -109,8 +116,12 @@ exports.EditVerdict = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

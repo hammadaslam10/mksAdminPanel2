@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         notNull: { msg: "Please Add RaceCardCourse Of Race Card" },
         notEmpty: {
-          msg: "Without RaceCardCourse Race Card Will not be get submit",
+          msg: "Without RaceCardCourse Race Card Will not get submitted",
         },
       },
     },

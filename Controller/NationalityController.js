@@ -66,6 +66,9 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
   } = req.body;
 
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);

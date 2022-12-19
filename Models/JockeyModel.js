@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Jockey" },
           notEmpty: {
-            msg: "Without Image Jockey Will not be get submit",
+            msg: "Without Image Jockey Will not get submitted",
           },
         },
       },
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Jockey" },
           notEmpty: {
-            msg: "Without Date of birth Jockey Will not be get submit",
+            msg: "Without Date of birth Jockey Will not get submitted",
           },
         },
       },
@@ -46,8 +46,6 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Name in English Validation Failed");
             }
           },
-          notNull: { msg: "Ad will have Title" },
-          notEmpty: { msg: "Title   will not be empty" },
         },
       },
       NameAr: {
@@ -72,14 +70,14 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           EnglishLanguageVerification() {
             if (this.ShortNameEn.trim() == "") {
-              throw new Error("Please Enter ShortName in English ");
+              throw new Error("Please Enter Short Name in English ");
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ShortNameEn) ||
               /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ShortNameEn)
             ) {
             } else {
-              throw new Error("ShortName English Validation Failed");
+              throw new Error("Short Name English Validation Failed");
             }
           },
         },
@@ -105,6 +103,12 @@ module.exports = (sequelize, DataTypes) => {
       Rating: {
         type: DataTypes.BIGINT,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Rating Of Jockey" },
+          notEmpty: {
+            msg: "Without Rating Jockey Will not get submitted",
+          },
+        },
       },
       NationalityID: {
         type: DataTypes.UUID,
@@ -112,13 +116,19 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Jockey" },
           notEmpty: {
-            msg: "Without Nationality Jockey Will not be get submit",
+            msg: "Without Nationality Jockey Will not get submitted",
           },
         },
       },
       JockeyLicenseDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Jockey License Date Of Jockey" },
+          notEmpty: {
+            msg: "Without Jockey License Date Jockey Will not get submitted",
+          },
+        },
       },
       RemarksEn: {
         type: DataTypes.STRING,
@@ -160,9 +170,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please MiniumumJockeyWeight Of Jockey" },
+          notNull: { msg: "Please Miniumum Jockey Weight Of Jockey" },
           notEmpty: {
-            msg: "Without MiniumumJockeyWeight Jockey Will not be get submit",
+            msg: "Without Miniumum Jockey Weight Jockey Will not get submitted",
           },
         },
       },
@@ -170,9 +180,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add MaximumJockeyWeight Of Jockey" },
+          notNull: { msg: "Please Add Maximum Jockey Weight Of Jockey" },
           notEmpty: {
-            msg: "Without MaximumJockeyWeight Jockey Will not be get submit",
+            msg: "Without Maximum Jockey Weight Jockey Will not get submitted",
           },
         },
       },
@@ -180,9 +190,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add JockeyAllowance Of Jockey" },
+          notNull: { msg: "Please Add Jockey Allowance Of Jockey" },
           notEmpty: {
-            msg: "Without JockeyAllowance Jockey Will not be get submit",
+            msg: "Without Jockey Allowance Jockey Will not get submitted",
           },
         },
       },

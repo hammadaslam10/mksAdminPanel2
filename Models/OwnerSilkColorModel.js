@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         allownull: false,
         notNull: { msg: "Please Add ID Of OwnerSilk Color" },
         notEmpty: {
-          msg: "Without ID OwnerSilk Color Will not be get submit",
+          msg: "Without ID OwnerSilk Color Will not get submitted",
         },
       },
       OwnerSilkColor: {

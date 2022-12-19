@@ -41,23 +41,25 @@ exports.RestoreSoftDeletedSponsor = Trackerror(async (req, res, next) => {
 exports.CreateSponsor = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
- 
-    const data = await SponsorModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
-      DescriptionEn: DescriptionEn,
-      DescriptionAr: DescriptionAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
-      Url: Url,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
 
+  const data = await SponsorModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
+    DescriptionEn: DescriptionEn,
+    DescriptionAr: DescriptionAr,
+    TitleEn: TitleEn,
+    TitleAr: TitleAr,
+    Url: Url,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findAll();

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Trainer" },
           notEmpty: {
-            msg: "Without Image Trainer Will not be get submit",
+            msg: "Without Image Trainer Will not get submitted",
           },
         },
       },
@@ -98,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Trainer" },
           notEmpty: {
-            msg: "Without Date of birth Trainer Will not be get submit",
+            msg: "Without Date of birth Trainer Will not get submitted",
           },
         },
       },
@@ -106,9 +106,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add TrainerLicenseDate Of Trainer" },
+          notNull: { msg: "Please Add Trainer License Date Of Trainer" },
           notEmpty: {
-            msg: "Without TrainerLicenseDate Trainer Will not be get submit",
+            msg: "Without Trainer License Date Trainer Will not get submitted",
           },
         },
       },
@@ -118,14 +118,14 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           EnglishLanguageVerification() {
             if (this.ShortNameEn.trim() == "") {
-              throw new Error("Please Enter ShortName in English ");
+              throw new Error("Please Enter Short Name in English ");
             }
             if (
               /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ShortNameEn) ||
               /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ShortNameEn)
             ) {
             } else {
-              throw new Error("ShortName English Validation Failed");
+              throw new Error("Short Name English Validation Failed");
             }
           },
         },
@@ -136,14 +136,14 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           ArabicLanguageVerification() {
             if (this.ShortNameAr.trim() == "") {
-              throw new Error("Please Enter  ShortName in  Arabic ");
+              throw new Error("Please Enter  Short Name in  Arabic ");
             }
             if (
               /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.ShortNameAr) ||
               /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.ShortNameAr)
             ) {
             } else {
-              throw new Error("ShortName Arabic Validation Failed");
+              throw new Error("Short Name Arabic Validation Failed");
             }
           },
         },
@@ -223,7 +223,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Trainer" },
           notEmpty: {
-            msg: "Without Nationality Trainer Will not be get submit",
+            msg: "Without Nationality Trainer will not  get submitted",
           },
         },
       },

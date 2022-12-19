@@ -17,22 +17,24 @@ exports.GetDeletedCompetitionCategory = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RestoreSoftDeletedCompetitionCategory = Trackerror(async (req, res, next) => {
-  const data = await CompetitionCategoryModel.findOne({
-    paranoid: false,
-    where: { _id: req.params.id },
-  });
-  if (!data) {
-    return next(new HandlerCallBack("data not found", 404));
+exports.RestoreSoftDeletedCompetitionCategory = Trackerror(
+  async (req, res, next) => {
+    const data = await CompetitionCategoryModel.findOne({
+      paranoid: false,
+      where: { _id: req.params.id },
+    });
+    if (!data) {
+      return next(new HandlerCallBack("data not found", 404));
+    }
+    const restoredata = await CompetitionCategoryModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
   }
-  const restoredata = await CompetitionCategoryModel.restore({
-    where: { _id: req.params.id },
-  });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
-});
+);
 
 exports.GetCompetitionCategoryMaxShortCode = Trackerror(
   async (req, res, next) => {
@@ -67,6 +69,13 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
         status: "error",
         message:
           "This Short Code already exists, Please enter a different one.",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
       });
     }
   }
@@ -124,8 +133,12 @@ exports.EditCompetitionCategory = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });

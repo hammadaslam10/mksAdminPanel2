@@ -61,6 +61,9 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     shortCode,
   } = req.body;
   const file = req.files.image;
+  if (file == null) {
+    return next(new HandlerCallBack("Please upload an image", 404));
+  }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
@@ -87,6 +90,13 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         status: "error",
         message:
           "This Short Code already exists, Please enter a different one.",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
       });
     }
   }
@@ -176,8 +186,12 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
           "This Short Code already exists, Please enter a different one.",
       });
     } else {
-      res.status(500);
-      res.send({ status: "error", message: "Something went wrong" });
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
     }
   }
 });
