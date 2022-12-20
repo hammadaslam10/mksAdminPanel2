@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 1000,
+      initialAutoIncrement: 10,
     }
   );
   return RaceAndVerdictsJockeyModel;
