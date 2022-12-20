@@ -49,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.NameAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.NameAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+ ]+$/.test(this.NameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameAr)
             ) {
             } else {
               throw new Error("Name Arabic Validation Failed");

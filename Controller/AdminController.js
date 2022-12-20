@@ -17,43 +17,40 @@ exports.GetDeletedAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null },
-    },
+      [Op.not]: { deletedAt: null }
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RestoreSoftDeletedAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await AdminModel.restore({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   res.status(200).json({
     success: true,
-    restoredata,
+    restoredata
   });
 });
 
 exports.RegisterAdmin = Trackerror(async (req, res, next) => {
-  const Features = require("../Utils/Features");
-  const { FirstName, LastName, PassportNo, PhoneNumber, password, Email } =
-    req.body;
+  const { FirstName, LastName, PhoneNumber, password, Email } = req.body;
   if (password) {
     const data = await AdminModel.create({
       FirstName: FirstName,
       LastName: LastName,
-      PassportNo: PassportNo,
       PhoneNumber: PhoneNumber,
       password: await bcrypt.hash(password, 10),
-      Email: Email,
+      Email: Email
     });
     TokenCreation(data, 201, res);
   }
@@ -63,12 +60,12 @@ exports.GetAllAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findAll();
   res.status(201).json({
     success: true,
-    data,
+    data
   });
 });
 exports.GetonlyoneAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack(`user not found `));
@@ -76,12 +73,12 @@ exports.GetonlyoneAdmin = Trackerror(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: data,
+    data: data
   });
 });
 exports.DeleteAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -91,34 +88,34 @@ exports.DeleteAdmin = Trackerror(async (req, res, next) => {
   await deleteFile(`${Admin}/${data.image.slice(-64)}`);
   await AdminModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await AdminModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully",
+    message: "Soft Delete Successfully"
   });
 });
 exports.AdminApproval = Trackerror(async (req, res, next) => {
   let data = await AdminModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack(`user not found`));
@@ -127,14 +124,56 @@ exports.AdminApproval = Trackerror(async (req, res, next) => {
     { role: "approveduser" },
     {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     }
   );
   res.status(200).json({
     success: true,
-    message: "user status update successfull",
+    message: "user status update successfull"
   });
+});
+exports.UpdateAdmin = Trackerror(async (req, res, next) => {
+  const { FirstName, LastName, PhoneNumber, password, Email } = req.body;
+  let data = await AdminModel.findOne({
+    where: { _id: req.params.id }
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  const updateddata = {
+    FirstName: FirstName || data.FirstName,
+    LastName: LastName || data.LastName,
+    PhoneNumber: PhoneNumber || data.PhoneNumber,
+    password: password || data.password,
+    Email: Email || data.Email
+  };
+  try {
+    data = await AdminModel.update(updateddata, {
+      where: {
+        _id: req.params.id
+      }
+    });
+    res.status(200).json({
+      success: true,
+      data
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403);
+      res.send({
+        status: "error",
+        message: "This Short Code already exists, Please enter a different one."
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        })
+      });
+    }
+  }
 });
 exports.LoginAdmin = Trackerror(async (req, res, next) => {
   const { Email, password } = req.body;
@@ -144,7 +183,7 @@ exports.LoginAdmin = Trackerror(async (req, res, next) => {
   }
 
   const user = await AdminModel.findOne({
-    where: { Email: Email },
+    where: { Email: Email }
   });
 
   if (!user) {
@@ -163,12 +202,12 @@ exports.LoginAdmin = Trackerror(async (req, res, next) => {
 exports.logOut = Trackerror(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
-    httpOnly: true,
+    httpOnly: true
   });
 
   res.status(200).json({
     success: true,
-    message: "Logged Out",
+    message: "Logged Out"
   });
 });
 // exports.TrackHorse = Trackerror(async (req, res, next) => {
@@ -207,7 +246,7 @@ exports.logOut = Trackerror(async (req, res, next) => {
 exports.forgotPassword = Trackerror(async (req, res, next) => {
   const { Email } = req.body;
   const user = await AdminModel.findOne({
-    where: { Email: Email },
+    where: { Email: Email }
   });
   console.log(user);
   if (!user) {
@@ -226,12 +265,12 @@ exports.forgotPassword = Trackerror(async (req, res, next) => {
     await EmailDispatch({
       email: user.Email,
       subject: "Mks  Racing password recovery",
-      message,
+      message
     });
 
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.Email} successfully`,
+      message: `Email sent to ${user.Email} successfully`
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -248,7 +287,7 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
+    resetPasswordExpire: { $gt: Date.now() }
   });
 
   if (!user) {

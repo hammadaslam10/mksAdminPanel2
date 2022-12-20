@@ -1,7 +1,9 @@
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const EmailDispatch = require("../Utils/EmailDispatch");
+const db = require("../config/Connection");
 
+const NewsletterModel = db.NewsLetterModel;
 // const { Op } = require("sequelize");
 // exports.GetDeletedAdvertisment = Trackerror(async (req, res, next) => {
 //   const data = await AdvertismentModel.findAll({
@@ -42,14 +44,23 @@ exports.AddNewsLetter = Trackerror(async (req, res, next) => {
     await EmailDispatch({
       email: email,
       subject: "Mks Email Received",
-      message: "Testing News Letter Email",
+      message: "Testing News Letter Email"
     });
-
+    await NewsletterModel.create({
+      Email: email
+    });
     res.status(200).json({
       success: true,
-      message: `Email sent to ${email} successfully`,
+      message: `Email sent to ${email} successfully`
     });
   } catch (error) {
     return next(new HandlerCallBack(error.message, 500));
   }
+});
+exports.GetNewsLetter = Trackerror(async (req, res, next) => {
+  const data = await NewsletterModel.findAll.findAll({});
+  res.status(200).json({
+    success: true,
+    data
+  });
 });

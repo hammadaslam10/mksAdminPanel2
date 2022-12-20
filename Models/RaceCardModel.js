@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Race Card Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.RaceCardNameAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.RaceCardNameAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+ ]+$/.test(this.RaceCardNameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.RaceCardNameAr)
             ) {
             } else {
               throw new Error("Race Card Name Arabic Validation Failed");

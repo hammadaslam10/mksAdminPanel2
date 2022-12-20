@@ -45,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Track Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9 ]+$/.test(this.TrackNameAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9]+$/.test(this.TrackNameAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+ ]+$/.test(this.TrackNameAr) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TrackNameAr)
             ) {
             } else {
               throw new Error("Track Name Arabic Validation Failed");
