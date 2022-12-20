@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Name in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.NameEn)
             ) {
             } else {
               throw new Error("Name English Validation Failed");

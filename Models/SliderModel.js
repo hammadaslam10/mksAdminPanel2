@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Title in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Title English Validation Failed");

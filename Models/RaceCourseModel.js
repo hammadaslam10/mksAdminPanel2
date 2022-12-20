@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Track Name in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TrackNameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TrackNameEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.TrackNameEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.TrackNameEn)
             ) {
             } else {
               throw new Error("Track Name English Validation Failed");

@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Name in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.NameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.NameEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.NameEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.NameEn)
             ) {
             } else {
               throw new Error("Name English Validation Failed");
@@ -65,8 +65,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Title in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.TitleEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.TitleEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.TitleEn)
             ) {
             } else {
               throw new Error("Title English Validation Failed");
@@ -121,8 +121,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Short Name in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.ShortNameEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.ShortNameEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.ShortNameEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.ShortNameEn)
             ) {
             } else {
               throw new Error("Short Name English Validation Failed");
@@ -157,8 +157,8 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Detail in English ");
             }
             if (
-              /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.DetailEn) ||
-              /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.DetailEn)
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.DetailEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.DetailEn)
             ) {
             } else {
               throw new Error("Detail English Validation Failed");
@@ -193,8 +193,8 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error("Please Enter remarks in English ");
           }
           if (
-            /^[a-zA-Z0-9$@$!%*?&#^-_.+]+$/.test(this.RemarksEn) ||
-            /^[a-zA-Z0-9$@$!%*?&#^-_. +]+$/.test(this.RemarksEn)
+            /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.RemarksEn) ||
+            /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.RemarksEn)
           ) {
           } else {
             throw new Error("remarks English Validation Failed");
