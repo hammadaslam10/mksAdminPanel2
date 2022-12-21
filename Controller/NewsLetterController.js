@@ -58,7 +58,7 @@ exports.AddNewsLetter = Trackerror(async (req, res, next) => {
   }
 });
 exports.GetNewsLetter = Trackerror(async (req, res, next) => {
-  const data = await NewsletterModel.findAll.findAll({});
+  const data = await NewsletterModel.findAll({});
   res.status(200).json({
     success: true,
     data
