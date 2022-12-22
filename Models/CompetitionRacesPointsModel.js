@@ -10,35 +10,35 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      Points: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Points Of Competition Race" },
-          notEmpty: {
-            msg: "Without Points Competition Race Will not get submitted",
-          },
-        },
-      },
-      BonusPoints: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-        defaultValue: 0.0,
-        validate: {
-          notNull: { msg: "Please Add Points Of Competition Race" },
-          notEmpty: {
-            msg: "Without Points Competition Race Will not get submitted",
-          },
-        },
-      },
-      Type: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      Length: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
+      // Points: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Please Add Points Of Competition Race" },
+      //     notEmpty: {
+      //       msg: "Without Points Competition Race Will not get submitted",
+      //     },
+      //   },
+      // },
+      // BonusPoints: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      //   defaultValue: 0.0,
+      //   validate: {
+      //     notNull: { msg: "Please Add Points Of Competition Race" },
+      //     notEmpty: {
+      //       msg: "Without Points Competition Race Will not get submitted",
+      //     },
+      //   },
+      // },
+      // Type: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
+      // Length: {
+      //   type: DataTypes.BIGINT,
+      //   allowNull: false,
+      // },
     },
 
     {

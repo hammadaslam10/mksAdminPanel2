@@ -180,18 +180,12 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
       let CastRacesData = Conversion(CastRaces);
       console.log(CastRacesData, "CastRacesData");
       await CastRacesData.map(async (singlerace) => {
-        await singlerace.map(async (singleracedetail) => {
-          singleracedetail = singleracedetail.split(",");
-          await CompetitionRacesPointsModel.findOrCreate({
-            where: {
-              CompetitonModelId: req.params.id,
-              RaceModelId: singleracedetail[0],
-              Points: singleracedetail[1],
-              BonusPoints: singleracedetail[2],
-              Type: "cast",
-              Length: CastRacesData[0].length,
-            },
-          });
+        await CompetitionRacesPointsModel.findOrCreate({
+          where: {
+            CompetitonModelId: req.params.id,
+            RaceModelId: singleracedetail,
+            Type: "cast",
+          },
         });
       });
     } else {
@@ -203,18 +197,12 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
           let PickRacesData = Conversion(PickRaces);
           console.log(PickRacesData, "PickRacesData");
           await PickRacesData.map(async (singlerace) => {
-            await singlerace.map(async (singleracedetail) => {
-              singleracedetail = singleracedetail.split(",");
-              await CompetitionRacesPointsModel.findOrCreate({
-                where: {
-                  CompetitonModelId: req.params.id,
-                  RaceModelId: singleracedetail[0],
-                  Points: singleracedetail[1],
-                  BonusPoints: singleracedetail[2],
-                  Type: "pick",
-                  Length: PickRacesData[0].length,
-                },
-              });
+            await CompetitionRacesPointsModel.findOrCreate({
+              where: {
+                CompetitonModelId: req.params.id,
+                RaceModelId: singleracedetail[0],
+                Type: "pick",
+              },
             });
           });
         } else {
