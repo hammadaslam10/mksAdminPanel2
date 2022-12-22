@@ -63,7 +63,7 @@ exports.TrackOwners = Trackerror(async (req, res, next) => {
     const data = await SubscriberAndOwnerModel.findOrCreate({
       where: {
         SubscriberModelId: verify._id,
-        TrainerModelId: Owner,
+        OwnerModelId: Owner,
       },
     });
     res.status(200).json({
