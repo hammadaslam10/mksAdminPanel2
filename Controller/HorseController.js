@@ -105,7 +105,7 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
   let generation3b = null;
   let generation3c = null;
   let generation3d = null;
-  if (generation1.Dam) {
+  if (generation1) {
     generation2a = await HorseModel.findOne({
       where: { _id: generation1.Dam },
       paranoid: false,
@@ -134,7 +134,7 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
       ],
     });
   }
-  if (generation1.Sire) {
+  if (generation1) {
     generation2b = await HorseModel.findOne({
       where: { _id: generation1.Sire },
       paranoid: false,
@@ -165,7 +165,7 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
   }
   console.log(generation2a);
 
-  if (generation2a.Dam) {
+  if (generation2a) {
     generation3a = await HorseModel.findOne({
       where: { _id: generation2a.Dam },
       paranoid: false,
@@ -195,7 +195,7 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
     });
   }
 
-  if (generation2a.Sire) {
+  if (generation2a) {
     generation3b = await HorseModel.findOne({
       where: { _id: generation2a.Sire },
       paranoid: false,
