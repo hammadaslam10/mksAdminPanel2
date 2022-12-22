@@ -135,14 +135,14 @@ db.sequelize.sync({ force: false, alter: false }).then(() => {
   console.log("yes re-sync done!");
 });
 // -------------------------------------Competition----------------------------
-db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryData",
-});
-db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
-  foreignKey: "CompetitionCategory",
-  as: "CompetitionCategoryData",
-});
+// db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
+//   foreignKey: "CompetitionCategory",
+//   as: "CompetitionCategoryData",
+// });
+// db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
+//   foreignKey: "CompetitionCategory",
+//   as: "CompetitionCategoryData",
+// });
 // db.CompetitonModel.hasMany(db.RaceModel, {
 //   foreignKey: "Competition",
 //   as: "CompetitionData",

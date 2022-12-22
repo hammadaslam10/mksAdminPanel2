@@ -93,8 +93,8 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
     CompetitionCode,
     DescEn,
     DescAr,
-    pickCount,
-    TriCount,
+    CategoryCount,
+    EndDate,
     StartDate,
     CompetitionCategory,
   } = req.body;
@@ -106,8 +106,8 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
       NameAr: NameAr,
       DescEn: DescEn,
       DescAr: DescAr,
-      pickCount: pickCount,
-      TriCount: TriCount,
+      CategoryCount: CategoryCount,
+      EndDate: EndDate,
       StartDate: StartDate,
       CompetitionCode: CompetitionCode,
       CompetitionCategory: CompetitionCategory,
@@ -198,8 +198,8 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     }
     if (PickRaces.length > 0) {
       if (PickRacesData.length > 0) {
-        console.log(CompetitionID.pickCount);
-        if (CompetitionID.pickCount === PickRacesData.length) {
+        console.log(CompetitionID.CategoryCount);
+        if (CompetitionID.CategoryCount === PickRacesData.length) {
           let PickRacesData = Conversion(PickRaces);
           console.log(PickRacesData, "PickRacesData");
           await PickRacesData.map(async (singlerace) => {
@@ -250,8 +250,8 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
     CompetitionCode,
     DescEn,
     DescAr,
-    pickCount,
-    TriCount,
+    CategoryCount,
+    EndDate,
     StartDate,
     CompetitionCategory,
   } = req.body;
@@ -266,11 +266,11 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
     shortCode: shortCode || data.shortCode,
     NameEn: NameEn || data.NameEn,
     DescEn: DescEn || data.DescEn,
-    pickCount: pickCount || data.pickCount,
+    CategoryCount: CategoryCount || data.CategoryCount,
     DescAr: DescAr || data.DescAr,
     NameAr: NameAr || data.NameAr,
     CompetitionCode: CompetitionCode || data.CompetitionCode,
-    TriCount: TriCount || data.TriCount,
+    EndDate: EndDate || data.EndDate,
     StartDate: StartDate || data.StartDate,
     CompetitionCategory: CompetitionCategory || data.CompetitionCategory,
   };

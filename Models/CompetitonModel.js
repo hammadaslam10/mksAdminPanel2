@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       CompetitionCategory: {
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       CompetitionCode: {
@@ -48,8 +48,12 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.NameAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.NameAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+                this.NameAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.NameAr
+              )
             ) {
             } else {
               throw new Error("Name Arabic Validation Failed");
@@ -57,41 +61,45 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      DescEn: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          EnglishLanguageVerification() {
-            if (this.DescEn.trim() == "") {
-              throw new Error("Please Enter Description in English ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.DescEn) ||
-              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.DescEn)
-            ) {
-            } else {
-              throw new Error("Description English Validation Failed");
-            }
-          },
-        },
-      },
-      DescAr: {
-        type: DataTypes.STRING,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.DescAr.trim() == "") {
-              throw new Error("Please Enter  Description in  Arabic ");
-            }
-            if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.DescAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.DescAr)
-            ) {
-            } else {
-              throw new Error("Description Arabic Validation Failed");
-            }
-          },
-        },
-      },
+      // DescEn: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     EnglishLanguageVerification() {
+      //       if (this.DescEn.trim() == "") {
+      //         throw new Error("Please Enter Description in English ");
+      //       }
+      //       if (
+      //         /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.DescEn) ||
+      //         /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.DescEn)
+      //       ) {
+      //       } else {
+      //         throw new Error("Description English Validation Failed");
+      //       }
+      //     },
+      //   },
+      // },
+      // DescAr: {
+      //   type: DataTypes.STRING,
+      //   validate: {
+      //     ArabicLanguageVerification() {
+      //       if (this.DescAr.trim() == "") {
+      //         throw new Error("Please Enter  Description in  Arabic ");
+      //       }
+      //       if (
+      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+      //           this.DescAr
+      //         ) ||
+      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+      //           this.DescAr
+      //         )
+      //       ) {
+      //       } else {
+      //         throw new Error("Description Arabic Validation Failed");
+      //       }
+      //     },
+      //   },
+      // },
       shortCode: {
         type: DataTypes.BIGINT,
         autoIncrement: true,
@@ -103,17 +111,37 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      pickCount: {
+      // pickCount: {
+      //   type: DataTypes.BIGINT,
+      //   allowNull: false,
+      // },
+      // TriCount: {
+      //   type: DataTypes.BIGINT,
+      //   allowNull: false,
+      // },
+      CategoryCount: {
         type: DataTypes.BIGINT,
         allowNull: false,
-      },
-      TriCount: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
+        validate: {
+          notNull: { msg: "Competition will have CategoryCount" },
+          notEmpty: { msg: "CategoryCount  will not be empty" },
+        },
       },
       StartDate: {
         type: DataTypes.DATE,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Competition will have StartDate" },
+          notEmpty: { msg: "StartDate  will not be empty" },
+        },
+      },
+      EndDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Competition will have EndDate" },
+          notEmpty: { msg: "EndDate  will not be empty" },
+        },
       },
     },
     {
