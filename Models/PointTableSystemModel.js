@@ -32,10 +32,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          validate: {
-            notNull: { msg: "Point Table System will have First Place Point" },
-            notEmpty: { msg: "First Place Point  will not be empty" },
-          },
+          notNull: { msg: "Point Table System will have First Place Point" },
+          notEmpty: { msg: "First Place Point  will not be empty" },
         },
       },
       Second_Place_Point: {

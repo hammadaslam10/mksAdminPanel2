@@ -39,7 +39,6 @@ const CompetitionCategoryRoutes = require("./Routes/CompetitionCategoryRoutes");
 const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
 const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 let cron = require("node-cron");
-// const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
 }
