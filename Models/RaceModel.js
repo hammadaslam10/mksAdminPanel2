@@ -214,29 +214,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "RaceType  will not be empty" },
         },
       },
-      FirstPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      SecondPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      ThirdPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      FourthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      FifthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      SixthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
+      PointTableSystem: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Race will have Point Table System" },
+          notEmpty: { msg: "Point Table System  will not be empty" },
+        },
       },
       RaceCard: {
         type: DataTypes.UUID,

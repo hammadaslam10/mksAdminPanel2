@@ -58,12 +58,23 @@ module.exports = (sequelize, DataTypes) => {
       First_Place_Bonus_Point: {
         type: DataTypes.BIGINT,
       },
-
       Second_Place_Bonus_Point: {
         type: DataTypes.BIGINT,
       },
       Third_Place_Bonus_Point: {
         type: DataTypes.BIGINT,
+      },
+      FourthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      FifthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
+      },
+      SixthPrice: {
+        type: DataTypes.BIGINT,
+        defaultValue: 0,
       },
     },
     {
