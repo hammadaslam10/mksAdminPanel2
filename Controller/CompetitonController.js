@@ -173,10 +173,8 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
     let { CastRaces, PickRaces } = req.body;
-    let CastRacesData = Conversion(CastRaces);
-    let PickRacesData = Conversion(PickRaces);
 
-    if (CastRacesData[0].length > 0) {
+    if (CastRaces.length > 0) {
       let CastRacesData = Conversion(CastRaces);
       console.log(CastRacesData, "CastRacesData");
       await CastRacesData.map(async (singlerace) => {
@@ -191,7 +189,7 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     } else {
     }
     if (PickRaces.length > 0) {
-      if (PickRacesData.length > 0) {
+      if (PickRaces.length > 0) {
         console.log(CompetitionID.CategoryCount);
         if (CompetitionID.CategoryCount === PickRacesData.length) {
           let PickRacesData = Conversion(PickRaces);
