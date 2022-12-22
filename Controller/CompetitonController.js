@@ -137,10 +137,10 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
 exports.CompetitonGet = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
     include: [
-      {
-        model: db.CompetitionCategoryModel,
-        as: "CompetitionCategoryData",
-      },
+      // {
+      //   model: db.CompetitionCategoryModel,
+      //   as: "CompetitionCategoryData",
+      // },
       {
         model: db.RaceModel,
         as: "CompetitionRacesPointsModelData",
