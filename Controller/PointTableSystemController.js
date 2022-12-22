@@ -57,6 +57,9 @@ exports.CreatePointTableSystem = Trackerror(async (req, res, next) => {
     Second_Place_Point,
     Third_Place_Point,
     Third_Place_Bonus_Point,
+    FourthPrice,
+    FifthPrice,
+    SixthPrice,
   } = req.body;
 
   try {
@@ -65,6 +68,9 @@ exports.CreatePointTableSystem = Trackerror(async (req, res, next) => {
       Group_Name: Group_Name,
       First_Place_Point: First_Place_Point,
       Second_Place_Point: Second_Place_Point,
+      FourthPrice: FourthPrice,
+      FifthPrice: FifthPrice,
+      SixthPrice: SixthPrice,
       Third_Place_Point: Third_Place_Point,
       First_Place_Bonus_Point: First_Place_Bonus_Point,
       Second_Place_Bonus_Point: Second_Place_Bonus_Point,
@@ -125,6 +131,9 @@ exports.EditPointTableSystem = Trackerror(async (req, res, next) => {
     Second_Place_Point,
     Third_Place_Point,
     Third_Place_Bonus_Point,
+    FourthPrice,
+    FifthPrice,
+    SixthPrice,
   } = req.body;
   let data = await PointTableSystemModel.findOne({
     where: { _id: req.params.id },
@@ -138,6 +147,9 @@ exports.EditPointTableSystem = Trackerror(async (req, res, next) => {
     First_Place_Point: First_Place_Point || data.First_Place_Point,
     Third_Place_Point: Third_Place_Point || data.Third_Place_Point,
     Second_Place_Point: Second_Place_Point || data.Second_Place_Point,
+    FourthPrice: FourthPrice || data.FourthPrice,
+    FifthPrice: FifthPrice || data.FifthPrice,
+    SixthPrice: SixthPrice || data.SixthPrice,
     Third_Place_Bonus_Point:
       Third_Place_Bonus_Point || data.Third_Place_Bonus_Point,
     Second_Place_Bonus_Point:
