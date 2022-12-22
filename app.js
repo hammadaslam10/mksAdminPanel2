@@ -37,7 +37,7 @@ const VerdictRoute = require("./Routes/VerdictRoute");
 const ComeptitionRoute = require("./Routes/CompetitionRoutes");
 const CompetitionCategoryRoutes = require("./Routes/CompetitionCategoryRoutes");
 const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
-// const NewsLetterRoutes = require("./Routes/PointTableSystemRoutes");
+const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 let cron = require("node-cron");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -80,6 +80,7 @@ app.use("/api/v1", VerdictRoute);
 app.use("/api/v1", ComeptitionRoute);
 app.use("/api/v1", CompetitionCategoryRoutes);
 app.use("/api/v1", NewsLetterRoutes);
+app.use("/api/v1", PointTableSystemRoutes);
 // cron.schedule("* * * * *", () => {
 //   console.log("cron job working");
 // });
