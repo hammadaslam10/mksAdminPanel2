@@ -173,43 +173,43 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race Card not found", 404));
   } else {
     let { CastRaces, PickRaces } = req.body;
-
+    console.log(CastRaces);
+    console.log(PickRaces);
     if (CastRaces.length > 0) {
-      let CastRacesData = Conversion(CastRaces);
-      console.log(CastRacesData, "CastRacesData");
-      await CastRacesData.map(async (singlerace) => {
+
+      await CastRaces.map(async (singlerace) => {
+        console.log(singlerace,"cast")
         await CompetitionRacesPointsModel.findOrCreate({
           where: {
             CompetitonModelId: req.params.id,
-            RaceModelId: singleracedetail,
+            RaceModelId: singlerace,
             Type: "cast",
           },
         });
       });
     } else {
     }
+
     if (PickRaces.length > 0) {
-      if (PickRaces.length > 0) {
-        console.log(CompetitionID.CategoryCount);
-        if (CompetitionID.CategoryCount === PickRacesData.length) {
-          let PickRacesData = Conversion(PickRaces);
-          console.log(PickRacesData, "PickRacesData");
-          await PickRacesData.map(async (singlerace) => {
-            await CompetitionRacesPointsModel.findOrCreate({
-              where: {
-                CompetitonModelId: req.params.id,
-                RaceModelId: singleracedetail[0],
-                Type: "pick",
-              },
-            });
+      console.log(CompetitionID.CategoryCount);
+      if (CompetitionID.CategoryCount === PickRaces.length) {
+
+        await PickRaces.map(async (singlerace) => {
+          console.log(singlerace,"pick")
+          await CompetitionRacesPointsModel.findOrCreate({
+            where: {
+              CompetitonModelId: req.params.id,
+              RaceModelId: singlerace,
+              Type: "pick",
+            },
           });
-        } else {
-          return next(
-            new HandlerCallBack("Pick Races Length Is Exceeded", 404)
-          );
-        }
+        });
+      } else {
+        return next(
+          new HandlerCallBack("Pick Races Length Is Exceeded", 404)
+        );
       }
-    } else {
+
     }
   }
   res.status(200).json({
@@ -227,7 +227,7 @@ exports.SingleCompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => {});
+exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => { });
 exports.EditCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,

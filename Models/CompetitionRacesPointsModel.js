@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       //     },
       //   },
       // },
-      // Type: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
+      Type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       // Length: {
       //   type: DataTypes.BIGINT,
       //   allowNull: false,
