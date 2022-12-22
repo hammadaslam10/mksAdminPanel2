@@ -80,27 +80,149 @@ exports.SearchName = Trackerror(async (req, res, next) => {
   });
 });
 exports.PedigreeHorse = Trackerror(async (req, res, next) => {
-  const [results, metadata] = await db.sequelize.query(
-    `with recursive cte (Dam,Sire, shortCode, _id) as (
-      select     Dam,  Sire,
-                 shortCode,
-                 _id
-      from       mksracing.HorseModel
-      where      _id = '${"7847c435-6af0-411b-ab7a-3ee008cdf1aa"}'
-      union all
-      select     p.Dam,
-                 p.Sire,
-                 p.shortCode,
-                 p._id
-      from       HorseModel p
-      inner join cte
-              on p._id = cte.Dam
-    )
-    select * from cte;`
-  );
+  let generation1 = await HorseModel.findOne({
+    where: { _id: req.params.id },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  console.log(generation1);
+  let generation2a = await HorseModel.findOne({
+    where: { _id: generation1.Dam },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  let generation2b = await HorseModel.findOne({
+    where: { _id: generation1.Sire },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  let generation3a = await HorseModel.findOne({
+    where: { _id: generation2a.Dam },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  let generation3b = await HorseModel.findOne({
+    where: { _id: generation2a.Sire },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  let generation3c = await HorseModel.findOne({
+    where: { _id: generation2b.Dam },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
+  let generation3d = await HorseModel.findOne({
+    where: { _id: generation2b.Sire },
+    paranoid: false,
+    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "DamData",
+        attributes: ["NameEn", "NameAr"],
+      },
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "SireData",
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
+  });
   res.status(200).json({
     success: true,
-    results,
+    generation1,
+    generation2a,
+    generation2b,
+    generation3a,
+    generation3b,
+    generation3c,
+    generation3d,
   });
 });
 exports.GetHorse = Trackerror(async (req, res, next) => {
