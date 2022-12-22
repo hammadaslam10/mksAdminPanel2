@@ -92,6 +92,14 @@ db.SubscriberAndHorsesModel = require("../Models/SubscriberAndHorsesModel")(
   Db,
   DataTypes
 );
+db.SubscriberAndOwnerModel = require("../Models/SubscriberAndOwnerModel")(
+  Db,
+  DataTypes
+);
+db.SubscriberAndTrainerModel = require("../Models/SubscriberAndTrainerModel")(
+  Db,
+  DataTypes
+);
 
 db.RaceCardRacesModel = require("../Models/RaceCardRacesModel")(Db, DataTypes);
 
@@ -431,6 +439,18 @@ db.SubscriberModel.belongsToMany(db.HorseModel, {
 });
 db.HorseModel.belongsToMany(db.SubscriberModel, {
   through: "SubscriberAndHorsesModel",
+});
+db.SubscriberModel.belongsToMany(db.TrainerModel, {
+  through: "SubscriberAndTrainerModel",
+});
+db.TrainerModel.belongsToMany(db.SubscriberModel, {
+  through: "SubscriberAndTrainerModel",
+});
+db.SubscriberModel.belongsToMany(db.OwnerModel, {
+  through: "SubscriberAndOwnerModel",
+});
+db.OwnerModel.belongsToMany(db.SubscriberModel, {
+  through: "SubscriberAndOwnerModel",
 });
 // -------------------------------------VerdictAndRace----------------------------
 db.RaceModel.belongsToMany(db.HorseModel, {

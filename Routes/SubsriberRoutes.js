@@ -13,6 +13,8 @@ const {
   RestoreSoftDeletedSubscriber,
   TrackHorses,
   UpdateProfile,
+  TrackTrainers,
+  TrackOwners,
 } = require("../Controller/SubscriberController");
 router.route("/subscribergetdeleted").get(GetDeletedSubscriber);
 router
@@ -21,6 +23,8 @@ router
 router.route("/getsubscriber").get(GetAllSubscriber);
 router.route("/register").post(RegisterSubscriber);
 router.route("/trackhorse").post(TrackHorses);
+router.route("/tracktrainer").post(TrackTrainers);
+router.route("/trackowner").post(TrackOwners);
 router.route("/login").post(LoginSubscriber);
 router.route("/logout").get(logOut);
 router.route("/ChangeStatus/:id").put(SubscriberApproval);

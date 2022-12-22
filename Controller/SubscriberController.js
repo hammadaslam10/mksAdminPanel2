@@ -13,36 +13,93 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const bcrypt = require("bcrypt");
 const SubscriberAndHorsesModel = db.SubscriberAndHorsesModel;
+const SubscriberAndTrainerModel = db.SubscriberAndTrainerModel;
+const SubscriberAndOwnerModel = db.SubscriberAndOwnerModel;
 const { Op } = require("sequelize");
 exports.GetDeletedSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RestoreSoftDeletedSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await SubscriberModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
+exports.TrackOwners = Trackerror(async (req, res, next) => {
+  const { Owner } = req.body;
+  const { token } = req.cookies;
+  if (!token) {
+    return next(
+      new HandlerCallBack("Please login to access this resource", 401)
+    );
+  }
 
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  let verify = await SubscriberModel.findOne({
+    where: { _id: decodedData.id },
+  });
+  if (!verify) {
+    return next(new HandlerCallBack(`Error during Resgistration `));
+  } else {
+    const data = await SubscriberAndOwnerModel.findOrCreate({
+      where: {
+        SubscriberModelId: verify._id,
+        TrainerModelId: Owner,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+});
+exports.TrackTrainers = Trackerror(async (req, res, next) => {
+  const { Trainer } = req.body;
+  const { token } = req.cookies;
+  if (!token) {
+    return next(
+      new HandlerCallBack("Please login to access this resource", 401)
+    );
+  }
+
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  let verify = await SubscriberModel.findOne({
+    where: { _id: decodedData.id },
+  });
+  if (!verify) {
+    return next(new HandlerCallBack(`Error during Resgistration `));
+  } else {
+    const data = await SubscriberAndTrainerModel.findOrCreate({
+      where: {
+        SubscriberModelId: verify._id,
+        TrainerModelId: Trainer,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  }
+});
 exports.TrackHorses = Trackerror(async (req, res, next) => {
   const { Horse } = req.body;
   const { token } = req.cookies;
@@ -54,7 +111,7 @@ exports.TrackHorses = Trackerror(async (req, res, next) => {
 
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
   let verify = await SubscriberModel.findOne({
-    where: { _id: decodedData.id }
+    where: { _id: decodedData.id },
   });
   if (!verify) {
     return next(new HandlerCallBack(`Error during Resgistration `));
@@ -62,12 +119,12 @@ exports.TrackHorses = Trackerror(async (req, res, next) => {
     const data = await SubscriberAndHorsesModel.findOrCreate({
       where: {
         SubscriberModelId: verify._id,
-        HorseModelId: Horse
-      }
+        HorseModelId: Horse,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
@@ -82,7 +139,7 @@ exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
     Email,
     Address,
     NationalityID,
-    DOB
+    DOB,
   } = req.body;
   const file = req.files.PassportPicture;
   let Image = generateFileName();
@@ -103,7 +160,7 @@ exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
       PassportPicture: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Subscriber}/${Image}`,
       Address: Address,
       NationalityID: NationalityID,
-      DOB: DOB
+      DOB: DOB,
     });
     TokenCreation(data, 201, res);
   }
@@ -113,13 +170,13 @@ exports.GetAllSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findAll();
   res.status(201).json({
     success: true,
-    data
+    data,
   });
 });
 exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true }
+    include: { all: true },
   });
   if (!data) {
     return next(new HandlerCallBack(`user not found `));
@@ -127,12 +184,12 @@ exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
   });
 });
 exports.DeleteSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -142,34 +199,34 @@ exports.DeleteSubscriber = Trackerror(async (req, res, next) => {
   await deleteFile(`${Subscriber}/${data.image.slice(-64)}`);
   await SubscriberModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteAds = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await SubscriberModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully"
+    message: "Soft Delete Successfully",
   });
 });
 exports.SubscriberApproval = Trackerror(async (req, res, next) => {
   let data = await SubscriberModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack(`user not found`));
@@ -178,13 +235,13 @@ exports.SubscriberApproval = Trackerror(async (req, res, next) => {
     { role: "approveduser" },
     {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     }
   );
   res.status(200).json({
     success: true,
-    message: "user status update successfull"
+    message: "user status update successfull",
   });
 });
 exports.LoginSubscriber = Trackerror(async (req, res, next) => {
@@ -195,7 +252,7 @@ exports.LoginSubscriber = Trackerror(async (req, res, next) => {
   }
 
   const user = await SubscriberModel.findOne({
-    where: { Email: Email }
+    where: { Email: Email },
   });
 
   if (!user) {
@@ -214,12 +271,12 @@ exports.LoginSubscriber = Trackerror(async (req, res, next) => {
 exports.logOut = Trackerror(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
-    httpOnly: true
+    httpOnly: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "Logged Out"
+    message: "Logged Out",
   });
 });
 exports.forgotPassword = Trackerror(async (req, res, next) => {
@@ -243,12 +300,12 @@ exports.forgotPassword = Trackerror(async (req, res, next) => {
     await EmailDispatch({
       email: user.email,
       subject: "Mks  Racing password recovery",
-      message
+      message,
     });
 
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.email} successfully`
+      message: `Email sent to ${user.email} successfully`,
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -266,7 +323,7 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() }
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
   if (!user) {
@@ -296,10 +353,10 @@ exports.UpdateProfile = Trackerror(async (req, res, next) => {
     Email,
     Address,
     NationalityID,
-    DOB
+    DOB,
   } = req.body;
   let data = await SubscriberModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -314,16 +371,16 @@ exports.UpdateProfile = Trackerror(async (req, res, next) => {
       Email: Email || data.Email,
       Address: Address || data.Address,
       NationalityID: NationalityID || data.NationalityID,
-      DOB: DOB || data.DOB
+      DOB: DOB || data.DOB,
     };
     data = await SubscriberModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.image;
@@ -340,17 +397,17 @@ exports.UpdateProfile = Trackerror(async (req, res, next) => {
       Email: Email || data.Email,
       Address: Address || data.Address,
       NationalityID: NationalityID || data.NationalityID,
-      DOB: DOB || data.DOB
+      DOB: DOB || data.DOB,
     };
     data = await SubscriberModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
 
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
