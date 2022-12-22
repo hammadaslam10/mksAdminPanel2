@@ -147,11 +147,13 @@ exports.CompetitonGet = Trackerror(async (req, res, next) => {
 
         include: [
           {
+            paranoid: false,
             model: db.RaceNameModel,
             as: "RaceNameModelData",
           },
 
           {
+            paranoid: false,
             model: db.HorseModel,
             as: "RaceAndHorseModelData",
           },
@@ -176,9 +178,8 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     console.log(CastRaces);
     console.log(PickRaces);
     if (CastRaces.length > 0) {
-
       await CastRaces.map(async (singlerace) => {
-        console.log(singlerace,"cast")
+        console.log(singlerace, "cast");
         await CompetitionRacesPointsModel.findOrCreate({
           where: {
             CompetitonModelId: req.params.id,
@@ -193,9 +194,8 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
     if (PickRaces.length > 0) {
       console.log(CompetitionID.CategoryCount);
       if (CompetitionID.CategoryCount === PickRaces.length) {
-
         await PickRaces.map(async (singlerace) => {
-          console.log(singlerace,"pick")
+          console.log(singlerace, "pick");
           await CompetitionRacesPointsModel.findOrCreate({
             where: {
               CompetitonModelId: req.params.id,
@@ -205,11 +205,8 @@ exports.AddRacesInCompetition = Trackerror(async (req, res, next) => {
           });
         });
       } else {
-        return next(
-          new HandlerCallBack("Pick Races Length Is Exceeded", 404)
-        );
+        return next(new HandlerCallBack("Pick Races Length Is Exceeded", 404));
       }
-
     }
   }
   res.status(200).json({
@@ -227,7 +224,7 @@ exports.SingleCompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => { });
+exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => {});
 exports.EditCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,
