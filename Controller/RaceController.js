@@ -143,6 +143,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         paranoid: false,
       },
       {
+        paranoid: false,
         model: db.TrackLengthModel,
         as: "TrackLengthData",
       },
@@ -550,7 +551,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     PointTableSystem,
-    Day
+    Day,
   } = req.body;
   const file = req.files.image;
   if (file == null) {
@@ -751,7 +752,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     PointTableSystem,
-    Day
+    Day,
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id },

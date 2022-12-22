@@ -99,121 +99,190 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
       },
     ],
   });
-  console.log(generation1);
-  let generation2a = await HorseModel.findOne({
-    where: { _id: generation1.Dam },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
-  let generation2b = await HorseModel.findOne({
-    where: { _id: generation1.Sire },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
-  let generation3a = await HorseModel.findOne({
-    where: { _id: generation2a.Dam },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
-  let generation3b = await HorseModel.findOne({
-    where: { _id: generation2a.Sire },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
-  let generation3c = await HorseModel.findOne({
-    where: { _id: generation2b.Dam },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
-  let generation3d = await HorseModel.findOne({
-    where: { _id: generation2b.Sire },
-    paranoid: false,
-    attributes: ["Dam", "Sire", "shortCode", "_id", "DOB", "NameEn", "NameAr"],
-    include: [
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "DamData",
-        attributes: ["NameEn", "NameAr"],
-      },
-      {
-        paranoid: false,
-        model: db.HorseModel,
-        as: "SireData",
-        attributes: ["NameEn", "NameAr"],
-      },
-    ],
-  });
+  let generation2a = null;
+  let generation2b = null;
+  let generation3a = null;
+  let generation3b = null;
+  let generation3c = null;
+  let generation3d = null;
+  if (generation1.Dam) {
+    generation2a = await HorseModel.findOne({
+      where: { _id: generation1.Dam },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+  if (generation1.Sire) {
+    generation2b = await HorseModel.findOne({
+      where: { _id: generation1.Sire },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+  console.log(generation2a);
+
+  if (generation2a.Dam) {
+    generation3a = await HorseModel.findOne({
+      where: { _id: generation2a.Dam },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+
+  if (generation2a.Sire) {
+    generation3b = await HorseModel.findOne({
+      where: { _id: generation2a.Sire },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+  if (generation2b) {
+    generation3c = await HorseModel.findOne({
+      where: { _id: generation2b.Dam },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+  if (generation2b) {
+    generation3d = await HorseModel.findOne({
+      where: { _id: generation2b.Sire },
+      paranoid: false,
+      attributes: [
+        "Dam",
+        "Sire",
+        "shortCode",
+        "_id",
+        "DOB",
+        "NameEn",
+        "NameAr",
+      ],
+      include: [
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "DamData",
+          attributes: ["NameEn", "NameAr"],
+        },
+        {
+          paranoid: false,
+          model: db.HorseModel,
+          as: "SireData",
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
+    });
+  }
+
   res.status(200).json({
     success: true,
     generation1,

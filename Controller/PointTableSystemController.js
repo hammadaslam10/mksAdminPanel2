@@ -48,33 +48,15 @@ exports.GetPointTableSystemMaxShortCode = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreatePointTableSystem = Trackerror(async (req, res, next) => {
-  const {
-    Group_Name,
-    First_Place_Point,
-    First_Place_Bonus_Point,
-    Second_Place_Bonus_Point,
-    shortCode,
-    Second_Place_Point,
-    Third_Place_Point,
-    Third_Place_Bonus_Point,
-    FourthPrice,
-    FifthPrice,
-    SixthPrice,
-  } = req.body;
+  const { shortCode, Group_Name, Rank, Point, Bonus_Point } = req.body;
 
   try {
     const data = await PointTableSystemModel.create({
       shortCode: shortCode,
       Group_Name: Group_Name,
-      First_Place_Point: First_Place_Point,
-      Second_Place_Point: Second_Place_Point,
-      FourthPrice: FourthPrice,
-      FifthPrice: FifthPrice,
-      SixthPrice: SixthPrice,
-      Third_Place_Point: Third_Place_Point,
-      First_Place_Bonus_Point: First_Place_Bonus_Point,
-      Second_Place_Bonus_Point: Second_Place_Bonus_Point,
-      Third_Place_Bonus_Point: Third_Place_Bonus_Point,
+      Rank: Rank,
+      Point: Point,
+      Bonus_Point: Bonus_Point,
     });
     console.log(data);
     res.status(201).json({
@@ -122,19 +104,7 @@ exports.SinglePointTableSystem = Trackerror(async (req, res, next) => {
 });
 exports.GetPointTableSystemAdmin = Trackerror(async (req, res, next) => {});
 exports.EditPointTableSystem = Trackerror(async (req, res, next) => {
-  const {
-    Group_Name,
-    First_Place_Point,
-    First_Place_Bonus_Point,
-    Second_Place_Bonus_Point,
-    shortCode,
-    Second_Place_Point,
-    Third_Place_Point,
-    Third_Place_Bonus_Point,
-    FourthPrice,
-    FifthPrice,
-    SixthPrice,
-  } = req.body;
+  const { Group_Name, Rank, Point, Bonus_Point, shortCode } = req.body;
   let data = await PointTableSystemModel.findOne({
     where: { _id: req.params.id },
   });
@@ -144,18 +114,9 @@ exports.EditPointTableSystem = Trackerror(async (req, res, next) => {
   const updateddata = {
     shortCode: shortCode || data.shortCode,
     Group_Name: Group_Name || data.Group_Name,
-    First_Place_Point: First_Place_Point || data.First_Place_Point,
-    Third_Place_Point: Third_Place_Point || data.Third_Place_Point,
-    Second_Place_Point: Second_Place_Point || data.Second_Place_Point,
-    FourthPrice: FourthPrice || data.FourthPrice,
-    FifthPrice: FifthPrice || data.FifthPrice,
-    SixthPrice: SixthPrice || data.SixthPrice,
-    Third_Place_Bonus_Point:
-      Third_Place_Bonus_Point || data.Third_Place_Bonus_Point,
-    Second_Place_Bonus_Point:
-      Second_Place_Bonus_Point || data.Second_Place_Bonus_Point,
-    First_Place_Bonus_Point:
-      First_Place_Bonus_Point || data.First_Place_Bonus_Point,
+    Rank: Rank || data.Rank,
+    Bonus_Point: Bonus_Point || data.Bonus_Point,
+    Point: Point || data.Point,
   };
   try {
     data = await PointTableSystemModel.update(updateddata, {

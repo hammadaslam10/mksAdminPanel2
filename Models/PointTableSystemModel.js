@@ -28,51 +28,25 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Group Name  will not be empty" },
         },
       },
-      First_Place_Point: {
+      Rank: {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "Point Table System will have First Place Point" },
-          notEmpty: { msg: "First Place Point  will not be empty" },
+          notNull: { msg: "Point Table System will have Rank" },
+          notEmpty: { msg: "Rank  will not be empty" },
         },
       },
-      Second_Place_Point: {
+      Point: {
         type: DataTypes.BIGINT,
         allowNull: false,
         validate: {
-          notNull: { msg: "Point Table System will have Second Place Point" },
-          notEmpty: { msg: "Second Place Point  will not be empty" },
+          notNull: { msg: "Point Table System will have Point" },
+          notEmpty: { msg: "Point  will not be empty" },
         },
       },
 
-      Third_Place_Point: {
+      Bonus_Point: {
         type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Point Table System will have Third_Place_Point" },
-          notEmpty: { msg: "Third_Place_Point  will not be empty" },
-        },
-      },
-      First_Place_Bonus_Point: {
-        type: DataTypes.BIGINT,
-      },
-      Second_Place_Bonus_Point: {
-        type: DataTypes.BIGINT,
-      },
-      Third_Place_Bonus_Point: {
-        type: DataTypes.BIGINT,
-      },
-      FourthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      FifthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
-      },
-      SixthPrice: {
-        type: DataTypes.BIGINT,
-        defaultValue: 0,
       },
     },
     {

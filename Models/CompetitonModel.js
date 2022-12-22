@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      CompetitionType: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       CompetitionCode: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -111,14 +115,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      // pickCount: {
-      //   type: DataTypes.BIGINT,
-      //   allowNull: false,
-      // },
-      // TriCount: {
-      //   type: DataTypes.BIGINT,
-      //   allowNull: false,
-      // },
       CategoryCount: {
         type: DataTypes.BIGINT,
         allowNull: false,
