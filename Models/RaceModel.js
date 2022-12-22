@@ -149,16 +149,17 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      // DayNTime: {
-      //   type: DataTypes.DATE,
-      //   allowNull: false,
-      //   validate: {
-      //     notNull: { msg: "Please Add DayNTime Of Race" },
-      //     notEmpty: {
-      //       msg: "Without DayNTime Race Will not get submitted",
-      //     },
-      //   },
-      // },
+      Day: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Day Of Race" },
+          notEmpty: {
+            msg: "Without Day Race Will not get submitted",
+          },
+        },
+      },
+
       RaceCourse: {
         type: DataTypes.UUID,
         allowNull: false,
