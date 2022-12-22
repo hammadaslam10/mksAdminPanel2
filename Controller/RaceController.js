@@ -550,6 +550,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     PointTableSystem,
+    Day
   } = req.body;
   const file = req.files.image;
   if (file == null) {
@@ -588,6 +589,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground: Ground,
     Sponsor: Sponsor,
     PointTableSystem: PointTableSystem,
+    Day: Day,
   });
   res.status(200).json({
     success: true,
@@ -749,6 +751,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     PointTableSystem,
+    Day
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -798,6 +801,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       MeetingCode: MeetingCode || data.MeetingCode,
       Ground: Ground || data.Ground,
       Sponsor: Sponsor || data.Sponsor,
+      Day: Day || data.Day,
       PointTableSystem: PointTableSystem || data.PointTableSystem,
     };
     data = await RaceModel.update(updateddata, {
