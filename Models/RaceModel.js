@@ -86,8 +86,12 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Description in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.DescriptionAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.DescriptionAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+                this.DescriptionAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.DescriptionAr
+              )
             ) {
             } else {
               throw new Error("Description Arabic Validation Failed");
@@ -125,16 +129,36 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [["Announced", "Awaited", "Cancelled"]],
         defaultValue: "Awaited",
       },
-      DayNTime: {
+      StartTime: {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add DayNTime Of Race" },
+          notNull: { msg: "Please Add StartTime Of Race" },
           notEmpty: {
-            msg: "Without DayNTime Race Will not get submitted",
+            msg: "Without StartTime Race Will not get submitted",
           },
         },
       },
+      EndTime: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add EndTime Of Race" },
+          notEmpty: {
+            msg: "Without EndTime Race Will not get submitted",
+          },
+        },
+      },
+      // DayNTime: {
+      //   type: DataTypes.DATE,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Please Add DayNTime Of Race" },
+      //     notEmpty: {
+      //       msg: "Without DayNTime Race Will not get submitted",
+      //     },
+      //   },
+      // },
       RaceCourse: {
         type: DataTypes.UUID,
         allowNull: false,

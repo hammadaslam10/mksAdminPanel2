@@ -190,19 +190,9 @@ exports.GetRace = Trackerror(async (req, res, next) => {
 exports.GetLatestResult = Trackerror();
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    order: [["DayNTime", "DESC"]],
+    order: [["StartTime", "DESC"]],
     paranoid: false,
     include: [
-      // {
-      //   model: db.MeetingTypeModel,
-      //   as: "MeetingTypeData",
-      //   paranoid: false,
-      // },
-      // {
-      //   model: db.GroundTypeModel,
-      //   as: "GroundData",
-      //   paranoid: false,
-      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -218,32 +208,6 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
         as: "RaceNameModelData",
         paranoid: false,
       },
-      // {
-      //   model: db.RaceKindModel,
-      //   as: "RaceKindData",
-      //   paranoid: false,
-      // },
-      // {
-      //   model: db.RaceTypeModel,
-      //   as: "RaceTypeModelData",
-      //   paranoid: false,
-      // },
-      // {
-      //   model: db.SponsorModel,
-      //   as: "SponsorData",
-      //   paranoid: false,
-      // },
-      // {
-      //   model: db.HorseModel,
-      //   as: "RaceAndHorseModelData",
-      //   include: { all: true },
-      //   paranoid: false,
-      // },
-      // {
-      //   model: db.JockeyModel,
-      //   include: { all: true },
-      //   paranoid: false,
-      // },
     ],
   });
 
@@ -566,7 +530,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     RaceCourse,
     RaceType,
     RaceStatus,
-    DayNTime,
+    StartTime,
     DescriptionAr,
     RaceName,
     RaceNameAr,
@@ -584,6 +548,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     MeetingCode,
     Ground,
     Sponsor,
+    EndTime,
+    PointTableSystem,
   } = req.body;
   const file = req.files.image;
   if (file == null) {
@@ -600,12 +566,11 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     DescriptionAr: DescriptionAr,
     RaceCourse: RaceCourse,
     RaceStatus: RaceStatus,
-    DayNTime: DayNTime,
+    StartTime: StartTime,
+    EndTime: EndTime,
     RaceType: RaceType,
     RaceNameAr: RaceNameAr,
     WeatherType: WeatherType,
-    WeatherType: WeatherType,
-    WeatherDegree: WeatherDegree,
     WeatherDegree: WeatherDegree,
     WeatherIcon: WeatherIcon,
     RaceName: RaceName,
@@ -622,6 +587,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     TrackLength: TrackLength,
     Ground: Ground,
     Sponsor: Sponsor,
+    PointTableSystem: PointTableSystem,
   });
   res.status(200).json({
     success: true,
@@ -674,14 +640,6 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
       console.log(singleverdictdetail[1], "1 INDEX");
       console.log(singleverdictdetail[2], "2 INDEX");
       console.log(singleverdictdetail[3], "3 INDEX");
-      // await RaceAndVerdictsJockeyModel.findOrCreate({
-      //   where: {
-      //     VerdictName: singleverdictdetail[0],
-      //     Rank: singleverdictdetail[1],
-      //     RaceModelId2: req.params.id,
-      //     JockeyModelId: singleverdictdetail[2],
-      //   },
-      // });
 
       await RaceAndVerdictsHorseModel.findOrCreate({
         where: {
@@ -697,17 +655,17 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
     success: true,
   });
 });
-exports.GetRaceWithDayntime = Trackerror(async (req, res, next) => {
-  const { DayNTime } = req.body;
-  console.log(DayNTime);
+exports.GetRaceWithStartTime = Trackerror(async (req, res, next) => {
+  const { StartTime } = req.body;
+  console.log(StartTime);
   console.log(req.body);
   const [results, metadata] = await db.sequelize.query(`SELECT
   *
 FROM
   mksracing.RaceModel
 WHERE
-  DayNTime >= '${DayNTime}'
-  AND DayNTime < ('${DayNTime}' + INTERVAL 1 DAY);`);
+  StartTime >= '${StartTime}'
+  AND StartTime < ('${StartTime}' + INTERVAL 1 DAY);`);
   let arrayof_ids = [];
   results.map((singleresult) => arrayof_ids.push(singleresult._id));
   const data = await RaceModel.findAll({
@@ -771,7 +729,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     RaceCourse,
     RaceType,
     RaceStatus,
-    DayNTime,
+    StartTime,
     DescriptionAr,
     RaceName,
     RaceNameAr,
@@ -789,6 +747,8 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     MeetingCode,
     Ground,
     Sponsor,
+    EndTime,
+    PointTableSystem,
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -820,7 +780,8 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       RaceCourse: RaceCourse || data.RaceCourse,
       RaceType: RaceType || data.RaceType,
       RaceStatus: RaceStatus || data.RaceStatus,
-      DayNTime: DayNTime || data.DayNTime,
+      StartTime: StartTime || data.StartTime,
+      EndTime: EndTime || data.EndTime,
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       RaceNameAr: RaceNameAr || data.RaceNameAr,
       WeatherType: WeatherType || data.WeatherType,
@@ -837,6 +798,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       MeetingCode: MeetingCode || data.MeetingCode,
       Ground: Ground || data.Ground,
       Sponsor: Sponsor || data.Sponsor,
+      PointTableSystem: PointTableSystem || data.PointTableSystem,
     };
     data = await RaceModel.update(updateddata, {
       where: {
@@ -893,7 +855,7 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
     where: {
       [Op.and]: [
         { RaceCourse: req.params.RaceCourseid },
-        { DayNTime: req.params.DayNTime },
+        { StartTime: req.params.StartTime },
       ],
     },
   });

@@ -18,7 +18,7 @@ const {
   SoftDeleteRace,
   RaceWithTime,
   GetHorsesofraces,
-  GetRaceWithDayntime,
+  GetRaceWithStartTime,
   ResultLatest,
   VerdictLatest,
   GetDeletedRace,
@@ -31,7 +31,7 @@ router.route("/getrace").get(GetRace);
 router.route("/getlatestraceresult").get(ResultLatest);
 router.route("/raceprediction").get(VerdictLatest);
 router.route("/getracewithtime").get(RaceWithTime);
-router.route("/GetRaceWithDayntime").post(GetRaceWithDayntime);
+router.route("/GetRaceWithStartTime").post(GetRaceWithStartTime);
 router.route("/GetHorsesofraces").get(GetHorsesofraces);
 router.route("/GetRaceResultToBeAnnounced").get(GetRaceResultToBeAnnounced);
 router.route("/GetRaceTobeOPublished").get(GetRaceTobeOPublished);

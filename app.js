@@ -37,6 +37,7 @@ const VerdictRoute = require("./Routes/VerdictRoute");
 const ComeptitionRoute = require("./Routes/CompetitionRoutes");
 const CompetitionCategoryRoutes = require("./Routes/CompetitionCategoryRoutes");
 const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
+// const NewsLetterRoutes = require("./Routes/PointTableSystemRoutes");
 let cron = require("node-cron");
 // const SearchRoutes = require("./Routes/SearchRoutes");
 if (process.env.NODE_ENV !== "PRODUCTION") {
