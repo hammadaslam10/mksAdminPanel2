@@ -312,6 +312,35 @@ exports.LoginSubscriber = Trackerror(async (req, res, next) => {
 
   TokenCreation(user, 200, res);
 });
+// exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
+//   const resetPasswordToken = crypto
+//     .createHash("sha256")
+//     .update(req.params.token)
+//     .digest("hex");
+
+//   const user = await SubscriberModel.findOne({
+//     resetPasswordToken,
+//     resetPasswordExpire: { $gt: Date.now() },
+//   });
+
+//   if (!user) {
+//     return next(
+//       new ErrorHandler("Reset Password token is invalid or expired", 400)
+//     );
+//   }
+
+//   if (req.body.password !== req.body.confirmPassword) {
+//     return next(new ErrorHandler("Password does not match", 400));
+//   }
+
+//   user.password = req.body.password;
+//   user.resetPasswordToken = undefined;
+//   user.resetPasswordExpire = undefined;
+
+//   await user.save();
+
+//   sendToken(user, 200, res);
+// });
 
 exports.logOut = Trackerror(async (req, res, next) => {
   res.cookie("token", null, {
@@ -324,14 +353,18 @@ exports.logOut = Trackerror(async (req, res, next) => {
     message: "Logged Out",
   });
 });
+
 exports.forgotPassword = Trackerror(async (req, res, next) => {
-  const user = await SubscriberModel.findOne({ email: req.body.email });
+  console.log(req.body.email);
+  const user = await SubscriberModel.findOne({
+    where: { Email: req.body.email },
+  });
 
   if (!user) {
     return next(new HandlerCallBack("User not found", 404));
   }
 
-  const resetToken = user.getResetPasswordToken();
+  let resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
 
@@ -340,23 +373,32 @@ exports.forgotPassword = Trackerror(async (req, res, next) => {
   )}/api/v1/password/reset/${resetToken}`;
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\n If you have ot requested this email 
     then, ignore it`;
-
+  resetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+  console.log(resetPasswordUrl);
+  console.log(resetToken);
+  data = await SubscriberModel.update(
+    { Token: resetToken },
+    {
+      where: {
+        Email: req.body.email,
+      },
+    }
+  );
   try {
     await EmailDispatch({
-      email: user.email,
+      email: user.Email,
       subject: "Mks  Racing password recovery",
       message,
     });
 
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.email} successfully`,
+      message: `Email sent to ${user.Email} successfully`,
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new HandlerCallBack(err.message, 500));
+    return next(new HandlerCallBack(error.message, 500));
   }
 });
 
@@ -365,10 +407,12 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-
-  const user = await User.findOne({
-    resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() },
+  console.log(req.params.token);
+  console.log(resetPasswordToken);
+  const user = await SubscriberModel.findOne({
+    where: {
+      Token: resetPasswordToken,
+    },
   });
 
   if (!user) {
@@ -377,17 +421,22 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
     );
   }
 
-  if (req.body.password !== req.body.confirmPassword) {
+  if (req.body.firstpassword !== req.body.confirmPassword) {
     return next(new HandlerCallBack("Password does not match", 400));
   }
+  const updatedata = {
+    password: await bcrypt.hash(req.body.firstpassword, 10),
+    Token: undefined,
+  };
+  let data = await SubscriberModel.update(updatedata, {
+    where: {
+      Token: resetPasswordToken,
+    },
+  });
 
-  user.password = req.body.password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
-
-  await user.save();
-
-  TokenCreation(user, 200, res);
+  res.status(200).json({
+    data,
+  });
 });
 exports.UpdateProfile = Trackerror(async (req, res, next) => {
   const {

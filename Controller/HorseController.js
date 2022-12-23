@@ -72,11 +72,20 @@ exports.SearchName = Trackerror(async (req, res, next) => {
     },
     include: { all: true },
   });
+  const data4 = await JockeyModel.findAll({
+    where: {
+      NameEn: {
+        [Op.like]: `%${Query}%`,
+      },
+    },
+    include: { all: true },
+  });
   res.status(200).json({
     success: true,
     data1,
     data2,
     data3,
+    data4,
   });
 });
 exports.PedigreeHorse = Trackerror(async (req, res, next) => {

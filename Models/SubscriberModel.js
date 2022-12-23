@@ -71,6 +71,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      Token: {
+        type: DataTypes.STRING,
+      },
+      // TokenDate: {
+      //   type: DataTypes.DATE,
+      // },
     },
     {
       freezeTableName: true,
