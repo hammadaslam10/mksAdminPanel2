@@ -1,10 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const {
-//   authorizedRoles,
-//   isAuthenticatedUser,
-// } = require("../Middleware/AuthenticationAndValidation");
-// isAuthenticatedUser, authorizedRoles("approveduser"),
 const {
   RegisterAdmin,
   GetAllAdmin,
@@ -16,7 +11,7 @@ const {
   resetPassword,
   RestoreSoftDeletedAdmin,
   GetDeletedAdmin,
-  UpdateAdmin
+  UpdateAdmin,
 } = require("../Controller/AdminController");
 router.route("/Admingetdeleted").get(GetDeletedAdmin);
 router.route("/restoresoftdeleteAdmin/:id").post(RestoreSoftDeletedAdmin);

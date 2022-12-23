@@ -15,6 +15,7 @@ const {
   UpdateProfile,
   TrackTrainers,
   TrackOwners,
+  SearchUser,
 } = require("../Controller/SubscriberController");
 router.route("/subscribergetdeleted").get(GetDeletedSubscriber);
 router
@@ -27,6 +28,7 @@ router.route("/tracktrainer").post(TrackTrainers);
 router.route("/trackowner").post(TrackOwners);
 router.route("/login").post(LoginSubscriber);
 router.route("/logout").get(logOut);
+router.route("/SearchUser").get(SearchUser);
 router.route("/ChangeStatus/:id").put(SubscriberApproval);
 router.route("/singlesubscriber/:id").get(GetonlyoneSusbcriber);
 router.route("/updatesubscriber/:id").put(UpdateProfile);

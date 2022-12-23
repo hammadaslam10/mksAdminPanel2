@@ -16,6 +16,51 @@ const SubscriberAndHorsesModel = db.SubscriberAndHorsesModel;
 const SubscriberAndTrainerModel = db.SubscriberAndTrainerModel;
 const SubscriberAndOwnerModel = db.SubscriberAndOwnerModel;
 const { Op } = require("sequelize");
+const _ = require("lodash");
+exports.SearchUser = Trackerror(async (req, res, next) => {
+  console.log(req.query.FirstName);
+  const data = await SubscriberModel.findAll({
+    where: {
+      FirstName: {
+        [Op.like]: `%${req.query.FirstName || ""}%`,
+      },
+      LastName: {
+        [Op.like]: `%${req.query.LastName || ""}%`,
+      },
+      PassportNo: {
+        [Op.like]: `%${req.query.PassportNo || ""}%`,
+      },
+      ApprovedStatus: {
+        [Op.like]: `%${req.query.ApprovedStatus || ""}%`,
+      },
+      Address: {
+        [Op.like]: `%${req.query.Address || ""}%`,
+      },
+      password: {
+        [Op.like]: `%${req.query.password || ""}%`,
+      },
+      Email: {
+        [Op.like]: `%${req.query.Email || ""}%`,
+      },
+      PhoneNumber: {
+        [Op.like]: `%${req.query.PhoneNumber || ""}%`,
+      },
+      PassportPicture: {
+        [Op.like]: `%${req.query.PassportPicture || ""}%`,
+      },
+      createdAt: {
+        [Op.like]: `%${req.query.createdAt || ""}%`,
+      },
+      updatedAt: {
+        [Op.like]: `%${req.query.updatedAt || ""}%`,
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetDeletedSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findAll({
     paranoid: false,
