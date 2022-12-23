@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const PointTableSystemModel = sequelize.define(
-    "PointTableSystemModel",
+  const RaceAndPointsSystemModel = sequelize.define(
+    "RaceAndPointsSystemModel",
 
     {
       _id: {
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       Race: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       Point: {
@@ -24,5 +24,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return PointTableSystemModel;
+  return RaceAndPointsSystemModel;
 };

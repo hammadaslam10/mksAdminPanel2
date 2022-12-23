@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
+      CompetitionSponsor: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       CompetitionCode: {
         type: DataTypes.STRING,
         allowNull: false,

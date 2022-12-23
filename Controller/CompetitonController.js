@@ -98,6 +98,7 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
     StartDate,
     CompetitionCategory,
     CompetitionType,
+    CompetitionSponsor,
   } = req.body;
 
   try {
@@ -113,6 +114,7 @@ exports.CreateCompetiton = Trackerror(async (req, res, next) => {
       CompetitionCode: CompetitionCode,
       CompetitionCategory: CompetitionCategory,
       CompetitionType: CompetitionType,
+      CompetitionSponsor: CompetitionSponsor,
     });
     res.status(201).json({
       success: true,
@@ -240,6 +242,7 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
     StartDate,
     CompetitionCategory,
     CompetitionType,
+    CompetitionSponsor,
   } = req.body;
 
   let data = await CompetitonModel.findOne({
@@ -260,6 +263,7 @@ exports.EditCompetiton = Trackerror(async (req, res, next) => {
     StartDate: StartDate || data.StartDate,
     CompetitionCategory: CompetitionCategory || data.CompetitionCategory,
     CompetitionType: CompetitionType || data.CompetitionType,
+    CompetitionSponsor: CompetitionSponsor || data.CompetitionSponsor,
   };
   try {
     data = await CompetitonModel.update(updateddata, {

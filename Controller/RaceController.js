@@ -1,5 +1,6 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
+const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
@@ -555,7 +556,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground,
     Sponsor,
     EndTime,
-    PointTableSystem,
     Day,
   } = req.body;
   const file = req.files.image;
@@ -576,13 +576,11 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     StartTime: StartTime,
     EndTime: EndTime,
     RaceType: RaceType,
-    RaceNameAr: RaceNameAr,
     WeatherType: WeatherType,
     WeatherDegree: WeatherDegree,
     WeatherIcon: WeatherIcon,
     RaceName: RaceName,
     TrackLength: TrackLength,
-    FirstPrice: FirstPrice,
     FirstPrice: FirstPrice,
     SecondPrice: SecondPrice,
     ThirdPrice: ThirdPrice,
@@ -594,13 +592,40 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     TrackLength: TrackLength,
     Ground: Ground,
     Sponsor: Sponsor,
-    PointTableSystem: PointTableSystem,
     Day: Day,
   });
   res.status(200).json({
     success: true,
     data,
   });
+});
+exports.AddPointTable = Trackerror(async (req, res, next) => {
+  let RaceId = await RaceModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!RaceId) {
+    return next(new HandlerCallBack("Race Card not found", 404));
+  } else {
+    let { Points } = req.body;
+
+    await Points.map(async (singlepoint) => {
+      await RaceAndPointsSystemModel.create({
+        Race: req.params.id,
+        Point: singlepoint,
+      });
+    });
+    await RaceModel.update(
+      { role: "approveduser" },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    res.status(200).json({
+      success: true,
+    });
+  }
 });
 exports.IncludeHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
@@ -756,7 +781,6 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Ground,
     Sponsor,
     EndTime,
-    PointTableSystem,
     Day,
   } = req.body;
   let data = await RaceModel.findOne({
@@ -808,7 +832,6 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       Ground: Ground || data.Ground,
       Sponsor: Sponsor || data.Sponsor,
       Day: Day || data.Day,
-      PointTableSystem: PointTableSystem || data.PointTableSystem,
     };
     data = await RaceModel.update(updateddata, {
       where: {
@@ -850,7 +873,6 @@ exports.SoftDeleteRace = Trackerror(async (req, res, next) => {
   }
 
   console.log(data);
-  // await deleteFile(`${Race}/${data.image.slice(-64)}`);
   await RaceModel.destroy({
     where: { _id: req.params.id },
   });

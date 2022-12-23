@@ -131,8 +131,29 @@ db.PointTableSystemModel = require("../Models/PointTableSystemModel")(
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
+db.RaceAndPointsSystemModel = require("../Models/RaceAndPointsSystemModel")(
+  Db,
+  DataTypes
+);
 db.sequelize.sync({ force: false, alter: false }).then(() => {
   console.log("yes re-sync done!");
+});
+// -------------------------------------RaceAndPointsSystemModel----------------------------
+db.RaceAndPointsSystemModel.hasMany(db.RaceModel, {
+  foreignKey: "Race",
+  as: "RacePointsData",
+});
+db.RaceModel.belongsTo(db.RaceAndPointsSystemModel, {
+  foreignKey: "CompetitionType",
+  as: "CompetitionTypeData",
+});
+db.RaceAndPointsSystemModel.hasMany(db.PointTableSystemModel, {
+  foreignKey: "Point",
+  as: "PointsListingData",
+});
+db.PointTableSystemModel.belongsTo(db.RaceAndPointsSystemModel, {
+  foreignKey: "Point",
+  as: "PointsListingData",
 });
 // -------------------------------------Competition----------------------------
 db.CompetitionCategoryModel.hasMany(db.CompetitonModel, {
@@ -143,15 +164,14 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
   foreignKey: "CompetitionType",
   as: "CompetitionTypeData",
 });
-// db.CompetitonModel.hasMany(db.RaceModel, {
-//   foreignKey: "Competition",
-//   as: "CompetitionData",
-// });
-// db.RaceModel.belongsTo(db.CompetitonModel, {
-//   foreignKey: "Competition",
-//   as: "CompetitionData",
-// });
-// CompetitionRacesPointsModel
+db.SponsorModel.hasMany(db.CompetitonModel, {
+  foreignKey: "CompetitionSponsor",
+  as: "CompetitionSponsorData",
+});
+db.CompetitonModel.belongsTo(db.SponsorModel, {
+  foreignKey: "CompetitionSponsor",
+  as: "CompetitionSponsorData",
+});
 db.CompetitonModel.belongsToMany(db.RaceModel, {
   through: "CompetitionRacesPointsModel",
   as: "CompetitionRacesPointsModelData",
