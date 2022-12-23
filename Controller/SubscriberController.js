@@ -48,12 +48,12 @@ exports.SearchUser = Trackerror(async (req, res, next) => {
       PassportPicture: {
         [Op.like]: `%${req.query.PassportPicture || ""}%`,
       },
-      createdAt: {
-        [Op.like]: `%${req.query.createdAt || ""}%`,
-      },
-      updatedAt: {
-        [Op.like]: `%${req.query.updatedAt || ""}%`,
-      },
+      // createdAt: {
+      //   [Op.like]: `%${req.query.createdAt || ""}%`,
+      // },
+      // updatedAt: {
+      //   [Op.like]: `%${req.query.updatedAt || ""}%`,
+      // },
     },
   });
   res.status(200).json({
