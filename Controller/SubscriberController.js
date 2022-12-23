@@ -277,7 +277,7 @@ exports.SubscriberApproval = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack(`user not found`));
   }
   data = await SubscriberModel.update(
-    { role: "approveduser" },
+    { ApprovedStatus: 1 },
     {
       where: {
         _id: req.params.id,
