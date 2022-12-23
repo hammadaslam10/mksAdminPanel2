@@ -139,19 +139,19 @@ db.sequelize.sync({ force: false, alter: false }).then(() => {
   console.log("yes re-sync done!");
 });
 // -------------------------------------RaceAndPointsSystemModel----------------------------
-db.RaceAndPointsSystemModel.hasMany(db.RaceModel, {
+db.RaceModel.hasMany(db.RaceAndPointsSystemModel, {
   foreignKey: "Race",
-  as: "RacePointsData",
+  as: "RaceData",
 });
-db.RaceModel.belongsTo(db.RaceAndPointsSystemModel, {
-  foreignKey: "CompetitionType",
-  as: "CompetitionTypeData",
+db.RaceAndPointsSystemModel.belongsTo(db.RaceModel, {
+  foreignKey: "Race",
+  as: "RaceData",
 });
-db.RaceAndPointsSystemModel.hasMany(db.PointTableSystemModel, {
+db.RaceAndPointsSystemModel.belongsTo(db.PointTableSystemModel, {
   foreignKey: "Point",
   as: "PointsListingData",
 });
-db.PointTableSystemModel.belongsTo(db.RaceAndPointsSystemModel, {
+db.PointTableSystemModel.hasMany(db.RaceAndPointsSystemModel, {
   foreignKey: "Point",
   as: "PointsListingData",
 });
@@ -408,14 +408,14 @@ db.RaceModel.belongsTo(db.TrackLengthModel, {
   foreignKey: "TrackLength",
   as: "TrackLengthData",
 });
-db.PointTableSystemModel.hasMany(db.RaceModel, {
-  foreignKey: "PointTableSystem",
-  as: "PointTableSystemData",
-});
-db.RaceModel.belongsTo(db.PointTableSystemModel, {
-  foreignKey: "PointTableSystem",
-  as: "PointTableSystemData",
-});
+// db.PointTableSystemModel.hasMany(db.RaceModel, {
+//   foreignKey: "PointTableSystem",
+//   as: "PointTableSystemData",
+// });
+// db.RaceModel.belongsTo(db.PointTableSystemModel, {
+//   foreignKey: "PointTableSystem",
+//   as: "PointTableSystemData",
+// });
 // -------------------------------------RaceandHorseResult----------------------------
 db.HorseModel.hasMany(db.ResultModel, {
   foreignKey: "HorseID",
