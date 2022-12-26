@@ -1,7 +1,10 @@
 const db = require("../config/Connection");
 const CompetitonModel = db.CompetitonModel;
 const RaceModel = db.RaceModel;
+const HorseModel = db.HorseModel;
 const CompetitionRacesPointsModel = db.CompetitionRacesPointsModel;
+const SubscriberAndCompetitionModel = db.SubscriberAndCompetitionModel;
+const SubscriberModel = db.SubscriberModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
@@ -327,4 +330,115 @@ exports.SoftDeleteCompetiton = Trackerror(async (req, res, next) => {
     success: true,
     message: "Soft Delete Successfully",
   });
+});
+exports.Voting = Trackerror(async (req, res, next) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return next(
+      new HandlerCallBack("Please login to access this resource", 401)
+    );
+  }
+
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  const userdata = await SubscriberModel.findOne({
+    where: { [Op.and]: [{ _id: decodedData._id }, { ApprovedStatus: 1 }] },
+  });
+  if (!userdata) {
+    return next(
+      new HandlerCallBack("Your are not Eligible to play competition", 401)
+    );
+  }
+  const CompetitionID = await CompetitonModel.findOne({
+    where: { _id: req.params.competitionid },
+  });
+  if (!CompetitionID) {
+    return next(new HandlerCallBack("Voting Time is Ended", 401));
+  }
+  const RaceID = await RaceModel.findOne({
+    where: { _id: req.params.raceid },
+  });
+  if (!RaceID) {
+    return next(new HandlerCallBack("Race time is Ended", 401));
+  }
+  if (CompetitionID.category === "pick") {
+    const { Horse } = req.body;
+    const HorseID = await HorseModel.findOne({
+      where: { _id: Horse },
+    });
+    if (!HorseID) {
+      return next(new HandlerCallBack("Horse is not existed", 401));
+    }
+    const verification = await SubscriberAndCompetitionModel.findAll({
+      where: {
+        [Op.and]: [
+          { CompetitionID: req.params.competitionid },
+          { RaceID: req.params.raceid },
+          { SubscriberID: decodedData._id },
+        ],
+      },
+    });
+    if (verification) {
+      return next(new HandlerCallBack("You Already Voted On this Race", 401));
+    }
+    const data = await SubscriberAndCompetitionModel.create({
+      CompetitionID: req.params.competitionid,
+      RaceID: req.params.raceid,
+      SubscriberID: decodedData._id,
+      HorseID: HorseID,
+      Rank: 1,
+    });
+    if (data) {
+      res.status(200).json({
+        success: true,
+        message: `your vote has been submitted on ${HorseID.NameEn}`,
+      });
+    }
+    res.status(202).json({
+      success: false,
+      message: `vote submitted already`,
+    });
+  } else {
+    const { Vote } = req.body;
+    let VoteData = Conversion(Vote);
+    const verification = await SubscriberAndCompetitionModel.findAll({
+      where: {
+        [Op.and]: [
+          { CompetitionID: req.params.competitionid },
+          { RaceID: req.params.raceid },
+          { SubscriberID: decodedData._id },
+        ],
+      },
+    });
+    if (verification) {
+      return next(new HandlerCallBack("You Already Voted On this Race", 401));
+    }
+
+    await VoteData.map(async (singlevote) => {
+      await singlevote.map(async (singlevotedetail) => {
+        try {
+          await SubscriberAndCompetitionModel.findOrCreate({
+            where: {
+              CompetitionID: req.params.competitionid,
+              RaceID: req.params.raceid,
+              SubscriberID: decodedData._id,
+              HorseID: singlevotedetail[0],
+              Rank: Rank[1],
+            },
+          });
+        } catch (error) {
+          res.status(500).json({
+            success: false,
+            message: error.errors.map((singleerr) => {
+              return singleerr.message;
+            }),
+          });
+        }
+      });
+    });
+
+    res.status(200).json({
+      success: false,
+      message: `vote has been submitted `,
+    });
+  }
 });
