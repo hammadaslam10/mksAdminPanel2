@@ -63,6 +63,8 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     ValueEn,
     AbbrevAr,
     LabelAr,
+    HemisphereEn,
+    HemisphereAr,
   } = req.body;
   try {
     const file = req.files.image;
@@ -86,6 +88,8 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
       NameEn: NameEn,
       NameAr: NameAr,
       LabelAr: LabelAr,
+      HemisphereEn: HemisphereEn,
+      HemisphereAr: HemisphereAr,
     });
     res.status(201).json({
       success: true,
@@ -131,6 +135,8 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
     shortCode,
     AbbrevAr,
     LabelAr,
+    HemisphereEn,
+    HemisphereAr,
   } = req.body;
   let data = await NationalityModel.findOne({
     where: { _id: req.params.id },
@@ -154,6 +160,8 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       AbbrevAr: AbbrevAr || data.AbbrevAr,
       AltNameAr: AltNameAr || data.AltNameAr,
       LabelAr: LabelAr || data.LabelAr,
+      HemisphereEn: HemisphereEn || data.HemisphereEn,
+      HemisphereAr: HemisphereAr || data.HemisphereEn,
     };
     try {
       data = await NationalityModel.update(updateddata, {
@@ -193,6 +201,8 @@ exports.EditNationality = Trackerror(async (req, res, next) => {
       ValueAr: ValueAr || data.ValueAr,
       AltNameAr: AltNameAr || data.AltNameAr,
       LabelAr: LabelAr || data.LabelAr,
+      HemisphereEn: HemisphereEn || data.HemisphereEn,
+      HemisphereAr: HemisphereAr || data.HemisphereEn,
     };
     try {
       data = await NationalityModel.update(updateddata, {
