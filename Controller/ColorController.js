@@ -46,13 +46,15 @@ exports.GetColorMaxShortCode = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreateColor = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, AbbrevEn, AbbrevAr } = req.body;
 
   try {
     const data = await ColorModel.create({
       shortCode: shortCode,
       NameEn: NameEn,
       NameAr: NameAr,
+      AbbrevEn: AbbrevEn,
+      AbbrevAr: AbbrevAr,
     });
     console.log(data);
     res.status(201).json({
@@ -60,7 +62,7 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
       data,
     });
   } catch (error) {
-     if (error.name === "SequelizeUniqueConstraintError") {
+    if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
       res.send({
         status: "error",
@@ -74,7 +76,7 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
           return singleerr.message;
         }),
       });
-    } 
+    }
   }
 });
 exports.ColorGet = Trackerror(async (req, res, next) => {
@@ -100,7 +102,7 @@ exports.SingleColor = Trackerror(async (req, res, next) => {
 });
 exports.GetColorAdmin = Trackerror(async (req, res, next) => {});
 exports.EditColor = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, AbbrevEn, AbbrevAr } = req.body;
   let data = await ColorModel.findOne({
     where: { _id: req.params.id },
   });
@@ -111,6 +113,8 @@ exports.EditColor = Trackerror(async (req, res, next) => {
     shortCode: shortCode || data.shortCode,
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
+    AbbrevEn: AbbrevEn || data.AbbrevEn,
+    AbbrevAr: AbbrevAr || data.AbbrevAr,
   };
   try {
     data = await ColorModel.update(updateddata, {
@@ -123,7 +127,7 @@ exports.EditColor = Trackerror(async (req, res, next) => {
       data,
     });
   } catch (error) {
-     if (error.name === "SequelizeUniqueConstraintError") {
+    if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
       res.send({
         status: "error",

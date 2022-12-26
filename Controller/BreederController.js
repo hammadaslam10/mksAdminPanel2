@@ -62,12 +62,44 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   } = req.body;
   const file = req.files.image;
   if (file == null) {
-    return next(new HandlerCallBack("Please upload an image", 404));
+    try {
+      const data = await BreederModel.create({
+        image: `https://${
+          process.env.AWS_BUCKET_NAME
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        DescriptionEn: DescriptionEn,
+        DescriptionAr: DescriptionAr,
+        shortCode: shortCode,
+        TitleEn: TitleEn,
+        TitleAr: TitleAr,
+        NameEn: NameEn,
+        NameAr: NameAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message:
+            "This Short Code already exists, Please enter a different one.",
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
+    }
   }
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
-
   try {
     const data = await BreederModel.create({
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Breeder}/${Image}`,

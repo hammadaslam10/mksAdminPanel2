@@ -34,18 +34,19 @@ exports.RestoreSoftDeletedHorseKind = Trackerror(async (req, res, next) => {
 });
 
 exports.CreateHorseKind = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortName } = req.body;
- 
-    const data = await HorseKindModel.create({
-      shortName: shortName,
-      NameEn: NameEn,
-      NameAr: NameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
- 
+  const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
+
+  const data = await HorseKindModel.create({
+    shortName: shortName,
+    NameEn: NameEn,
+    NameAr: NameAr,
+    AbbrevEn: AbbrevEn,
+    AbbrevAr: AbbrevAr,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.HorseKindGet = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findAll();
@@ -56,7 +57,7 @@ exports.HorseKindGet = Trackerror(async (req, res, next) => {
 });
 exports.GetHorseKindAdmin = Trackerror(async (req, res, next) => {});
 exports.EditHorseKind = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortName } = req.body;
+  const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
   let data = await HorseKindModel.findOne({
     where: { _id: req.params.id },
   });
@@ -67,6 +68,8 @@ exports.EditHorseKind = Trackerror(async (req, res, next) => {
     shortName: shortName || data.shortName,
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
+    AbbrevEn: AbbrevEn || data.AbbrevEn,
+    AbbrevAr: AbbrevAr || data.AbbrevAr,
   };
   data = await HorseKindModel.update(updateddata, {
     where: {

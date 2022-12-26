@@ -128,43 +128,43 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      LabelEn: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          EnglishLanguageVerification() {
-            if (this.LabelEn.trim() == "") {
-              throw new Error("Please Enter Description in English");
-            }
-            if (
-              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.LabelEn) ||
-              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.LabelEn)
-            ) {
-            } else {
-              throw new Error("Description English Validation Failed");
-            }
-          },
-        },
-      },
+      // LabelEn: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     EnglishLanguageVerification() {
+      //       if (this.LabelEn.trim() == "") {
+      //         throw new Error("Please Enter Description in English");
+      //       }
+      //       if (
+      //         /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.LabelEn) ||
+      //         /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.LabelEn)
+      //       ) {
+      //       } else {
+      //         throw new Error("Description English Validation Failed");
+      //       }
+      //     },
+      //   },
+      // },
 
-      LabelAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.LabelAr.trim() == "") {
-              throw new Error("Please Enter  Label Name in  Arabic ");
-            }
-            if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.LabelAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.LabelAr)
-            ) {
-            } else {
-              throw new Error("Label Name Arabic Validation Failed");
-            }
-          },
-        },
-      },
+      // LabelAr: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     ArabicLanguageVerification() {
+      //       if (this.LabelAr.trim() == "") {
+      //         throw new Error("Please Enter  Label Name in  Arabic ");
+      //       }
+      //       if (
+      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.LabelAr) ||
+      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.LabelAr)
+      //       ) {
+      //       } else {
+      //         throw new Error("Label Name Arabic Validation Failed");
+      //       }
+      //     },
+      //   },
+      // },
 
       Offset: {
         type: DataTypes.BOOLEAN,

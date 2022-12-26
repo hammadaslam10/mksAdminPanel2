@@ -46,13 +46,15 @@ exports.GetSexMaxShortCode = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreateSex = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, AbbrevEn, AbbrevAr } = req.body;
 
   try {
     const data = await SexModel.create({
       shortCode: shortCode,
       NameEn: NameEn,
       NameAr: NameAr,
+      AbbrevEn: AbbrevEn,
+      AbbrevAr: AbbrevAr,
     });
     res.status(201).json({
       success: true,
@@ -85,7 +87,7 @@ exports.SexGet = Trackerror(async (req, res, next) => {
 });
 exports.GetSexAdmin = Trackerror(async (req, res, next) => {});
 exports.EditSex = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, AbbrevEn, AbbrevAr } = req.body;
   let data = await SexModel.findOne({
     where: { _id: req.params.id },
   });
@@ -97,6 +99,8 @@ exports.EditSex = Trackerror(async (req, res, next) => {
       shortCode: shortCode || data.shortCode,
       NameEn: NameEn || data.NameEn,
       NameAr: NameAr || data.NameAr,
+      AbbrevEn: AbbrevEn || data.AbbrevEn,
+      AbbrevAr: AbbrevAr || data.AbbrevAr,
     };
     data = await SexModel.update(updateddata, {
       where: {

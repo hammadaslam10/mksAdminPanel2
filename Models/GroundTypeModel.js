@@ -46,11 +46,55 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.NameAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.NameAr)
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+                this.NameAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.NameAr
+              )
             ) {
             } else {
               throw new Error("Name Arabic Validation Failed");
+            }
+          },
+        },
+      },
+      AbbrevEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          EnglishLanguageVerification() {
+            if (this.AbbrevEn.trim() == "") {
+              throw new Error("Please Enter Abbreviation Name in English");
+            }
+            if (
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.AbbrevEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.AbbrevEn)
+            ) {
+            } else {
+              throw new Error("Abbreviation Name English Validation Failed");
+            }
+          },
+        },
+      },
+      AbbrevAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          ArabicLanguageVerification() {
+            if (this.AbbrevAr.trim() == "") {
+              throw new Error("Please Enter  Abbreviation in  Arabic ");
+            }
+            if (
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+                this.AbbrevAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.AbbrevAr
+              )
+            ) {
+            } else {
+              throw new Error("Abbreviation Arabic Validation Failed");
             }
           },
         },
