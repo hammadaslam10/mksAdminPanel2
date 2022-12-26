@@ -61,7 +61,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     shortCode,
   } = req.body;
   const file = req.files.image;
-  if (file == null) {
+  if (!file) {
     try {
       const data = await BreederModel.create({
         image: `https://${
