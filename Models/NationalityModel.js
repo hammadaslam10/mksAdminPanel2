@@ -178,48 +178,48 @@ module.exports = (sequelize, DataTypes) => {
       //   },
       // },
 
-      Offset: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-      ValueEn: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        EnglishLanguageVerification() {
-          if (this.ValueEn.trim() == "") {
-            throw new Error("Please Enter Value in English");
-          }
-          if (
-            /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.ValueEn) ||
-            /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.ValueEn)
-          ) {
-          } else {
-            throw new Error("Value English Validation Failed");
-          }
-        },
-      },
-      ValueAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.ValueAr.trim() == "") {
-              throw new Error("Please Enter  Value in  Arabic ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
-                this.ValueAr
-              ) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
-                this.ValueAr
-              )
-            ) {
-            } else {
-              throw new Error("Alternate Value  Validation Failed");
-            }
-          },
-        },
-      },
+      // Offset: {
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: false,
+      // },
+      // ValueEn: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   EnglishLanguageVerification() {
+      //     if (this.ValueEn.trim() == "") {
+      //       throw new Error("Please Enter Value in English");
+      //     }
+      //     if (
+      //       /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.ValueEn) ||
+      //       /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.ValueEn)
+      //     ) {
+      //     } else {
+      //       throw new Error("Value English Validation Failed");
+      //     }
+      //   },
+      // },
+      // ValueAr: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     ArabicLanguageVerification() {
+      //       if (this.ValueAr.trim() == "") {
+      //         throw new Error("Please Enter  Value in  Arabic ");
+      //       }
+      //       if (
+      //         /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+      //           this.ValueAr
+      //         ) ||
+      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+      //           this.ValueAr
+      //         )
+      //       ) {
+      //       } else {
+      //         throw new Error("Alternate Value  Validation Failed");
+      //       }
+      //     },
+      //   },
+      // },
       image: {
         type: DataTypes.STRING,
         allowNull: false,
