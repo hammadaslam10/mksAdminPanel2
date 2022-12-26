@@ -28,14 +28,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      shortName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Horse Kind will have ShortName" },
-          notEmpty: { msg: "Descritpion  will not be empty" },
-        },
-      },
+      // shortName: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Horse Kind will have ShortName" },
+      //     notEmpty: { msg: "Descritpion  will not be empty" },
+      //   },
+      // },
       NameAr: {
         type: DataTypes.STRING,
         validate: {
