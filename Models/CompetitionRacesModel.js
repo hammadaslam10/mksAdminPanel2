@@ -86,7 +86,7 @@
 //               throw new Error("Please Enter  Name in  Arabic ");
 //             }
 //             if (
-//               /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.NameAr) ||
+//               /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(this.NameAr) ||
 //               /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.NameAr)
 //             ) {
 //             } else {

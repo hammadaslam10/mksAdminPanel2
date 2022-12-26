@@ -47,8 +47,12 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Description in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.DescriptionAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.DescriptionAr)
+              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+                this.DescriptionAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.DescriptionAr
+              )
             ) {
             } else {
               throw new Error("Description Arabic Validation Failed");
@@ -83,8 +87,12 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter Title in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(this.TitleAr) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(this.TitleAr)
+              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+                this.TitleAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.TitleAr
+              )
             ) {
             } else {
               throw new Error("Title Arabic Validation Failed");

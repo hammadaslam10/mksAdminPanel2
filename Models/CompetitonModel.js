@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Please Enter  Name in  Arabic ");
             }
             if (
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
                 this.NameAr
               ) ||
               /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
@@ -95,7 +95,7 @@ module.exports = (sequelize, DataTypes) => {
       //         throw new Error("Please Enter  Description in  Arabic ");
       //       }
       //       if (
-      //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+ ]+$/.test(
+      //         /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
       //           this.DescAr
       //         ) ||
       //         /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
