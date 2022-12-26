@@ -360,7 +360,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
   if (!RaceID) {
     return next(new HandlerCallBack("Race time is Ended", 401));
   }
-  if (CompetitionID.category === "pick") {
+  if (CompetitionID.CompetitionCategory === "pick") {
     const { Horse } = req.body;
     const HorseID = await HorseModel.findOne({
       where: { _id: Horse },
