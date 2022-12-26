@@ -76,27 +76,7 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    if (ArRegex.test(TitleAr) && ArRegex.test(TitleEn) == false) {
-      const updateddata = {
-        image: data.image,
-        TitleEn: TitleEn || data.TitleEn,
-        TitleAr: TitleAr || data.TitleAr,
-        Url: Url || data.Url,
-      };
-      data = await SliderModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+   
   } else {
     const file = req.files.image;
     await deleteFile(`${Slider}/${data.image}`);
@@ -109,20 +89,13 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
     };
-    if (
-      ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.TitleEn) == false
-    ) {
+   
       data = await SliderModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+    
     res.status(200).json({
       success: true,
       data,

@@ -94,14 +94,7 @@ exports.EditNews = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    if (
-      ArRegex.test(DescriptionAr) &&
-      ArRegex.test(TitleAr) &&
-      ArRegex.test(SecondTitleAr) &&
-      ArRegex.test(DescriptionEn) == false &&
-      ArRegex.test(TitleEn) == false &&
-      ArRegex.test(SecondTitleEn) == false
-    ) {
+   
       const updateddata = {
         image: data.image,
         DescriptionEn: DescriptionEn || data.DescriptionEn,
@@ -120,11 +113,7 @@ exports.EditNews = Trackerror(async (req, res, next) => {
         success: true,
         data,
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+    
   } else {
     const file = req.files.image;
     await deleteFile(`${News}/${data.image}`);
@@ -140,24 +129,13 @@ exports.EditNews = Trackerror(async (req, res, next) => {
       SecondTitleEn: SecondTitleEn || data.SecondTitleEn,
       SecondTitleAr: SecondTitleAr || data.SecondTitleAr,
     };
-    if (
-      ArRegex.test(updateddata.DescriptionAr) &&
-      ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.SecondTitleAr) &&
-      ArRegex.test(updateddata.DescriptionEn) == false &&
-      ArRegex.test(updateddata.TitleEn) == false &&
-      ArRegex.test(updateddata.SecondTitleEn) == false
-    ) {
+    
       data = await NewsModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+   
     res.status(200).json({
       success: true,
       data,

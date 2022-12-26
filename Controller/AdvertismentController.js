@@ -89,12 +89,7 @@ exports.EditAds = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    if (
-      ArRegex.test(DescriptionAr) &&
-      ArRegex.test(TitleAr) &&
-      ArRegex.test(DescriptionEn) == false &&
-      ArRegex.test(TitleEn) == false
-    ) {
+   
       const updateddata = {
         image: data.image,
         DescriptionEn: DescriptionEn || data.DescriptionEn,
@@ -111,11 +106,7 @@ exports.EditAds = Trackerror(async (req, res, next) => {
         success: true,
         data,
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+    
   } else {
     const file = req.files.image;
     await deleteFile(`${Ads}/${data.image}`);
@@ -129,23 +120,14 @@ exports.EditAds = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
     };
-    if (
-      ArRegex.test(updateddata.DescriptionAr) &&
-      ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.DescriptionEn) == false &&
-      ArRegex.test(updateddata.TitleEn) == false
-    ) {
+   
       (updateddata.image = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`),
         (data = await AdvertismentModel.update(updateddata, {
           where: {
             _id: req.params.id,
           },
         }));
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+   
     res.status(200).json({
       success: true,
       data,

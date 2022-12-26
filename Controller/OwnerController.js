@@ -136,12 +136,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    if (
-      ArRegex.test(NameAr) &&
-      ArRegex.test(TitleAr) &&
-      ArRegex.test(NameEn) == false &&
-      ArRegex.test(TitleEn) == false
-    ) {
+   
       const updateddata = {
         image: data.Ownerimage,
         NameEn: NameEn || data.NameEn,
@@ -165,11 +160,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
         success: true,
         data,
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+    
   } else {
     const file = req.files.Ownerimage;
     await deleteFile(`${Owner}/${data.Ownerimage}`);
@@ -190,22 +181,13 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       TitleEn: TitleEn || data.TitleEn,
     };
-    if (
-      ArRegex.test(updateddata.NameAr) &&
-      ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.NameEn) == false &&
-      ArRegex.test(updateddata.TitleEn) == false
-    ) {
+   
       data = await OwnerModel.update(updateddata, {
         where: {
           _id: req.params.id,
         },
       });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+   
     res.status(200).json({
       success: true,
       data,
