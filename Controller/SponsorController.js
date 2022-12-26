@@ -78,34 +78,23 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-    if (
-      ArRegex.test(DescriptionAr) &&
-      ArRegex.test(TitleAr) &&
-      ArRegex.test(DescriptionEn) == false &&
-      ArRegex.test(TitleEn) == false
-    ) {
-      const updateddata = {
-        image: data.image,
-        DescriptionEn: DescriptionEn || data.DescriptionEn,
-        DescriptionAr: DescriptionAr || data.DescriptionAr,
-        TitleEn: TitleEn || data.TitleEn,
-        TitleAr: TitleAr || data.TitleAr,
-        Url: Url || data.Url,
-      };
-      data = await SponsorModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+    const updateddata = {
+      image: data.image,
+      DescriptionEn: DescriptionEn || data.DescriptionEn,
+      DescriptionAr: DescriptionAr || data.DescriptionAr,
+      TitleEn: TitleEn || data.TitleEn,
+      TitleAr: TitleAr || data.TitleAr,
+      Url: Url || data.Url,
+    };
+    data = await SponsorModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } else {
     const file = req.files.image;
     await deleteFile(`${Sponsor}/${data.image}`);
@@ -121,22 +110,12 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr || data.TitleAr,
       Url: Url || data.Url,
     };
-    if (
-      ArRegex.test(updateddata.DescriptionAr) &&
-      ArRegex.test(updateddata.TitleAr) &&
-      ArRegex.test(updateddata.DescriptionEn) == false &&
-      ArRegex.test(updateddata.TitleEn) == false
-    ) {
-      data = await SponsorModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-    } else {
-      return next(
-        new HandlerCallBack("Please Fill Data To appropiate fields", 404)
-      );
-    }
+
+    data = await SponsorModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
     res.status(200).json({
       success: true,
       data,
