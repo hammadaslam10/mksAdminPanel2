@@ -31,5 +31,5 @@ router
 router.route("/softdeleteCompetiton/:id").delete(SoftDeleteCompetiton);
 router.route("/getCompetiton/:id").get(SingleCompetitonGet);
 router.route("/addraceincompetition/:id").post(AddRacesInCompetition);
-router.route("/voting/:competitionid/:raceid").post(Voting);
+router.route("/voting/:competitionid/:raceid/:rank").post(Voting);
 module.exports = router;

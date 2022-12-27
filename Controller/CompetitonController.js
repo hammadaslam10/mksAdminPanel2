@@ -5,11 +5,12 @@ const HorseModel = db.HorseModel;
 const CompetitionRacesPointsModel = db.CompetitionRacesPointsModel;
 const SubscriberAndCompetitionModel = db.SubscriberAndCompetitionModel;
 const SubscriberModel = db.SubscriberModel;
+const jwt = require("jsonwebtoken");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
-const { Race } = require("../Utils/Path");
+const { Race, Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
 exports.GetDeletedCompetiton = Trackerror(async (req, res, next) => {
@@ -343,14 +344,16 @@ exports.Voting = Trackerror(async (req, res, next) => {
   }
 
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(decodedData);
   const userdata = await SubscriberModel.findOne({
-    where: { [Op.and]: [{ _id: decodedData._id }, { ApprovedStatus: 1 }] },
+    where: { [Op.and]: [{ _id: decodedData.id }, { ApprovedStatus: 1 }] },
   });
   if (!userdata) {
     return next(
       new HandlerCallBack("Your are not Eligible to play competition", 401)
     );
   }
+
   const CompetitionID = await CompetitonModel.findOne({
     where: { _id: req.params.competitionid },
   });
@@ -376,18 +379,18 @@ exports.Voting = Trackerror(async (req, res, next) => {
         [Op.and]: [
           { CompetitionID: req.params.competitionid },
           { RaceID: req.params.raceid },
-          { SubscriberID: decodedData._id },
+          { SubscriberID: decodedData.id },
         ],
       },
     });
-    if (verification) {
+    if (verification.length !== 0) {
       return next(new HandlerCallBack("You Already Voted On this Race", 401));
     }
     const data = await SubscriberAndCompetitionModel.create({
       CompetitionID: req.params.competitionid,
       RaceID: req.params.raceid,
-      SubscriberID: decodedData._id,
-      HorseID: HorseID,
+      SubscriberID: decodedData.id,
+      HorseID: Horse,
       Rank: 1,
     });
     if (data) {
@@ -403,45 +406,40 @@ exports.Voting = Trackerror(async (req, res, next) => {
   } else {
     const { Vote } = req.body;
     let VoteData = Conversion(Vote);
+    console.log(Vote);
+    console.log(VoteData);
     const verification = await SubscriberAndCompetitionModel.findAll({
       where: {
         [Op.and]: [
           { CompetitionID: req.params.competitionid },
           { RaceID: req.params.raceid },
-          { SubscriberID: decodedData._id },
+          { SubscriberID: decodedData.id },
         ],
       },
     });
-    if (verification) {
+    if (verification.length !== 0) {
       return next(new HandlerCallBack("You Already Voted On this Race", 401));
     }
 
-    await VoteData.map(async (singlevote) => {
-      await singlevote.map(async (singlevotedetail) => {
-        try {
-          await SubscriberAndCompetitionModel.findOrCreate({
-            where: {
-              CompetitionID: req.params.competitionid,
-              RaceID: req.params.raceid,
-              SubscriberID: decodedData._id,
-              HorseID: singlevotedetail[0],
-              Rank: Rank[1],
-            },
-          });
-        } catch (error) {
-          res.status(500).json({
-            success: false,
-            message: error.errors.map((singleerr) => {
-              return singleerr.message;
-            }),
-          });
-        }
+    try {
+      await SubscriberAndCompetitionModel.findOrCreate({
+        where: {
+          CompetitionID: req.params.competitionid,
+          RaceID: req.params.raceid,
+          SubscriberID: decodedData.id,
+          HorseID: Horse,
+          Rank: req.params.rank,
+        },
       });
-    });
-
-    res.status(200).json({
-      success: false,
-      message: `vote has been submitted `,
-    });
+      res.status(200).json({
+        success: false,
+        message: `vote has been submitted `,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
   }
 });
