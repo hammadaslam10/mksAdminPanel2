@@ -122,9 +122,10 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         res.status(403);
         res.send({
           status: "error",
-          message:[
+          message: [
             "This Short Code already exists, Please enter a different one.",
-        ]});
+          ],
+        });
       } else {
         res.status(500).json({
           success: false,
@@ -137,7 +138,9 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   }
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
-  const data = await BreederModel.findAll();
+  const data = await BreederModel.findAll({
+    order: [["createdAt", "DESC"]],
+  });
   res.status(200).json({
     success: true,
     data: data,
