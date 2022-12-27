@@ -78,10 +78,11 @@ exports.EditEmailTemplate = Trackerror(async (req, res, next) => {
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
-      res.send({
+      res.json({
         status: "error",
-        message:
+        message: [
           "This Short Code already exists, Please enter a different one.",
+        ],
       });
     } else {
       res.status(500).json({
