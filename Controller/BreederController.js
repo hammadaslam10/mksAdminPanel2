@@ -84,8 +84,9 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         res.status(403);
         res.send({
           status: "error",
-          message:
+          message: [
             "This Short Code already exists, Please enter a different one.",
+          ],
         });
       } else {
         res.status(500).json({
