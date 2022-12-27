@@ -36,6 +36,7 @@ exports.RestoreSoftDeletedGroundType = Trackerror(async (req, res, next) => {
 
 exports.GetGroundTypeMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await GroundTypeModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

@@ -36,6 +36,7 @@ exports.RestoreSoftDeletedVerdict = Trackerror(async (req, res, next) => {
 
 exports.GetVerdictMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await VerdictModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

@@ -43,6 +43,7 @@ exports.RestoreSoftDeletedCompetiton = Trackerror(async (req, res, next) => {
 
 exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

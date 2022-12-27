@@ -36,6 +36,7 @@ exports.RestoreSoftDeletedRaceType = Trackerror(async (req, res, next) => {
 
 exports.GetRaceTypeMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await RaceTypeModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

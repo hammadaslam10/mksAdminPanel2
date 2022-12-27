@@ -36,6 +36,7 @@ exports.RestoreSoftDeletedSex = Trackerror(async (req, res, next) => {
 
 exports.GetSexMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await SexModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

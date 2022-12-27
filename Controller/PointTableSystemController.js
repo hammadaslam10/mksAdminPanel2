@@ -38,6 +38,7 @@ exports.RestoreSoftDeletedPointTableSystem = Trackerror(
 
 exports.GetPointTableSystemMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await PointTableSystemModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

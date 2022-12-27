@@ -36,6 +36,7 @@ exports.RestoreSoftDeletedEquipment = Trackerror(async (req, res, next) => {
 
 exports.GetEquipmentMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

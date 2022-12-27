@@ -40,6 +40,7 @@ exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
 
 exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],

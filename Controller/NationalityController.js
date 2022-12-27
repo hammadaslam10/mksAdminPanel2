@@ -40,6 +40,7 @@ exports.RestoreSoftDeletedNationality = Trackerror(async (req, res, next) => {
 
 exports.GetNationalityMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll({
+    paranoid: false,
     attributes: [
       [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
     ],
@@ -96,7 +97,7 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
       data,
     });
   } catch (error) {
-     if (error.name === "SequelizeUniqueConstraintError") {
+    if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403);
       res.json({
         status: "error",
@@ -113,7 +114,6 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
       });
     }
   }
-  
 });
 exports.NationalityGet = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll();
