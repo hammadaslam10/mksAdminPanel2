@@ -404,10 +404,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
       message: `vote submitted already`,
     });
   } else {
-    const { Vote } = req.body;
-    let VoteData = Conversion(Vote);
-    console.log(Vote);
-    console.log(VoteData);
+    const { Horse } = req.body;
     const verification = await SubscriberAndCompetitionModel.findAll({
       where: {
         [Op.and]: [
