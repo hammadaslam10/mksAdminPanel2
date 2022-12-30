@@ -342,7 +342,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
       new HandlerCallBack("Please login to access this resource", 401)
     );
   }
-
+  const { Horse } = req.body;
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
   console.log(decodedData);
   const userdata = await SubscriberModel.findOne({
@@ -367,7 +367,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race time is Ended", 401));
   }
   if (CompetitionID.CompetitionCategory === "pick") {
-    const { Horse } = req.body;
+  
     const HorseID = await HorseModel.findOne({
       where: { _id: Horse },
     });
@@ -399,12 +399,17 @@ exports.Voting = Trackerror(async (req, res, next) => {
         message: `your vote has been submitted on ${HorseID.NameEn}`,
       });
     }
+    else{
     res.status(202).json({
       success: false,
       message: `vote submitted already`,
     });
+  }
   } else {
-    const { Horse } = req.body;
+    const { Vote } = req.body;
+    let VoteData = Conversion(Vote);
+    console.log(Vote);
+    console.log(VoteData);
     const verification = await SubscriberAndCompetitionModel.findAll({
       where: {
         [Op.and]: [
