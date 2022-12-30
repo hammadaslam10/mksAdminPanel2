@@ -72,8 +72,15 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
   }
 });
 exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
-  const { TrackNameAr, TrackNameEn, shortCode, NationalityID, ColorCode } =
-    req.body;
+  const {
+    TrackNameAr,
+    TrackNameEn,
+    shortCode,
+    NationalityID,
+    ColorCode,
+    AbbrevAr,
+    AbbrevEn,
+  } = req.body;
   try {
     const file = req.files.image;
     if (file == null) {
@@ -89,6 +96,9 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
       ColorCode: ColorCode,
       NationalityID: NationalityID,
       shortCode: shortCode,
+      AbbrevAr: AbbrevAr,
+      AbbrevEn: AbbrevEn,
+      
     });
     res.status(201).json({
       success: true,
@@ -114,8 +124,15 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   }
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
-  const { TrackNameAr, TrackNameEn, shortCode, NationalityID, ColorCode } =
-    req.body;
+  const {
+    TrackNameAr,
+    TrackNameEn,
+    shortCode,
+    NationalityID,
+    ColorCode,
+    AbbrevAr,
+    AbbrevEn,
+  } = req.body;
   let data = await RaceCourseModel.findOne({
     where: { _id: req.params.id },
   });
@@ -129,6 +146,8 @@ exports.UpdateCourse = Trackerror(async (req, res, next) => {
       TrackNameEn: TrackNameEn || data.TrackNameEn,
       ColorCode: ColorCode || data.ColorCode,
       NationalityID: NationalityID || data.NationalityID,
+      AbbrevAr: AbbrevAr || data.AbbrevAr,
+      AbbrevEn: AbbrevEn || data.AbbrevEn,
     };
     data = await RaceCourseModel.update(updateddata, {
       where: {

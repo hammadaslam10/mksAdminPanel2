@@ -89,6 +89,46 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "shortCode  will not be empty" },
         },
       },
+      AbbrevEn: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          EnglishLanguageVerification() {
+            if (this.AbbrevEn.trim() == "") {
+              throw new Error("Please Enter Abbreviation Name in English");
+            }
+            if (
+              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.AbbrevEn) ||
+              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.AbbrevEn)
+            ) {
+            } else {
+              throw new Error("Abbreviation Name English Validation Failed");
+            }
+          },
+        },
+      },
+      AbbrevAr: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          ArabicLanguageVerification() {
+            if (this.AbbrevAr.trim() == "") {
+              throw new Error("Please Enter  Abbreviation in  Arabic ");
+            }
+            if (
+              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+                this.AbbrevAr
+              ) ||
+              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+                this.AbbrevAr
+              )
+            ) {
+            } else {
+              throw new Error("Abbreviation Arabic Validation Failed");
+            }
+          },
+        },
+      },
     },
     {
       freezeTableName: true,
