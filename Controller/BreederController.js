@@ -139,7 +139,32 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
-    order: [["createdAt", "DESC"]],
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      DescriptionEn: {
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      },
+      DescriptionAr: {
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      },
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+    },
   });
   res.status(200).json({
     success: true,

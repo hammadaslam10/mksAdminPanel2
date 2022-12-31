@@ -194,7 +194,6 @@ exports.GetRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.GetLatestResult = Trackerror();
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     order: [["StartTime", "DESC"]],
@@ -225,7 +224,7 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
 });
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    where: { RaceStatus: "End" },
+    where: { ResultStatus: "Awaited" },
     include: [
       {
         model: db.MeetingTypeModel,
@@ -274,6 +273,20 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data,
+  });
+});
+exports.CancelRace = Trackerror(async (req, res, next) => {
+  await RaceModel.update(
+    { ResultStatus: "Cancelled" },
+    {
+      where: {
+        _id: req.params.id,
+      },
+    }
+  );
+  res.status(200).json({
+    success: true,
+    message: "Race has been cancelled",
   });
 });
 exports.GetRaceTobeOPublished = Trackerror(async (req, res, next) => {
@@ -363,6 +376,14 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
       });
     });
   });
+  const race = await RaceModel.update(
+    { ResultStatus: "Announced" },
+    {
+      where: {
+        _id: req.params.RaceId,
+      },
+    }
+  );
   res.status(200).json({
     success: true,
   });
@@ -566,6 +587,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   console.log(req.files.image.data);
   await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
+
   const data = await RaceModel.create({
     image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
     RaceKind: RaceKind,
