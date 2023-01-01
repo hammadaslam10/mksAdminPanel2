@@ -26,7 +26,6 @@ exports.uploadFile = (fileBuffer, fileName, mimetype) => {
     Key: fileName,
     ContentType: mimetype
   };
-  console.log(uploadParams);
   return s3Client.send(new PutObjectCommand(uploadParams));
 };
 

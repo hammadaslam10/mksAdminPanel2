@@ -12,38 +12,38 @@ exports.GetDeletedTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null },
-    },
+      [Op.not]: { deletedAt: null }
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RestoreSoftDeletedTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await TrainerModel.restore({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   res.status(200).json({
     success: true,
-    restoredata,
+    restoredata
   });
 });
 
 exports.GetTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
-    include: { all: true },
+    include: { all: true }
   });
   res.status(200).json({
     success: true,
-    data: data,
+    data: data
   });
 });
 exports.CreateTrainer = Trackerror(async (req, res, next) => {
@@ -61,43 +61,75 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     NationalityID,
     Rating,
     DetailAr,
-    RemarksAr,
+    RemarksAr
   } = req.body;
-  const file = req.files.image;
-  if (file == null) {
-    return next(new HandlerCallBack("Please upload an image", 404));
+  if (req.files === null) {
+    try {
+      const data = await TrainerModel.create({
+        image: `https://${
+          process.env.AWS_BUCKET_NAME
+        }.s3.amazonaws.com/${Trainer}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        NameEn: NameEn,
+        NameAr: NameAr,
+        ShortNameEn: ShortNameEn,
+        ShortNameAr: ShortNameAr,
+        TitleEn: TitleEn,
+        TitleAr: TitleAr,
+        TrainerLicenseDate: TrainerLicenseDate,
+        DOB: DOB,
+        DetailEn: DetailEn,
+        RemarksEn: RemarksEn,
+        Rating: Rating,
+        NationalityID: NationalityID,
+        DetailAr: DetailAr,
+        RemarksAr: RemarksAr
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one."
+          ]
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          })
+        });
+      }
+    }
   }
+  const file = req.files.image;
   const Image = generateFileName();
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Trainer}/${Image}`, file.mimetype);
-  if (!NameEn || !DetailEn || !RemarksEn) {
-    return next(
-      new HandlerCallBack("Please Fill Appropiate DetailEn Of Trainer", 404)
-    );
-  } else {
-    const data = await TrainerModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
-      NameEn: NameEn,
-      NameAr: NameAr,
-      ShortNameEn: ShortNameEn,
-      ShortNameAr: ShortNameAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
-      TrainerLicenseDate: TrainerLicenseDate,
-      DOB: DOB,
-      DetailEn: DetailEn,
-      RemarksEn: RemarksEn,
-      Rating: Rating,
-      NationalityID: NationalityID,
-      DetailAr: DetailAr,
-      RemarksAr: RemarksAr,
-    });
 
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  }
+  const data = await TrainerModel.create({
+    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Trainer}/${Image}`,
+    NameEn: NameEn,
+    NameAr: NameAr,
+    ShortNameEn: ShortNameEn,
+    ShortNameAr: ShortNameAr,
+    TitleEn: TitleEn,
+    TitleAr: TitleAr,
+    TrainerLicenseDate: TrainerLicenseDate,
+    DOB: DOB,
+    DetailEn: DetailEn,
+    RemarksEn: RemarksEn,
+    Rating: Rating,
+    NationalityID: NationalityID,
+    DetailAr: DetailAr,
+    RemarksAr: RemarksAr
+  });
+
+  res.status(201).json({
+    success: true,
+    data
+  });
 });
 exports.UpdateTrainer = Trackerror(async (req, res, next) => {
   const {
@@ -114,10 +146,10 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     Rating,
     NationalityID,
     DetailAr,
-    RemarksAr,
+    RemarksAr
   } = req.body;
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -138,16 +170,16 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       Rating: Rating || data.Rating,
       NationalityID: NationalityID || data.NationalityID,
       DetailAr: DetailAr || data.DetailAr,
-      RemarksAr: RemarksAr || data.RemarksAr,
+      RemarksAr: RemarksAr || data.RemarksAr
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } else {
     const file = req.files.image;
@@ -169,35 +201,35 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       DetailEn: DetailEn || data.DetailEn,
       RemarksEn: RemarksEn || data.RemarksEn,
       Rating: Rating || data.Rating,
-      RemarksAr: RemarksAr || data.RemarksAr,
+      RemarksAr: RemarksAr || data.RemarksAr
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.SingleTrainer = Trackerror(async (req, res, next) => {
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return new next("Trainer is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -207,17 +239,17 @@ exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -225,11 +257,11 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
 
   console.log(data);
   await TrainerModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
