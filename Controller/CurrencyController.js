@@ -9,28 +9,28 @@ exports.GetDeletedCurrency = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null },
-    },
+      [Op.not]: { deletedAt: null }
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RestoreSoftDeletedCurrency = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await CurrencyModel.restore({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   res.status(200).json({
     success: true,
-    restoredata,
+    restoredata
   });
 });
 
@@ -38,16 +38,16 @@ exports.GetCurrencyMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findAll({
     paranoid: false,
     attributes: [
-      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-    ],
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"]
+    ]
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.CreateCurrency = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode, Rate } = req.body;
+  const { NameEn, NameAr, shortCode, Rate, Symbol } = req.body;
 
   try {
     const data = await CurrencyModel.create({
@@ -55,10 +55,11 @@ exports.CreateCurrency = Trackerror(async (req, res, next) => {
       NameEn: NameEn,
       NameAr: NameAr,
       Rate: Rate,
+      Symbol: Symbol
     });
     res.status(201).json({
       success: true,
-      data,
+      data
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -66,15 +67,15 @@ exports.CreateCurrency = Trackerror(async (req, res, next) => {
       res.json({
         status: "error",
         message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
+          "This Short Code already exists, Please enter a different one."
+        ]
       });
     } else {
       res.status(500).json({
         success: false,
         message: error.errors.map((singleerr) => {
           return singleerr.message;
-        }),
+        })
       });
     }
   }
@@ -86,35 +87,35 @@ exports.CurrencyGet = Trackerror(async (req, res, next) => {
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`,
+        [Op.like]: `%${req.query.NameEn || ""}%`
       },
       NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`,
+        [Op.like]: `%${req.query.NameAr || ""}%`
       },
       Rate: {
-        [Op.like]: `%${req.query.Rate || ""}%`,
+        [Op.like]: `%${req.query.Rate || ""}%`
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `%${req.query.shortCode || ""}%`
       },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-    },
+          req.query.endDate || "4030-12-01 00:00:00"
+        ]
+      }
+    }
   });
   res.status(200).json({
     success: true,
-    data: data,
+    data: data
   });
 });
 exports.GetCurrencyAdmin = Trackerror(async (req, res, next) => {});
 exports.EditCurrency = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode, Rate } = req.body;
+  const { NameEn, NameAr, shortCode, Rate ,Symbol} = req.body;
   let data = await CurrencyModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   try {
     if (data === null) {
@@ -125,15 +126,16 @@ exports.EditCurrency = Trackerror(async (req, res, next) => {
       NameEn: NameEn || data.NameEn,
       NameAr: NameAr || data.NameAr,
       Rate: Rate || data.Rate,
+      Symbol: Symbol || data.Symbol
     };
     data = await CurrencyModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -141,22 +143,22 @@ exports.EditCurrency = Trackerror(async (req, res, next) => {
       res.json({
         status: "error",
         message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
+          "This Short Code already exists, Please enter a different one."
+        ]
       });
     } else {
       res.status(500).json({
         success: false,
         message: error.errors.map((singleerr) => {
           return singleerr.message;
-        }),
+        })
       });
     }
   }
 });
 exports.DeleteCurrency = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -164,28 +166,28 @@ exports.DeleteCurrency = Trackerror(async (req, res, next) => {
 
   await CurrencyModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteCurrency = Trackerror(async (req, res, next) => {
   const data = await CurrencyModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await CurrencyModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully",
+    message: "Soft Delete Successfully"
   });
 });
