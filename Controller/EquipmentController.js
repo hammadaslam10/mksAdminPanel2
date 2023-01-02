@@ -79,7 +79,9 @@ exports.CreateEquipment = Trackerror(async (req, res, next) => {
   }
 });
 exports.EquipmentGet = Trackerror(async (req, res, next) => {
-  const data = await EquipmentModel.findAll();
+  const data = await EquipmentModel.findAll({
+    
+  });
   res.status(200).json({
     success: true,
     data: data,

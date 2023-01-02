@@ -138,6 +138,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   }
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
+  const totalcount = await BreederModel.count();
   const data = await BreederModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -169,6 +170,7 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
   });
 });
 exports.GetBreederAdmin = Trackerror(async (req, res, next) => {});
