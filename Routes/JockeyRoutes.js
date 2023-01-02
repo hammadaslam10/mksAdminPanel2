@@ -10,12 +10,14 @@ const {
   GetJockeyforRace,
   GetDeletedJockey,
   RestoreSoftDeletedJockey,
+  SearchJockey,
 } = require("../Controller/JockeyController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/jockeygetdeleted").get(GetDeletedJockey);
 router.route("/restoresoftdeletejockey/:id").post(RestoreSoftDeletedJockey);
 router.route("/uploadJockey", upload.single("image")).post(CreateJockey);
 router.route("/Jockeyget").get(GetJockey);
+router.route("/SearchJockey").get(SearchJockey);
 router.route("/Jockeygetforrace").get(GetJockeyforRace);
 router.route("/deleteJockey/:id").delete(DeleteJockey);
 router.route("/softdeleteJockey/:id").delete(SoftDeleteJockey);

@@ -49,7 +49,31 @@ exports.CreateHorseKind = Trackerror(async (req, res, next) => {
   });
 });
 exports.HorseKindGet = Trackerror(async (req, res, next) => {
-  const data = await HorseKindModel.findAll();
+  const data = await HorseKindModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      AbbrevEn: {
+        [Op.like]: `%${req.query.AbbrevEn || ""}%`,
+      },
+      AbbrevAr: {
+        [Op.like]: `%${req.query.AbbrevAr || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,

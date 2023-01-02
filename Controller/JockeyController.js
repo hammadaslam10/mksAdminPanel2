@@ -12,28 +12,28 @@ exports.GetDeletedJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RestoreSoftDeletedJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await JockeyModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
 
@@ -51,7 +51,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     MaximumJockeyWeight,
     JockeyAllowance,
     DOB,
-    JockeyLicenseDate
+    JockeyLicenseDate,
   } = req.body;
   if (req.files == null) {
     try {
@@ -71,11 +71,11 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
         RemarksEn: RemarksEn,
         RemarksAr: RemarksAr,
         JockeyLicenseDate: JockeyLicenseDate,
-        Rating: Rating
+        Rating: Rating,
       });
       res.status(201).json({
         success: true,
-        data
+        data,
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
@@ -83,15 +83,15 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
         res.send({
           status: "error",
           message: [
-            "This Short Code already exists, Please enter a different one."
-          ]
+            "This Short Code already exists, Please enter a different one.",
+          ],
         });
       } else {
         res.status(500).json({
           success: false,
           message: error.errors.map((singleerr) => {
             return singleerr.message;
-          })
+          }),
         });
       }
     }
@@ -114,33 +114,85 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
     RemarksEn: RemarksEn,
     RemarksAr: RemarksAr,
     JockeyLicenseDate: JockeyLicenseDate,
-    Rating: Rating
+    Rating: Rating,
   });
   res.status(201).json({
     success: true,
-    data
+    data,
   });
 });
 exports.SingleJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("Jockey is not available", 404));
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
-exports.GetJockey = Trackerror(async (req, res, next) => {
+exports.SearchJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findAll({
-    include: { all: true }
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      ShortNameEn: {
+        [Op.like]: `%${req.query.ShortNameEn || ""}%`,
+      },
+      ShortNameAr: {
+        [Op.like]: `%${req.query.ShortNameAr || ""}%`,
+      },
+      Rating: {
+        [Op.like]: `%${req.query.Rating || ""}%`,
+      },
+      NationalityID: {
+        [Op.like]: `%${req.query.NationalityID || ""}%`,
+      },
+      RemarksEn: {
+        [Op.like]: `%${req.query.RemarksEn || ""}%`,
+      },
+      RemarksAr: {
+        [Op.like]: `%${req.query.RemarksAr || ""}%`,
+      },
+      MiniumumJockeyWeight: {
+        [Op.like]: `%${req.query.MiniumumJockeyWeight || ""}%`,
+      },
+      MaximumJockeyWeight: {
+        [Op.like]: `%${req.query.MaximumJockeyWeight || ""}%`,
+      },
+      JockeyAllowance: {
+        [Op.like]: `%${req.query.JockeyAllowance || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
   });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
+  });
+});
+exports.GetJockey = Trackerror(async (req, res, next) => {
+  const data = await JockeyModel.findAll({
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
   });
 });
 exports.GetJockeyforRace = Trackerror(async (req, res, next) => {
@@ -150,23 +202,23 @@ exports.GetJockeyforRace = Trackerror(async (req, res, next) => {
       [Op.and]: [
         {
           _id: {
-            [Op.ne]: Jockeyids
-          }
+            [Op.ne]: Jockeyids,
+          },
         },
         {
           NameEn: {
-            [Op.like]: `%${JockeyName}%`
+            [Op.like]: `%${JockeyName}%`,
           },
           NameAr: {
-            [Op.like]: `%${JockeyName}%`
-          }
-        }
-      ]
-    }
+            [Op.like]: `%${JockeyName}%`,
+          },
+        },
+      ],
+    },
   });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
   });
 });
 exports.EditJockey = Trackerror(async (req, res, next) => {
@@ -181,7 +233,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
     MaximumJockeyWeight,
     Rating,
     DOB,
-    JockeyLicenseDate
+    JockeyLicenseDate,
   } = req.body;
   console.log(req.body);
   // if ((NationalityID = "")) {
@@ -191,7 +243,7 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
   //   Rating = null;
   // }
   let data = await JockeyModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -209,16 +261,16 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       NationalityID: NationalityID || data.NationalityID,
       Rating: Rating || data.Rating,
-      JockeyLicenseDate: JockeyLicenseDate || data.JockeyLicenseDate
+      JockeyLicenseDate: JockeyLicenseDate || data.JockeyLicenseDate,
     };
     data = await JockeyModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.image;
@@ -238,24 +290,24 @@ exports.EditJockey = Trackerror(async (req, res, next) => {
       DOB: DOB || data.DOB,
       JockeyAllowance: JockeyAllowance || data.JockeyAllowance,
       NationalityID: NationalityID || data.NationalityID,
-      Rating: Rating || data.Rating
+      Rating: Rating || data.Rating,
     };
 
     data = await JockeyModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
 
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.DeleteJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -265,17 +317,17 @@ exports.DeleteJockey = Trackerror(async (req, res, next) => {
   await deleteFile(`${Jockey}/${data.image.slice(-64)}`);
   await JockeyModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -284,11 +336,11 @@ exports.SoftDeleteJockey = Trackerror(async (req, res, next) => {
   console.log(data);
   await deleteFile(`${Jockey}/${data.image.slice(-64)}`);
   await JockeyModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });

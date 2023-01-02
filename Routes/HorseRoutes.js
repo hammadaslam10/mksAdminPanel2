@@ -11,8 +11,10 @@ const {
   RestoreSoftDeletedHorse,
   PedigreeHorse,
   SoftDeleteHorse,
+  SearchHorse,
 } = require("../Controller/HorseController");
 router.route("/horsegetdeleted").get(GetDeletedHorse);
+router.route("/SearchHorse").get(SearchHorse);
 router.route("/pedigreehorse/:id").get(PedigreeHorse);
 router.route("/restoresoftdeletehorse/:id").post(RestoreSoftDeletedHorse);
 router.route("/gethorse").get(GetHorse);
