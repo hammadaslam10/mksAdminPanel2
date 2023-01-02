@@ -73,7 +73,28 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
   //   ` SELECT _id, image, DescriptionEn, DescriptionAr, TitleEn, TitleAr, createdAt, updatedAt,TIMEDIFF(createdAt, updatedAt)  As TimeInMinutes, deletedAt FROM AdvertismentModel AS AdvertismentModel WHERE (AdvertismentModel.deletedAt IS NULL);`
   // );
   // Results will be an empty array and metadata will contain the number of affected rows.
-  const data = await AdvertismentModel.findAll({});
+  const data = await AdvertismentModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      DescriptionEn: {
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      },
+      DescriptionAr: {
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [req.query.startdate, req.query.endDate],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,
@@ -89,24 +110,22 @@ exports.EditAds = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-   
-      const updateddata = {
-        image: data.image,
-        DescriptionEn: DescriptionEn || data.DescriptionEn,
-        DescriptionAr: DescriptionAr || data.DescriptionAr,
-        TitleEn: TitleEn || data.TitleEn,
-        TitleAr: TitleAr || data.TitleAr,
-      };
-      data = await AdvertismentModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    
+    const updateddata = {
+      image: data.image,
+      DescriptionEn: DescriptionEn || data.DescriptionEn,
+      DescriptionAr: DescriptionAr || data.DescriptionAr,
+      TitleEn: TitleEn || data.TitleEn,
+      TitleAr: TitleAr || data.TitleAr,
+    };
+    data = await AdvertismentModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } else {
     const file = req.files.image;
     await deleteFile(`${Ads}/${data.image}`);
@@ -120,14 +139,14 @@ exports.EditAds = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
     };
-   
-      (updateddata.image = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`),
-        (data = await AdvertismentModel.update(updateddata, {
-          where: {
-            _id: req.params.id,
-          },
-        }));
-   
+
+    (updateddata.image = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`),
+      (data = await AdvertismentModel.update(updateddata, {
+        where: {
+          _id: req.params.id,
+        },
+      }));
+
     res.status(200).json({
       success: true,
       data,

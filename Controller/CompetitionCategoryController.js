@@ -81,6 +81,32 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
     }
   }
 });
+exports.SearchCompetition = Trackerror(async (req, res, next) => {
+  const data = await CompetitionCategoryModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [req.query.startdate, req.query.endDate],
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+    totaldata: data.length,
+  });
+});
 exports.CompetitionCategoryGet = Trackerror(async (req, res, next) => {
   const data = await CompetitionCategoryModel.findAll({
     include: { all: true },

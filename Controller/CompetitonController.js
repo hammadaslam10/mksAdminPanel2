@@ -335,6 +335,54 @@ exports.SoftDeleteCompetiton = Trackerror(async (req, res, next) => {
     message: "Soft Delete Successfully",
   });
 });
+exports.SearchCompetition = Trackerror(async (req, res, next) => {
+  ({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      CompetitionCategory: {
+        [Op.like]: `%${req.query.CompetitionCategory || ""}%`,
+      },
+      CompetitionType: {
+        [Op.like]: `%${req.query.CompetitionType || ""}%`,
+      },
+      CompetitionSponsor: {
+        [Op.like]: `%${req.query.CompetitionSponsor || ""}%`,
+      },
+      CompetitionCode: {
+        [Op.like]: `%${req.query.CompetitionCode || ""}%`,
+      },
+      CategoryCount: {
+        [Op.like]: `%${req.query.CategoryCount || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      StartDate: {
+        [Op.between]: [
+          req.query.competitionstartdate1,
+          req.query.competitionstartdate2,
+        ],
+      },
+      EndDate: {
+        [Op.between]: [
+          req.query.competitionenddate1,
+          req.query.competitionenddate2,
+        ],
+      },
+      createdAt: {
+        [Op.between]: [req.query.startdate, req.query.enddate],
+      },
+    },
+  });
+});
 exports.Voting = Trackerror(async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
@@ -367,7 +415,6 @@ exports.Voting = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race time is Ended", 401));
   }
   if (CompetitionID.CompetitionCategory === "pick") {
-  
     const HorseID = await HorseModel.findOne({
       where: { _id: Horse },
     });
@@ -398,13 +445,12 @@ exports.Voting = Trackerror(async (req, res, next) => {
         success: true,
         message: `your vote has been submitted on ${HorseID.NameEn}`,
       });
+    } else {
+      res.status(202).json({
+        success: false,
+        message: `vote submitted already`,
+      });
     }
-    else{
-    res.status(202).json({
-      success: false,
-      message: `vote submitted already`,
-    });
-  }
   } else {
     const { Vote } = req.body;
     let VoteData = Conversion(Vote);
