@@ -79,7 +79,28 @@ exports.CreateMeetingType = Trackerror(async (req, res, next) => {
   }
 });
 exports.MeetingTypeGet = Trackerror(async (req, res, next) => {
-  const data = await MeetingTypeModel.findAll();
+  const data = await MeetingTypeModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,
