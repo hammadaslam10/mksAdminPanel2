@@ -6,7 +6,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
-const { TrackLengths } = require("../Utils/Path");
+const { TrackLengths, Breeder } = require("../Utils/Path");
 const { Op } = require("sequelize");
 exports.GetDeletedTrackLength = Trackerror(async (req, res, next) => {
   const data = await TrackLengthModel.findAll({
@@ -40,23 +40,55 @@ exports.RestoreSoftDeletedTrackLength = Trackerror(async (req, res, next) => {
 exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   const { RaceCourse, TrackLength, RailPosition, GroundType } = req.body;
   const file = req.files.image;
-  if (file == null) {
-    return next(new HandlerCallBack("Please upload an image", 404));
+  if (req.files === null) {
+    try {
+      const data = await TrackLengthModel.create({
+        TrackLength: TrackLength,
+        RaceCourseImage: `https://${
+          process.env.AWS_BUCKET_NAME
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        RaceCourse: RaceCourse,
+        RailPosition: RailPosition,
+        GroundType: GroundType,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
+    }
+  } else {
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${TrackLength}/${Image}`, file.mimetype);
+    const data = await TrackLengthModel.create({
+      TrackLength: TrackLength,
+      RaceCourseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${TrackLengths}/${Image}`,
+      RaceCourse: RaceCourse,
+      RailPosition: RailPosition,
+      GroundType: GroundType,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
   }
-  const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  await uploadFile(fileBuffer, `${TrackLength}/${Image}`, file.mimetype);
-  const data = await TrackLengthModel.create({
-    TrackLength: TrackLength,
-    RaceCourseImage: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${TrackLengths}/${Image}`,
-    RaceCourse: RaceCourse,
-    RailPosition: RailPosition,
-    GroundType: GroundType,
-  });
-  res.status(201).json({
-    success: true,
-    data,
-  });
 });
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
   const data = await TrackLengthModel.findAll({

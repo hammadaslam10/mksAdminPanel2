@@ -4,7 +4,7 @@ const RaceCourseModel = db.RaceCourseModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const Features = require("../Utils/Features");
-const { RaceCourse } = require("../Utils/Path");
+const { RaceCourse, Breeder } = require("../Utils/Path");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -81,45 +81,84 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
     AbbrevAr,
     AbbrevEn,
   } = req.body;
-  try {
-    const file = req.files.image;
-    if (file == null) {
-      return next(new HandlerCallBack("Please upload an image", 404));
+
+  if (req.files === null) {
+    try {
+      const data = await RaceCourseModel.create({
+        image: `https://${
+          process.env.AWS_BUCKET_NAME
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        TrackNameAr: TrackNameAr,
+        TrackNameEn: TrackNameEn,
+        ColorCode: ColorCode,
+        NationalityID: NationalityID,
+        shortCode: shortCode,
+        AbbrevAr: AbbrevAr,
+        AbbrevEn: AbbrevEn,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.json({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
     }
-    let Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
-    const data = await RaceCourseModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
-      TrackNameAr: TrackNameAr,
-      TrackNameEn: TrackNameEn,
-      ColorCode: ColorCode,
-      NationalityID: NationalityID,
-      shortCode: shortCode,
-      AbbrevAr: AbbrevAr,
-      AbbrevEn: AbbrevEn,
-      
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(403);
-      res.json({
-        status: "error",
-        message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
+  } else {
+    try {
+      const file = req.files.image;
+      let Image = generateFileName();
+      const fileBuffer = await resizeImageBuffer(
+        req.files.image.data,
+        214,
+        212
+      );
+      await uploadFile(fileBuffer, `${RaceCourse}/${Image}`, file.mimetype);
+      const data = await RaceCourseModel.create({
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceCourse}/${Image}`,
+        TrackNameAr: TrackNameAr,
+        TrackNameEn: TrackNameEn,
+        ColorCode: ColorCode,
+        NationalityID: NationalityID,
+        shortCode: shortCode,
+        AbbrevAr: AbbrevAr,
+        AbbrevEn: AbbrevEn,
       });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: error.errors.map((singleerr) => {
-          return singleerr.message;
-        }),
+      res.status(201).json({
+        success: true,
+        data,
       });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.json({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
     }
   }
 });

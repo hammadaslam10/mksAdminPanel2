@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       NameEn: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           EnglishLanguageVerification() {
             if (this.NameEn.trim() == "") {
@@ -41,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       NameAr: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           ArabicLanguageVerification() {
             if (this.NameAr.trim() == "") {

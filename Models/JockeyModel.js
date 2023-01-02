@@ -140,43 +140,41 @@ module.exports = (sequelize, DataTypes) => {
       },
       RemarksEn: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          EnglishLanguageVerification() {
-            if (this.RemarksEn.trim() == "") {
-              throw new Error("Please Enter Remarks in English ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.RemarksEn) ||
-              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.RemarksEn)
-            ) {
-            } else {
-              throw new Error("Remarks English Validation Failed");
-            }
-          },
-        },
+        // validate: {
+        //   EnglishLanguageVerification() {
+        //     if (this.RemarksEn.trim() == "") {
+        //       throw new Error("Please Enter Remarks in English ");
+        //     }
+        //     if (
+        //       /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.RemarksEn) ||
+        //       /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.RemarksEn)
+        //     ) {
+        //     } else {
+        //       throw new Error("Remarks English Validation Failed");
+        //     }
+        //   },
+        // },
       },
       RemarksAr: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.RemarksAr.trim() == "") {
-              throw new Error("Please Enter  Remarks in  Arabic ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
-                this.RemarksAr
-              ) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
-                this.RemarksAr
-              )
-            ) {
-            } else {
-              throw new Error("Remarks Arabic Validation Failed");
-            }
-          },
-        },
+        // validate: {
+        //   ArabicLanguageVerification() {
+        //     if (this.RemarksAr.trim() == "") {
+        //       throw new Error("Please Enter  Remarks in  Arabic ");
+        //     }
+        //     if (
+        //       /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+        //         this.RemarksAr
+        //       ) ||
+        //       /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+        //         this.RemarksAr
+        //       )
+        //     ) {
+        //     } else {
+        //       throw new Error("Remarks Arabic Validation Failed");
+        //     }
+        //   },
+        // },
       },
       MiniumumJockeyWeight: {
         type: DataTypes.BIGINT,

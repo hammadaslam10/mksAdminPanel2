@@ -5,7 +5,7 @@ const OwnerModel = db.OwnerModel;
 const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
-const { Owner } = require("../Utils/Path");
+const { Owner, Breeder } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { Conversion } = require("../Utils/Conversion");
@@ -59,7 +59,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
       const data = await OwnerModel.create({
         image: `https://${
           process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Owner}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         NameEn: NameEn,
         NameAr: NameAr,
         Rating: Rating,

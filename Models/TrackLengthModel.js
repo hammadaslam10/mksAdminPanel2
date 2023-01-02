@@ -43,12 +43,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       RailPosition: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false,
-        validate: {
-          notNull: { msg: "TrackLength  will have RailPosition" },
-          notEmpty: { msg: "RailPosition  will not be empty" },
-        },
+        default: 0,
+        // validate: {
+        //   notNull: { msg: "TrackLength  will have RailPosition" },
+        //   notEmpty: { msg: "RailPosition  will not be empty" },
+        // },
       },
     },
     {

@@ -2,7 +2,7 @@ const db = require("../config/Connection");
 const TrainerModel = db.TrainerModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const { Trainer } = require("../Utils/Path");
+const { Trainer, Breeder } = require("../Utils/Path");
 const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -122,7 +122,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
       const data = await TrainerModel.create({
         image: `https://${
           process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Trainer}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         NameEn: NameEn,
         NameAr: NameAr,
         ShortNameEn: ShortNameEn,
@@ -137,6 +137,10 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
         NationalityID: NationalityID,
         DetailAr: DetailAr,
         RemarksAr: RemarksAr,
+      });
+      res.status(200).json({
+        success: true,
+        data,
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {

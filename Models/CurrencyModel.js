@@ -28,6 +28,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      Symbol: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Currency will have Symbol" },
+          notEmpty: { msg: "Symbol  will not be empty" },
+        },
+      },
       shortCode: {
         type: DataTypes.BIGINT,
         autoIncrement: true,

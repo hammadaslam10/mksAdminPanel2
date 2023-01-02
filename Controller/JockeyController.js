@@ -2,7 +2,7 @@ const db = require("../config/Connection");
 const JockeyModel = db.JockeyModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
-const { Jockey } = require("../Utils/Path");
+const { Jockey, Breeder } = require("../Utils/Path");
 const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -58,7 +58,7 @@ exports.CreateJockey = Trackerror(async (req, res, next) => {
       const data = await JockeyModel.create({
         image: `https://${
           process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Jockey}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         NameEn: NameEn,
         NameAr: NameAr,
         ShortNameEn: ShortNameEn,
