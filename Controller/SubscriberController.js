@@ -22,6 +22,7 @@ exports.SearchUser = Trackerror(async (req, res, next) => {
   if (req.query.createdAt) {
     console.log(req.query.createdAt);
     const data = await SubscriberModel.findAll({
+      
       where: {
         FirstName: {
           [Op.like]: `%${req.query.FirstName || ""}%`,

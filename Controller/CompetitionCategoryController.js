@@ -97,7 +97,10 @@ exports.SearchCompetition = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.shortCode || ""}%`,
       },
       createdAt: {
-        [Op.between]: [req.query.startdate, req.query.endDate],
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
       },
     },
   });
