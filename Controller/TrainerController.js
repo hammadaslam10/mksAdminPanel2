@@ -12,38 +12,92 @@ exports.GetDeletedTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RestoreSoftDeletedTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await TrainerModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
-
-exports.GetTrainer = Trackerror(async (req, res, next) => {
+exports.SearchTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
-    include: { all: true }
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      ShortNameEn: {
+        [Op.like]: `%${req.query.ShortNameEn || ""}%`,
+      },
+      ShortNameAr: {
+        [Op.like]: `%${req.query.ShortNameAr || ""}%`,
+      },
+      DetailEn: {
+        [Op.like]: `%${req.query.DetailEn || ""}%`,
+      },
+      RemarksEn: {
+        [Op.like]: `%${req.query.RemarksEn || ""}%`,
+      },
+      RemarksAr: {
+        [Op.like]: `%${req.query.RemarksAr || ""}%`,
+      },
+      DetailAr: {
+        [Op.like]: `%${req.query.DetailAr || ""}%`,
+      },
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      DOB: {
+        [Op.like]: `%${req.query.DOB || ""}%`,
+      },
+      NationalityID: {
+        [Op.like]: `%${req.query.NationalityID || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
   });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
+  });
+});
+exports.GetTrainer = Trackerror(async (req, res, next) => {
+  const data = await TrainerModel.findAll({
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
   });
 });
 exports.CreateTrainer = Trackerror(async (req, res, next) => {
@@ -61,7 +115,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     NationalityID,
     Rating,
     DetailAr,
-    RemarksAr
+    RemarksAr,
   } = req.body;
   if (req.files === null) {
     try {
@@ -82,7 +136,7 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
         Rating: Rating,
         NationalityID: NationalityID,
         DetailAr: DetailAr,
-        RemarksAr: RemarksAr
+        RemarksAr: RemarksAr,
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
@@ -90,15 +144,15 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
         res.send({
           status: "error",
           message: [
-            "This Short Code already exists, Please enter a different one."
-          ]
+            "This Short Code already exists, Please enter a different one.",
+          ],
         });
       } else {
         res.status(500).json({
           success: false,
           message: error.errors.map((singleerr) => {
             return singleerr.message;
-          })
+          }),
         });
       }
     }
@@ -123,12 +177,12 @@ exports.CreateTrainer = Trackerror(async (req, res, next) => {
     Rating: Rating,
     NationalityID: NationalityID,
     DetailAr: DetailAr,
-    RemarksAr: RemarksAr
+    RemarksAr: RemarksAr,
   });
 
   res.status(201).json({
     success: true,
-    data
+    data,
   });
 });
 exports.UpdateTrainer = Trackerror(async (req, res, next) => {
@@ -146,10 +200,10 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
     Rating,
     NationalityID,
     DetailAr,
-    RemarksAr
+    RemarksAr,
   } = req.body;
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -170,16 +224,16 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       Rating: Rating || data.Rating,
       NationalityID: NationalityID || data.NationalityID,
       DetailAr: DetailAr || data.DetailAr,
-      RemarksAr: RemarksAr || data.RemarksAr
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.image;
@@ -201,35 +255,35 @@ exports.UpdateTrainer = Trackerror(async (req, res, next) => {
       DetailEn: DetailEn || data.DetailEn,
       RemarksEn: RemarksEn || data.RemarksEn,
       Rating: Rating || data.Rating,
-      RemarksAr: RemarksAr || data.RemarksAr
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await TrainerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.SingleTrainer = Trackerror(async (req, res, next) => {
   let data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return new next("Trainer is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -239,17 +293,17 @@ exports.DeleteTrainer = Trackerror(async (req, res, next) => {
   await deleteFile(`${Trainer}/${data.image.slice(-64)}`);
   await TrainerModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -257,11 +311,11 @@ exports.SoftDeleteTrainer = Trackerror(async (req, res, next) => {
 
   console.log(data);
   await TrainerModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });

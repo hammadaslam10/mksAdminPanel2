@@ -60,7 +60,28 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
   });
 });
 exports.SliderGet = Trackerror(async (req, res, next) => {
-  const data = await SliderModel.findAll();
+  const data = await SliderModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      Url: {
+        [Op.like]: `%${req.query.Url || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,
@@ -76,7 +97,6 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-   
   } else {
     const file = req.files.image;
     await deleteFile(`${Slider}/${data.image}`);
@@ -89,13 +109,13 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
     };
-   
-      data = await SliderModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-    
+
+    data = await SliderModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+
     res.status(200).json({
       success: true,
       data,

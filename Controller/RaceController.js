@@ -82,6 +82,104 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.SearchRace = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      MeetingType: {
+        [Op.like]: `%${req.query.MeetingType || ""}%`,
+      },
+      MeetingCode: {
+        [Op.like]: `%${req.query.MeetingCode || ""}%`,
+      },
+      RaceName: {
+        [Op.like]: `%${req.query.RaceName || ""}%`,
+      },
+      TrackLength: {
+        [Op.like]: `%${req.query.TrackLength || ""}%`,
+      },
+      Ground: {
+        [Op.like]: `%${req.query.Ground || ""}%`,
+      },
+      DescriptionAr: {
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      },
+      DescriptionEn: {
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      },
+      RaceStatus: {
+        [Op.like]: `%${req.query.RaceStatus || ""}%`,
+      },
+      ResultStatus: {
+        [Op.like]: `%${req.query.ResultStatus || ""}%`,
+      },
+      RaceCourse: {
+        [Op.like]: `%${req.query.RaceCourse || ""}%`,
+      },
+      RaceType: {
+        [Op.like]: `%${req.query.RaceType || ""}%`,
+      },
+      HorseFilled: {
+        [Op.like]: `%${req.query.HorseFilled || ""}%`,
+      },
+      WeatherType: {
+        [Op.like]: `%${req.query.WeatherType || ""}%`,
+      },
+      WeatherDegree: {
+        [Op.like]: `%${req.query.WeatherDegree || ""}%`,
+      },
+      WeatherIcon: {
+        [Op.like]: `%${req.query.WeatherIcon || ""}%`,
+      },
+      RaceType: {
+        [Op.like]: `%${req.query.RaceType || ""}%`,
+      },
+      PointTableSystem: {
+        [Op.like]: `%${req.query.PointTableSystem || ""}%`,
+      },
+      RaceCard: {
+        [Op.like]: `%${req.query.RaceCard || ""}%`,
+      },
+      Competition: {
+        [Op.like]: `%${req.query.Competition || ""}%`,
+      },
+      Sponsor: {
+        [Op.like]: `%${req.query.Sponsor || ""}%`,
+      },
+      StartDate: {
+        [Op.between]: [
+          req.query.racestartdate1 || "2021-12-01 00:00:00",
+          req.query.racestartdate2 || "4030-12-01 00:00:00",
+        ],
+      },
+      EndDate: {
+        [Op.between]: [
+          req.query.raceenddate1 || "2021-12-01 00:00:00",
+          req.query.raceenddate2 || "4030-12-01 00:00:00",
+        ],
+      },
+      Day: {
+        [Op.between]: [
+          req.query.racestartday || "2021-12-01 00:00:00",
+          req.query.raceendday || "4030-12-01 00:00:00",
+        ],
+      },
+
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.RestoreSoftDeletedRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     paranoid: false,

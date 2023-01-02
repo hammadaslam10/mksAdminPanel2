@@ -37,17 +37,44 @@ exports.RestoreSoftDeletedRaceCard = Trackerror(async (req, res, next) => {
 
 exports.CreateRaceCard = Trackerror(async (req, res, next) => {
   const { RaceCardNameEn, RaceCardNameAr, RaceCardCourse } = req.body;
-  
-    const data = await RaceCardModel.create({
-      RaceCardCourse: RaceCardCourse,
-      RaceCardNameEn: RaceCardNameEn,
-      RaceCardNameAr: RaceCardNameAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  
+
+  const data = await RaceCardModel.create({
+    RaceCardCourse: RaceCardCourse,
+    RaceCardNameEn: RaceCardNameEn,
+    RaceCardNameAr: RaceCardNameAr,
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
+});
+exports.SearchRaceCard = Trackerror(async (req, res, next) => {
+  const data = await RaceCardModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      RaceCardNameEn: {
+        [Op.like]: `%${req.query.RaceCardNameEn || ""}%`,
+      },
+      RaceCardNameAr: {
+        [Op.like]: `%${req.query.RaceCardNameAr || ""}%`,
+      },
+      RaceCardCourse: {
+        [Op.like]: `%${req.query.RaceCardCourse || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
 });
 exports.RaceCardGet = Trackerror(async (req, res, next) => {
   const data = await RaceCardModel.findAll({

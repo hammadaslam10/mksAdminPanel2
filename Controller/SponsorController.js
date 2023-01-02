@@ -62,7 +62,34 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
   });
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {
-  const data = await SponsorModel.findAll();
+  const data = await SponsorModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      DescriptionEn: {
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      },
+      DescriptionAr: {
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,

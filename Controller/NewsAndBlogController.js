@@ -71,7 +71,40 @@ exports.CreateNewsAndBlog = Trackerror(async (req, res, next) => {
 });
 exports.SearchNews = Trackerror(async (req, res, next) => {});
 exports.NewsGet = Trackerror(async (req, res, next) => {
-  const data = await NewsModel.findAll();
+  const data = await NewsModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      SecondTitleEn: {
+        [Op.like]: `%${req.query.SecondTitleEn || ""}%`,
+      },
+      SecondTitleAr: {
+        [Op.like]: `%${req.query.SecondTitleAr || ""}%`,
+      },
+      DescriptionEn: {
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      },
+      DescriptionAr: {
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
   res.status(200).json({
     success: true,
     data: data,
@@ -94,26 +127,24 @@ exports.EditNews = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   if (req.files == null) {
-   
-      const updateddata = {
-        image: data.image,
-        DescriptionEn: DescriptionEn || data.DescriptionEn,
-        DescriptionAr: DescriptionAr || data.DescriptionAr,
-        TitleEn: TitleEn || data.TitleEn,
-        TitleAr: TitleAr || data.TitleAr,
-        SecondTitleEn: SecondTitleEn || data.SecondTitleEn,
-        SecondTitleAr: SecondTitleAr || data.SecondTitleAr,
-      };
-      data = await NewsModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-      res.status(200).json({
-        success: true,
-        data,
-      });
-    
+    const updateddata = {
+      image: data.image,
+      DescriptionEn: DescriptionEn || data.DescriptionEn,
+      DescriptionAr: DescriptionAr || data.DescriptionAr,
+      TitleEn: TitleEn || data.TitleEn,
+      TitleAr: TitleAr || data.TitleAr,
+      SecondTitleEn: SecondTitleEn || data.SecondTitleEn,
+      SecondTitleAr: SecondTitleAr || data.SecondTitleAr,
+    };
+    data = await NewsModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } else {
     const file = req.files.image;
     await deleteFile(`${News}/${data.image}`);
@@ -129,13 +160,13 @@ exports.EditNews = Trackerror(async (req, res, next) => {
       SecondTitleEn: SecondTitleEn || data.SecondTitleEn,
       SecondTitleAr: SecondTitleAr || data.SecondTitleAr,
     };
-    
-      data = await NewsModel.update(updateddata, {
-        where: {
-          _id: req.params.id,
-        },
-      });
-   
+
+    data = await NewsModel.update(updateddata, {
+      where: {
+        _id: req.params.id,
+      },
+    });
+
     res.status(200).json({
       success: true,
       data,

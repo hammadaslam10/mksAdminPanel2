@@ -23,11 +23,13 @@ const {
   VerdictLatest,
   GetDeletedRace,
   RestoreSoftDeletedRace,
-  AddPointTable
+  AddPointTable,
+  SearchRace,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/racegetdeleted").get(GetDeletedRace);
 router.route("/restoresoftdeleterace/:id").post(RestoreSoftDeletedRace);
+router.route("/SearchRace").get(SearchRace);
 router.route("/getrace").get(GetRace);
 router.route("/getlatestraceresult").get(ResultLatest);
 router.route("/raceprediction").get(VerdictLatest);

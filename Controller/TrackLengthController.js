@@ -59,7 +59,29 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   });
 });
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
-  const data = await TrackLengthModel.findAll({ include: { all: true } });
+  const data = await TrackLengthModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      TrackLength: {
+        [Op.like]: `%${req.query.TrackLength || ""}%`,
+      },
+      RaceCourse: {
+        [Op.like]: `%${req.query.RaceCourse || ""}%`,
+      },
+      GroundType: {
+        [Op.like]: `%${req.query.GroundType || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+    include: { all: true },
+  });
   res.status(200).json({
     success: true,
     data: data,

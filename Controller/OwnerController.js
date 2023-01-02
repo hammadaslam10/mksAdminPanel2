@@ -15,28 +15,28 @@ exports.GetDeletedOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RestoreSoftDeletedOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await OwnerModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
 
@@ -52,7 +52,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     ShortEn,
     ShortAr,
     RegistrationDate,
-    NationalityID
+    NationalityID,
   } = req.body;
   if (req.files === null) {
     try {
@@ -68,11 +68,11 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
         TitleAr: TitleAr,
         TitleEn: TitleEn,
         NationalityID: NationalityID,
-        RegistrationDate: RegistrationDate
+        RegistrationDate: RegistrationDate,
       });
       res.status(201).json({
         success: true,
-        data
+        data,
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
@@ -80,15 +80,15 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
         res.send({
           status: "error",
           message: [
-            "This Short Code already exists, Please enter a different one."
-          ]
+            "This Short Code already exists, Please enter a different one.",
+          ],
         });
       } else {
         res.status(500).json({
           success: false,
           message: error.errors.map((singleerr) => {
             return singleerr.message;
-          })
+          }),
         });
       }
     }
@@ -114,7 +114,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
       TitleAr: TitleAr,
       TitleEn: TitleEn,
       NationalityID: NationalityID,
-      RegistrationDate: RegistrationDate
+      RegistrationDate: RegistrationDate,
     });
 
     if (data._id) {
@@ -136,8 +136,8 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
         await OwnerSilkColorModel.findOrCreate({
           where: {
             OwnerID: data._id,
-            OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${SingleImage}`
-          }
+            OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${SingleImage}`,
+          },
         });
       });
     } else {
@@ -145,7 +145,7 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
     }
     res.status(201).json({
       success: true,
-      data
+      data,
     });
   }
 });
@@ -161,10 +161,10 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     ShortEn,
     ShortAr,
     RegistrationDate,
-    NationalityID
+    NationalityID,
   } = req.body;
   let data = await OwnerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -182,16 +182,16 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       NationalityID: NationalityID || data.NationalityID,
       SilkColor: SilkColor || data.SilkColor,
       Horses: Horses || data.Horses,
-      Rating: Rating || data.Rating
+      Rating: Rating || data.Rating,
     };
     data = await OwnerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.Ownerimage;
@@ -211,45 +211,92 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
       Horses: Horses || data.Horses,
       Rating: Rating || data.Rating,
       TitleAr: TitleAr || data.TitleAr,
-      TitleEn: TitleEn || data.TitleEn
+      TitleEn: TitleEn || data.TitleEn,
     };
 
     data = await OwnerModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
 
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
+});
+exports.SearchOwner = Trackerror(async (req, res, next) => {
+  const data = await OwnerModel.findAll({
+    offset: Number(req.query.page) || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      TitleEn: {
+        [Op.like]: `%${req.query.TitleEn || ""}%`,
+      },
+      TitleAr: {
+        [Op.like]: `%${req.query.TitleAr || ""}%`,
+      },
+      ShortEn: {
+        [Op.like]: `%${req.query.ShortEn || ""}%`,
+      },
+      ShortAr: {
+        [Op.like]: `%${req.query.ShortAr || ""}%`,
+      },
+      RegistrationDate: {
+        [Op.like]: `%${req.query.RegistrationDate || ""}%`,
+      },
+      NationalityID: {
+        [Op.like]: `%${req.query.NationalityID || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
 });
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({ include: { all: true } });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
   });
 });
 exports.ViewASingleOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return new next("Owner is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.DeleteOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -259,28 +306,28 @@ exports.DeleteOwner = Trackerror(async (req, res, next) => {
   await deleteFile(`${Owner}/${data.image.slice(-64)}`);
   await OwnerModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await OwnerModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully"
+    message: "Soft Delete Successfully",
   });
 });
