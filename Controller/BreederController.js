@@ -64,9 +64,8 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   if (req.files === null) {
     try {
       const data = await BreederModel.create({
-        image: `https://${
-          process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
+        image: `https://${process.env.AWS_BUCKET_NAME
+          }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         DescriptionEn: DescriptionEn,
         DescriptionAr: DescriptionAr,
         shortCode: shortCode,
@@ -155,12 +154,6 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
       DescriptionAr: {
         [Op.like]: `%${req.query.DescriptionAr || ""}%`,
       },
-      TitleEn: {
-        [Op.like]: `%${req.query.TitleEn || ""}%`,
-      },
-      TitleAr: {
-        [Op.like]: `%${req.query.TitleAr || ""}%`,
-      },
       shortCode: {
         [Op.like]: `%${req.query.shortCode || ""}%`,
       },
@@ -171,7 +164,7 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetBreederAdmin = Trackerror(async (req, res, next) => {});
+exports.GetBreederAdmin = Trackerror(async (req, res, next) => { });
 exports.EditBreeder = Trackerror(async (req, res, next) => {
   const {
     NameEn,
