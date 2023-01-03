@@ -92,12 +92,12 @@ exports.SexGet = Trackerror(async (req, res, next) => {
       NameAr: {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
-      DescriptionEn: {
-        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
-      },
-      DescriptionAr: {
-        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
-      },
+      // DescriptionEn: {
+      //   [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      // },
+      // DescriptionAr: {
+      //   [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+      // },
       shortCode: {
         [Op.like]: `%${req.query.shortCode || ""}%`,
       },

@@ -35,4 +35,5 @@ router.route("/updatesubscriber/:id").put(UpdateProfile);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
 
+
 module.exports = router;
