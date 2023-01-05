@@ -94,9 +94,9 @@ exports.NewsGet = Trackerror(async (req, res, next) => {
       DescriptionAr: {
         [Op.like]: `%${req.query.DescriptionAr || ""}%`,
       },
-      shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
-      },
+      // shortCode: {
+      //   [Op.like]: `%${req.query.shortCode || ""}%`,
+      // },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",

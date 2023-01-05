@@ -386,9 +386,18 @@ exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
     where: { _id: req.params.id },
   });
+
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
+  await BreederModel.update(
+    { shortCode: -data.shortCode },
+    {
+      where: {
+        _id: req.params.id,
+      },
+    }
+  );
 
   await BreederModel.destroy({
     where: { _id: req.params.id },
