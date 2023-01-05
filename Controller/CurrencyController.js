@@ -92,9 +92,9 @@ exports.CurrencyGet = Trackerror(async (req, res, next) => {
       NameAr: {
         [Op.like]: `%${req.query.NameAr || ""}%`
       },
-      Rate: {
-        [Op.like]: `%${req.query.Rate || ""}%`
-      },
+      // Rate: {
+      //   [Op.like]: `%${req.query.Rate || ""}%`
+      // },
       shortCode: {
         [Op.like]: `%${req.query.shortCode || ""}%`
       },
