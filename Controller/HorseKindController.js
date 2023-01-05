@@ -35,18 +35,36 @@ exports.RestoreSoftDeletedHorseKind = Trackerror(async (req, res, next) => {
 
 exports.CreateHorseKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
-
-  const data = await HorseKindModel.create({
-    shortName: shortName,
-    NameEn: NameEn,
-    NameAr: NameAr,
-    AbbrevEn: AbbrevEn,
-    AbbrevAr: AbbrevAr,
-  });
-  res.status(201).json({
-    success: true,
-    data,
-  });
+  try {
+    const data = await HorseKindModel.create({
+      shortName: shortName,
+      NameEn: NameEn,
+      NameAr: NameAr,
+      AbbrevEn: AbbrevEn,
+      AbbrevAr: AbbrevAr,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    // if (error.name === "SequelizeUniqueConstraintError") {
+    //   res.status(403);
+    //   res.json({
+    //     status: "error",
+    //     message: [
+    //       "This Short Code already exists, Please enter a different one.",
+    //     ],
+    //     error,
+    //   });
+    // } else {
+    res.status(500).json({
+      success: false,
+      message: error.errors.map((singleerr) => {
+        return singleerr.message;
+      }),
+    });
+  }
 });
 exports.HorseKindGet = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findAll({

@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Image Of Jockey" },
-          notEmpty: {
-            msg: "Without Image Jockey Will not get submitted",
-          },
-        },
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "Please Add Image Of Jockey" },
+        //   notEmpty: {
+        //     msg: "Without Image Jockey Will not get submitted",
+        //   },
+        // },
       },
       DOB: {
         type: DataTypes.DATE,

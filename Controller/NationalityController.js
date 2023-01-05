@@ -67,51 +67,94 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     HemisphereEn,
     HemisphereAr,
   } = req.body;
-  try {
-    const file = req.files.image;
-    if (file == null) {
-      return next(new HandlerCallBack("Please upload an image", 404));
+  if (req.file == null) {
+    try {
+      const data = await NationalityModel.create({
+        AbbrevEn: AbbrevEn,
+        AbbrevAr: AbbrevAr,
+        shortCode: shortCode,
+        AltNameEn: AltNameEn,
+        AltNameAr: AltNameAr,
+        LabelEn: LabelEn,
+        Offset: Offset,
+        ValueAr: ValueAr,
+        ValueEn: ValueEn,
+        NameEn: NameEn,
+        NameAr: NameAr,
+        LabelAr: LabelAr,
+        HemisphereEn: HemisphereEn,
+        HemisphereAr: HemisphereAr,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.send({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
     }
-    const Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
-    const data = await NationalityModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
-      AbbrevEn: AbbrevEn,
-      AbbrevAr: AbbrevAr,
-      shortCode: shortCode,
-      AltNameEn: AltNameEn,
-      AltNameAr: AltNameAr,
-      LabelEn: LabelEn,
-      Offset: Offset,
-      ValueAr: ValueAr,
-      ValueEn: ValueEn,
-      NameEn: NameEn,
-      NameAr: NameAr,
-      LabelAr: LabelAr,
-      HemisphereEn: HemisphereEn,
-      HemisphereAr: HemisphereAr,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
-  } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(403);
-      res.json({
-        status: "error",
-        message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
+  } else {
+    try {
+      const file = req.files.image;
+      const Image = generateFileName();
+      const fileBuffer = await resizeImageBuffer(
+        req.files.image.data,
+        214,
+        212
+      );
+      await uploadFile(fileBuffer, `${Nationality}/${Image}`, file.mimetype);
+      const data = await NationalityModel.create({
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Nationality}/${Image}`,
+        AbbrevEn: AbbrevEn,
+        AbbrevAr: AbbrevAr,
+        shortCode: shortCode,
+        AltNameEn: AltNameEn,
+        AltNameAr: AltNameAr,
+        LabelEn: LabelEn,
+        Offset: Offset,
+        ValueAr: ValueAr,
+        ValueEn: ValueEn,
+        NameEn: NameEn,
+        NameAr: NameAr,
+        LabelAr: LabelAr,
+        HemisphereEn: HemisphereEn,
+        HemisphereAr: HemisphereAr,
       });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: error.errors.map((singleerr) => {
-          return singleerr.message;
-        }),
+      res.status(201).json({
+        success: true,
+        data,
       });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.json({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
     }
   }
 });

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+
         validate: {
           EnglishLanguageVerification() {
             if (this.NameEn.trim() == "") {

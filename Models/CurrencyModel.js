@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       Rate: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.DOUBLE,
         allowNull: false,
         validate: {
           notNull: { msg: "Currency will have Rate" },

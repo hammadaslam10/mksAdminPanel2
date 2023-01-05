@@ -85,9 +85,6 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
   if (req.files === null) {
     try {
       const data = await RaceCourseModel.create({
-        image: `https://${
-          process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         TrackNameAr: TrackNameAr,
         TrackNameEn: TrackNameEn,
         ColorCode: ColorCode,

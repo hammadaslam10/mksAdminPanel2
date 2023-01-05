@@ -60,23 +60,24 @@ exports.CreateEquipment = Trackerror(async (req, res, next) => {
       data,
     });
   } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      res.status(403);
-      res.json({
-        status: "error",
-        message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: error.errors.map((singleerr) => {
-          return singleerr.message;
-        }),
-      });
-    }
+    // if (error.name === "SequelizeUniqueConstraintError") {
+    //   res.status(403);
+    //   res.json({
+    //     status: "error",
+    //     message: [
+    //       "This Short Code already exists, Please enter a different one.",
+    //     ],
+    //     error,
+    //   });
+    // } else {
+    res.status(500).json({
+      success: false,
+      message: error.errors.map((singleerr) => {
+        return singleerr.message;
+      }),
+    });
   }
+  // }
 });
 exports.EquipmentGet = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findAll({

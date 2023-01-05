@@ -9,6 +9,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+var Converter = require("csvtojson").Converter;
 exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
@@ -20,6 +21,95 @@ exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
     success: true,
     data,
   });
+});
+const convert = function (csvFile) {
+  const convert = (from, to) => (str) => Buffer.from(str, from).toString(to);
+  const hexToUtf8 = convert("hex", "utf8");
+  let csvData = hexToUtf8(csvFile.data).split("\r\n");
+  console.log(csvData);
+  let csvRows = [];
+  csvData.forEach((data) => {
+    csvRows.push(data.split(","));
+  });
+  let data = [];
+  for (let i = 1; i < csvRows.length; ++i) {
+    let dict = {};
+    for (let j = 0; j < csvRows[i].length; ++j) {
+      dict[csvRows[0][j]] = csvRows[i][j];
+    }
+    data.push(dict);
+  }
+  return data;
+};
+exports.BreederMassUpload = Trackerror(async (req, res, next) => {
+  if (!req.files || !req.files.file) {
+    res.status(404).json({ message: "File not found" });
+    // } else if (req.files.file.mimetype === "text/csv") {
+    //   try {
+    //     console.log("hello");
+    //     // let csvFile = req.files.file;
+    //     // data = convert(csvFile);
+    //     // console.log(data);
+    //     // console.log(data);
+    //     // const a = await BreederModel.bulkCreate(data);
+
+    //     var converter = new Converter({});
+    //     converter.on("end_parsed", function (jsonArray) {
+    //       if (jsonArray) {
+    //         jsonContent = jsonArray;
+    //       }
+    //     });
+    //     let a = await require("fs")
+    //       .createReadStream(req.files.file.data)
+    //       .pipe(converter);
+    //     res.status(201).json({ message: "hello", a });
+    //   } catch (err) {
+    //     res.status(401).send(err.message);
+    //   }
+    // }
+  } else if (req.files.file.mimetype === "application/json") {
+    try {
+      let de = JSON.parse(req.files.file.data.toString("utf8"));
+      console.log(de);
+      let original = [];
+      await de.map((data) => {
+        original.push({
+          DescriptionEn: data.DescriptionEn,
+          DescriptionAr: data.DescriptionAr,
+          shortCode: data.shortCode,
+          TitleEn: data.TitleEn,
+          TitleAr: data.TitleAr,
+          NameEn: data.NameEn,
+          NameAr: data.NameAr,
+        });
+      });
+      const data = await BreederModel.bulkCreate(original);
+      res.status(201).json({ success: true, data });
+    } catch (error) {
+      // if (error.name === "SequelizeUniqueConstraintError") {
+      //   res.status(403);
+      //   res.json({
+      //     status: "error",
+      //     message: [
+      //       "This Short Code already exists, Please enter a different one.",
+      //     ],
+      //   });
+      // } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
+      // }
+    }
+  } else {
+    // console.log(req.files.file.mimetype);
+    res.status(409).json({ message: "file format is not valid" });
+  }
+  // res.status(200).json({
+  //   success: true,
+  // });
 });
 exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
@@ -64,9 +154,6 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   if (req.files === null) {
     try {
       const data = await BreederModel.create({
-        image: `https://${
-          process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         DescriptionEn: DescriptionEn,
         DescriptionAr: DescriptionAr,
         shortCode: shortCode,

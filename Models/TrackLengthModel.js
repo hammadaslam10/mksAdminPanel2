@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       RaceCourseImage: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "TrackLength  will have RaceCourseImage" },
-          notEmpty: { msg: "RaceCourseImage  will not be empty" },
-        },
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "TrackLength  will have RaceCourseImage" },
+        //   notEmpty: { msg: "RaceCourseImage  will not be empty" },
+        // },
       },
       RailPosition: {
         type: DataTypes.BIGINT,

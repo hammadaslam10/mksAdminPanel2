@@ -222,13 +222,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Image Of Nationality" },
-          notEmpty: {
-            msg: "Without Image Nationality Will not get submitted",
-          },
-        },
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "Please Add Image Of Nationality" },
+        //   notEmpty: {
+        //     msg: "Without Image Nationality Will not get submitted",
+        //   },
+        // },
       },
     },
     {

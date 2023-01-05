@@ -44,9 +44,6 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
     try {
       const data = await TrackLengthModel.create({
         TrackLength: TrackLength,
-        RaceCourseImage: `https://${
-          process.env.AWS_BUCKET_NAME
-        }.s3.amazonaws.com/${Breeder}/${"1009af09d9cccd2f31a2ae991fbf39653e9a837ef40123c1717f014c91aa9eac"}`,
         RaceCourse: RaceCourse,
         RailPosition: RailPosition,
         GroundType: GroundType,

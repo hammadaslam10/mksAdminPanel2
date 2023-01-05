@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Image Of Trainer" },
-          notEmpty: {
-            msg: "Without Image Trainer Will not get submitted",
-          },
-        },
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "Please Add Image Of Trainer" },
+        //   notEmpty: {
+        //     msg: "Without Image Trainer Will not get submitted",
+        //   },
+        // },
       },
       NameEn: {
         type: DataTypes.STRING,

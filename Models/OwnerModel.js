@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Owner Image Of Owner" },
-          notEmpty: {
-            msg: "Without Owner Image Owner Will not get submitted",
-          },
-        },
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "Please Add Owner Image Of Owner" },
+        //   notEmpty: {
+        //     msg: "Without Owner Image Owner Will not get submitted",
+        //   },
+        // },
       },
       NameEn: {
         type: DataTypes.STRING,
