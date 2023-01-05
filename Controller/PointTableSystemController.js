@@ -89,16 +89,16 @@ exports.PointTableSystemGet = Trackerror(async (req, res, next) => {
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
-      // NameEn: {
-      //   [Op.like]: `%${req.query.NameEn || ""}%`,
-      // },
-      // NameAr: {
-      //   [Op.like]: `%${req.query.NameAr || ""}%`,
-      // },
-      DescriptionEn: {
-        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+      Group_Name: {
+        [Op.like]: `%${req.query.Group_Name || ""}%`,
       },
-      DescriptionAr: {
+      Rank: {
+        [Op.like]: `%${req.query.Rank || ""}%`,
+      },
+      Bonus_Point: {
+        [Op.like]: `%${req.query.Bonus_Point || ""}%`,
+      },
+      Point: {
         [Op.like]: `%${req.query.DescriptionAr || ""}%`,
       },
       shortCode: {

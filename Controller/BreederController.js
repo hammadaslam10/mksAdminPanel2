@@ -44,29 +44,6 @@ const convert = function (csvFile) {
 exports.BreederMassUpload = Trackerror(async (req, res, next) => {
   if (!req.files || !req.files.file) {
     res.status(404).json({ message: "File not found" });
-    // } else if (req.files.file.mimetype === "text/csv") {
-    //   try {
-    //     console.log("hello");
-    //     // let csvFile = req.files.file;
-    //     // data = convert(csvFile);
-    //     // console.log(data);
-    //     // console.log(data);
-    //     // const a = await BreederModel.bulkCreate(data);
-
-    //     var converter = new Converter({});
-    //     converter.on("end_parsed", function (jsonArray) {
-    //       if (jsonArray) {
-    //         jsonContent = jsonArray;
-    //       }
-    //     });
-    //     let a = await require("fs")
-    //       .createReadStream(req.files.file.data)
-    //       .pipe(converter);
-    //     res.status(201).json({ message: "hello", a });
-    //   } catch (err) {
-    //     res.status(401).send(err.message);
-    //   }
-    // }
   } else if (req.files.file.mimetype === "application/json") {
     try {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
