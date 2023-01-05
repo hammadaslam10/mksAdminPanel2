@@ -87,20 +87,66 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
   // });
 });
 exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
-  const data = await BreederModel.findOne({
-    paranoid: false,
-    where: { _id: req.params.id },
-  });
-  if (!data) {
-    return next(new HandlerCallBack("data not found", 404));
+  try {
+    const data = await BreederModel.findOne({
+      paranoid: false,
+      where: { _id: req.params.id },
+    });
+    if (!data) {
+      return next(new HandlerCallBack("data not found", 404));
+    }
+    let newcode = data.shortCode * -1;
+    console.log(newcode);
+    await BreederModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await BreederModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      let [result] = await BreederModel.findAll({
+        paranoid: false,
+        attributes: [
+          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+        ],
+      });
+      let newcode = result.dataValues.maxshortCode * -1;
+      console.log(newcode);
+      await BreederModel.update(
+        { shortCode: newcode + 1 },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+      const restoredata = await BreederModel.restore({
+        where: { _id: req.params.id },
+      });
+
+      res.status(200).json({
+        success: true,
+        restoredata,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
   }
-  const restoredata = await BreederModel.restore({
-    where: { _id: req.params.id },
-  });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
 });
 
 exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
@@ -358,28 +404,60 @@ exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   });
 });
 exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
-  const data = await BreederModel.findOne({
-    where: { _id: req.params.id },
-  });
-
-  if (!data) {
-    return next(new HandlerCallBack("data not found", 404));
-  }
-  await BreederModel.update(
-    { shortCode: -data.shortCode },
-    {
-      where: {
-        _id: req.params.id,
-      },
+  try {
+    const data = await BreederModel.findOne({
+      where: { _id: req.params.id },
+    });
+    if (!data) {
+      return next(new HandlerCallBack("data not found", 404));
     }
-  );
+    await BreederModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
 
-  await BreederModel.destroy({
-    where: { _id: req.params.id },
-  });
+    await BreederModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      let [result] = await BreederModel.findAll({
+        paranoid: false,
+        attributes: [
+          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+        ],
+      });
+      await BreederModel.update(
+        { shortCode: -(result.dataValues.maxshortCode + 1) },
+        {
+          where: {
+            _id: req.params.id,
+          },
+        }
+      );
+      await BreederModel.destroy({
+        where: { _id: req.params.id },
+      });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+      res.status(200).json({
+        success: true,
+        message: "Soft Delete Successfully",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors.map((singleerr) => {
+          return singleerr.message;
+        }),
+      });
+    }
+  }
 });
