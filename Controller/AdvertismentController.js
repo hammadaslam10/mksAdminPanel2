@@ -43,7 +43,7 @@ exports.RestoreSoftDeletedAd = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
+  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   const file = req.files.image;
   if (file == null) {
     return next(new HandlerCallBack("Please upload an image", 404));
@@ -55,6 +55,7 @@ exports.CreateAdvertisment = Trackerror(async (req, res, next) => {
     DescriptionAr: DescriptionAr,
     TitleEn: TitleEn,
     TitleAr: TitleAr,
+    Url: Url,
   });
   const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
   await uploadFile(fileBuffer, `${Ads}/${Image}`, file.mimetype);
@@ -105,7 +106,7 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
 });
 exports.GetAdsAdmin = Trackerror(async (req, res, next) => {});
 exports.EditAds = Trackerror(async (req, res, next) => {
-  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr } = req.body;
+  const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   let data = await AdvertismentModel.findOne({
     where: { _id: req.params.id },
   });
@@ -119,6 +120,7 @@ exports.EditAds = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
+      Url: Url || data.Url,
     };
     data = await AdvertismentModel.update(updateddata, {
       where: {
@@ -141,6 +143,7 @@ exports.EditAds = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
+      Url: Url || data.Url,
     };
 
     (updateddata.image = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Ads}/${Image}`),

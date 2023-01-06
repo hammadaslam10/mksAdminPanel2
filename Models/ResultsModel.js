@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
       },
+      FinalPosition: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       Points: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -28,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: 0,
+      },
+      VideoLink: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
 

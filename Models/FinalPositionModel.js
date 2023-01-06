@@ -1,8 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const HorseKindModel = sequelize.define(
-    "HorseKindModel",
-
+  const FinalPositionModel = sequelize.define(
+    "FinalPositionModel",
     {
       _id: {
         type: Sequelize.UUID,
@@ -12,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       NameEn: {
         type: DataTypes.STRING,
-        allowNull: false,
         unique: true,
+        allowNull: false,
         validate: {
           EnglishLanguageVerification() {
             if (this.NameEn.trim() == "") {
-              throw new Error("Please Enter  Name in English is Empty");
+              throw new Error("Please Enter Name in English is Empty");
             }
             if (
               /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.NameEn) ||
@@ -29,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-
       NameAr: {
         type: DataTypes.STRING,
         unique: true,
@@ -53,44 +51,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      AbbrevEn: {
-        type: DataTypes.STRING,
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
         allowNull: false,
         validate: {
-          EnglishLanguageVerification() {
-            if (this.AbbrevEn.trim() == "") {
-              throw new Error("Please Enter Abbreviation Name in English");
-            }
-            if (
-              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.AbbrevEn) ||
-              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.AbbrevEn)
-            ) {
-            } else {
-              throw new Error("Abbreviation Name English Validation Failed");
-            }
-          },
-        },
-      },
-      AbbrevAr: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.AbbrevAr.trim() == "") {
-              throw new Error("Please Enter  Abbreviation in  Arabic ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
-                this.AbbrevAr
-              ) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
-                this.AbbrevAr
-              )
-            ) {
-            } else {
-              throw new Error("Abbreviation Arabic Validation Failed");
-            }
-          },
+          notNull: { msg: "FinalPosition will have ShortCode" },
+          notEmpty: { msg: "Name  will not be empty" },
         },
       },
     },
@@ -100,5 +68,5 @@ module.exports = (sequelize, DataTypes) => {
       initialAutoIncrement: 10,
     }
   );
-  return HorseKindModel;
+  return FinalPositionModel;
 };

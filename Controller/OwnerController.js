@@ -5,11 +5,12 @@ const OwnerModel = db.OwnerModel;
 const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
-const { Owner, Breeder } = require("../Utils/Path");
+const { Owner, Breeder, OwnerSilk, OwnerCap } = require("../Utils/Path");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const { Conversion } = require("../Utils/Conversion");
 const OwnerSilkColorModel = db.OwnerSilkColorModel;
+const OwnerCapModel = db.OwnerCapModel;
 const { Op } = require("sequelize");
 exports.GetDeletedOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({
@@ -90,8 +91,6 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
       }
     }
   } else {
-    const file = req.files.image;
-    console.log(file, "file");
     const file1 = req.files.Ownerimage;
     console.log(file1, "file1");
     const Image = generateFileName();
@@ -113,38 +112,79 @@ exports.CreateOwner = Trackerror(async (req, res, next) => {
       NationalityID: NationalityID,
       RegistrationDate: RegistrationDate,
     });
-
-    if (data._id) {
-      let file = [req.files.image];
-      await file.map(async (singleimage) => {
-        console.log(singleimage, "dsadsa");
-        let SingleImage = generateFileName();
-        console.log(singleimage);
-        let SingleimagefileBuffer = await resizeImageBuffer(
-          singleimage.data,
-          214,
-          212
-        );
-        await uploadFile(
-          SingleimagefileBuffer,
-          `${Owner}/${SingleImage}`,
-          singleimage.mimetype
-        );
-        await OwnerSilkColorModel.findOrCreate({
-          where: {
-            OwnerID: data._id,
-            OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Owner}/${SingleImage}`,
-          },
-        });
-      });
-    } else {
-      return next(new HandlerCallBack("Owner Creation Failed", 404));
-    }
     res.status(201).json({
       success: true,
       data,
     });
   }
+});
+exports.AddOwnerSilkColor = Trackerror(async (req, res, next) => {
+  const data = await OwnerModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return new next("Owner is not available", 404);
+  }
+  let file = [req.files.image];
+  await file.map(async (singleimage) => {
+    console.log(singleimage, "dsadsa");
+    let SingleImage = generateFileName();
+    console.log(singleimage);
+    let SingleimagefileBuffer = await resizeImageBuffer(
+      singleimage.data,
+      214,
+      212
+    );
+    await uploadFile(
+      SingleimagefileBuffer,
+      `${OwnerSilk}/${SingleImage}`,
+      singleimage.mimetype
+    );
+    await OwnerSilkColorModel.findOrCreate({
+      where: {
+        OwnerID: data._id,
+        OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${OwnerSilk}/${SingleImage}`,
+      },
+    });
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
+});
+exports.AddOwnerCap = Trackerror(async (req, res, next) => {
+  const data = await OwnerModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return new next("Owner is not available", 404);
+  }
+  let file = [req.files.image];
+  await file.map(async (singleimage) => {
+    console.log(singleimage, "dsadsa");
+    let SingleImage = generateFileName();
+    console.log(singleimage);
+    let SingleimagefileBuffer = await resizeImageBuffer(
+      singleimage.data,
+      214,
+      212
+    );
+    await uploadFile(
+      SingleimagefileBuffer,
+      `${OwnerCap}/${SingleImage}`,
+      singleimage.mimetype
+    );
+    await OwnerCapModel.findOrCreate({
+      where: {
+        OwnerID: data._id,
+        OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${OwnerCap}/${SingleImage}`,
+      },
+    });
+  });
+  res.status(201).json({
+    success: true,
+    data,
+  });
 });
 exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
   const {

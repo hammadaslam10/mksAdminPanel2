@@ -6,9 +6,10 @@ const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultsModel = db.ResultModel;
 const ResultModel = db.ResultModel;
+const RaceResultImagesModel = db.RaceResultImagesModel;
 const RaceAndVerdictsHorseModel = db.RaceAndVerdictsHorseModel;
 const RaceAndVerdictsJockeyModel = db.RaceAndVerdictsJockeyModel;
-const { Race } = require("../Utils/Path");
+const { Race, RaceImages } = require("../Utils/Path");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Trainer, Jockey, Owner, Horse, RaceCourse } = require("../Utils/Path");
@@ -453,6 +454,43 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.AddRaceImage = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findOne({
+    where: { _id: req.params.id, ResultStatus: "Announced" },
+  });
+  if (!data) {
+    return new next(
+      "Race is not available or Result is not declared yet ",
+      404
+    );
+  }
+  let file = [req.files.image];
+  await file.map(async (singleimage) => {
+    console.log(singleimage, "dsadsa");
+    let SingleImage = generateFileName();
+    console.log(singleimage);
+    let SingleimagefileBuffer = await resizeImageBuffer(
+      singleimage.data,
+      214,
+      212
+    );
+    await uploadFile(
+      SingleimagefileBuffer,
+      `${RaceImages}/${SingleImage}`,
+      singleimage.mimetype
+    );
+    await RaceResultImagesModel.findOrCreate({
+      where: {
+        RaceId: data._id,
+        images: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceImages}/${SingleImage}`,
+      },
+    });
+  });
+  res.status(201).json({
+    success: true,
+    message: "all images are been submitted",
+  });
+});
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   console.log(ResultEntry);
@@ -469,6 +507,8 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
           Prize: SingleResultEntryDetail[2],
           Points: SingleResultEntryDetail[3],
           BonusPoints: SingleResultEntryDetail[4],
+          VideoLink: SingleResultEntryDetail[5],
+          FinalPosition: SingleResultEntryDetail[6],
         },
       });
     });
@@ -483,6 +523,7 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
   );
   res.status(200).json({
     success: true,
+    race,
   });
 });
 exports.VerdictLatest = Trackerror(async (req, res, next) => {

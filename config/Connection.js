@@ -66,6 +66,7 @@ db.OwnerSilkColorModel = require("../Models/OwnerSilkColorModel")(
   Db,
   DataTypes
 );
+db.OwnerCapModel = require("../Models/OwnerCapModel")(Db, DataTypes);
 db.RaceCourseModel = require("../Models/RaceCourseModel")(Db, DataTypes);
 db.HorseModel = require("../Models/HorseModel")(Db, DataTypes);
 db.OwnerModel = require("../Models/OwnerModel")(Db, DataTypes);
@@ -131,10 +132,15 @@ db.PointTableSystemModel = require("../Models/PointTableSystemModel")(
   Db,
   DataTypes
 );
+db.FinalPositionModel = require("../Models/FinalPositionModel")(Db, DataTypes);
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
 db.RaceAndPointsSystemModel = require("../Models/RaceAndPointsSystemModel")(
+  Db,
+  DataTypes
+);
+db.RaceResultImagesModel = require("../Models/RaceResultImagesModel")(
   Db,
   DataTypes
 );
@@ -182,6 +188,14 @@ db.RaceModel.hasMany(db.RaceAndPointsSystemModel, {
 db.RaceAndPointsSystemModel.belongsTo(db.RaceModel, {
   foreignKey: "Race",
   as: "RaceData",
+});
+db.RaceModel.hasMany(db.RaceResultImagesModel, {
+  foreignKey: "Race",
+  as: "RaceimagesData",
+});
+db.RaceResultImagesModel.belongsTo(db.RaceModel, {
+  foreignKey: "Race",
+  as: "RaceimagesData",
 });
 db.RaceAndPointsSystemModel.belongsTo(db.PointTableSystemModel, {
   foreignKey: "Point",
@@ -266,6 +280,14 @@ db.OwnerModel.hasMany(db.OwnerSilkColorModel, {
 db.OwnerSilkColorModel.belongsTo(db.OwnerModel, {
   foreignKey: "OwnerID",
   as: "OwnerIDData",
+});
+db.OwnerModel.hasMany(db.OwnerCapModel, {
+  foreignKey: "OwnerID",
+  as: "OwnerIDcapData",
+});
+db.OwnerCapModel.belongsTo(db.OwnerModel, {
+  foreignKey: "OwnerID",
+  as: "OwnerIDcapData",
 });
 // -------------------------------------Horse----------------------------
 db.HorseKindModel.hasMany(db.HorseModel, {
@@ -460,6 +482,14 @@ db.HorseModel.hasMany(db.ResultModel, {
 db.ResultModel.belongsTo(db.HorseModel, {
   foreignKey: "HorseID",
   as: "HorseIDDataHorse",
+});
+db.FinalPositionModel.hasMany(db.ResultModel, {
+  foreignKey: "FinalPosition",
+  as: "FinalPositionData",
+});
+db.ResultModel.belongsTo(db.FinalPositionModel, {
+  foreignKey: "FinalPosition",
+  as: "FinalPositionDataHorse",
 });
 db.RaceModel.hasMany(db.ResultModel, {
   foreignKey: "RaceID",

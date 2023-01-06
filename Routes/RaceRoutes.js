@@ -25,6 +25,8 @@ const {
   RestoreSoftDeletedRace,
   AddPointTable,
   SearchRace,
+  AddRaceImage,
+  CancelRace,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/racegetdeleted").get(GetDeletedRace);
@@ -42,6 +44,7 @@ router.route("/getracetobepublished").get(GetRaceTobeOPublished);
 router.route("/publishedracesbycountry").get(RaceOrderByCountry);
 router.route("/raceCart/:RaceCourseName").get(RaceOrderByRaceCourseOnly);
 router.route("/publishrace/:id").put(PublishRaces);
+router.route("/AddRaceImage/:id").post(AddRaceImage);
 router.route("/getsinglerace/:id").get(SingleRace);
 router.route("/createrace", upload.single("image")).post(CreateRace);
 router.route("/createraceresult/:RaceId").post(ResultCreation);
@@ -49,6 +52,7 @@ router.route("/addracehorses/:id").post(IncludeHorses);
 router.route("/addverdicts/:id").post(IncludeVerdicts);
 router.route("/AddPointTable/:id").post(AddPointTable);
 router.route("/updaterace/:id").put(EditRace);
+router.route("/cancelrace/:id").put(CancelRace);
 router.route("/deleterace/:id").delete(DeleteRace);
 router.route("/softdeleterace/:id").delete(SoftDeleteRace);
 router

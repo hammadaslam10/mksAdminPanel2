@@ -102,6 +102,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      Url: {
+        type: DataTypes.STRING,
+      },
     },
     {
       freezeTableName: true,
