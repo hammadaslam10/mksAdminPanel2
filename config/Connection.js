@@ -493,7 +493,7 @@ db.ResultModel.belongsTo(db.HorseModel, {
 });
 db.FinalPositionModel.hasMany(db.ResultModel, {
   foreignKey: "FinalPosition",
-  as: "FinalPositionData",
+  as: "FinalPositionDataHorse",
 });
 db.ResultModel.belongsTo(db.FinalPositionModel, {
   foreignKey: "FinalPosition",
