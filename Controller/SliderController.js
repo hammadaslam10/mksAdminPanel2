@@ -108,6 +108,7 @@ exports.EditSlider = Trackerror(async (req, res, next) => {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Slider}/${Image}`,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
+      Url: Url || data.Url,
     };
 
     data = await SliderModel.update(updateddata, {

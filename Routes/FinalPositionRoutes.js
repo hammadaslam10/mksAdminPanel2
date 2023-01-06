@@ -6,6 +6,8 @@ const {
   EditFinalPosition,
   DeleteFinalPosition,
   SoftDeleteFinalPosition,
+  SingleFinalPosition,
+  GetFinalPositionMaxShortCode,
   GetDeletedFinalPosition,
   RestoreSoftDeletedFinalPosition,
 } = require("../Controller/FinalPositionController");
@@ -14,6 +16,8 @@ router.route("/FinalPositiongetdeleted").get(GetDeletedFinalPosition);
 router
   .route("/restoresoftdeleteFinalPosition/:id")
   .post(RestoreSoftDeletedFinalPosition);
+router.route("/getsingleFinalPosition/:id").get(SingleFinalPosition);
+router.route("/getFinalPositionshortcode").get(GetFinalPositionMaxShortCode);
 router
   .route("/uploadFinalPosition", upload.single("image"))
   .post(CreateFinalPosition);

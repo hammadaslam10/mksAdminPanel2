@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: "Point Table System will have Group Name" },
-          notEmpty: { msg: "Group Name  will not be empty" },
+          notEmpty: { msg: "Group Name Point will not be empty" },
         },
       },
       Rank: {

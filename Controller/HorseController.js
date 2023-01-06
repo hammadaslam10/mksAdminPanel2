@@ -308,6 +308,7 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    include: { all: true },
     where: {
       KindHorse: {
         [Op.like]: `%${req.query.KindHorse || ""}%`,
@@ -318,12 +319,12 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       Sex: {
         [Op.like]: `%${req.query.Sex || ""}%`,
       },
-      DOB: {
-        [Op.between]: [
-          req.query.startdate || "1000-12-01 00:00:00",
-          req.query.endDate || "5030-12-01 00:00:00",
-        ],
-      },
+      // DOB: {
+      //   [Op.between]: [
+      //     req.query.startdate || "1000-12-01 00:00:00",
+      //     req.query.endDate || "5030-12-01 00:00:00",
+      //   ],
+      // },
       ActiveOwner: {
         [Op.like]: `%${req.query.ActiveOwner || ""}%`,
       },
@@ -336,15 +337,15 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       CreationId: {
         [Op.like]: `%${req.query.CreationId || ""}%`,
       },
-      Dam: {
-        [Op.like]: `%${req.query.Dam || ""}%`,
-      },
-      Sire: {
-        [Op.like]: `%${req.query.Sire || ""}%`,
-      },
-      GSire: {
-        [Op.like]: `%${req.query.GSire || ""}%`,
-      },
+      // Dam: {
+      //   [Op.like]: `%${req.query.Dam || ""}%`,
+      // },
+      // Sire: {
+      //   [Op.like]: `%${req.query.Sire || ""}%`,
+      // },
+      // GSire: {
+      //   [Op.like]: `%${req.query.GSire || ""}%`,
+      // },
       Foal: {
         [Op.like]: `%${req.query.Foal || ""}%`,
       },
@@ -360,30 +361,30 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       NameAr: {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
-      PurchasePrice: {
-        [Op.between]: [
-          req.query.startdate || 0.0,
-          req.query.endDate || 999999999999999999999999999.99999999999999999,
-        ],
-      },
+      // PurchasePrice: {
+      //   [Op.between]: [
+      //     req.query.startdate || 0.0,
+      //     req.query.endDate || 999999999999999999999999999.99999999999999999,
+      //   ],
+      // },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
           req.query.endDate || "4030-12-01 00:00:00",
         ],
       },
-      isGelded: {
-        [Op.like]: `%${req.query.isGelded || false}%`,
-      },
-      STARS: {
-        [Op.like]: `%${req.query.STARS || false}%`,
-      },
-      Rds: {
-        [Op.like]: `%${req.query.Rds || false}%`,
-      },
-      HorseStatus: {
-        [Op.like]: `%${req.query.HorseStatus || false}%`,
-      },
+      // isGelded: {
+      //   [Op.like]: `%${req.query.isGelded || false}%`,
+      // },
+      // STARS: {
+      //   [Op.like]: `%${req.query.STARS || false}%`,
+      // },
+      // Rds: {
+      //   [Op.like]: `%${req.query.Rds || false}%`,
+      // },
+      // HorseStatus: {
+      //   [Op.like]: `%${req.query.HorseStatus || false}%`,
+      // },
       ColorID: {
         [Op.like]: `%${req.query.ColorID || ""}%`,
       },

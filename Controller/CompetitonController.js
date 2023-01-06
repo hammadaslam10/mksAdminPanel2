@@ -153,6 +153,7 @@ exports.CompetitonGet = Trackerror(async (req, res, next) => {
       // },
       {
         model: db.RaceModel,
+        where: { HorseFilled: true },
         as: "CompetitionRacesPointsModelData",
 
         include: [

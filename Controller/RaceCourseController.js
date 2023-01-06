@@ -50,7 +50,12 @@ exports.GetCourse = Trackerror(async (req, res, next) => {
         model: db.ColorModel,
         as: "ColorCodeData",
       },
-      { model: db.RaceModel, as: "RaceCourseData", include: { all: true } },
+      {
+        model: db.RaceModel,
+        as: "RaceCourseData",
+        where: { HorseFilled: true },
+        include: { all: true },
+      },
     ],
   });
   res.status(200).json({

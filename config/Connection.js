@@ -263,6 +263,14 @@ db.TrainerModel.belongsTo(db.NationalityModel, {
   foreignKey: "NationalityID",
   as: "TrainerNationalityData",
 });
+db.NationalityModel.hasMany(db.SubscriberModel, {
+  foreignKey: "NationalityID",
+  as: "SubscriberNationalityData",
+});
+db.SubscriberModel.belongsTo(db.NationalityModel, {
+  foreignKey: "NationalityID",
+  as: "SubscriberNationalityData",
+});
 
 // -------------------------------------Owner----------------------------
 db.NationalityModel.hasMany(db.OwnerModel, {
@@ -522,21 +530,27 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
 // -------------------------------------SubscriberAndRace----------------------------
 db.SubscriberModel.belongsToMany(db.HorseModel, {
   through: "SubscriberAndHorsesModel",
+  as: "TrackHorses",
 });
 db.HorseModel.belongsToMany(db.SubscriberModel, {
   through: "SubscriberAndHorsesModel",
+  as: "TrackHorses",
 });
 db.SubscriberModel.belongsToMany(db.TrainerModel, {
   through: "SubscriberAndTrainerModel",
+  as: "TrackTrainers",
 });
 db.TrainerModel.belongsToMany(db.SubscriberModel, {
   through: "SubscriberAndTrainerModel",
+  as: "TrackTrainers",
 });
 db.SubscriberModel.belongsToMany(db.OwnerModel, {
   through: "SubscriberAndOwnerModel",
+  as: "TrackOwners",
 });
 db.OwnerModel.belongsToMany(db.SubscriberModel, {
   through: "SubscriberAndOwnerModel",
+  as: "TrackOwners",
 });
 // -------------------------------------VerdictAndRace----------------------------
 db.RaceModel.belongsToMany(db.HorseModel, {

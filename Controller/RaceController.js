@@ -294,7 +294,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
 });
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
-    order: [["StartTime", "DESC"]],
+    order: [["StartTime", "ASC"]],
     paranoid: false,
     include: [
       {
@@ -624,7 +624,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
 exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id, HorseFilled: true },
     include: [
       {
         model: db.MeetingTypeModel,

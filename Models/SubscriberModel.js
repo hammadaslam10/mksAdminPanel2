@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       NationalityID: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Please Add Nationality Of Subscriber" },

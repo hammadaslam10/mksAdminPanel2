@@ -82,7 +82,65 @@ exports.RaceCardGet = Trackerror(async (req, res, next) => {
       {
         model: db.RaceModel,
         as: "RaceCardRacesModelData",
-        include: { all: true },
+        where: { HorseFilled: true },
+        include: [
+          {
+            paranoid: false,
+            model: db.MeetingTypeModel,
+            as: "MeetingTypeData",
+          },
+          {
+            paranoid: false,
+            model: db.GroundTypeModel,
+            as: "GroundData",
+          },
+          {
+            model: db.RaceCourseModel,
+            as: "RaceCourseData",
+            paranoid: false,
+          },
+          {
+            paranoid: false,
+            model: db.TrackLengthModel,
+            as: "TrackLengthData",
+          },
+          {
+            paranoid: false,
+            model: db.RaceNameModel,
+            as: "RaceNameModelData",
+          },
+          {
+            paranoid: false,
+            model: db.RaceKindModel,
+            as: "RaceKindData",
+          },
+          {
+            model: db.RaceTypeModel,
+            as: "RaceTypeModelData",
+          },
+          {
+            paranoid: false,
+            model: db.SponsorModel,
+            as: "SponsorData",
+          },
+          {
+            model: db.HorseModel,
+            as: "RaceAndHorseModelData",
+            include: { all: true },
+            paranoid: false,
+          },
+          {
+            model: db.JockeyModel,
+            include: { all: true },
+            paranoid: false,
+          },
+          {
+            model: db.ResultModel,
+            as: "RaceResultData",
+            include: { all: true },
+            paranoid: false,
+          },
+        ],
       },
       {
         model: db.RaceCourseModel,

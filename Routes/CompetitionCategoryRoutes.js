@@ -9,10 +9,12 @@ const {
   SingleCompetitonCategoryGet,
   RestoreSoftDeletedCompetitionCategory,
   GetDeletedCompetitionCategory,
+  SearchCompetitionCategory,
 } = require("../Controller/CompetitionCategoryController");
 router
   .route("/competitioncategorygetdeleted")
   .get(GetDeletedCompetitionCategory);
+router.route("/competitioncategorygetdeleted").get(SearchCompetitionCategory);
 router
   .route("/restoresoftdeletecompetitioncategory/:id")
   .post(RestoreSoftDeletedCompetitionCategory);

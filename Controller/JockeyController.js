@@ -136,6 +136,7 @@ exports.SearchJockey = Trackerror(async (req, res, next) => {
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    include: { all: true },
     where: {
       NameEn: {
         [Op.like]: `%${req.query.NameEn || ""}%`,
@@ -161,15 +162,15 @@ exports.SearchJockey = Trackerror(async (req, res, next) => {
       RemarksAr: {
         [Op.like]: `%${req.query.RemarksAr || ""}%`,
       },
-      MiniumumJockeyWeight: {
-        [Op.like]: `%${req.query.MiniumumJockeyWeight || ""}%`,
-      },
-      MaximumJockeyWeight: {
-        [Op.like]: `%${req.query.MaximumJockeyWeight || ""}%`,
-      },
-      JockeyAllowance: {
-        [Op.like]: `%${req.query.JockeyAllowance || ""}%`,
-      },
+      // MiniumumJockeyWeight: {
+      //   [Op.like]: `%${req.query.MiniumumJockeyWeight || ""}%`,
+      // },
+      // MaximumJockeyWeight: {
+      //   [Op.like]: `%${req.query.MaximumJockeyWeight || ""}%`,
+      // },
+      // JockeyAllowance: {
+      //   [Op.like]: `%${req.query.JockeyAllowance || ""}%`,
+      // },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",

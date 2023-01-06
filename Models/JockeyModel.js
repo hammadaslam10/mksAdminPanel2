@@ -110,13 +110,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       Rating: {
         type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Rating Of Jockey" },
-          notEmpty: {
-            msg: "Without Rating Jockey Will not get submitted",
-          },
-        },
+        defaultValue: 0,
       },
       NationalityID: {
         type: DataTypes.UUID,

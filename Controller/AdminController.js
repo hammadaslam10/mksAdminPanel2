@@ -68,12 +68,6 @@ exports.GetAllAdmin = Trackerror(async (req, res, next) => {
       LastName: {
         [Op.like]: `%${req.query.LastName || ""}%`,
       },
-      PhoneNumber: {
-        [Op.like]: `%${req.query.PhoneNumber || ""}%`,
-      },
-      DescriptionAr: {
-        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
-      },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",

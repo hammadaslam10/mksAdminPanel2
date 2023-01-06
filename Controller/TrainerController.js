@@ -41,6 +41,7 @@ exports.SearchTrainer = Trackerror(async (req, res, next) => {
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    include: { all: true },
     where: {
       NameEn: {
         [Op.like]: `%${req.query.NameEn || ""}%`,
@@ -72,9 +73,9 @@ exports.SearchTrainer = Trackerror(async (req, res, next) => {
       TitleAr: {
         [Op.like]: `%${req.query.TitleAr || ""}%`,
       },
-      DOB: {
-        [Op.like]: `%${req.query.DOB || ""}%`,
-      },
+      // DOB: {
+      //   [Op.like]: `%${req.query.DOB || ""}%`,
+      // },
       NationalityID: {
         [Op.like]: `%${req.query.NationalityID || ""}%`,
       },

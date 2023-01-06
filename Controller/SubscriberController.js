@@ -22,7 +22,6 @@ exports.SearchUser = Trackerror(async (req, res, next) => {
   if (req.query.createdAt) {
     console.log(req.query.createdAt);
     const data = await SubscriberModel.findAll({
-      
       where: {
         FirstName: {
           [Op.like]: `%${req.query.FirstName || ""}%`,
@@ -236,8 +235,8 @@ exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
     214,
     212
   );
-  await uploadFile(fileBuffer, `${Subscriber}/${Image}`, file.mimetype);
   if (password) {
+    await uploadFile(fileBuffer, `${Subscriber}/${Image}`, file.mimetype);
     const data = await SubscriberModel.create({
       FirstName: FirstName,
       LastName: LastName,
@@ -252,7 +251,7 @@ exports.RegisterSubscriber = Trackerror(async (req, res, next) => {
     });
     TokenCreation(data, 201, res);
   }
-  return next(new HandlerCallBack(`Error during Resgistration `));
+  return next(new HandlerCallBack(`Error during Registration `));
 });
 exports.GetAllSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findAll();
@@ -264,12 +263,37 @@ exports.GetAllSubscriber = Trackerror(async (req, res, next) => {
 exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true },
+    include: [
+      {
+        paranoid: false,
+        model: db.HorseModel,
+        as: "TrackHorses",
+      },
+      {
+        paranoid: false,
+        model: db.TrainerModel,
+        as: "TrackTrainers",
+      },
+      {
+        model: db.OwnerModel,
+        as: "TrackOwners",
+        paranoid: false,
+      },
+      {
+        paranoid: false,
+        model: db.SubscriberAndCompetitionModel,
+        as: "CompetitionSubscriberIDData",
+      },
+      {
+        paranoid: false,
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+    ],
   });
   if (!data) {
     return next(new HandlerCallBack(`user not found `));
   }
-
   res.status(200).json({
     success: true,
     data: data,
@@ -521,10 +545,10 @@ exports.UpdateProfile = Trackerror(async (req, res, next) => {
     });
   } else {
     const file = req.files.image;
-    await deleteFile(`${Breeder}/${data.image}`);
+    await deleteFile(`${Subscriber}/${data.image}`);
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Breeder}/${Image}`, file.mimetype);
+    await uploadFile(fileBuffer, `${Subscriber}/${Image}`, file.mimetype);
     const updateddata = {
       image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Subscriber}/${Image}`,
       FirstName: FirstName || data.FirstName,
