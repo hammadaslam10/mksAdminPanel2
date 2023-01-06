@@ -284,11 +284,6 @@ exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
         model: db.SubscriberAndCompetitionModel,
         as: "CompetitionSubscriberIDData",
       },
-      {
-        paranoid: false,
-        model: db.RaceNameModel,
-        as: "RaceNameModelData",
-      },
     ],
   });
   if (!data) {
