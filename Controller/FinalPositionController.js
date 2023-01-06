@@ -34,14 +34,11 @@ exports.RestoreSoftDeletedFinalPosition = Trackerror(async (req, res, next) => {
 });
 
 exports.CreateFinalPosition = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
+  const { NameEn, NameAr } = req.body;
   try {
     const data = await FinalPositionModel.create({
-      shortName: shortName,
       NameEn: NameEn,
       NameAr: NameAr,
-      AbbrevEn: AbbrevEn,
-      AbbrevAr: AbbrevAr,
     });
     res.status(201).json({
       success: true,
@@ -78,12 +75,6 @@ exports.FinalPositionGet = Trackerror(async (req, res, next) => {
       NameAr: {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
-      AbbrevEn: {
-        [Op.like]: `%${req.query.AbbrevEn || ""}%`,
-      },
-      AbbrevAr: {
-        [Op.like]: `%${req.query.AbbrevAr || ""}%`,
-      },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
@@ -99,7 +90,7 @@ exports.FinalPositionGet = Trackerror(async (req, res, next) => {
 });
 exports.GetFinalPositionAdmin = Trackerror(async (req, res, next) => {});
 exports.EditFinalPosition = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
+  const { NameEn, NameAr } = req.body;
   let data = await FinalPositionModel.findOne({
     where: { _id: req.params.id },
   });
@@ -107,11 +98,8 @@ exports.EditFinalPosition = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("data not found", 404));
   }
   const updateddata = {
-    shortName: shortName || data.shortName,
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
-    AbbrevEn: AbbrevEn || data.AbbrevEn,
-    AbbrevAr: AbbrevAr || data.AbbrevAr,
   };
   data = await FinalPositionModel.update(updateddata, {
     where: {
