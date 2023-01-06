@@ -173,7 +173,7 @@ exports.TrackTrainers = Trackerror(async (req, res, next) => {
     where: { _id: decodedData.id },
   });
   if (!verify) {
-    return next(new HandlerCallBack(`Error during Resgistration `));
+    return next(new HandlerCallBack(`user not verified `));
   } else {
     const data = await SubscriberAndTrainerModel.findOrCreate({
       where: {
@@ -201,7 +201,7 @@ exports.TrackHorses = Trackerror(async (req, res, next) => {
     where: { _id: decodedData.id },
   });
   if (!verify) {
-    return next(new HandlerCallBack(`Error during Resgistration `));
+    return next(new HandlerCallBack(`user not verified `));
   } else {
     const data = await SubscriberAndHorsesModel.findOrCreate({
       where: {
