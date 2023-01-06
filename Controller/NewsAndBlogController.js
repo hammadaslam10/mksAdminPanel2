@@ -21,6 +21,15 @@ exports.GetDeletedNews = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.NewsTicker = Trackerror(async (req, res, next) => {
+  const data = await NewsletterModel.findAll({
+    attributes: ["TitleEn", "TitleAr"],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.RestoreSoftDeletedNews = Trackerror(async (req, res, next) => {
   const data = await NewsModel.findOne({
     paranoid: false,
