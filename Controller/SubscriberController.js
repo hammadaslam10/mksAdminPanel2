@@ -268,21 +268,25 @@ exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
         paranoid: false,
         model: db.HorseModel,
         as: "TrackHorses",
+        include: { all: true },
       },
       {
         paranoid: false,
         model: db.TrainerModel,
         as: "TrackTrainers",
+        include: { all: true },
       },
       {
         model: db.OwnerModel,
         as: "TrackOwners",
+        include: { all: true },
         paranoid: false,
       },
       {
         paranoid: false,
         model: db.SubscriberAndCompetitionModel,
         as: "CompetitionSubscriberIDData",
+        include: { all: true },
       },
     ],
   });
