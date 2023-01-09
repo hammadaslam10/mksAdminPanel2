@@ -158,6 +158,53 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     }
   }
 });
+exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
+  if (!req.files || !req.files.file) {
+    res.status(404).json({ message: "File not found" });
+  } else if (req.files.file.mimetype === "application/json") {
+    try {
+      let de = JSON.parse(req.files.file.data.toString("utf8"));
+      console.log(de);
+      let original = [];
+      await de.map((data) => {
+        original.push({
+          NameEn: data.NameEn,
+          NameAr: data.NameAr,
+          shortCode: data.shortCode,
+          AbbrevEn: data.AbbrevEn,
+          AbbrevAr: data.AbbrevAr,
+        });
+      });
+      console.log(original);
+      const data = await ColorModel.bulkCreate(original, {
+        ignoreDuplicates: true,
+        validate: true,
+      });
+      res.status(201).json({ success: true, data });
+    } catch (error) {
+      // if (error.name === "SequelizeUniqueConstraintError") {
+      //   res.status(403);
+      //   res.json({
+      //     status: "error",
+      //     message: [
+      //       "This Short Code already exists, Please enter a different one.",
+      //     ],
+      //   });
+      // } else {
+      res.status(500).json({
+        success: false,
+        message: error.errors,
+      });
+      // }
+    }
+  } else {
+    // console.log(req.files.file.mimetype);
+    res.status(409).json({ message: "file format is not valid" });
+  }
+  // res.status(200).json({
+  //   success: true,
+  // });
+});
 exports.NationalityGet = Trackerror(async (req, res, next) => {
   const data = await NationalityModel.findAll({
     offset: Number(req.query.page) || 0,

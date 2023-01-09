@@ -60,7 +60,10 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
           NameAr: data.NameAr,
         });
       });
-      const data = await BreederModel.bulkCreate(original);
+      const data = await BreederModel.bulkCreate(original, {
+        ignoreDuplicates: true,
+        validate: true,
+      });
       res.status(201).json({ success: true, data });
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
