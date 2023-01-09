@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
       // Length: {
       //   type: DataTypes.BIGINT,
       //   allowNull: false,

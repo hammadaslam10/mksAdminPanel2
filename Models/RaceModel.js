@@ -248,7 +248,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         defaultValue: 0,
       },
-      TrackCondition: {
+      TrackCondition:{
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -259,6 +259,10 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Race will have Sponsor" },
           notEmpty: { msg: "Sponsor  will not be empty" },
         },
+      },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
       },
     },
     {

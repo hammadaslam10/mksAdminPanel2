@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
     },
     {
       freezeTableName: true,

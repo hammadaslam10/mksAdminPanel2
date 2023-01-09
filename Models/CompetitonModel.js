@@ -143,7 +143,12 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "EndDate  will not be empty" },
         },
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
     },
+    
     {
       freezeTableName: true,
       paranoid: true,

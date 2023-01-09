@@ -58,6 +58,7 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
           TitleAr: data.TitleAr,
           NameEn: data.NameEn,
           NameAr: data.NameAr,
+          BackupId: data.BREEDER_ID,
         });
       });
       const data = await BreederModel.bulkCreate(original, {

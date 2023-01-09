@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         allownull: false,
       },
     },
+     
     {
       freezeTableName: true,
       paranoid: true,

@@ -61,6 +61,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
     },
     {
       freezeTableName: true,

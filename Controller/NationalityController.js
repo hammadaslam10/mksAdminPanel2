@@ -170,16 +170,18 @@ exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
         original.push({
           NameEn: data.NameEn,
           NameAr: data.NameAr,
+          AltNameEn: data.AltNameEn,
+          AltNameAr: data.AltNameAr,
           shortCode: data.shortCode,
           AbbrevEn: data.AbbrevEn,
           AbbrevAr: data.AbbrevAr,
+          HemisphereEn: data.HemisphereEn,
+          HemisphereAr: data.HemisphereAr,
+          BackupId: data.CREATION_ID,
         });
       });
       console.log(original);
-      const data = await ColorModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        validate: true,
-      });
+      const data = await NationalityModel.bulkCreate(original);
       res.status(201).json({ success: true, data });
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {

@@ -66,7 +66,12 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Name  will not be empty" },
         },
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
     },
+
     {
       freezeTableName: true,
       paranoid: true,

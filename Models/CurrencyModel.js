@@ -75,6 +75,10 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Rate  will not be empty" },
         },
       },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
+      },
     },
 
     {

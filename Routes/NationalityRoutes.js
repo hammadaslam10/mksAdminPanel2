@@ -9,6 +9,7 @@ const {
   GetNationalityMaxShortCode,
   GetDeletedNationality,
   RestoreSoftDeletedNationality,
+  NationalityMassUpload,
 } = require("../Controller/NationalityController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/nationalitygetdeleted").get(GetDeletedNationality);
@@ -16,6 +17,9 @@ router
   .route("/restoresoftdeletenationality/:id")
   .post(RestoreSoftDeletedNationality);
 router.route("/getnationalityshortcode").get(GetNationalityMaxShortCode);
+router
+  .route("/NationalityMassUpload", upload.single("image"))
+  .post(NationalityMassUpload);
 router
   .route("/uploadNationality", upload.single("image"))
   .post(CreateNationality);

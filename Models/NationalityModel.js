@@ -185,40 +185,42 @@ module.exports = (sequelize, DataTypes) => {
       HemisphereEn: {
         type: DataTypes.STRING,
         allowNull: false,
-        EnglishLanguageVerification() {
-          if (this.HemisphereEn.trim() == "") {
-            throw new Error("Please Enter Hemisphere in English");
-          }
-          if (
-            /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.HemisphereEn) ||
-            /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.HemisphereEn)
-          ) {
-          } else {
-            throw new Error("Hemisphere English Validation Failed");
-          }
-        },
+        defaultValue:"Southern Hemisphere",
+        // EnglishLanguageVerification() {
+        //   if (this.HemisphereEn.trim() == "") {
+        //     throw new Error("Please Enter Hemisphere in English");
+        //   }
+        //   if (
+        //     /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.HemisphereEn) ||
+        //     /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.HemisphereEn)
+        //   ) {
+        //   } else {
+        //     throw new Error("Hemisphere English Validation Failed");
+        //   }
+        // },
       },
       HemisphereAr: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          ArabicLanguageVerification() {
-            if (this.HemisphereAr.trim() == "") {
-              throw new Error("Please Enter  Hemisphere in  Arabic ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
-                this.HemisphereAr
-              ) ||
-              /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
-                this.HemisphereAr
-              )
-            ) {
-            } else {
-              throw new Error("Alternate Value  Validation Failed");
-            }
-          },
-        },
+        defaultValue:"نصف الكرة الجنوبي",
+        // validate: {
+        //   ArabicLanguageVerification() {
+        //     if (this.HemisphereAr.trim() == "") {
+        //       throw new Error("Please Enter  Hemisphere in  Arabic ");
+        //     }
+        //     if (
+        //       /^[a-zA-Z0-9$-@$!%*?&#^-_,،.+\u0621-\u064A\u0660-\u0669 ]+$/.test(
+        //         this.HemisphereAr
+        //       ) ||
+        //       /^[\u0621-\u064A\u0660-\u06690-9a-zA-Z0-9$-@$!%*?&#^-_.+]+$/.test(
+        //         this.HemisphereAr
+        //       )
+        //     ) {
+        //     } else {
+        //       throw new Error("Alternate Value  Validation Failed");
+        //     }
+        //   },
+        // },
       },
       image: {
         type: DataTypes.STRING,
@@ -229,6 +231,10 @@ module.exports = (sequelize, DataTypes) => {
         //     msg: "Without Image Nationality Will not get submitted",
         //   },
         // },
+      },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null,
       },
     },
     {
