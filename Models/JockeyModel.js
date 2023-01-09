@@ -109,7 +109,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       Rating: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.DOUBLE,
         defaultValue: 0,
       },
       NationalityID: {

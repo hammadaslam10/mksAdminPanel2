@@ -39,6 +39,7 @@ const CompetitionCategoryRoutes = require("./Routes/CompetitionCategoryRoutes");
 const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
 const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 const FinalPositionRoutes = require("./Routes/FinalPositionRoutes");
+const TrackConditionRoutes = require("./Routes/TrackConditionRoutes");
 let cron = require("node-cron");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
@@ -81,6 +82,7 @@ app.use("/api/v1", ComeptitionRoute);
 app.use("/api/v1", CompetitionCategoryRoutes);
 app.use("/api/v1", NewsLetterRoutes);
 app.use("/api/v1", PointTableSystemRoutes);
+app.use("/api/v1", TrackConditionRoutes);
 app.use("/api/v1", FinalPositionRoutes);
 // cron.schedule("* * * * *", () => {
 //   console.log("cron job working");

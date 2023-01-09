@@ -136,6 +136,10 @@ db.FinalPositionModel = require("../Models/FinalPositionModel")(Db, DataTypes);
 db.AdminModel = require("../Models/AdminModel")(Db, DataTypes);
 db.EquipmentModel = require("../Models/EquipmentModel")(Db, DataTypes);
 db.GroundTypeModel = require("../Models/GroundTypeModel")(Db, DataTypes);
+db.TrackConditionModel = require("../Models/TrackConditionModel")(
+  Db,
+  DataTypes
+);
 db.RaceAndPointsSystemModel = require("../Models/RaceAndPointsSystemModel")(
   Db,
   DataTypes
@@ -425,6 +429,14 @@ db.GroundTypeModel.hasMany(db.RaceModel, {
 db.RaceModel.belongsTo(db.GroundTypeModel, {
   foreignKey: "Ground",
   as: "GroundData",
+});
+db.TrackConditionModel.hasMany(db.RaceModel, {
+  foreignKey: "TrackCondition",
+  as: "TrackConditionData",
+});
+db.RaceModel.belongsTo(db.TrackConditionModel, {
+  foreignKey: "TrackCondition",
+  as: "TrackConditionData",
 });
 db.RaceKindModel.hasMany(db.RaceModel, {
   foreignKey: "RaceKind",

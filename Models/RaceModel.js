@@ -248,6 +248,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         defaultValue: 0,
       },
+      TrackCondition: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       Sponsor: {
         type: DataTypes.UUID,
         allowNull: false,

@@ -374,8 +374,12 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   });
 });
 exports.CancelRace = Trackerror(async (req, res, next) => {
+  const data = {
+    RaceStatus: "Cancelled",
+    ResultStatus: "Cancelled",
+  };
   await RaceModel.update(
-    { ResultStatus: "Cancelled" },
+    { data },
     {
       where: {
         _id: req.params.id,
@@ -716,6 +720,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     Day,
+    TrackCondition,
   } = req.body;
   const file = req.files.image;
   if (file == null) {
@@ -753,6 +758,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground: Ground,
     Sponsor: Sponsor,
     Day: Day,
+    TrackCondition: TrackCondition,
   });
   res.status(200).json({
     success: true,
@@ -942,6 +948,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     Day,
+    TrackCondition,
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -992,6 +999,7 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       Ground: Ground || data.Ground,
       Sponsor: Sponsor || data.Sponsor,
       Day: Day || data.Day,
+      TrackCondition: TrackCondition || data.TrackCondition,
     };
     data = await RaceModel.update(updateddata, {
       where: {
