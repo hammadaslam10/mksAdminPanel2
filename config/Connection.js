@@ -501,7 +501,7 @@ db.HorseModel.hasMany(db.ResultModel, {
 });
 db.ResultModel.belongsTo(db.HorseModel, {
   foreignKey: "HorseID",
-  as: "HorseIDDataHorse",
+  as: "HorseIDData",
 });
 db.FinalPositionModel.hasMany(db.ResultModel, {
   foreignKey: "FinalPosition",

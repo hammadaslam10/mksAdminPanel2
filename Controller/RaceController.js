@@ -71,7 +71,7 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
         paranoid: false,
       },
       {
-        model: db.ResultModel,
+         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
         paranoid: false,
@@ -279,7 +279,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         paranoid: false,
       },
       {
-        model: db.ResultModel,
+         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
         paranoid: false,
@@ -671,6 +671,12 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.CompetitonModel,
         as: "CompetitionRacesPointsModelData",
         include: { all: true },
+      },
+      {
+         model: db.ResultModel,
+        as: "RaceResultData",
+        include: { all: true },
+        paranoid: false,
       },
       {
         model: db.JockeyModel,
