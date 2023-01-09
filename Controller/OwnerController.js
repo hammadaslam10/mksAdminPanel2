@@ -177,7 +177,7 @@ exports.AddOwnerCap = Trackerror(async (req, res, next) => {
     await OwnerCapModel.findOrCreate({
       where: {
         OwnerID: data._id,
-        OwnerSilkColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${OwnerCap}/${SingleImage}`,
+        OwnerCapColor: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${OwnerCap}/${SingleImage}`,
       },
     });
   });

@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       OwnerID: {
         type: DataTypes.UUID,
         allownull: false,
-        notNull: { msg: "Please Add ID Of OwnerSilk Color" },
+        notNull: { msg: "Please Add ID Of Owner Cap Color" },
         notEmpty: {
-          msg: "Without ID OwnerSilk Color Will not get submitted",
+          msg: "Without ID Owner Cap Color Will not get submitted",
         },
       },
-      OwnerSilkColor: {
+      OwnerCapColor: {
         type: DataTypes.STRING,
         allownull: false,
       },

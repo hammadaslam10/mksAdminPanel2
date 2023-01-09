@@ -39,7 +39,6 @@ exports.RestoreSoftDeletedTrackLength = Trackerror(async (req, res, next) => {
 
 exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   const { RaceCourse, TrackLength, RailPosition, GroundType } = req.body;
-  const file = req.files.image;
   if (req.files === null) {
     try {
       const data = await TrackLengthModel.create({
@@ -71,6 +70,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
       }
     }
   } else {
+    const file = req.files.image;
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${TrackLength}/${Image}`, file.mimetype);
