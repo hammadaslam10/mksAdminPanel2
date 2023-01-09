@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
+      Rank: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        unique: true,
+      },
       NameEn: {
         type: DataTypes.STRING,
         unique: true,

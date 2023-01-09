@@ -47,13 +47,14 @@ exports.GetFinalPositionMaxShortCode = Trackerror(async (req, res, next) => {
   });
 });
 exports.CreateFinalPosition = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, Rank } = req.body;
 
   try {
     const data = await FinalPositionModel.create({
       shortCode: shortCode,
       NameEn: NameEn,
       NameAr: NameAr,
+      Rank: Rank,
     });
     console.log(data);
     res.status(201).json({
@@ -124,7 +125,7 @@ exports.SingleFinalPosition = Trackerror(async (req, res, next) => {
 });
 exports.GetFinalPositionAdmin = Trackerror(async (req, res, next) => {});
 exports.EditFinalPosition = Trackerror(async (req, res, next) => {
-  const { NameEn, NameAr, shortCode } = req.body;
+  const { NameEn, NameAr, shortCode, Rank } = req.body;
   let data = await FinalPositionModel.findOne({
     where: { _id: req.params.id },
   });
@@ -135,6 +136,7 @@ exports.EditFinalPosition = Trackerror(async (req, res, next) => {
     shortCode: shortCode || data.shortCode,
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
+    Rank: Rank || data.Rank,
   };
   try {
     data = await FinalPositionModel.update(updateddata, {
