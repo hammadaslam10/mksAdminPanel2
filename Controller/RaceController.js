@@ -506,13 +506,13 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
       await ResultsModel.findOrCreate({
         where: {
           RaceID: req.params.RaceId,
-          Rank: SingleResultEntryDetail[0],
-          HorseID: SingleResultEntryDetail[1],
-          Prize: SingleResultEntryDetail[2],
-          Points: SingleResultEntryDetail[3],
-          BonusPoints: SingleResultEntryDetail[4],
-          VideoLink: SingleResultEntryDetail[5],
-          FinalPosition: SingleResultEntryDetail[6],
+          // Rank: SingleResultEntryDetail[0],
+          HorseID: SingleResultEntryDetail[0],
+          Prize: SingleResultEntryDetail[1],
+          Points: SingleResultEntryDetail[2],
+          BonusPoints: SingleResultEntryDetail[3],
+          VideoLink: SingleResultEntryDetail[4],
+          FinalPosition: SingleResultEntryDetail[5],
         },
       });
     });

@@ -206,7 +206,7 @@ exports.AddOwnerCap = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (!data) {
-    return new next(HandlerCallBack("Owner is not available", 404));
+    return new HandlerCallBack("Owner is not available", 404);
   }
   let file = [req.files.image];
   await file.map(async (singleimage) => {
@@ -253,7 +253,7 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (data === null) {
-    return next(new HandlerCallBack("data not found", 404));
+    return new HandlerCallBack("data not found", 404);
   }
   if (req.files == null) {
     const updateddata = {
@@ -385,7 +385,7 @@ exports.DeleteOwner = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (!data) {
-    return next(new HandlerCallBack("data not found", 404));
+    return new HandlerCallBack("data not found", 404);
   }
 
   console.log(data);
@@ -405,7 +405,7 @@ exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
     where: { _id: req.params.id },
   });
   if (!data) {
-    return next(new HandlerCallBack("data not found", 404));
+    return new HandlerCallBack("data not found", 404);
   }
 
   await OwnerModel.destroy({

@@ -50,6 +50,7 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       console.log(de);
       let original = [];
       await de.map((data) => {
+      
         original.push({
           DescriptionEn: data.DescriptionEn,
           DescriptionAr: data.DescriptionAr,
