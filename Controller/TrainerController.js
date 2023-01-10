@@ -9,6 +9,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
 const { Op } = require("sequelize");
+const { sequelize } = require("sequelize");
 exports.GetDeletedTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
     paranoid: false,
@@ -99,73 +100,56 @@ exports.TrainerMassUpload = Trackerror(async (req, res, next) => {
   } else if (req.files.file.mimetype === "application/json") {
     try {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
+      let tempnationality = "";
       let original = [];
-      let;
-      // tempnationality = await NationalityModel.findOne({
-      //   where: { BackupId: data.NationalityID }
-      // });
-      await de.map(async (data) => {
-        
-          console.log(data);
-          console.log(data.NationalityID);
+      let data;
+      for (let i = 0; i < de.length; i++) {
+        try {
           tempnationality = await NationalityModel.findOne({
-            where: { BackupId: data.NationalityID }
+            where: { BackupId: de[i].NationalityID },
+            attributes: ["_id"]
           });
-          console.log(tempnationality.dataValues._id);
-          original.push({
-            NameEn: data.NameEn,
-            NameAr: data.NameAr,
-            ShortNameEn: data.ShortNameEn,
-            ShortNameAr: data.ShortNameAr,
-            TitleEn: data.TitleEn || data.NameEn,
-            TitleAr: data.TitleAr || data.NameAr,
-            TrainerLicenseDate: data.TrainerLicenseDate,
-            DOB: data.DOB || data.TrainerLicenseDate,
-            shortCode: data.shortCode,
-            DetailEn: data.DetailEn || data.NameEn,
-            RemarksEn: data.RemarksEn || null,
-            Rating: data.Rating || 0,
-            NationalityID: data.NationalityID,
-            DetailAr: data.DetailAr || data.NameAr,
-            RemarksAr: data.RemarksAr || null,
-            BackupId: result.dataValues._id
-          });
-          // tempnationality = "";
-        // } catch (err) {
-        //   res.status(500).json({
-        //     err
-        //   });
-        // }
-      });
-      const data = await TrainerModel.bulkCreate(original);
+        } catch (err) {
+          console.log(err);
+        }
+        original.push({
+          NameEn: de[i].NameEn,
+          NameAr: de[i].NameAr,
+          ShortNameEn: de[i].ShortNameEn,
+          ShortNameAr: de[i].ShortNameAr,
+          TitleEn: de[i].TitleEn || de[i].NameEn,
+          TitleAr: de[i].TitleAr || de[i].NameAr,
+          TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
+          DOB: de[i].DOB || de[i].TrainerLicenseDate,
+          shortCode: de[i].shortCode,
+          DetailEn: de[i].DetailEn || de[i].NameEn,
+          RemarksEn: de[i].RemarksEn || de[i].NameEn,
+          Rating: de[i].Rating || 0,
+          NationalityID: tempnationality.dataValues._id,
+          DetailAr: de[i].DetailAr || de[i].NameAr,
+          RemarksAr: de[i].RemarksAr || de[i].NameEn,
+          BackupId: de[i].id
+        });
+      }
+      
+      const db = await TrainerModel.bulkCreate(original);
       // , {
       //   ignoreDuplicates: true,
       //   validate: true
       // }
-      res.status(201).json({ success: true, data });
-    } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
+      res.status(200).json({
+        success: true,
+        db
+      });
+    } catch (err) {
       res.status(500).json({
         success: false,
-        message: error
+        message: err
       });
-      // }
     }
   } else {
-    // console.log(req.files.file.mimetype);
     res.status(409).json({ message: "file format is not valid" });
   }
-  // res.status(200).json({
-  //   success: true,
-  // });
 });
 exports.GetTrainer = Trackerror(async (req, res, next) => {
   const data = await TrainerModel.findAll({
