@@ -94,59 +94,78 @@ exports.SearchTrainer = Trackerror(async (req, res, next) => {
     data: data
   });
 });
+function exchangefunction(arraytobechecked, valuetobechecked) {
+  let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
+  console.log(a._id, "hello");
+  return a._id;
+}
 exports.TrainerMassUpload = Trackerror(async (req, res, next) => {
   if (!req.files || !req.files.file) {
     res.status(404).json({ message: "File not found" });
   } else if (req.files.file.mimetype === "application/json") {
-    try {
-      let de = JSON.parse(req.files.file.data.toString("utf8"));
-      let tempnationality = "";
-      let original = [];
-      let data;
-      for (let i = 0; i < de.length; i++) {
-        try {
-          tempnationality = await NationalityModel.findOne({
-            where: { BackupId: de[i].NationalityID },
-            attributes: ["_id"]
-          });
-        } catch (err) {
-          console.log(err);
-        }
-        original.push({
-          NameEn: de[i].NameEn,
-          NameAr: de[i].NameAr,
-          ShortNameEn: de[i].ShortNameEn,
-          ShortNameAr: de[i].ShortNameAr,
-          TitleEn: de[i].TitleEn || de[i].NameEn,
-          TitleAr: de[i].TitleAr || de[i].NameAr,
-          TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
-          DOB: de[i].DOB || de[i].TrainerLicenseDate,
-          shortCode: de[i].shortCode,
-          DetailEn: de[i].DetailEn || de[i].NameEn,
-          RemarksEn: de[i].RemarksEn || de[i].NameEn,
-          Rating: de[i].Rating || 0,
-          NationalityID: tempnationality.dataValues._id,
-          DetailAr: de[i].DetailAr || de[i].NameAr,
-          RemarksAr: de[i].RemarksAr || de[i].NameEn,
-          BackupId: de[i].id
-        });
-      }
-      
-      const db = await TrainerModel.bulkCreate(original);
-      // , {
-      //   ignoreDuplicates: true,
-      //   validate: true
-      // }
-      res.status(200).json({
-        success: true,
-        db
+    // try {
+    let de = JSON.parse(req.files.file.data.toString("utf8"));
+    let tempnationality;
+    let original = [];
+    let data;
+    let nationalforeignkeys = Array.from(
+      new Set(de.map((item) => item.NationalityID))
+    );
+    console.log(nationalforeignkeys.length);
+    console.log(nationalforeignkeys);
+    tempnationality = await NationalityModel.findAll({
+      where: { BackupId: nationalforeignkeys },
+      attributes: ["_id", "BackupId"]
+    });
+    nationalforeignkeys = [];
+
+    tempnationality.map((newdata) => {
+      nationalforeignkeys.push({
+        _id: newdata._id,
+        BackupId: newdata.BackupId
       });
-    } catch (err) {
-      res.status(500).json({
-        success: false,
-        message: err
+    });
+    let temp;
+    // console.log(nationalforeignkeys);
+    for (let i = 0; i < de.length; i++) {
+      temp = exchangefunction(nationalforeignkeys, de[i].NationalityID);
+      console.log(temp, "temp");
+      original.push({
+        NameEn: de[i].NameEn,
+        NameAr: de[i].NameAr,
+        ShortNameEn: de[i].ShortNameEn,
+        ShortNameAr: de[i].ShortNameAr,
+        TitleEn: de[i].TitleEn || de[i].NameEn,
+        TitleAr: de[i].TitleAr || de[i].NameAr,
+        TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
+        DOB: de[i].DOB || de[i].TrainerLicenseDate,
+        shortCode: de[i].shortCode,
+        DetailEn: de[i].DetailEn || de[i].NameEn,
+        RemarksEn: de[i].RemarksEn || de[i].NameEn,
+        Rating: de[i].Rating || 0,
+        NationalityID: temp,
+        DetailAr: de[i].DetailAr || de[i].NameAr,
+        RemarksAr: de[i].RemarksAr || de[i].NameEn,
+        BackupId: de[i].id
       });
     }
+
+    // console.log(original);
+    const db = await TrainerModel.bulkCreate(original);
+    // , {
+    //   ignoreDuplicates: true,
+    //   validate: true
+    // }
+    res.status(200).json({
+      success: true,
+      db
+    });
+    // } catch (err) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: err
+    //   });
+    // }
   } else {
     res.status(409).json({ message: "file format is not valid" });
   }

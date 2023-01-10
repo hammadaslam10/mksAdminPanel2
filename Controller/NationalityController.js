@@ -181,10 +181,7 @@ exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
         });
       });
       // console.log(original);
-      const data = await NationalityModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        validate: true
-      });
+      const data = await NationalityModel.bulkCreate(original);
       res.status(201).json({ success: true, data });
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
