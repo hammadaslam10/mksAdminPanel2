@@ -84,11 +84,11 @@ app.use("/api/v1", NewsLetterRoutes);
 app.use("/api/v1", PointTableSystemRoutes);
 app.use("/api/v1", TrackConditionRoutes);
 app.use("/api/v1", FinalPositionRoutes);
-// cron.schedule("* * * * *", () => {
-//   console.log("cron job working");
-// });
-// cron.schedule("* * * * *", () => {
-//   console.log("cron job working1");
-// });
+cron.schedule("* * * * *", () => {
+  console.log("cron job working");
+});
+cron.schedule("* * * * *", () => {
+  console.log("cron job working1");
+});
 app.use(ApplyMiddleware);
 module.exports = app;

@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
         // allowNull: false,
         // validate: {
         //   notNull: { msg: "Please Add Image Of Trainer" },
@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -57,8 +57,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       TitleEn: {
         type: DataTypes.STRING,
@@ -75,8 +75,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       TitleAr: {
         type: DataTypes.STRING,
@@ -97,8 +97,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       DOB: {
         type: DataTypes.DATE,
@@ -106,9 +106,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Trainer" },
           notEmpty: {
-            msg: "Without Date of birth Trainer Will not get submitted",
-          },
-        },
+            msg: "Without Date of birth Trainer Will not get submitted"
+          }
+        }
       },
       TrainerLicenseDate: {
         type: DataTypes.DATE,
@@ -116,9 +116,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Trainer License Date Of Trainer" },
           notEmpty: {
-            msg: "Without Trainer License Date Trainer Will not get submitted",
-          },
-        },
+            msg: "Without Trainer License Date Trainer Will not get submitted"
+          }
+        }
       },
       ShortNameEn: {
         type: DataTypes.STRING,
@@ -135,8 +135,19 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Short Name English Validation Failed");
             }
-          },
-        },
+          }
+        }
+      },
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
+        allowNull: false,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Trainer will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" }
+        }
       },
       ShortNameAr: {
         type: DataTypes.STRING,
@@ -157,8 +168,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Short Name Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       DetailEn: {
         type: DataTypes.STRING,
@@ -175,8 +186,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Detail English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       DetailAr: {
         type: DataTypes.STRING,
@@ -197,8 +208,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Detail Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
 
       RemarksEn: {
@@ -215,7 +226,7 @@ module.exports = (sequelize, DataTypes) => {
           } else {
             throw new Error("remarks English Validation Failed");
           }
-        },
+        }
       },
       RemarksAr: {
         type: DataTypes.STRING,
@@ -235,7 +246,7 @@ module.exports = (sequelize, DataTypes) => {
           } else {
             throw new Error("Remarks Arabic Validation Failed");
           }
-        },
+        }
       },
       NationalityID: {
         type: DataTypes.UUID,
@@ -243,15 +254,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Trainer" },
           notEmpty: {
-            msg: "Without Nationality Trainer will not  get submitted",
-          },
-        },
-      },
+            msg: "Without Nationality Trainer will not  get submitted"
+          }
+        }
+      }
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10,
+      initialAutoIncrement: 10
     }
   );
   return TrainerModel;
