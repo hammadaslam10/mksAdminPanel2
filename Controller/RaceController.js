@@ -329,7 +329,7 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
         },
         {
           RaceStatus: {
-            [Op.or]: [{ authorId: "Completed" }]
+            [Op.or]: [{ RaceStatus: "Completed" }]
           }
         }
       ]
