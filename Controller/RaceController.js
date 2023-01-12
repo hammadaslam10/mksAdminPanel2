@@ -612,9 +612,9 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     include: [
       {
-        where: {
-          RaceID: result.RaceID
-        },
+        // where: {
+        //   RaceID: result.RaceID
+        // },
         model: db.ResultModel,
         as: "RaceResultData",
         include: [
