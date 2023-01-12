@@ -257,6 +257,10 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Without Nationality Trainer will not  get submitted"
           }
         }
+      },
+      BackupId: {
+        type: DataTypes.BIGINT,
+        defaultValue: null
       }
     },
     {

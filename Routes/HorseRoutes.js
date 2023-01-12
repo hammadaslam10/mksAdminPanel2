@@ -12,6 +12,7 @@ const {
   PedigreeHorse,
   SoftDeleteHorse,
   SearchHorse,
+  HorseMassUpload
 } = require("../Controller/HorseController");
 router.route("/horsegetdeleted").get(GetDeletedHorse);
 router.route("/SearchHorse").get(SearchHorse);
@@ -19,6 +20,7 @@ router.route("/pedigreehorse/:id").get(PedigreeHorse);
 router.route("/restoresoftdeletehorse/:id").post(RestoreSoftDeletedHorse);
 router.route("/gethorse").get(GetHorse);
 router.route("/searchhorse_trainer_jockey").post(SearchName);
+router.route("/HorseMassUpload").post(HorseMassUpload);
 router.route("/getsinglehorse/:id").get(SingleHorse);
 router.route("/createhorse").post(CreateHorse);
 router.route("/updatehorse/:id").put(UpdateHorse);

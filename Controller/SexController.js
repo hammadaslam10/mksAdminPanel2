@@ -27,8 +27,8 @@ exports.SexMassUpload = Trackerror(async (req, res, next) => {
       let original = [];
       await de.map((data) => {
         original.push({
-          AbbrevEn: data.AbbrevEn,
-          AbbrevAr: data.AbbrevAr,
+          AbbrevEn: data.AbbrevEn || data.NameEn,
+          AbbrevAr: data.AbbrevAr || data.NameAr,
           shortCode: data.shortCode,
           NameEn: data.NameEn,
           NameAr: data.NameAr,

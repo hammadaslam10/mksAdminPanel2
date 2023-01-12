@@ -2,6 +2,7 @@ const db = require("../config/Connection");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const OwnerModel = db.OwnerModel;
+const NationalityModel = db.NationalityModel;
 const { uploadFile, deleteFile, getObjectSignedUrl } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
@@ -40,54 +41,92 @@ exports.RestoreSoftDeletedOwner = Trackerror(async (req, res, next) => {
     restoredata
   });
 });
+function exchangefunction(arraytobechecked, valuetobechecked) {
+  let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
+  return a._id;
+}
 exports.OwnerMassUpload = Trackerror(async (req, res, next) => {
   if (!req.files || !req.files.file) {
     res.status(404).json({ message: "File not found" });
   } else if (req.files.file.mimetype === "application/json") {
     try {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
-      console.log(de);
+      let tempnationality;
       let original = [];
-      await de.map((data) => {
-        data.original.push({
-          NameEn: data.NameEn,
-          NameAr: data.NameAr,
-          NationalityID: data.NationalityID,
-          TitleEn: data.TitleEn,
-          TitleAr: data.TitleAr,
-          shortCode: data.shortCode,
-          ShortEn: data.ShortEn,
-          ShortAr: data.ShortAr,
-          RegistrationDate: data.RegistrationDate,
-          BackupId: data.id
+      let data;
+
+      let nationalforeignkeys = Array.from(
+        new Set(de.map((item) => item.NationalityID))
+      );
+
+      const index = nationalforeignkeys.indexOf(undefined);
+      if (index > -1) {
+        // only splice array when item is found
+        nationalforeignkeys.splice(index, 1); // 2nd parameter means remove one item only
+      }
+
+      nationalforeignkeys.push(232);
+
+      tempnationality = await NationalityModel.findAll({
+        where: { BackupId: nationalforeignkeys },
+        attributes: ["_id", "BackupId"]
+      });
+
+      nationalforeignkeys = [];
+
+      tempnationality.map((newdata) => {
+        nationalforeignkeys.push({
+          _id: newdata._id,
+          BackupId: newdata.BackupId
         });
       });
-      console.log(original);
-      const data = await OwnerModel.bulkCreate(original);
-      res.status(201).json({ success: true, data });
-    } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
+      let temp;
+      for (let i = 0; i < de.length; i++) {
+        temp = exchangefunction(
+          nationalforeignkeys,
+          de[i].NationalityID || 232
+        );
+        if (i == 3151) {
+          console.log(de[i]);
+        }
+        if (Date.parse(de[i].RegistrationDate) == NaN) {
+          console.log(de[i]);
+          return new HandlerCallBack("Date format is not ok", 404);
+        }
+        original.push({
+          NameEn: de[i].NameEn,
+          NameAr: de[i].NameAr,
+          NationalityID: temp,
+          TitleEn: de[i].TitleEn,
+          TitleAr: de[i].TitleAr,
+          shortCode: de[i].shortCode,
+          ShortEn: de[i].ShortEn || de[i].TitleEn,
+          ShortAr: de[i].ShortAr || de[i].TitleAr,
+          RegistrationDate: de[i].RegistrationDate,
+          BackupId: de[i].id
+        });
+      }
+      // var sources = _.map(req.body.discoverySource, function (source) {
+      //   return {
+      //     discoverySource: source,
+      //     organizationId: req.body.organizationId
+      //   };
+      // });
+      const db = await OwnerModel.bulkCreate(original);
+
+      res.status(200).json({
+        success: true,
+        db
+      });
+    } catch (err) {
       res.status(500).json({
         success: false,
-        message: error.errors
+        message: err
       });
-      // }
     }
   } else {
-    // console.log(req.files.file.mimetype);
     res.status(409).json({ message: "file format is not valid" });
   }
-  // res.status(200).json({
-  //   success: true,
-  // });
 });
 exports.CreateOwner = Trackerror(async (req, res, next) => {
   const {

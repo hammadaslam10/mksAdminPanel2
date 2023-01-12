@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         // },
       },
       NameEn: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       NameAr: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {
@@ -71,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       TitleEn: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -89,7 +89,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       TitleAr: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {
@@ -111,7 +111,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       ShortEn: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -129,7 +129,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       ShortAr: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {

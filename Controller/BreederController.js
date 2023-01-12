@@ -14,12 +14,12 @@ exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null },
-    },
+      [Op.not]: { deletedAt: null }
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 const convert = function (csvFile) {
@@ -50,22 +50,18 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       console.log(de);
       let original = [];
       await de.map((data) => {
-      
         original.push({
-          DescriptionEn: data.DescriptionEn,
-          DescriptionAr: data.DescriptionAr,
+          DescriptionEn: data.DescriptionEn || data.NameEn,
+          DescriptionAr: data.DescriptionAr || data.NameAr,
           shortCode: data.shortCode,
-          TitleEn: data.TitleEn,
-          TitleAr: data.TitleAr,
+          TitleEn: data.TitleEn || data.NameEn,
+          TitleAr: data.TitleAr || data.NameAr,
           NameEn: data.NameEn,
           NameAr: data.NameAr,
-          BackupId: data.BREEDER_ID,
+          BackupId: data.id
         });
       });
-      const data = await BreederModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        validate: true,
-      });
+      const data = await BreederModel.bulkCreate(original);
       res.status(201).json({ success: true, data });
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
@@ -79,7 +75,7 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       // } else {
       res.status(500).json({
         success: false,
-        message: error.errors,
+        message: error.errors
       });
       // }
     }
@@ -95,7 +91,7 @@ exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
   try {
     const data = await BreederModel.findOne({
       paranoid: false,
-      where: { _id: req.params.id },
+      where: { _id: req.params.id }
     });
     if (!data) {
       return next(new HandlerCallBack("data not found", 404));
@@ -106,25 +102,25 @@ exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
       { shortCode: newcode },
       {
         where: {
-          _id: req.params.id,
+          _id: req.params.id
         },
-        paranoid: false,
+        paranoid: false
       }
     );
     const restoredata = await BreederModel.restore({
-      where: { _id: req.params.id },
+      where: { _id: req.params.id }
     });
     res.status(200).json({
       success: true,
-      restoredata,
+      restoredata
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       let [result] = await BreederModel.findAll({
         paranoid: false,
         attributes: [
-          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-        ],
+          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"]
+        ]
       });
       let newcode = result.dataValues.maxshortCode * -1;
       console.log(newcode);
@@ -132,23 +128,23 @@ exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
         { shortCode: newcode + 1 },
         {
           where: {
-            _id: req.params.id,
+            _id: req.params.id
           },
-          paranoid: false,
+          paranoid: false
         }
       );
       const restoredata = await BreederModel.restore({
-        where: { _id: req.params.id },
+        where: { _id: req.params.id }
       });
 
       res.status(200).json({
         success: true,
-        restoredata,
+        restoredata
       });
     } else {
       res.status(500).json({
         success: false,
-        message: error,
+        message: error
       });
     }
   }
@@ -158,12 +154,12 @@ exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
     attributes: [
-      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-    ],
+      [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"]
+    ]
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 
@@ -175,7 +171,7 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     DescriptionAr,
     TitleEn,
     TitleAr,
-    shortCode,
+    shortCode
   } = req.body;
   if (req.files === null) {
     try {
@@ -186,11 +182,11 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         TitleEn: TitleEn,
         TitleAr: TitleAr,
         NameEn: NameEn,
-        NameAr: NameAr,
+        NameAr: NameAr
       });
       res.status(201).json({
         success: true,
-        data,
+        data
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
@@ -198,15 +194,15 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         res.send({
           status: "error",
           message: [
-            "This Short Code already exists, Please enter a different one.",
-          ],
+            "This Short Code already exists, Please enter a different one."
+          ]
         });
       } else {
         res.status(500).json({
           success: false,
           message: error.errors.map((singleerr) => {
             return singleerr.message;
-          }),
+          })
         });
       }
     }
@@ -224,11 +220,11 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         TitleEn: TitleEn,
         TitleAr: TitleAr,
         NameEn: NameEn,
-        NameAr: NameAr,
+        NameAr: NameAr
       });
       res.status(201).json({
         success: true,
-        data,
+        data
       });
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
@@ -236,15 +232,15 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
         res.send({
           status: "error",
           message: [
-            "This Short Code already exists, Please enter a different one.",
-          ],
+            "This Short Code already exists, Please enter a different one."
+          ]
         });
       } else {
         res.status(500).json({
           success: false,
           message: error.errors.map((singleerr) => {
             return singleerr.message;
-          }),
+          })
         });
       }
     }
@@ -258,32 +254,32 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`,
+        [Op.like]: `%${req.query.NameEn || ""}%`
       },
       NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`,
+        [Op.like]: `%${req.query.NameAr || ""}%`
       },
       DescriptionEn: {
-        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`
       },
       DescriptionAr: {
-        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `%${req.query.shortCode || ""}%`
       },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-    },
+          req.query.endDate || "4030-12-01 00:00:00"
+        ]
+      }
+    }
   });
   res.status(200).json({
     success: true,
     data: data,
-    totalcount,
+    totalcount
   });
 });
 exports.GetBreederAdmin = Trackerror(async (req, res, next) => {});
@@ -295,11 +291,11 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
     DescriptionAr,
     TitleEn,
     TitleAr,
-    shortCode,
+    shortCode
   } = req.body;
   try {
     let data = await BreederModel.findOne({
-      where: { _id: req.params.id },
+      where: { _id: req.params.id }
     });
     if (data === null) {
       return next(new HandlerCallBack("data not found", 404));
@@ -313,16 +309,16 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
         TitleEn: TitleEn || data.TitleEn,
         TitleAr: TitleAr || data.TitleAr,
         NameEn: NameEn || data.NameEn,
-        NameAr: NameAr || data.NameAr,
+        NameAr: NameAr || data.NameAr
       };
       data = await BreederModel.update(updateddata, {
         where: {
-          _id: req.params.id,
-        },
+          _id: req.params.id
+        }
       });
       res.status(200).json({
         success: true,
-        data,
+        data
       });
     } else {
       const file = req.files.image;
@@ -342,17 +338,17 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
         TitleEn: TitleEn || data.TitleEn,
         TitleAr: TitleAr || data.TitleAr,
         NameEn: NameEn || data.NameEn,
-        NameAr: NameAr || data.NameAr,
+        NameAr: NameAr || data.NameAr
       };
       data = await BreederModel.update(updateddata, {
         where: {
-          _id: req.params.id,
-        },
+          _id: req.params.id
+        }
       });
 
       res.status(200).json({
         success: true,
-        data,
+        data
       });
     }
   } catch (error) {
@@ -361,15 +357,15 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
       res.json({
         status: "error",
         message: [
-          "This Short Code already exists, Please enter a different one.",
-        ],
+          "This Short Code already exists, Please enter a different one."
+        ]
       });
     } else {
       res.status(500).json({
         success: false,
         message: error.errors.map((singleerr) => {
           return singleerr.message;
-        }),
+        })
       });
     }
   }
@@ -377,20 +373,20 @@ exports.EditBreeder = Trackerror(async (req, res, next) => {
 exports.SingleBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
     where: { _id: req.params.id },
-    include: { all: true },
+    include: { all: true }
   });
   if (!data) {
     return next(new HandlerCallBack("Race is Not Available", 404));
   } else {
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -400,18 +396,18 @@ exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   await deleteFile(`${Breeder}/${data.image.slice(-64)}`);
   await BreederModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
   try {
     const data = await BreederModel.findOne({
-      where: { _id: req.params.id },
+      where: { _id: req.params.id }
     });
     if (!data) {
       return next(new HandlerCallBack("data not found", 404));
@@ -420,48 +416,48 @@ exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
       { shortCode: -data.shortCode },
       {
         where: {
-          _id: req.params.id,
-        },
+          _id: req.params.id
+        }
       }
     );
 
     await BreederModel.destroy({
-      where: { _id: req.params.id },
+      where: { _id: req.params.id }
     });
     res.status(200).json({
       success: true,
-      message: "Soft Delete Successfully",
+      message: "Soft Delete Successfully"
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       let [result] = await BreederModel.findAll({
         paranoid: false,
         attributes: [
-          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-        ],
+          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"]
+        ]
       });
       await BreederModel.update(
         { shortCode: -(result.dataValues.maxshortCode + 1) },
         {
           where: {
-            _id: req.params.id,
-          },
+            _id: req.params.id
+          }
         }
       );
       await BreederModel.destroy({
-        where: { _id: req.params.id },
+        where: { _id: req.params.id }
       });
 
       res.status(200).json({
         success: true,
-        message: "Soft Delete Successfully",
+        message: "Soft Delete Successfully"
       });
     } else {
       res.status(500).json({
         success: false,
         message: error.errors.map((singleerr) => {
           return singleerr.message;
-        }),
+        })
       });
     }
   }

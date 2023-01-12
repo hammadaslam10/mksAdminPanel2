@@ -20,16 +20,15 @@ const Db = new Sequelize(
   }
 );
 // const Db = new Sequelize(
-//     process.env.SQLDB,
+//   process.env.SQLDB,
 //   process.env.SQLHOST,
 //   process.env.SQLPASSWORD,
 //   {
-//       dialect: "mysql",
-//       // logging: false,
-//     }
-//   );
-  
-  console.log(Db);
+//     dialect: "mysql",
+//     // logging: false
+//   }
+// );
+
 Db.authenticate()
   .then(() => {
     console.log("connected..");
