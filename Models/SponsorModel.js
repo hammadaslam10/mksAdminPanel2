@@ -8,17 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
       image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Image Of Sponsor" },
-          notEmpty: {
-            msg: "Without Image Sponsor Will not get submitted",
-          },
-        },
+        type: DataTypes.STRING
       },
       DescriptionEn: {
         type: DataTypes.STRING,
@@ -35,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Description English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       DescriptionAr: {
         type: DataTypes.STRING,
@@ -57,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Description Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       TitleEn: {
         type: DataTypes.STRING,
@@ -75,8 +68,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       TitleAr: {
         type: DataTypes.STRING,
@@ -97,17 +90,17 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       Url: {
-        type: DataTypes.STRING,
-      },
+        type: DataTypes.STRING
+      }
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10,
+      initialAutoIncrement: 10
     }
   );
   return SponsorModel;

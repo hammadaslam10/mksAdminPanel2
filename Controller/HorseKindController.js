@@ -35,7 +35,7 @@ exports.HorseKindMassUpload = Trackerror(async (req, res, next) => {
           BackupId: data.id
         });
       });
-      const data = await SexModel.bulkCreate(original, {
+      const data = await HorseKindModel.bulkCreate(original, {
         ignoreDuplicates: true,
         validate: true
       });
