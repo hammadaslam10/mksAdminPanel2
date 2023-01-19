@@ -74,6 +74,7 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
   //   ` SELECT _id, image, DescriptionEn, DescriptionAr, TitleEn, TitleAr, createdAt, updatedAt,TIMEDIFF(createdAt, updatedAt)  As TimeInMinutes, deletedAt FROM AdvertismentModel AS AdvertismentModel WHERE (AdvertismentModel.deletedAt IS NULL);`
   // );
   // Results will be an empty array and metadata will contain the number of affected rows.
+  const totalcount = await AdvertismentModel.count();
   const data = await AdvertismentModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -102,6 +103,7 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
   });
 });
 exports.GetAdsAdmin = Trackerror(async (req, res, next) => {});
