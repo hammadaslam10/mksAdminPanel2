@@ -74,7 +74,7 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
   }
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {
-  const totalcount = await BreederModel.count();
+  const totalcount = await SponsorModel.count();
   const data = await SponsorModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
