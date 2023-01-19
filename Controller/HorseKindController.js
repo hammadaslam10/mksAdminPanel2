@@ -8,12 +8,12 @@ exports.GetDeletedHorseKind = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 
@@ -32,12 +32,12 @@ exports.HorseKindMassUpload = Trackerror(async (req, res, next) => {
           shortCode: data.shortCode,
           NameEn: data.NameEn,
           NameAr: data.NameAr,
-          BackupId: data.id
+          BackupId: data.id,
         });
       });
       const data = await HorseKindModel.bulkCreate(original, {
         ignoreDuplicates: true,
-        validate: true
+        validate: true,
       });
       res.status(201).json({ success: true, data });
     } catch (error) {
@@ -52,7 +52,7 @@ exports.HorseKindMassUpload = Trackerror(async (req, res, next) => {
       // } else {
       res.status(500).json({
         success: false,
-        message: error.errors
+        message: error.errors,
       });
       // }
     }
@@ -68,17 +68,17 @@ exports.HorseKindMassUpload = Trackerror(async (req, res, next) => {
 exports.RestoreSoftDeletedHorseKind = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await HorseKindModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
 
@@ -90,11 +90,11 @@ exports.CreateHorseKind = Trackerror(async (req, res, next) => {
       NameEn: NameEn,
       NameAr: NameAr,
       AbbrevEn: AbbrevEn,
-      AbbrevAr: AbbrevAr
+      AbbrevAr: AbbrevAr,
     });
     res.status(201).json({
       success: true,
-      data
+      data,
     });
   } catch (error) {
     // if (error.name === "SequelizeUniqueConstraintError") {
@@ -111,46 +111,49 @@ exports.CreateHorseKind = Trackerror(async (req, res, next) => {
       success: false,
       message: error.errors.map((singleerr) => {
         return singleerr.message;
-      })
+      }),
     });
   }
 });
 exports.HorseKindGet = Trackerror(async (req, res, next) => {
+  const totalcount = await HorseKindModel.count();
   const data = await HorseKindModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`
+        [Op.like]: `%${req.query.NameEn || ""}%`,
       },
       NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`
+        [Op.like]: `%${req.query.NameAr || ""}%`,
       },
       AbbrevEn: {
-        [Op.like]: `%${req.query.AbbrevEn || ""}%`
+        [Op.like]: `%${req.query.AbbrevEn || ""}%`,
       },
       AbbrevAr: {
-        [Op.like]: `%${req.query.AbbrevAr || ""}%`
+        [Op.like]: `%${req.query.AbbrevAr || ""}%`,
       },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00"
-        ]
-      }
-    }
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
   });
   res.status(200).json({
     success: true,
-    data: data
+    data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetHorseKindAdmin = Trackerror(async (req, res, next) => {});
 exports.EditHorseKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortName, AbbrevEn, AbbrevAr } = req.body;
   let data = await HorseKindModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -160,21 +163,21 @@ exports.EditHorseKind = Trackerror(async (req, res, next) => {
     NameEn: NameEn || data.NameEn,
     NameAr: NameAr || data.NameAr,
     AbbrevEn: AbbrevEn || data.AbbrevEn,
-    AbbrevAr: AbbrevAr || data.AbbrevAr
+    AbbrevAr: AbbrevAr || data.AbbrevAr,
   };
   data = await HorseKindModel.update(updateddata, {
     where: {
-      _id: req.params.id
-    }
+      _id: req.params.id,
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.DeleteHorseKind = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -182,28 +185,28 @@ exports.DeleteHorseKind = Trackerror(async (req, res, next) => {
 
   await HorseKindModel.destroy({
     where: { _id: req.params.id },
-    force: true
+    force: true,
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteHorseKind = Trackerror(async (req, res, next) => {
   const data = await HorseKindModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await HorseKindModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully"
+    message: "Soft Delete Successfully",
   });
 });

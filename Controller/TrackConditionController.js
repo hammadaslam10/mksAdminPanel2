@@ -83,6 +83,7 @@ exports.CreateTrackCondition = Trackerror(async (req, res, next) => {
   }
 });
 exports.TrackConditionGet = Trackerror(async (req, res, next) => {
+  const totalcount = await TrackConditionModel.count();
   const data = await TrackConditionModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,

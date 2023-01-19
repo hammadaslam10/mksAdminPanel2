@@ -18,90 +18,50 @@ const SubscriberAndOwnerModel = db.SubscriberAndOwnerModel;
 const { Op } = require("sequelize");
 const _ = require("lodash");
 exports.SearchUser = Trackerror(async (req, res, next) => {
-  console.log(req.query.createdAt);
-  if (req.query.createdAt) {
-    console.log(req.query.createdAt);
-    const data = await SubscriberModel.findAll({
-      where: {
-        FirstName: {
-          [Op.like]: `%${req.query.FirstName || ""}%`,
-        },
-        LastName: {
-          [Op.like]: `%${req.query.LastName || ""}%`,
-        },
-        PassportNo: {
-          [Op.like]: `%${req.query.PassportNo || ""}%`,
-        },
-        ApprovedStatus: {
-          [Op.like]: `%${req.query.ApprovedStatus || ""}%`,
-        },
-        Address: {
-          [Op.like]: `%${req.query.Address || ""}%`,
-        },
-        password: {
-          [Op.like]: `%${req.query.password || ""}%`,
-        },
-        Email: {
-          [Op.like]: `%${req.query.Email || ""}%`,
-        },
-        PhoneNumber: {
-          [Op.like]: `%${req.query.PhoneNumber || ""}%`,
-        },
-        PassportPicture: {
-          [Op.like]: `%${req.query.PassportPicture || ""}%`,
-        },
-        createdAt: {
-          [Op.between]: [req.query.startdate, req.query.endDate],
-        },
+  const totalcount = await SubscriberModel.count();
+  const data = await SubscriberModel.findAll({
+    where: {
+      FirstName: {
+        [Op.like]: `%${req.query.FirstName || ""}%`,
       },
-    });
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } else {
-    const data = await SubscriberModel.findAll({
-      where: {
-        FirstName: {
-          [Op.like]: `%${req.query.FirstName || ""}%`,
-        },
-        LastName: {
-          [Op.like]: `%${req.query.LastName || ""}%`,
-        },
-        PassportNo: {
-          [Op.like]: `%${req.query.PassportNo || ""}%`,
-        },
-        ApprovedStatus: {
-          [Op.like]: `%${req.query.ApprovedStatus || ""}%`,
-        },
-        Address: {
-          [Op.like]: `%${req.query.Address || ""}%`,
-        },
-        password: {
-          [Op.like]: `%${req.query.password || ""}%`,
-        },
-        Email: {
-          [Op.like]: `%${req.query.Email || ""}%`,
-        },
-        PhoneNumber: {
-          [Op.like]: `%${req.query.PhoneNumber || ""}%`,
-        },
-        PassportPicture: {
-          [Op.like]: `%${req.query.PassportPicture || ""}%`,
-        },
-        // createdAt: {
-        //   [Op.like]: `%${req.query.createdAt || ""}%`,
-        // },
-        // updatedAt: {
-        //   [Op.like]: `%${req.query.updatedAt || ""}%`,
-        // },
+      LastName: {
+        [Op.like]: `%${req.query.LastName || ""}%`,
       },
-    });
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  }
+      PassportNo: {
+        [Op.like]: `%${req.query.PassportNo || ""}%`,
+      },
+      ApprovedStatus: {
+        [Op.like]: `%${req.query.ApprovedStatus || ""}%`,
+      },
+      Address: {
+        [Op.like]: `%${req.query.Address || ""}%`,
+      },
+      password: {
+        [Op.like]: `%${req.query.password || ""}%`,
+      },
+      Email: {
+        [Op.like]: `%${req.query.Email || ""}%`,
+      },
+      PhoneNumber: {
+        [Op.like]: `%${req.query.PhoneNumber || ""}%`,
+      },
+      PassportPicture: {
+        [Op.like]: `%${req.query.PassportPicture || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+    totalcount,
+    filtered: data.length,
+  });
 });
 exports.GetDeletedSubscriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findAll({

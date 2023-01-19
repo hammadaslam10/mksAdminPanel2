@@ -49,6 +49,7 @@ exports.CreateRaceCard = Trackerror(async (req, res, next) => {
   });
 });
 exports.SearchRaceCard = Trackerror(async (req, res, next) => {
+  const totalcount = await RaceCardModel.count();
   const data = await RaceCardModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -73,7 +74,9 @@ exports.SearchRaceCard = Trackerror(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    data,
+    data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.RaceCardGet = Trackerror(async (req, res, next) => {

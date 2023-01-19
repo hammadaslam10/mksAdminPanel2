@@ -104,6 +104,7 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
     success: true,
     data: data,
     totalcount,
+    filtered: data.length,
   });
 });
 exports.GetAdsAdmin = Trackerror(async (req, res, next) => {});

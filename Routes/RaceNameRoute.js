@@ -9,9 +9,11 @@ const {
   GetRaceNameMaxShortCode,
   GetDeletedRaceName,
   RestoreSoftDeletedRaceName,
+  SearchRaceName,
 } = require("../Controller/RaceNameController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/racenamegetdeleted").get(GetDeletedRaceName);
+router.route("/searchracename").get(SearchRaceName);
 router.route("/restoresoftdeleteracename/:id").post(RestoreSoftDeletedRaceName);
 router.route("/getracenameshortcode").get(GetRaceNameMaxShortCode);
 router.route("/uploadRaceName", upload.single("image")).post(CreateRaceName);

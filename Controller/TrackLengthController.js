@@ -88,6 +88,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   }
 });
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
+  const totalcount = await TrackLengthModel.count();
   const data = await TrackLengthModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -114,6 +115,8 @@ exports.TrackLengthGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetTrackLengthAdmin = Trackerror(async (req, res, next) => {});

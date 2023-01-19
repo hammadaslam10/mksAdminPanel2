@@ -81,6 +81,7 @@ exports.GetAllAdmin = Trackerror(async (req, res, next) => {
     success: true,
     data,
     totalcount,
+    filtered: data.length,
   });
 });
 exports.GetonlyoneAdmin = Trackerror(async (req, res, next) => {

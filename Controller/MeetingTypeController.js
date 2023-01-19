@@ -79,6 +79,7 @@ exports.CreateMeetingType = Trackerror(async (req, res, next) => {
   }
 });
 exports.MeetingTypeGet = Trackerror(async (req, res, next) => {
+  const totalcount = await MeetingTypeModel.count();
   const data = await MeetingTypeModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -104,6 +105,8 @@ exports.MeetingTypeGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetMeetingTypeAdmin = Trackerror(async (req, res, next) => {});

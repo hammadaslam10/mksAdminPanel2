@@ -337,7 +337,8 @@ exports.SoftDeleteCompetiton = Trackerror(async (req, res, next) => {
   });
 });
 exports.SearchCompetition = Trackerror(async (req, res, next) => {
-  ({
+  const totalcount = await CompetitonModel.count();
+  const data = await CompetitonModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -388,6 +389,12 @@ exports.SearchCompetition = Trackerror(async (req, res, next) => {
         [Op.between]: [req.query.startdate, req.query.enddate],
       },
     },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.Voting = Trackerror(async (req, res, next) => {

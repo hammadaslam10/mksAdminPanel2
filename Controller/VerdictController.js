@@ -79,6 +79,7 @@ exports.CreateVerdict = Trackerror(async (req, res, next) => {
   }
 });
 exports.VerdictGet = Trackerror(async (req, res, next) => {
+  const totalcount = await VerdictModel.count();
   const data = await VerdictModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -104,6 +105,8 @@ exports.VerdictGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetVerdictAdmin = Trackerror(async (req, res, next) => {});

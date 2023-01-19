@@ -60,6 +60,7 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
   });
 });
 exports.SliderGet = Trackerror(async (req, res, next) => {
+  const totalcount = await SliderModel.count();
   const data = await SliderModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -85,6 +86,8 @@ exports.SliderGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetSliderAdmin = Trackerror(async (req, res, next) => {});

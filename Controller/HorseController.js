@@ -25,28 +25,28 @@ exports.GetDeletedHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null }
-    }
+      [Op.not]: { deletedAt: null },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 exports.RestoreSoftDeletedHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await HorseModel.restore({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   res.status(200).json({
     success: true,
-    restoredata
+    restoredata,
   });
 });
 
@@ -56,41 +56,41 @@ exports.SearchName = Trackerror(async (req, res, next) => {
   const data1 = await HorseModel.findAll({
     where: {
       NameEn: {
-        [Op.like]: `%${Query}%`
-      }
+        [Op.like]: `%${Query}%`,
+      },
     },
-    include: { all: true }
+    include: { all: true },
   });
   const data2 = await TrainerModel.findAll({
     where: {
       NameEn: {
-        [Op.like]: `%${Query}%`
-      }
+        [Op.like]: `%${Query}%`,
+      },
     },
-    include: { all: true }
+    include: { all: true },
   });
   const data3 = await OwnerModel.findAll({
     where: {
       NameEn: {
-        [Op.like]: `%${Query}%`
-      }
+        [Op.like]: `%${Query}%`,
+      },
     },
-    include: { all: true }
+    include: { all: true },
   });
   const data4 = await JockeyModel.findAll({
     where: {
       NameEn: {
-        [Op.like]: `%${Query}%`
-      }
+        [Op.like]: `%${Query}%`,
+      },
     },
-    include: { all: true }
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
     data1,
     data2,
     data3,
-    data4
+    data4,
   });
 });
 function exchangefunction(arraytobechecked, valuetobechecked, val) {
@@ -147,31 +147,31 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
 
       tempnationality = await NationalityModel.findAll({
         where: { BackupId: nationalforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       temphorsekind = await HorseKindModel.findAll({
         where: { BackupId: horsekindforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       temptrainer = await TrainerModel.findAll({
         where: { BackupId: trainerforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       tempowner = await OwnerModel.findAll({
         where: { BackupId: ownerforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       tempsex = await SexModel.findAll({
         where: { BackupId: sexforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       tempbreeder = await BreederModel.findAll({
         where: { BackupId: breederforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       tempcolor = await ColorModel.findAll({
         where: { BackupId: colorforeignkeys },
-        attributes: ["_id", "BackupId"]
+        attributes: ["_id", "BackupId"],
       });
       // tempcreation = await NationalityModel.findAll({
       //   where: { BackupId: creationforeignkeys },
@@ -190,7 +190,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
       tempnationality.map((newdata) => {
         nationalforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
       // tempcreation.map((newdata) => {
@@ -202,38 +202,38 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
       temphorsekind.map((newdata) => {
         horsekindforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
       tempbreeder.map((newdata) => {
         breederforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
       tempowner.map((newdata) => {
         ownerforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
       tempcolor.map((newdata) => {
         colorforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
       tempsex.map((newdata) => {
         sexforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
 
       temptrainer.map((newdata) => {
         trainerforeignkeys.push({
           _id: newdata._id,
-          BackupId: newdata.BackupId
+          BackupId: newdata.BackupId,
         });
       });
 
@@ -309,7 +309,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
           KindHorse: horsekindtemp,
           shortCode: de[i].shortCode,
           RemarksAr: de[i].RemarksAr || "N/A",
-          BackupId: de[i].id
+          BackupId: de[i].id,
         });
       }
       // console.log(original);
@@ -323,12 +323,12 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        db
+        db,
       });
     } catch (err) {
       res.status(500).json({
         success: false,
-        message: err
+        message: err,
       });
     }
   } else {
@@ -345,15 +345,15 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         paranoid: false,
         model: db.HorseModel,
         as: "DamData",
-        attributes: ["NameEn", "NameAr"]
+        attributes: ["NameEn", "NameAr"],
       },
       {
         paranoid: false,
         model: db.HorseModel,
         as: "SireData",
-        attributes: ["NameEn", "NameAr"]
-      }
-    ]
+        attributes: ["NameEn", "NameAr"],
+      },
+    ],
   });
   let generation2a = null;
   let generation2b = null;
@@ -372,22 +372,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
   if (generation1) {
@@ -401,22 +401,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
   console.log(generation2a);
@@ -432,22 +432,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
 
@@ -462,22 +462,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
   if (generation2b) {
@@ -491,22 +491,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
   if (generation2b) {
@@ -520,22 +520,22 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
         "_id",
         "DOB",
         "NameEn",
-        "NameAr"
+        "NameAr",
       ],
       include: [
         {
           paranoid: false,
           model: db.HorseModel,
           as: "DamData",
-          attributes: ["NameEn", "NameAr"]
+          attributes: ["NameEn", "NameAr"],
         },
         {
           paranoid: false,
           model: db.HorseModel,
           as: "SireData",
-          attributes: ["NameEn", "NameAr"]
-        }
-      ]
+          attributes: ["NameEn", "NameAr"],
+        },
+      ],
     });
   }
 
@@ -547,10 +547,11 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
     generation3a,
     generation3b,
     generation3c,
-    generation3d
+    generation3d,
   });
 });
 exports.SearchHorse = Trackerror(async (req, res, next) => {
+  const totalcount = await HorseModel.count();
   const data = await HorseModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
@@ -558,13 +559,13 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
     include: { all: true },
     where: {
       KindHorse: {
-        [Op.like]: `%${req.query.KindHorse || ""}%`
+        [Op.like]: `%${req.query.KindHorse || ""}%`,
       },
       Breeder: {
-        [Op.like]: `%${req.query.Breeder || ""}%`
+        [Op.like]: `%${req.query.Breeder || ""}%`,
       },
       Sex: {
-        [Op.like]: `%${req.query.Sex || ""}%`
+        [Op.like]: `%${req.query.Sex || ""}%`,
       },
       // DOB: {
       //   [Op.between]: [
@@ -573,16 +574,16 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       //   ],
       // },
       ActiveOwner: {
-        [Op.like]: `%${req.query.ActiveOwner || ""}%`
+        [Op.like]: `%${req.query.ActiveOwner || ""}%`,
       },
       ActiveTrainer: {
-        [Op.like]: `%${req.query.ActiveTrainer || ""}%`
+        [Op.like]: `%${req.query.ActiveTrainer || ""}%`,
       },
       NationalityID: {
-        [Op.like]: `%${req.query.NationalityID || ""}%`
+        [Op.like]: `%${req.query.NationalityID || ""}%`,
       },
       CreationId: {
-        [Op.like]: `%${req.query.CreationId || ""}%`
+        [Op.like]: `%${req.query.CreationId || ""}%`,
       },
       // Dam: {
       //   [Op.like]: `%${req.query.Dam || ""}%`,
@@ -594,19 +595,19 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       //   [Op.like]: `%${req.query.GSire || ""}%`,
       // },
       Foal: {
-        [Op.like]: `%${req.query.Foal || ""}%`
+        [Op.like]: `%${req.query.Foal || ""}%`,
       },
       RemarksEn: {
-        [Op.like]: `%${req.query.RemarksEn || ""}%`
+        [Op.like]: `%${req.query.RemarksEn || ""}%`,
       },
       RemarksAr: {
-        [Op.like]: `%${req.query.RemarksAr || ""}%`
+        [Op.like]: `%${req.query.RemarksAr || ""}%`,
       },
       NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`
+        [Op.like]: `%${req.query.NameEn || ""}%`,
       },
       NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`
+        [Op.like]: `%${req.query.NameAr || ""}%`,
       },
       // PurchasePrice: {
       //   [Op.between]: [
@@ -617,8 +618,8 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00"
-        ]
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
       },
       // isGelded: {
       //   [Op.like]: `%${req.query.isGelded || false}%`,
@@ -633,35 +634,37 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       //   [Op.like]: `%${req.query.HorseStatus || false}%`,
       // },
       ColorID: {
-        [Op.like]: `%${req.query.ColorID || ""}%`
-      }
-    }
+        [Op.like]: `%${req.query.ColorID || ""}%`,
+      },
+    },
   });
   res.status(200).json({
     success: true,
-    data
+    data: data,
+    totalcount,
+    filtered: data.length,
   });
 });
 exports.GetHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findAll({
-    include: { all: true }
+    include: { all: true },
   });
   res.status(200).json({
     success: true,
-    data
+    data,
   });
 });
 
 exports.SingleHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return new next("Horse is not available", 404);
   } else {
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
@@ -695,7 +698,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     KindHorse,
     shortCode,
     RemarksAr,
-    RemarksEn
+    RemarksEn,
   } = req.body;
   const file = req.files.image;
   if (file == null) {
@@ -732,7 +735,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     Height: Height,
     KindHorse: KindHorse,
     shortCode: shortCode,
-    RemarksAr: RemarksAr
+    RemarksAr: RemarksAr,
   });
 
   if (data._id) {
@@ -742,7 +745,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       await OwnerData.map(async (singleOwner) => {
         await HorseOwnerComboModel.create({
           HorseModelId: data._id,
-          OwnerModelId: singleOwner
+          OwnerModelId: singleOwner,
         });
       });
     }
@@ -753,7 +756,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       await TrainerData.map(async (singleTrainer) => {
         await HorseTrainerComboModel.create({
           HorseModelId: data._id,
-          TrainerModelId: singleTrainer
+          TrainerModelId: singleTrainer,
         });
       });
     }
@@ -770,7 +773,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     // }
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     return next(new HandlerCallBack("Error Occured", 404));
@@ -803,10 +806,10 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
     KindHorse,
     ActiveTrainer,
     STARS,
-    shortCode
+    shortCode,
   } = req.body;
   let data = await HorseModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   if (data === null) {
@@ -840,16 +843,16 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       KindHorse: KindHorse || data.KindHorse,
       ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
       STARS: STARS || data.STARS,
-      shortCode: shortCode || data.shortCode
+      shortCode: shortCode || data.shortCode,
     };
     data = await HorseModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   } else {
     const file = req.files.Horseimage;
@@ -889,23 +892,23 @@ exports.UpdateHorse = Trackerror(async (req, res, next) => {
       KindHorse: KindHorse || data.KindHorse,
       ActiveTrainer: ActiveTrainer || data.ActiveTrainer,
       shortCode: shortCode || data.shortCode,
-      RemarksAr: RemarksAr || data.RemarksAr
+      RemarksAr: RemarksAr || data.RemarksAr,
     };
     data = await HorseModel.update(updateddata, {
       where: {
-        _id: req.params.id
-      }
+        _id: req.params.id,
+      },
     });
 
     res.status(200).json({
       success: true,
-      data
+      data,
     });
   }
 });
 exports.DeleteHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -914,17 +917,17 @@ exports.DeleteHorse = Trackerror(async (req, res, next) => {
   console.log(data);
   await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
 exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findOne({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -933,11 +936,11 @@ exports.SoftDeleteHorse = Trackerror(async (req, res, next) => {
   console.log(data);
   await deleteFile(`${Horse}/${data.HorseImage.slice(-64)}`);
   await HorseModel.destroy({
-    where: { _id: req.params.id }
+    where: { _id: req.params.id },
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully"
+    message: "data Delete Successfully",
   });
 });
