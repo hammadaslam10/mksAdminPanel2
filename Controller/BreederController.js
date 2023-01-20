@@ -10,6 +10,7 @@ const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 var Converter = require("csvtojson").Converter;
+const path = require("path");
 exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
@@ -247,10 +248,18 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   }
 });
 exports.SendFile = Trackerror(async (req, res, next) => {
-  var text = "Hello world!";
-  res.attachment("filename.txt");
-  res.type("txt");
-  res.send(text);
+  var options = {
+    root: path.join(__dirname),
+  };
+
+  var fileName = "Hello.txt";
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log("Sent:", fileName);
+    }
+  });
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const totalcount = await BreederModel.count();
