@@ -77,9 +77,9 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       //   });
       // } else {
       let readStream = new stream.PassThrough();
-      readStream.end("ali dedicated employee hai ");
+      readStream.end(error.errors);
 
-      res.set("Content-disposition", "attachment; filename=" + "report.txt");
+      res.set("Content-disposition", "attachment; filename=" + "report.docx");
       res.set("Content-Type", "text/plain");
 
       res.status(500).json({
