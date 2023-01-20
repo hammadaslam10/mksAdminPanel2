@@ -11,6 +11,7 @@ const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 var Converter = require("csvtojson").Converter;
 const path = require("path");
+const fs = require("fs");
 exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
@@ -248,16 +249,16 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   }
 });
 exports.SendFile = Trackerror(async (req, res, next) => {
-  var options = {
-    root: path.join(__dirname),
-  };
+  res.download("/Hello.txt");
 
-  var fileName = "Hello.txt";
-  res.sendFile(fileName, options, function (err) {
+  res.download("/Hello.txt", "report.pdf");
+
+  res.download("/Hello.txt", "report.pdf", (err) => {
     if (err) {
-      next(err);
+      // Handle error, but keep in mind the response may be partially-sent
+      // so check res.headersSent
     } else {
-      console.log("Sent:", fileName);
+      // decrement a download credit, etc.z
     }
   });
 });
