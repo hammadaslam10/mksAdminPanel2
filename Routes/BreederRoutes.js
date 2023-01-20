@@ -12,10 +12,12 @@ const {
   RestoreSoftDeletedBreeder,
   BreederMassUpload,
   GetDeletedBreeder,
+  SendFile,
 } = require("../Controller/BreederController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/breedersgetdeleted").get(GetDeletedBreeder);
 router.route("/BreederMassUpload").post(BreederMassUpload);
+router.route("/SendFile").get(SendFile);
 router.route("/restoresoftdeletebreeders/:id").post(RestoreSoftDeletedBreeder);
 router.route("/getbreedershortcode").get(GetBreederMaxShortCode);
 router.route("/getsinglebreeder/:id").get(SingleBreeder);

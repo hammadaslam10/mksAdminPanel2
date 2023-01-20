@@ -246,6 +246,12 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
     }
   }
 });
+exports.SendFile = Trackerror(async (req, res, next) => {
+  var text = "Hello world!";
+  res.attachment("filename.txt");
+  res.type("txt");
+  res.send(text);
+});
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const totalcount = await BreederModel.count();
   const data = await BreederModel.findAll({
