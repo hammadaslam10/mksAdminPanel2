@@ -12,6 +12,7 @@ const { Op } = require("sequelize");
 var Converter = require("csvtojson").Converter;
 const path = require("path");
 const fs = require("fs");
+var stream = require("stream");
 exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
@@ -75,6 +76,12 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       //     ],
       //   });
       // } else {
+      let readStream = new stream.PassThrough();
+      readStream.end("ali dedicated employee hai ");
+
+      res.set("Content-disposition", "attachment; filename=" + "report.txt");
+      res.set("Content-Type", "text/plain");
+
       res.status(500).json({
         success: false,
         message: error.errors,
@@ -249,18 +256,13 @@ exports.CreateBreeder = Trackerror(async (req, res, next) => {
   }
 });
 exports.SendFile = Trackerror(async (req, res, next) => {
-  res.download("/Hello.txt");
+  let readStream = new stream.PassThrough();
+  readStream.end("ali dedicated employee hai ");
 
-  res.download("/Hello.txt", "report.pdf");
+  res.set("Content-disposition", "attachment; filename=" + "report.txt");
+  res.set("Content-Type", "text/plain");
 
-  res.download("/Hello.txt", "report.pdf", (err) => {
-    if (err) {
-      // Handle error, but keep in mind the response may be partially-sent
-      // so check res.headersSent
-    } else {
-      // decrement a download credit, etc.z
-    }
-  });
+  readStream.pipe(res);
 });
 exports.BreederGet = Trackerror(async (req, res, next) => {
   const totalcount = await BreederModel.count();
