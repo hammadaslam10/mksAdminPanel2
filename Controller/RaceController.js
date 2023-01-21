@@ -88,6 +88,7 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     offset: Number(req.query.page) || 0,
     limit: Number(req.query.limit) || 10,
+    include: { all: true },
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       MeetingType: {

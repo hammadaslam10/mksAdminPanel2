@@ -50,6 +50,11 @@ app.use(cookieParser());
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(Upload());
 app.use(cors());
+// app.use(
+//   cors({
+//     origin: "*",
+//   })
+// );
 app.use("/api/v1", SubscriberRoutes);
 app.use("/api/v1", NewsAndBlogRoutes);
 app.use("/api/v1", SponsorRoutes);

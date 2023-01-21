@@ -25,6 +25,17 @@ exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
     data,
   });
 });
+const errorfilemessage = async (error) => {
+  console.log(error, "d");
+  let message = [];
+  error.errors.map((singleerr) => {
+    message.push(singleerr.message);
+  });
+  let message1 = error;
+  // console.log(message.toString(), "abc");
+  console.log(message1.errors, "abc2");
+  return message;
+};
 const convert = function (csvFile) {
   const convert = (from, to) => (str) => Buffer.from(str, from).toString(to);
   const hexToUtf8 = convert("hex", "utf8");
@@ -50,7 +61,7 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
   } else if (req.files.file.mimetype === "application/json") {
     try {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
-      console.log(de);
+      // console.log(de);
       let original = [];
       await de.map((data) => {
         original.push({
@@ -67,26 +78,33 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       const data = await BreederModel.bulkCreate(original);
       res.status(201).json({ success: true, data });
     } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
-      let readStream = new stream.PassThrough();
-      readStream.end(error.errors);
-
-      res.set("Content-disposition", "attachment; filename=" + "report.docx");
-      res.set("Content-Type", "text/plain");
-
-      res.status(500).json({
-        success: false,
-        message: error.errors,
-      });
-      // }
+      if (error.name === "SequelizeUniqueConstraintError") {
+        let readStream = new stream.PassThrough();
+        // console.log(errorfilemessage(error));
+        readStream.end(errorfilemessage(error));
+        res.set("Content-disposition", "attachment; filename=" + "report.docx");
+        res.set("Content-Type", "text/plain");
+        res.status(200);
+        console.log(res);
+        readStream.pipe(res);
+        // res.json({
+        //   status: "error",
+        //   message: error.errors,
+        // });
+      } else {
+        let readStream = new stream.PassThrough();
+        // console.log(errorfilemessage(error));
+        readStream.end(errorfilemessage(error));
+        res.set("Content-disposition", "attachment; filename=" + "report.docx");
+        res.set("Content-Type", "text/plain");
+        res.status(200);
+        console.log(res);
+        readStream.pipe(res);
+        // res.status(500).json({
+        //   success: false,
+        //   message: error.errors,
+        // });
+      }
     }
   } else {
     // console.log(req.files.file.mimetype);
