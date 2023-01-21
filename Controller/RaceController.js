@@ -503,6 +503,21 @@ exports.AddRaceImage = Trackerror(async (req, res, next) => {
     message: "all images are been submitted",
   });
 });
+exports.Getracehorses = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: {
+      _id: req.params.id,
+    },
+    include: {
+      model: db.HorseModel,
+      as: "RaceAndHorseModelData",
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   console.log(ResultEntry);
