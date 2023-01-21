@@ -12,26 +12,23 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      Prize: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      Rank: {
-        type: DataTypes.BIGINT,
+      BeatenBy: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
       FinalPosition: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      Points: {
-        type: DataTypes.BIGINT,
+      PointTableSystem: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      BonusPoints: {
+      Distance: {
         type: DataTypes.BIGINT,
-        allowNull: false,
-        defaultValue: 0,
+      },
+      CumulativeDistance: {
+        type: DataTypes.BIGINT,
       },
       VideoLink: {
         type: DataTypes.STRING,

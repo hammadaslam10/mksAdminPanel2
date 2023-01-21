@@ -502,6 +502,22 @@ db.ResultModel.belongsTo(db.HorseModel, {
   foreignKey: "HorseID",
   as: "HorseIDData",
 });
+db.HorseModel.hasMany(db.ResultModel, {
+  foreignKey: "BeatenBy",
+  as: "BeatenByData",
+});
+db.ResultModel.belongsTo(db.HorseModel, {
+  foreignKey: "BeatenBy",
+  as: "BeatenByData",
+});
+db.PointTableSystemModel.hasMany(db.ResultModel, {
+  foreignKey: "PointTableSystem",
+  as: "PointTableSystemData",
+});
+db.ResultModel.belongsTo(db.PointTableSystemModel, {
+  foreignKey: "PointTableSystem",
+  as: "PointTableSystemData",
+});
 db.FinalPositionModel.hasMany(db.ResultModel, {
   foreignKey: "FinalPosition",
   as: "FinalPositionDataHorse",
