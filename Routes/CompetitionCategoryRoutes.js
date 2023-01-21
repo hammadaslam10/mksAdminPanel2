@@ -14,7 +14,7 @@ const {
 router
   .route("/competitioncategorygetdeleted")
   .get(GetDeletedCompetitionCategory);
-router.route("/competitioncategorygetdeleted").get(SearchCompetitionCategory);
+router.route("/searchcompetitioncategory").get(SearchCompetitionCategory);
 router
   .route("/restoresoftdeletecompetitioncategory/:id")
   .post(RestoreSoftDeletedCompetitionCategory);
