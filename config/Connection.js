@@ -628,6 +628,22 @@ db.EquipmentModel.hasMany(db.RaceAndHorseModel, {
   foreignKey: "Equipment",
   as: "EquipmentData",
 });
+db.RaceAndHorseModel.belongsTo(db.JockeyModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceData",
+});
+db.JockeyModel.hasMany(db.RaceAndHorseModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceData",
+});
+db.RaceAndHorseModel.belongsTo(db.TrainerModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceData",
+});
+db.TrainerModel.hasMany(db.RaceAndHorseModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceData",
+});
 db.RaceModel.belongsToMany(db.HorseModel, {
   through: "RaceAndHorseModel",
   as: "RaceAndHorseModelData",
