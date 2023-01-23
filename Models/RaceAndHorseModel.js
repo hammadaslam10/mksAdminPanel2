@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      JockeyOnRace: {
+      JockeyModelId: {
         type: DataTypes.UUID,
         allowNull: false,
       },
