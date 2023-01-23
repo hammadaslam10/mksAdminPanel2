@@ -265,7 +265,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.RaceTypeModel,
         as: "RaceTypeModelData",
       },
-      {jocket
+      {
         paranoid: false,
         model: db.SponsorModel,
         as: "SponsorData",
