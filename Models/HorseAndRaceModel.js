@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const RaceAndHorseModel = sequelize.define(
-    "RaceAndHorseModel",
+  const HorseAndRaceModel = sequelize.define(
+    "HorseAndRaceModel",
     {
       _id: {
         type: Sequelize.UUID,
@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      JockeyOnRace: {
+      TrainerOnRace: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      TrainerOnRace: {
+      JockeyOnRace: {
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -48,5 +48,5 @@ module.exports = (sequelize, DataTypes) => {
       initialAutoIncrement: 10,
     }
   );
-  return RaceAndHorseModel;
+  return HorseAndRaceModel;
 };

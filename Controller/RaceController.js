@@ -1,10 +1,10 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const HorseModel = db.HorseModel;
-const OwnerModel = db.OwnerModel;
 const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
-// const RaceAndJockeyModel = db.RaceAndJockeyModel;
+const HorseAndRaceModel = db.HorseAndRaceModel;
+const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultsModel = db.ResultModel;
 const ResultModel = db.ResultModel;
@@ -64,14 +64,16 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
+        include: {
+          all: true,
+        },
+        paranoid: false,
+      },
+      {
+        model: db.JockeyModel,
         include: { all: true },
         paranoid: false,
       },
-      // {
-      //   model: db.JockeyModel,
-      //   include: { all: true },
-      //   paranoid: false,
-      // },
       {
         model: db.ResultModel,
         as: "RaceResultData",
@@ -88,7 +90,7 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
 exports.SearchRace = Trackerror(async (req, res, next) => {
   const totalcount = await RaceModel.count();
   const data = await RaceModel.findAll({
-    offset: Number(req.query.page) || 0,
+    offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     include: { all: true },
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -273,19 +275,26 @@ exports.GetRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
+        include: {
+          all: true,
+        },
+        paranoid: false,
+      },
+      {
+        model: db.JockeyModel,
         include: { all: true },
         paranoid: false,
       },
-      // {
-      //   model: db.JockeyModel,
-      //   include: { all: true },
-      //   paranoid: false,
-      // },
       {
         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
         paranoid: false,
+      },
+      {
+        model: db.HorseAndRaceModel,
+        as: "RacehorsesData",
+        include: { all: true },
       },
     ],
   });
@@ -371,10 +380,10 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
         as: "RaceAndHorseModelData",
         include: { all: true },
       },
-      // {
-      //   model: db.JockeyModel,
-      //   include: { all: true },
-      // },
+      {
+        model: db.JockeyModel,
+        include: { all: true },
+      },
     ],
   });
 
@@ -692,16 +701,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         as: "RaceAndHorseModelData",
         include: { all: true },
       },
-      // {
-      //   model: db.JockeyModel,
-      //   include: [
-      //     {
-      //       model: db.NationalityModel,
-      //       as: "JockeyNationalityData",
-      //       paranoid: false,
-      //     },
-      //   ],
-      // },
       {
         model: db.CompetitonModel,
         as: "CompetitionRacesPointsModelData",
@@ -713,16 +712,16 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         include: { all: true },
         paranoid: false,
       },
-      // {
-      //   model: db.JockeyModel,
-      //   include: [
-      //     {
-      //       model: db.NationalityModel,
-      //       as: "JockeyNationalityData",
-      //       paranoid: false,
-      //     },
-      //   ],
-      // },
+      {
+        model: db.JockeyModel,
+        include: [
+          {
+            model: db.NationalityModel,
+            as: "JockeyNationalityData",
+            paranoid: false,
+          },
+        ],
+      },
     ],
   });
   if (!data) {
@@ -838,11 +837,15 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
   console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
-
   console.log(HorseEntryData, "dsad");
+  let horsedata;
   await HorseEntryData.map(async (singlehorse) => {
     await singlehorse.map(async (singlehorsedetail) => {
       singlehorsedetail = singlehorsedetail.split(",");
+      console.log(singlehorsedetail[0], "0 INDEX");
+      console.log(singlehorsedetail[1], "1 INDEX");
+      console.log(singlehorsedetail[2], "2 INDEX");
+      console.log(singlehorsedetail[3], "3 INDEX");
       horsedata = await HorseModel.findOne({
         where: {
           _id: singlehorsedetail[1],
@@ -856,11 +859,31 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
           Equipment: singlehorsedetail[4],
           TrainerOnRace: horsedata.ActiveTrainer,
           OwnerOnRace: horsedata.ActiveOwner,
-          JockeyModelId: singlehorsedetail[2],
+          JockeyOnRace: singlehorsedetail[2],
+          JockeyWeight: singlehorsedetail[3],
+        },
+      });
+      await HorseAndRaceModel.findOrCreate({
+        where: {
+          GateNo: singlehorsedetail[0],
+          RaceModelId: req.params.id,
+          HorseModelId: singlehorsedetail[1],
+          Equipment: singlehorsedetail[4],
+          TrainerOnRace: horsedata.ActiveTrainer,
+          OwnerOnRace: horsedata.ActiveOwner,
+          JockeyOnRace: singlehorsedetail[2],
           JockeyWeight: singlehorsedetail[3],
         },
       });
       horsedata = null;
+      await RaceAndJockeyModel.findOrCreate({
+        where: {
+          GateNo: singlehorsedetail[0],
+          JockeyModelId: singlehorsedetail[2],
+          RaceModelId: req.params.id,
+          JockeyWeight: singlehorsedetail[3],
+        },
+      });
     });
   });
   res.status(200).json({
@@ -944,9 +967,9 @@ WHERE
         model: db.SponsorModel,
         as: "SponsorData",
       },
+
       {
-        model: db.HorseModel,
-        as: "RaceAndHorseModelData",
+        model: db.HorseAndRaceModel,
         include: { all: true },
       },
       {

@@ -84,7 +84,7 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
 exports.SearchCompetitionCategory = Trackerror(async (req, res, next) => {
   const totalcount = await CompetitionCategoryModel.count();
   const data = await CompetitionCategoryModel.findAll({
-    offset: Number(req.query.page) || 0,
+    offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {

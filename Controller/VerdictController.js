@@ -81,7 +81,7 @@ exports.CreateVerdict = Trackerror(async (req, res, next) => {
 exports.VerdictGet = Trackerror(async (req, res, next) => {
   const totalcount = await VerdictModel.count();
   const data = await VerdictModel.findAll({
-    offset: Number(req.query.page) || 0,
+    offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {

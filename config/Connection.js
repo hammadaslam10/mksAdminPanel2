@@ -50,7 +50,8 @@ db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
-// db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
+db.HorseAndRaceModel = require("../Models/HorseAndRaceModel")(Db, DataTypes);
+db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
@@ -241,16 +242,16 @@ db.JockeyModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.JockeyModel, {
   through: "HorseJockeyComboModel",
 });
-// db.RaceModel.belongsToMany(db.JockeyModel, {
-//   through: "RaceAndJockeyModel",
-// });
+db.RaceModel.belongsToMany(db.JockeyModel, {
+  through: "RaceAndJockeyModel",
+});
 // -------------------------------------RaceandJockey----------------------------
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndJockeyModel",
-// });
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndJockeyModel",
-// });
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
+});
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
+});
 // -------------------------------------Trainer----------------------------
 db.TrainerModel.belongsToMany(db.HorseModel, {
   through: "HorseTrainerComboModel",
@@ -534,6 +535,54 @@ db.ResultModel.belongsTo(db.RaceModel, {
   foreignKey: "RaceID",
   as: "RaceResultData",
 });
+db.RaceModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "RaceModelId",
+  as: "RacehorsesData",
+});
+db.HorseAndRaceModel.belongsTo(db.RaceModel, {
+  foreignKey: "RaceModelId",
+  as: "RacehorsesData",
+});
+db.HorseModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "HorseModelId",
+  as: "HorseModelIdData1",
+});
+db.HorseAndRaceModel.belongsTo(db.HorseModel, {
+  foreignKey: "HorseModelId",
+  as: "HorseModelIdData1",
+});
+db.EquipmentModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "Equipment",
+  as: "EquipmentData1",
+});
+db.HorseAndRaceModel.belongsTo(db.EquipmentModel, {
+  foreignKey: "Equipment",
+  as: "EquipmentData1",
+});
+db.OwnerModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "OwnerOnRace",
+  as: "OwnerOnRaceData1",
+});
+db.HorseAndRaceModel.belongsTo(db.OwnerModel, {
+  foreignKey: "OwnerOnRace",
+  as: "OwnerOnRaceData1",
+});
+db.TrainerModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceData1",
+});
+db.HorseAndRaceModel.belongsTo(db.TrainerModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceData1",
+});
+db.JockeyModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceData1",
+});
+db.HorseAndRaceModel.belongsTo(db.JockeyModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceData1",
+});
 // -------------------------------------Raceandy----------------------------
 // db.RaceModel.belongsToMany(db.JockeyModel, {
 //   through: "RaceAndJockeyModel",
@@ -550,9 +599,9 @@ db.OwnerModel.belongsToMany(db.HorseModel, {
 //   through: "HorseJockeyComboModel",
 // });
 // -------------------------------------RaceandHorse----------------------------
-// db.HorseModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndHorseModel",
-// });
+db.HorseModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndHorseModel",
+});
 
 // -------------------------------------SubscriberAndRace----------------------------
 db.SubscriberModel.belongsToMany(db.HorseModel, {
@@ -652,6 +701,14 @@ db.HorseModel.belongsToMany(db.RaceModel, {
   through: "RaceAndHorseModel",
   as: "RaceAndHorseModelData",
 });
+// db.HorseModel.hasMany(db.RaceAndHorseModel, {
+//   through: "RaceAndHorseModel",
+//   as: "RaceAndHorseModelData",
+// });
+// db.RaceAndHorseModel.belongsTo(db.HorseModel, {
+//   through: "RaceAndHorseModel",
+//   as: "RaceAndHorseModelData",
+// });
 // -------------------------------------Jockey----------------------------
 db.NationalityModel.hasMany(db.JockeyModel, {
   foreignKey: "NationalityID",
