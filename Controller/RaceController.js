@@ -840,11 +840,6 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   let HorseEntryData = Conversion(HorseEntry);
 
   console.log(HorseEntryData, "dsad");
-  let horsedata = await HorseModel.findOne({
-    where: {
-      _id: id,
-    },
-  });
   await HorseEntryData.map(async (singlehorse) => {
     await singlehorse.map(async (singlehorsedetail) => {
       singlehorsedetail = singlehorsedetail.split(",");
