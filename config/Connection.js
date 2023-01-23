@@ -241,16 +241,16 @@ db.JockeyModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.JockeyModel, {
   through: "HorseJockeyComboModel",
 });
-// db.RaceModel.belongsToMany(db.JockeyModel, {
-//   through: "RaceAndJockeyModel",
-// });
+db.RaceModel.belongsToMany(db.JockeyModel, {
+  through: "RaceAndJockeyModel",
+});
 // -------------------------------------RaceandJockey----------------------------
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndJockeyModel",
-// });
-// db.JockeyModel.belongsToMany(db.RaceModel, {
-//   through: "RaceAndJockeyModel",
-// });
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
+});
+db.JockeyModel.belongsToMany(db.RaceModel, {
+  through: "RaceAndJockeyModel",
+});
 // -------------------------------------Trainer----------------------------
 db.TrainerModel.belongsToMany(db.HorseModel, {
   through: "HorseTrainerComboModel",
