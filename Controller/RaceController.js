@@ -1,8 +1,10 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
+const HorseModel = db.HorseModel;
+const OwnerModel = db.OwnerModel;
 const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
-const RaceAndJockeyModel = db.RaceAndJockeyModel;
+// const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultsModel = db.ResultModel;
 const ResultModel = db.ResultModel;
@@ -826,30 +828,34 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
   console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
+
   console.log(HorseEntryData, "dsad");
+  let horsedata = await HorseModel.findOne({
+    where: {
+      _id: id,
+    },
+  });
   await HorseEntryData.map(async (singlehorse) => {
     await singlehorse.map(async (singlehorsedetail) => {
       singlehorsedetail = singlehorsedetail.split(",");
-      console.log(singlehorsedetail[0], "0 INDEX");
-      console.log(singlehorsedetail[1], "1 INDEX");
-      console.log(singlehorsedetail[2], "2 INDEX");
-      console.log(singlehorsedetail[3], "3 INDEX");
+      horsedata = await HorseModel.findOne({
+        where: {
+          _id: singlehorsedetail[1],
+        },
+      });
       await RaceAndHorseModel.findOrCreate({
         where: {
           GateNo: singlehorsedetail[0],
           RaceModelId: req.params.id,
           HorseModelId: singlehorsedetail[1],
           Equipment: singlehorsedetail[4],
-        },
-      });
-      await RaceAndJockeyModel.findOrCreate({
-        where: {
-          GateNo: singlehorsedetail[0],
+          TrainerOnRace: horsedata.ActiveTrainer,
+          OwnerOnRace: horsedata.ActiveOwner,
           JockeyModelId: singlehorsedetail[2],
-          RaceModelId: req.params.id,
           JockeyWeight: singlehorsedetail[3],
         },
       });
+      horsedata = null;
     });
   });
   res.status(200).json({

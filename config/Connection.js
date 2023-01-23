@@ -11,23 +11,23 @@ let options = {
   language: "en",
   Protocol: "TCP",
 };
-const Db = new Sequelize(
-  process.env.RDSDB,
-  process.env.RDSUSER,
-  process.env.RDSPASSWORD,
-  {
-    ...options,
-  }
-);
 // const Db = new Sequelize(
-//   process.env.SQLDB,
-//   process.env.SQLHOST,
-//   process.env.SQLPASSWORD,
+//   process.env.RDSDB,
+//   process.env.RDSUSER,
+//   process.env.RDSPASSWORD,
 //   {
-//     dialect: "mysql",
-//     // logging: false
+//     ...options,
 //   }
 // );
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+    // logging: false
+  }
+);
 
 Db.authenticate()
   .then(() => {
@@ -50,7 +50,7 @@ db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
-db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
+// db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);
 db.RaceKindModel = require("../Models/RaceKindModel")(Db, DataTypes);
 db.CurrencyModel = require("../Models/CurrencyModel")(Db, DataTypes);
 db.CompetitionRacesPointsModel =
@@ -241,16 +241,16 @@ db.JockeyModel.belongsToMany(db.HorseModel, {
 db.HorseModel.belongsToMany(db.JockeyModel, {
   through: "HorseJockeyComboModel",
 });
-db.RaceModel.belongsToMany(db.JockeyModel, {
-  through: "RaceAndJockeyModel",
-});
+// db.RaceModel.belongsToMany(db.JockeyModel, {
+//   through: "RaceAndJockeyModel",
+// });
 // -------------------------------------RaceandJockey----------------------------
-db.JockeyModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndJockeyModel",
-});
-db.JockeyModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndJockeyModel",
-});
+// db.JockeyModel.belongsToMany(db.RaceModel, {
+//   through: "RaceAndJockeyModel",
+// });
+// db.JockeyModel.belongsToMany(db.RaceModel, {
+//   through: "RaceAndJockeyModel",
+// });
 // -------------------------------------Trainer----------------------------
 db.TrainerModel.belongsToMany(db.HorseModel, {
   through: "HorseTrainerComboModel",
@@ -535,12 +535,12 @@ db.ResultModel.belongsTo(db.RaceModel, {
   as: "RaceResultData",
 });
 // -------------------------------------RaceandJockey----------------------------
-db.RaceModel.belongsToMany(db.JockeyModel, {
-  through: "RaceAndJockeyModel",
-});
-db.JockeyModel.belongsToMany(db.RaceModel, {
-  through: "RaceAndJockeyModel",
-});
+// db.RaceModel.belongsToMany(db.JockeyModel, {
+//   through: "RaceAndJockeyModel",
+// });
+// db.JockeyModel.belongsToMany(db.RaceModel, {
+//   through: "RaceAndJockeyModel",
+// });
 // -------------------------------------RaceandOwner----------------------------
 db.OwnerModel.belongsToMany(db.HorseModel, {
   through: "HorseOwnerComboModel",

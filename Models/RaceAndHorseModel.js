@@ -11,7 +11,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      
+      JockeyOnRace: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      TrainerOnRace: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      OwnerOnRace: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      JockeyWeight: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
