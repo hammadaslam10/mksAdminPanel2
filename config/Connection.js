@@ -534,7 +534,7 @@ db.ResultModel.belongsTo(db.RaceModel, {
   foreignKey: "RaceID",
   as: "RaceResultData",
 });
-// -------------------------------------RaceandJockey----------------------------
+// -------------------------------------Raceandy----------------------------
 // db.RaceModel.belongsToMany(db.JockeyModel, {
 //   through: "RaceAndJockeyModel",
 // });

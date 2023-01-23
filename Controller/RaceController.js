@@ -67,11 +67,11 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
         include: { all: true },
         paranoid: false,
       },
-      {
-        model: db.JockeyModel,
-        include: { all: true },
-        paranoid: false,
-      },
+      // {
+      //   model: db.JockeyModel,
+      //   include: { all: true },
+      //   paranoid: false,
+      // },
       {
         model: db.ResultModel,
         as: "RaceResultData",
@@ -265,7 +265,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.RaceTypeModel,
         as: "RaceTypeModelData",
       },
-      {
+      {jocket
         paranoid: false,
         model: db.SponsorModel,
         as: "SponsorData",
@@ -276,11 +276,11 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         include: { all: true },
         paranoid: false,
       },
-      {
-        model: db.JockeyModel,
-        include: { all: true },
-        paranoid: false,
-      },
+      // {
+      //   model: db.JockeyModel,
+      //   include: { all: true },
+      //   paranoid: false,
+      // },
       {
         model: db.ResultModel,
         as: "RaceResultData",
@@ -371,10 +371,10 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
         as: "RaceAndHorseModelData",
         include: { all: true },
       },
-      {
-        model: db.JockeyModel,
-        include: { all: true },
-      },
+      // {
+      //   model: db.JockeyModel,
+      //   include: { all: true },
+      // },
     ],
   });
 
@@ -692,6 +692,16 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         as: "RaceAndHorseModelData",
         include: { all: true },
       },
+      // {
+      //   model: db.JockeyModel,
+      //   include: [
+      //     {
+      //       model: db.NationalityModel,
+      //       as: "JockeyNationalityData",
+      //       paranoid: false,
+      //     },
+      //   ],
+      // },
       {
         model: db.CompetitonModel,
         as: "CompetitionRacesPointsModelData",
@@ -703,16 +713,16 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         include: { all: true },
         paranoid: false,
       },
-      {
-        model: db.JockeyModel,
-        include: [
-          {
-            model: db.NationalityModel,
-            as: "JockeyNationalityData",
-            paranoid: false,
-          },
-        ],
-      },
+      // {
+      //   model: db.JockeyModel,
+      //   include: [
+      //     {
+      //       model: db.NationalityModel,
+      //       as: "JockeyNationalityData",
+      //       paranoid: false,
+      //     },
+      //   ],
+      // },
     ],
   });
   if (!data) {
