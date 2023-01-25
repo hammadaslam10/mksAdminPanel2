@@ -82,7 +82,7 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       });
       const data = await BreederModel.bulkCreate(original, {
         ignoreDuplicates: true,
-        validate: true,
+        // validate: true,
       });
       res.status(201).json({ success: true, data });
     } catch (error) {
