@@ -13,7 +13,8 @@ const {
   SearchOwner,
   AddOwnerCap,
   AddOwnerSilkColor,
-  OwnerMassUpload
+  OwnerMassUpload,
+  OwnerDropDown,
 } = require("../Controller/OwnerController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/ownergetdeleted").get(GetDeletedOwner);
@@ -24,6 +25,7 @@ router.route("/AddOwnerSilkColor/:id").post(AddOwnerSilkColor);
 router.route("/getsingleowner/:id").get(ViewASingleOwner);
 router.route("/createowner", upload.array("image")).post(CreateOwner);
 router.route("/Ownerget").get(ViewAllOwner);
+router.route("/OwnerDropDown").get(OwnerDropDown);
 router.route("/SearchOwner").get(SearchOwner);
 router.route("/deleteOwner/:id").delete(DeleteOwner);
 router.route("/updateOwner/:id", upload.single("image")).put(UpdateOwnerDetail);

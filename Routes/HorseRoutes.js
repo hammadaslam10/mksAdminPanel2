@@ -12,13 +12,15 @@ const {
   PedigreeHorse,
   SoftDeleteHorse,
   SearchHorse,
-  HorseMassUpload
+  HorseMassUpload,
+  HorseDropDown,
 } = require("../Controller/HorseController");
 router.route("/horsegetdeleted").get(GetDeletedHorse);
 router.route("/SearchHorse").get(SearchHorse);
 router.route("/pedigreehorse/:id").get(PedigreeHorse);
 router.route("/restoresoftdeletehorse/:id").post(RestoreSoftDeletedHorse);
 router.route("/gethorse").get(GetHorse);
+router.route("/HorseDropDown").get(HorseDropDown);
 router.route("/searchhorse_trainer_jockey").post(SearchName);
 router.route("/HorseMassUpload").post(HorseMassUpload);
 router.route("/getsinglehorse/:id").get(SingleHorse);

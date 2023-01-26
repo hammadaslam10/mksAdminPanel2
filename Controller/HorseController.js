@@ -93,6 +93,29 @@ exports.SearchName = Trackerror(async (req, res, next) => {
     data4,
   });
 });
+exports.HorseDropDown = Trackerror(async (req, res, next) => {
+  const data = await HorseModel.findAll({
+    offset: Number(req.query.page) - 1 || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    attributes: ["NameEn", "NameAr", "_id"],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
 function exchangefunction(arraytobechecked, valuetobechecked, val) {
   let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
   // console.log(a, valuetobechecked, val);

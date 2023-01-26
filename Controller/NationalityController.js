@@ -158,6 +158,29 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     }
   }
 });
+exports.NationalityDropDown = Trackerror(async (req, res, next) => {
+  const data = await NationalityModel.findAll({
+    offset: Number(req.query.page) - 1 || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    attributes: ["NameEn", "NameAr", "_id"],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
 exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
   if (!req.files || !req.files.file) {
     res.status(404).json({ message: "File not found" });

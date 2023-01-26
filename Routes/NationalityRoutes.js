@@ -10,9 +10,11 @@ const {
   GetDeletedNationality,
   RestoreSoftDeletedNationality,
   NationalityMassUpload,
+  NationalityDropDown,
 } = require("../Controller/NationalityController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/nationalitygetdeleted").get(GetDeletedNationality);
+router.route("/NationalityDropDown").get(NationalityDropDown);
 router
   .route("/restoresoftdeletenationality/:id")
   .post(RestoreSoftDeletedNationality);
