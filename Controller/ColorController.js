@@ -130,6 +130,24 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
 });
 exports.ColorGet = Trackerror(async (req, res, next) => {
   const totalcount = await ColorModel.count();
+  if (req.query.shortCode) {
+    const data = await ColorModel.findAll({
+      offset: Number(req.query.page) - 1 || 0,
+      limit: Number(req.query.limit) || 10,
+      order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+      where: {
+        shortCode: {
+          [Op.eq]: `${req.query.shortCode}`,
+        },
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data: data,
+      totalcount,
+      filtered: data.length,
+    });
+  }
   const data = await ColorModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
@@ -142,7 +160,7 @@ exports.ColorGet = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
       shortCode: {
-        [Op.eq]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `%${req.query.shortCode || ""}%`,
       },
       createdAt: {
         [Op.between]: [
@@ -152,6 +170,7 @@ exports.ColorGet = Trackerror(async (req, res, next) => {
       },
     },
   });
+
   res.status(200).json({
     success: true,
     data: data,
