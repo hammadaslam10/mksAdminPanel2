@@ -68,46 +68,61 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
       console.log(de);
       let original = [];
+      let ShortCodeValidation = [];
       await de.map((data) => {
-        original.push({
-          DescriptionEn: data.DescriptionEn || data.NameEn,
-          DescriptionAr: data.DescriptionAr || data.NameAr,
-          shortCode: data.shortCode,
-          TitleEn: data.TitleEn || data.NameEn,
-          TitleAr: data.TitleAr || data.NameAr,
-          NameEn: data.NameEn,
-          NameAr: data.NameAr,
-          BackupId: data.id,
+        ShortCodeValidation.push(data.shortCode);
+      });
+      const Duplicates = await BreederModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
         });
-      });
-      const data = await BreederModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        // validate: true,
-      });
-      res.status(201).json({ success: true, data });
+        res.end();
+      } else {
+        console.log(Duplicates);
+        await de.map((data) => {
+          original.push({
+            DescriptionEn: data.DescriptionEn || data.NameEn,
+            DescriptionAr: data.DescriptionAr || data.NameAr,
+            shortCode: data.shortCode,
+            TitleEn: data.TitleEn || data.NameEn,
+            TitleAr: data.TitleAr || data.NameAr,
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            BackupId: data.id,
+          });
+        });
+        const data = await BreederModel.bulkCreate(original, {
+          ignoreDuplicates: true,
+          // validate: true,
+        });
+        res.status(201).json({ success: true, data });
+      }
     } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
-      res.status(200).json({
+      res.status(210).json({
         success: false,
         message: error,
       });
-      // }
     }
   } else {
-    // console.log(req.files.file.mimetype);
     res.status(409).json({ message: "file format is not valid" });
   }
-  // res.status(200).json({
-  //   success: true,
-  // });
 });
 exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
   try {

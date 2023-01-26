@@ -41,23 +41,51 @@ exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
       console.log(de);
       let original = [];
+      let ShortCodeValidation = [];
       await de.map((data) => {
-        original.push({
-          NameEn: data.NameEn,
-          NameAr: data.NameAr,
-          shortCode: data.shortCode || null,
-          AbbrevEn: data.AbbrevEn,
-          AbbrevAr: data.AbbrevAr,
-          HemisphereEn: data.HemisphereEn || null,
-          HemisphereAr: data.HemisphereAr || null,
+        ShortCodeValidation.push(data.shortCode);
+      });
+      const Duplicates = await BreederModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
         });
-      });
-      console.log(original);
-      const data = await FinalPositionModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        validate: true,
-      });
-      res.status(201).json({ success: true, data });
+        res.end();
+      } else {
+        await de.map((data) => {
+          original.push({
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            shortCode: data.shortCode || null,
+            AbbrevEn: data.AbbrevEn,
+            AbbrevAr: data.AbbrevAr,
+            HemisphereEn: data.HemisphereEn || null,
+            HemisphereAr: data.HemisphereAr || null,
+          });
+        });
+        console.log(original);
+        const data = await FinalPositionModel.bulkCreate(original, {
+          ignoreDuplicates: true,
+          validate: true,
+        });
+        res.status(201).json({ success: true, data });
+      }
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
       //   res.status(403);

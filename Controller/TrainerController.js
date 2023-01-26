@@ -111,58 +111,86 @@ exports.TrainerMassUpload = Trackerror(async (req, res, next) => {
     let tempnationality;
     let original = [];
     let data;
-    let nationalforeignkeys = Array.from(
-      new Set(de.map((item) => item.NationalityID))
-    );
-    console.log(nationalforeignkeys.length);
-    console.log(nationalforeignkeys);
-    tempnationality = await NationalityModel.findAll({
-      where: { BackupId: nationalforeignkeys },
-      attributes: ["_id", "BackupId"],
+    let ShortCodeValidation = [];
+    await de.map((data) => {
+      ShortCodeValidation.push(data.shortCode);
     });
-    nationalforeignkeys = [];
-
-    tempnationality.map((newdata) => {
-      nationalforeignkeys.push({
-        _id: newdata._id,
-        BackupId: newdata.BackupId,
+    const Duplicates = await BreederModel.findAll({
+      where: {
+        shortCode: ShortCodeValidation,
+      },
+    });
+    if (Duplicates) {
+      res.status(215).json({
+        success: false,
+        Notify: "Duplication Error",
+        message: {
+          ErrorName: "Duplication Error",
+          list: Duplicates.map((singledup) => {
+            return {
+              id: singledup.BackupId,
+              shortCode: singledup.shortCode,
+              NameEn: singledup.NameEn,
+              NameAr: singledup.NameAr,
+            };
+          }),
+        },
       });
-    });
-    let temp;
-    // console.log(nationalforeignkeys);
-    for (let i = 0; i < de.length; i++) {
-      temp = exchangefunction(nationalforeignkeys, de[i].NationalityID);
-      console.log(temp, "temp");
-      original.push({
-        NameEn: de[i].NameEn,
-        NameAr: de[i].NameAr,
-        ShortNameEn: de[i].ShortNameEn,
-        ShortNameAr: de[i].ShortNameAr,
-        TitleEn: de[i].TitleEn || de[i].NameEn,
-        TitleAr: de[i].TitleAr || de[i].NameAr,
-        TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
-        DOB: de[i].DOB || de[i].TrainerLicenseDate,
-        shortCode: de[i].shortCode || null,
-        DetailEn: de[i].DetailEn || de[i].NameEn,
-        RemarksEn: de[i].RemarksEn || de[i].NameEn,
-        Rating: de[i].Rating || 0,
-        NationalityID: temp,
-        DetailAr: de[i].DetailAr || de[i].NameAr,
-        RemarksAr: de[i].RemarksAr || de[i].NameEn,
-        BackupId: de[i].id,
+      res.end();
+    } else {
+      let nationalforeignkeys = Array.from(
+        new Set(de.map((item) => item.NationalityID))
+      );
+      console.log(nationalforeignkeys.length);
+      console.log(nationalforeignkeys);
+      tempnationality = await NationalityModel.findAll({
+        where: { BackupId: nationalforeignkeys },
+        attributes: ["_id", "BackupId"],
+      });
+      nationalforeignkeys = [];
+
+      tempnationality.map((newdata) => {
+        nationalforeignkeys.push({
+          _id: newdata._id,
+          BackupId: newdata.BackupId,
+        });
+      });
+      let temp;
+      // console.log(nationalforeignkeys);
+      for (let i = 0; i < de.length; i++) {
+        temp = exchangefunction(nationalforeignkeys, de[i].NationalityID);
+        console.log(temp, "temp");
+        original.push({
+          NameEn: de[i].NameEn,
+          NameAr: de[i].NameAr,
+          ShortNameEn: de[i].ShortNameEn,
+          ShortNameAr: de[i].ShortNameAr,
+          TitleEn: de[i].TitleEn || de[i].NameEn,
+          TitleAr: de[i].TitleAr || de[i].NameAr,
+          TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
+          DOB: de[i].DOB || de[i].TrainerLicenseDate,
+          shortCode: de[i].shortCode || null,
+          DetailEn: de[i].DetailEn || de[i].NameEn,
+          RemarksEn: de[i].RemarksEn || de[i].NameEn,
+          Rating: de[i].Rating || 0,
+          NationalityID: temp,
+          DetailAr: de[i].DetailAr || de[i].NameAr,
+          RemarksAr: de[i].RemarksAr || de[i].NameEn,
+          BackupId: de[i].id,
+        });
+      }
+
+      // console.log(original);
+      const db = await TrainerModel.bulkCreate(original);
+      // , {
+      //   ignoreDuplicates: true,
+      //   validate: true
+      // }
+      res.status(200).json({
+        success: true,
+        db,
       });
     }
-
-    // console.log(original);
-    const db = await TrainerModel.bulkCreate(original);
-    // , {
-    //   ignoreDuplicates: true,
-    //   validate: true
-    // }
-    res.status(200).json({
-      success: true,
-      db,
-    });
     // } catch (err) {
     //   res.status(500).json({
     //     success: false,

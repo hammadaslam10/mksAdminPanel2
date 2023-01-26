@@ -81,6 +81,7 @@ exports.SearchRaceCourse = Trackerror(async (req, res, next) => {
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    include: { all: true },
     where: {
       TrackNameEn: {
         [Op.like]: `%${req.query.TrackNameEn || ""}%`,

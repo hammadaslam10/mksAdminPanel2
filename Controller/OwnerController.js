@@ -54,70 +54,97 @@ exports.OwnerMassUpload = Trackerror(async (req, res, next) => {
       let tempnationality;
       let original = [];
       let data;
-
-      let nationalforeignkeys = Array.from(
-        new Set(de.map((item) => item.NationalityID))
-      );
-
-      const index = nationalforeignkeys.indexOf(undefined);
-      if (index > -1) {
-        // only splice array when item is found
-        nationalforeignkeys.splice(index, 1); // 2nd parameter means remove one item only
-      }
-
-      nationalforeignkeys.push(232);
-
-      tempnationality = await NationalityModel.findAll({
-        where: { BackupId: nationalforeignkeys },
-        attributes: ["_id", "BackupId"],
+      let ShortCodeValidation = [];
+      await de.map((data) => {
+        ShortCodeValidation.push(data.shortCode);
       });
-
-      nationalforeignkeys = [];
-
-      tempnationality.map((newdata) => {
-        nationalforeignkeys.push({
-          _id: newdata._id,
-          BackupId: newdata.BackupId,
+      const Duplicates = await BreederModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
         });
-      });
-      let temp;
-      for (let i = 0; i < de.length; i++) {
-        temp = exchangefunction(
-          nationalforeignkeys,
-          de[i].NationalityID || 232
+        res.end();
+      } else {
+        let nationalforeignkeys = Array.from(
+          new Set(de.map((item) => item.NationalityID))
         );
-        if (i == 3151) {
-          console.log(de[i]);
+
+        const index = nationalforeignkeys.indexOf(undefined);
+        if (index > -1) {
+          // only splice array when item is found
+          nationalforeignkeys.splice(index, 1); // 2nd parameter means remove one item only
         }
-        if (Date.parse(de[i].RegistrationDate) == NaN) {
-          console.log(de[i]);
-          return new HandlerCallBack("Date format is not ok", 404);
+
+        nationalforeignkeys.push(232);
+
+        tempnationality = await NationalityModel.findAll({
+          where: { BackupId: nationalforeignkeys },
+          attributes: ["_id", "BackupId"],
+        });
+
+        nationalforeignkeys = [];
+
+        tempnationality.map((newdata) => {
+          nationalforeignkeys.push({
+            _id: newdata._id,
+            BackupId: newdata.BackupId,
+          });
+        });
+        let temp;
+        for (let i = 0; i < de.length; i++) {
+          temp = exchangefunction(
+            nationalforeignkeys,
+            de[i].NationalityID || 232
+          );
+          if (i == 3151) {
+            console.log(de[i]);
+          }
+          if (Date.parse(de[i].RegistrationDate) == NaN) {
+            console.log(de[i]);
+            return new HandlerCallBack("Date format is not ok", 404);
+          }
+          original.push({
+            NameEn: de[i].NameEn,
+            NameAr: de[i].NameAr,
+            NationalityID: temp,
+            TitleEn: de[i].TitleEn,
+            TitleAr: de[i].TitleAr,
+            shortCode: de[i].shortCode || null,
+            ShortEn: de[i].ShortEn || de[i].TitleEn,
+            ShortAr: de[i].ShortAr || de[i].TitleAr,
+            RegistrationDate: de[i].RegistrationDate,
+            BackupId: de[i].id,
+          });
         }
-        original.push({
-          NameEn: de[i].NameEn,
-          NameAr: de[i].NameAr,
-          NationalityID: temp,
-          TitleEn: de[i].TitleEn,
-          TitleAr: de[i].TitleAr,
-          shortCode: de[i].shortCode || null,
-          ShortEn: de[i].ShortEn || de[i].TitleEn,
-          ShortAr: de[i].ShortAr || de[i].TitleAr,
-          RegistrationDate: de[i].RegistrationDate,
-          BackupId: de[i].id,
+        // var sources = _.map(req.body.discoverySource, function (source) {
+        //   return {
+        //     discoverySource: source,
+        //     organizationId: req.body.organizationId
+        //   };
+        // });
+        const db = await OwnerModel.bulkCreate(original);
+
+        res.status(200).json({
+          success: true,
+          db,
         });
       }
-      // var sources = _.map(req.body.discoverySource, function (source) {
-      //   return {
-      //     discoverySource: source,
-      //     organizationId: req.body.organizationId
-      //   };
-      // });
-      const db = await OwnerModel.bulkCreate(original);
-
-      res.status(200).json({
-        success: true,
-        db,
-      });
     } catch (err) {
       res.status(500).json({
         success: false,

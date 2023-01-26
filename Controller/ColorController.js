@@ -38,25 +38,53 @@ exports.ColorMassUpload = Trackerror(async (req, res, next) => {
     res.status(404).json({ message: "File not found" });
   } else if (req.files.file.mimetype === "application/json") {
     try {
-      let de = JSON.parse(req.files.file.data.toString("utf8"));
-      console.log(de);
-      let original = [];
+      let ShortCodeValidation = [];
       await de.map((data) => {
-        original.push({
-          NameEn: data.NameEn,
-          NameAr: data.NameAr,
-          shortCode: data.shortCode,
-          AbbrevEn: data.AbbrevEn || data.NameEn,
-          AbbrevAr: data.AbbrevAr || data.NameAr,
-          BackupId: data.id,
+        ShortCodeValidation.push(data.shortCode);
+      });
+      const Duplicates = await BreederModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
         });
-      });
-      console.log(original);
-      const data = await ColorModel.bulkCreate(original, {
-        ignoreDuplicates: true,
-        validate: true,
-      });
-      res.status(201).json({ success: true, data });
+        res.end();
+      } else {
+        let de = JSON.parse(req.files.file.data.toString("utf8"));
+        console.log(de);
+        let original = [];
+        await de.map((data) => {
+          original.push({
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            shortCode: data.shortCode,
+            AbbrevEn: data.AbbrevEn || data.NameEn,
+            AbbrevAr: data.AbbrevAr || data.NameAr,
+            BackupId: data.id,
+          });
+        });
+        console.log(original);
+        const data = await ColorModel.bulkCreate(original, {
+          ignoreDuplicates: true,
+          validate: true,
+        });
+        res.status(201).json({ success: true, data });
+      }
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
       //   res.status(403);
@@ -147,36 +175,37 @@ exports.ColorGet = Trackerror(async (req, res, next) => {
       totalcount,
       filtered: data.length,
     });
-  }
-  const data = await ColorModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
-    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
-    where: {
-      NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`,
+  } else {
+    const data = await ColorModel.findAll({
+      offset: Number(req.query.page) - 1 || 0,
+      limit: Number(req.query.limit) || 10,
+      order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+      where: {
+        NameEn: {
+          [Op.like]: `%${req.query.NameEn || ""}%`,
+        },
+        NameAr: {
+          [Op.like]: `%${req.query.NameAr || ""}%`,
+        },
+        shortCode: {
+          [Op.like]: `%${req.query.shortCode || ""}%`,
+        },
+        createdAt: {
+          [Op.between]: [
+            req.query.startdate || "2021-12-01 00:00:00",
+            req.query.endDate || "4030-12-01 00:00:00",
+          ],
+        },
       },
-      NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`,
-      },
-      shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
-      },
-      createdAt: {
-        [Op.between]: [
-          req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-    },
-  });
+    });
 
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    res.status(200).json({
+      success: true,
+      data: data,
+      totalcount,
+      filtered: data.length,
+    });
+  }
 });
 
 exports.SingleColor = Trackerror(async (req, res, next) => {

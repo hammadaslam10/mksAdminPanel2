@@ -166,23 +166,51 @@ exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
       let de = JSON.parse(req.files.file.data.toString("utf8"));
       console.log(de);
       let original = [];
+      let ShortCodeValidation = [];
       await de.map((data) => {
-        original.push({
-          NameEn: data.NameEn,
-          NameAr: data.NameAr,
-          AltNameEn: data.AltNameEn || data.NameEn,
-          AltNameAr: data.AltNameAr || data.NameAr,
-          shortCode: data.shortCode,
-          AbbrevEn: data.AbbrevEn || data.NameEn,
-          AbbrevAr: data.AbbrevAr || data.NameAr,
-          HemisphereEn: data.HemisphereEn,
-          HemisphereAr: data.HemisphereAr,
-          BackupId: data.id,
-        });
+        ShortCodeValidation.push(data.shortCode);
       });
-      // console.log(original);
-      const data = await NationalityModel.bulkCreate(original);
-      res.status(201).json({ success: true, data });
+      const Duplicates = await BreederModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
+        });
+        res.end();
+      } else {
+        await de.map((data) => {
+          original.push({
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            AltNameEn: data.AltNameEn || data.NameEn,
+            AltNameAr: data.AltNameAr || data.NameAr,
+            shortCode: data.shortCode,
+            AbbrevEn: data.AbbrevEn || data.NameEn,
+            AbbrevAr: data.AbbrevAr || data.NameAr,
+            HemisphereEn: data.HemisphereEn,
+            HemisphereAr: data.HemisphereAr,
+            BackupId: data.id,
+          });
+        });
+        // console.log(original);
+        const data = await NationalityModel.bulkCreate(original);
+        res.status(201).json({ success: true, data });
+      }
     } catch (error) {
       // if (error.name === "SequelizeUniqueConstraintError") {
       //   res.status(403);
