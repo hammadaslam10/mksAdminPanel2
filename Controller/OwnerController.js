@@ -58,7 +58,7 @@ exports.OwnerMassUpload = Trackerror(async (req, res, next) => {
       await de.map((data) => {
         ShortCodeValidation.push(data.shortCode);
       });
-      const Duplicates = await BreederModel.findAll({
+      const Duplicates = await OwnerModel.findAll({
         where: {
           shortCode: ShortCodeValidation,
         },

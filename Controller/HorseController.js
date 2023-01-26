@@ -108,7 +108,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
       await de.map((data) => {
         ShortCodeValidation.push(data.shortCode);
       });
-      const Duplicates = await BreederModel.findAll({
+      const Duplicates = await HorseModel.findAll({
         where: {
           shortCode: ShortCodeValidation,
         },

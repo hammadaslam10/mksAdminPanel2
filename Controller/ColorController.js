@@ -42,7 +42,7 @@ exports.ColorMassUpload = Trackerror(async (req, res, next) => {
       await de.map((data) => {
         ShortCodeValidation.push(data.shortCode);
       });
-      const Duplicates = await BreederModel.findAll({
+      const Duplicates = await ColorModel.findAll({
         where: {
           shortCode: ShortCodeValidation,
         },
