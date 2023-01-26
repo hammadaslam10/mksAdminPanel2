@@ -145,7 +145,7 @@ exports.JockeyDropDown = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `${req.query.shortCode || "%%"}`,
       },
     },
   });

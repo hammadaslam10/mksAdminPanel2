@@ -90,7 +90,7 @@ exports.SearchRaceCourse = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.TrackNameAr || ""}%`,
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `${req.query.shortCode || "%%"}`,
       },
       createdAt: {
         [Op.between]: [

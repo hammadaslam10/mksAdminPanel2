@@ -74,7 +74,7 @@ exports.BreederDropDown = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `${req.query.shortCode || "%%"}`,
       },
     },
   });
@@ -335,7 +335,7 @@ exports.BreederGet = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.DescriptionAr || ""}%`,
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `${req.query.shortCode || "%%"}`,
       },
       createdAt: {
         [Op.between]: [
