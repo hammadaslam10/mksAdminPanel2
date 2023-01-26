@@ -151,18 +151,18 @@ exports.SearchJockey = Trackerror(async (req, res, next) => {
       ShortNameAr: {
         [Op.like]: `%${req.query.ShortNameAr || ""}%`,
       },
-      Rating: {
-        [Op.like]: `%${req.query.Rating || ""}%`,
-      },
+      // Rating: {
+      //   [Op.eq]: `%${req.query.Rating || ""}%`,
+      // },
       NationalityID: {
         [Op.like]: `%${req.query.NationalityID || ""}%`,
       },
-      RemarksEn: {
-        [Op.like]: `%${req.query.RemarksEn || ""}%`,
-      },
-      RemarksAr: {
-        [Op.like]: `%${req.query.RemarksAr || ""}%`,
-      },
+      // RemarksEn: {
+      //   [Op.like]: `%${req.query.RemarksEn || ""}%`,
+      // },
+      // RemarksAr: {
+      //   [Op.like]: `%${req.query.RemarksAr || ""}%`,
+      // },
       // MiniumumJockeyWeight: {
       //   [Op.like]: `%${req.query.MiniumumJockeyWeight || ""}%`,
       // },
