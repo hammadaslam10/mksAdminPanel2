@@ -358,36 +358,36 @@ exports.SearchCompetition = Trackerror(async (req, res, next) => {
       CompetitionSponsor: {
         [Op.like]: `%${req.query.CompetitionSponsor || ""}%`,
       },
-      CompetitionCode: {
-        [Op.like]: `%${req.query.CompetitionCode || ""}%`,
-      },
-      CategoryCount: {
-        [Op.like]: `%${req.query.CategoryCount || ""}%`,
-      },
-      shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
-      },
-      createdAt: {
-        [Op.between]: [
-          req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-      StartDate: {
-        [Op.between]: [
-          req.query.competitionstartdate1 || "2021-12-01 00:00:00",
-          req.query.competitionstartdate2 || "4030-12-01 00:00:00",
-        ],
-      },
-      EndDate: {
-        [Op.between]: [
-          req.query.competitionenddate1 || "2021-12-01 00:00:00",
-          req.query.competitionenddate2 || "4030-12-01 00:00:00",
-        ],
-      },
-      createdAt: {
-        [Op.between]: [req.query.startdate, req.query.enddate],
-      },
+      // CompetitionCode: {
+      //   [Op.like]: `%${req.query.CompetitionCode || ""}%`,
+      // },
+      // CategoryCount: {
+      //   [Op.like]: `%${req.query.CategoryCount || ""}%`,
+      // },
+      // shortCode: {
+      //   [Op.like]: `%${req.query.shortCode || ""}%`,
+      // },
+      // createdAt: {
+      //   [Op.between]: [
+      //     req.query.startdate || "2021-12-01 00:00:00",
+      //     req.query.endDate || "4030-12-01 00:00:00",
+      //   ],
+      // },
+      // StartDate: {
+      //   [Op.between]: [
+      //     req.query.competitionstartdate1 || "2021-12-01 00:00:00",
+      //     req.query.competitionstartdate2 || "4030-12-01 00:00:00",
+      //   ],
+      // },
+      // EndDate: {
+      //   [Op.between]: [
+      //     req.query.competitionenddate1 || "2021-12-01 00:00:00",
+      //     req.query.competitionenddate2 || "4030-12-01 00:00:00",
+      //   ],
+      // },
+      // createdAt: {
+      //   [Op.between]: [req.query.startdate, req.query.enddate],
+      // },
     },
   });
   res.status(200).json({
