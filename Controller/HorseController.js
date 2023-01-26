@@ -307,7 +307,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
           GSire: de[i].GSire || null,
           Height: de[i].Height || 0,
           KindHorse: horsekindtemp,
-          shortCode: de[i].shortCode,
+          shortCode: de[i].shortCode || null,
           RemarksAr: de[i].RemarksAr || "N/A",
           BackupId: de[i].id,
         });

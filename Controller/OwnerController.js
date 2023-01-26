@@ -99,7 +99,7 @@ exports.OwnerMassUpload = Trackerror(async (req, res, next) => {
           NationalityID: temp,
           TitleEn: de[i].TitleEn,
           TitleAr: de[i].TitleAr,
-          shortCode: de[i].shortCode,
+          shortCode: de[i].shortCode || null,
           ShortEn: de[i].ShortEn || de[i].TitleEn,
           ShortAr: de[i].ShortAr || de[i].TitleAr,
           RegistrationDate: de[i].RegistrationDate,

@@ -142,7 +142,7 @@ exports.TrainerMassUpload = Trackerror(async (req, res, next) => {
         TitleAr: de[i].TitleAr || de[i].NameAr,
         TrainerLicenseDate: de[i].TrainerLicenseDate || Date.now,
         DOB: de[i].DOB || de[i].TrainerLicenseDate,
-        shortCode: de[i].shortCode,
+        shortCode: de[i].shortCode || null,
         DetailEn: de[i].DetailEn || de[i].NameEn,
         RemarksEn: de[i].RemarksEn || de[i].NameEn,
         Rating: de[i].Rating || 0,
