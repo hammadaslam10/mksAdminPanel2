@@ -861,6 +861,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     FifthPrice,
     SixthPrice
   } = req.body;
+
+  
   if (!totalPrize) {
     return next(new HandlerCallBack("Please provide total prize", 404));
   }
