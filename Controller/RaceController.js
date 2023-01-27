@@ -112,9 +112,9 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
       TrackLength: {
         [Op.like]: `%${req.query.TrackLength || ""}%`
       },
-      Ground: {
-        [Op.like]: `%${req.query.Ground || ""}%`
-      },
+      // Ground: {
+      //   [Op.like]: `%${req.query.Ground || ""}%`
+      // },
       DescriptionAr: {
         [Op.like]: `%${req.query.DescriptionAr || ""}%`
       },
