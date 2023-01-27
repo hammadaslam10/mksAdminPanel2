@@ -243,11 +243,11 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        paranoid: false,
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   paranoid: false,
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -862,7 +862,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     SixthPrice
   } = req.body;
 
-  
+
   if (!totalPrize) {
     return next(new HandlerCallBack("Please provide total prize", 404));
   }

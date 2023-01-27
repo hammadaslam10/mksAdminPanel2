@@ -92,11 +92,11 @@ exports.RaceCardGet = Trackerror(async (req, res, next) => {
             model: db.MeetingTypeModel,
             as: "MeetingTypeData",
           },
-          {
-            paranoid: false,
-            model: db.GroundTypeModel,
-            as: "GroundData",
-          },
+          // {
+          //   paranoid: false,
+          //   model: db.GroundTypeModel,
+          //   as: "GroundData",
+          // },
           {
             model: db.RaceCourseModel,
             as: "RaceCourseData",
