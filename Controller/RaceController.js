@@ -856,8 +856,12 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Day,
     TrackCondition,
     RaceNumber,
+    totalPrize,
     PrizeNumber
   } = req.body;
+  if(!totalPrize){
+    return next(new HandlerCallBack("Please provide total prize", 404));
+  }
   if (PrizeNumber == 6) {
     let first = 60 / 100;
 
@@ -869,34 +873,34 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     let fifth = 3 / 100;
 
     let six = 2 / 100;
-    SecondPrice = second * data;
-    ThirdPrice = third * data;
-    FourthPrice = fouth * data;
-    FifthPrice = fifth * data;
-    FirstPrice = first * data;
-    SixthPrice = six * data;
+    SecondPrice = second * totalPrize;
+    ThirdPrice = third * totalPrize;
+    FourthPrice = fouth * totalPrize;
+    FifthPrice = fifth * totalPrize;
+    FirstPrice = first * totalPrize;
+    SixthPrice = six * totalPrize;
   } else {
     let first = 60 / 100;
-    console.log(first * data, "first");
+    console.log(first * totalPrize, "first");
     let second = 20 / 100;
-    console.log(second * data, "second");
+    console.log(second * totalPrize, "second");
 
     let third = 11 / 100;
-    console.log(third * data, "third");
+    console.log(third * totalPrize, "third");
 
     let fouth = 6 / 100;
-    console.log(fouth * data, "fouth");
+    console.log(fouth * totalPrize, "fouth");
 
     let fifth = 3 / 100;
-    console.log(fifth * data, "fifth");
+    console.log(fifth * totalPrize, "fifth");
 
     let six = 0 / 100;
-    SecondPrice = second * data;
-    ThirdPrice = third * data;
-    FourthPrice = fouth * data;
-    FifthPrice = fifth * data;
-    FirstPrice = first * data;
-    SixthPrice = six * data;
+    SecondPrice = second * totalPrize;
+    ThirdPrice = third * totalPrize;
+    FourthPrice = fouth * totalPrize;
+    FifthPrice = fifth * totalPrize;
+    FirstPrice = first * totalPrize;
+    SixthPrice = six * totalPrize;
   }
   // const file = req.files.image;
   // if (file == null) {
