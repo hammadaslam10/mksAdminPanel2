@@ -63,9 +63,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
       } else {
         res.status(500).json({
           success: false,
-          message: error.errors.map((singleerr) => {
-            return singleerr.message;
-          }),
+          message: error
         });
       }
     }
