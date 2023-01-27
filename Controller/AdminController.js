@@ -84,6 +84,7 @@ exports.GetAllAdmin = Trackerror(async (req, res, next) => {
     filtered: data.length,
   });
 });
+
 exports.GetonlyoneAdmin = Trackerror(async (req, res, next) => {
   const data = await AdminModel.findOne({
     where: { _id: req.params.id },
