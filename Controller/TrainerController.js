@@ -143,7 +143,7 @@ exports.TrainerMassUpload = Trackerror(async (req, res, next) => {
         shortCode: ShortCodeValidation,
       },
     });
-    if (Duplicates) {
+    if (Duplicates.length >= 1) {
       res.status(215).json({
         success: false,
         Notify: "Duplication Error",
