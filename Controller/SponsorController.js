@@ -13,45 +13,45 @@ exports.GetDeletedSponsor = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findAll({
     paranoid: false,
     where: {
-      [Op.not]: { deletedAt: null },
-    },
+      [Op.not]: { deletedAt: null }
+    }
   });
   res.status(200).json({
     success: true,
-    data,
+    data
   });
 });
 exports.RestoreSoftDeletedSponsor = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findOne({
     paranoid: false,
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
   const restoredata = await SponsorModel.restore({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   res.status(200).json({
     success: true,
-    restoredata,
+    restoredata
   });
 });
 
 exports.CreateSponsor = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
-
-  if (req.file == null) {
+  console.log(req.files);
+  if (req.files == null) {
     const data = await SponsorModel.create({
       DescriptionEn: DescriptionEn,
       DescriptionAr: DescriptionAr,
       TitleEn: TitleEn,
       TitleAr: TitleAr,
-      Url: Url,
+      Url: Url
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } else {
     const file = req.files.image;
@@ -65,11 +65,11 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr,
       TitleEn: TitleEn,
       TitleAr: TitleAr,
-      Url: Url,
+      Url: Url
     });
     res.status(201).json({
       success: true,
-      data,
+      data
     });
   }
 });
@@ -81,16 +81,16 @@ exports.SponsorGet = Trackerror(async (req, res, next) => {
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       TitleEn: {
-        [Op.like]: `%${req.query.TitleEn || ""}%`,
+        [Op.like]: `%${req.query.TitleEn || ""}%`
       },
       TitleAr: {
-        [Op.like]: `%${req.query.TitleAr || ""}%`,
+        [Op.like]: `%${req.query.TitleAr || ""}%`
       },
       DescriptionEn: {
-        [Op.like]: `%${req.query.DescriptionEn || ""}%`,
+        [Op.like]: `%${req.query.DescriptionEn || ""}%`
       },
       DescriptionAr: {
-        [Op.like]: `%${req.query.DescriptionAr || ""}%`,
+        [Op.like]: `%${req.query.DescriptionAr || ""}%`
       },
       // shortCode: {
       //   [Op.like]: `%${req.query.shortCode || ""}%`,
@@ -98,23 +98,23 @@ exports.SponsorGet = Trackerror(async (req, res, next) => {
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-    },
+          req.query.endDate || "4030-12-01 00:00:00"
+        ]
+      }
+    }
   });
   res.status(200).json({
     success: true,
     data: data,
     totalcount,
-    filtered: data.length,
+    filtered: data.length
   });
 });
 exports.GetSponsorAdmin = Trackerror(async (req, res, next) => {});
 exports.EditSponsor = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   let data = await SponsorModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -126,16 +126,16 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
-      Url: Url || data.Url,
+      Url: Url || data.Url
     };
     data = await SponsorModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   } else {
     const file = req.files.image;
@@ -150,23 +150,23 @@ exports.EditSponsor = Trackerror(async (req, res, next) => {
       DescriptionAr: DescriptionAr || data.DescriptionAr,
       TitleEn: TitleEn || data.TitleEn,
       TitleAr: TitleAr || data.TitleAr,
-      Url: Url || data.Url,
+      Url: Url || data.Url
     };
 
     data = await SponsorModel.update(updateddata, {
       where: {
-        _id: req.params.id,
-      },
+        _id: req.params.id
+      }
     });
     res.status(200).json({
       success: true,
-      data,
+      data
     });
   }
 });
 exports.DeleteSponsor = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
@@ -176,28 +176,28 @@ exports.DeleteSponsor = Trackerror(async (req, res, next) => {
   await deleteFile(`${Sponsor}/${data.image.slice(-64)}`);
   await SponsorModel.destroy({
     where: { _id: req.params.id },
-    force: true,
+    force: true
   });
 
   res.status(200).json({
     success: true,
-    message: "data Delete Successfully",
+    message: "data Delete Successfully"
   });
 });
 exports.SoftDeleteSponsor = Trackerror(async (req, res, next) => {
   const data = await SponsorModel.findOne({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
 
   await SponsorModel.destroy({
-    where: { _id: req.params.id },
+    where: { _id: req.params.id }
   });
 
   res.status(200).json({
     success: true,
-    message: "Soft Delete Successfully",
+    message: "Soft Delete Successfully"
   });
 });
