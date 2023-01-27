@@ -95,9 +95,9 @@ exports.TrackLengthGet = Trackerror(async (req, res, next) => {
       TrackLength: {
         [Op.like]: `%${req.query.TrackLength || ""}%`,
       },
-      RaceCourse: {
-        [Op.like]: `%${req.query.RaceCourse || ""}%`,
-      },
+      // RaceCourse: {
+      //   [Op.like]: `%${req.query.RaceCourse || ""}%`,
+      // },
       GroundType: {
         [Op.like]: `%${req.query.GroundType || ""}%`,
       },
