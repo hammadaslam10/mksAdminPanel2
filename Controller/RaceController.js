@@ -32,10 +32,10 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -374,10 +374,10 @@ exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData"
@@ -639,10 +639,10 @@ exports.VerdictLatest = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData"
@@ -735,10 +735,10 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData"
@@ -1082,10 +1082,10 @@ WHERE
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      {
-        model: db.GroundTypeModel,
-        as: "GroundData"
-      },
+      // {
+      //   model: db.GroundTypeModel,
+      //   as: "GroundData"
+      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData"

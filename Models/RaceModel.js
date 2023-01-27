@@ -67,16 +67,16 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      Ground: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add GroundType Of Race" },
-          notEmpty: {
-            msg: "Without GroundType Race Will not get submitted"
-          }
-        }
-      },
+      // Ground: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Please Add GroundType Of Race" },
+      //     notEmpty: {
+      //       msg: "Without GroundType Race Will not get submitted"
+      //     }
+      //   }
+      // },
       DescriptionAr: {
         type: DataTypes.STRING,
         allowNull: false,

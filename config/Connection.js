@@ -422,14 +422,14 @@ db.RaceModel.belongsTo(db.RaceCourseModel, {
   as: "RaceCourseData",
 });
 // -------------------------------------Race----------------------------
-db.GroundTypeModel.hasMany(db.RaceModel, {
-  foreignKey: "Ground",
-  as: "GroundData",
-});
-db.RaceModel.belongsTo(db.GroundTypeModel, {
-  foreignKey: "Ground",
-  as: "GroundData",
-});
+// db.GroundTypeModel.hasMany(db.RaceModel, {
+//   foreignKey: "Ground",
+//   as: "GroundData",
+// });
+// db.RaceModel.belongsTo(db.GroundTypeModel, {
+//   foreignKey: "Ground",
+//   as: "GroundData",
+// });
 db.TrackConditionModel.hasMany(db.RaceModel, {
   foreignKey: "TrackCondition",
   as: "TrackConditionData",
