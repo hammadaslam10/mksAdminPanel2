@@ -139,16 +139,19 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      EndTime: {
-        type: DataTypes.TIME,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add EndTime Of Race" },
-          notEmpty: {
-            msg: "Without EndTime Race Will not get submitted",
-          },
-        },
+      RaceNumber:{
+        type:DataType
       },
+      // EndTime: {
+      //   type: DataTypes.TIME,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Please Add EndTime Of Race" },
+      //     notEmpty: {
+      //       msg: "Without EndTime Race Will not get submitted",
+      //     },
+      //   },
+      // },
       Day: {
         type: DataTypes.DATE,
         allowNull: false,
