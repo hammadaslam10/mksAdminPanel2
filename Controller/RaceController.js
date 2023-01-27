@@ -854,26 +854,69 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     Day,
-    TrackCondition
+    TrackCondition,
+    RaceNumber,
+    PrizeNumber
   } = req.body;
-  const file = req.files.image;
-  if (file == null) {
-    return next(new HandlerCallBack("Please upload an image", 404));
+  if (PrizeNumber == 6) {
+    let first = 60 / 100;
+
+    let second = 20 / 100;
+
+    let third = 10 / 100;
+
+    let fouth = 5 / 100;
+    let fifth = 3 / 100;
+
+    let six = 2 / 100;
+    SecondPrice = second * data;
+    ThirdPrice = third * data;
+    FourthPrice = fouth * data;
+    FifthPrice = fifth * data;
+    FirstPrice = first * data;
+    SixthPrice = six * data;
+  } else {
+    let first = 60 / 100;
+    console.log(first * data, "first");
+    let second = 20 / 100;
+    console.log(second * data, "second");
+
+    let third = 11 / 100;
+    console.log(third * data, "third");
+
+    let fouth = 6 / 100;
+    console.log(fouth * data, "fouth");
+
+    let fifth = 3 / 100;
+    console.log(fifth * data, "fifth");
+
+    let six = 0 / 100;
+    SecondPrice = second * data;
+    ThirdPrice = third * data;
+    FourthPrice = fouth * data;
+    FifthPrice = fifth * data;
+    FirstPrice = first * data;
+    SixthPrice = six * data;
   }
-  const Image = generateFileName();
-  const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  console.log(req.files.image.data);
-  await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
+  // const file = req.files.image;
+  // if (file == null) {
+  //   return next(new HandlerCallBack("Please upload an image", 404));
+  // }
+  // const Image = generateFileName();
+  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+  // console.log(req.files.image.data);
+  // await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
 
   const data = await RaceModel.create({
-    image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
+    // image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
     RaceKind: RaceKind,
     DescriptionEn: DescriptionEn,
     DescriptionAr: DescriptionAr,
     RaceCourse: RaceCourse,
     RaceStatus: RaceStatus,
     StartTime: StartTime,
-    EndTime: EndTime,
+    RaceNumber: RaceNumber,
+    // EndTime: EndTime,
     RaceType: RaceType,
     WeatherType: WeatherType,
     WeatherDegree: WeatherDegree,

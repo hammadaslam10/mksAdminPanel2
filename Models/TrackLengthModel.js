@@ -18,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "TrackLength  Total Lenght will not be empty" },
         },
       },
-      RaceCourse: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "TrackLength  will have RaceCourse" },
-          notEmpty: { msg: "RaceCourse  will not be empty" },
-        },
-      },
+      // RaceCourse: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "TrackLength  will have RaceCourse" },
+      //     notEmpty: { msg: "RaceCourse  will not be empty" },
+      //   },
+      // },
       GroundType: {
         type: DataTypes.UUID,
         allowNull: false,

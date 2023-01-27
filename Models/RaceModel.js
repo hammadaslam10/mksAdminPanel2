@@ -8,27 +8,27 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
-      image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Image Of Breeder" },
-          notEmpty: {
-            msg: "Without Image Breeder Will not get submitted",
-          },
-        },
-      },
+      // image: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { msg: "Please Add Image Of Breeder" },
+      //     notEmpty: {
+      //       msg: "Without Image Breeder Will not get submitted"
+      //     }
+      //   }
+      // },
       MeetingType: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Please Add MeetingType Of Race" },
           notEmpty: {
-            msg: "Without MeetingType Race Will not get submitted",
-          },
-        },
+            msg: "Without MeetingType Race Will not get submitted"
+          }
+        }
       },
       MeetingCode: {
         type: DataTypes.STRING,
@@ -36,17 +36,17 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add MeetingCode Of Race" },
           notEmpty: {
-            msg: "Without MeetingCode Race Will not get submitted",
-          },
-        },
+            msg: "Without MeetingCode Race Will not get submitted"
+          }
+        }
       },
       RaceName: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have Race Name" },
-          notEmpty: { msg: "Race Name  will not be empty" },
-        },
+          notEmpty: { msg: "Race Name  will not be empty" }
+        }
       },
 
       RaceKind: {
@@ -54,8 +54,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have RaceKind" },
-          notEmpty: { msg: "RaceKind  will not be empty" },
-        },
+          notEmpty: { msg: "RaceKind  will not be empty" }
+        }
       },
       TrackLength: {
         type: DataTypes.UUID,
@@ -63,9 +63,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add TrackLength Of Race" },
           notEmpty: {
-            msg: "Without TrackLength Race Will not get submitted",
-          },
-        },
+            msg: "Without TrackLength Race Will not get submitted"
+          }
+        }
       },
       Ground: {
         type: DataTypes.UUID,
@@ -73,9 +73,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add GroundType Of Race" },
           notEmpty: {
-            msg: "Without GroundType Race Will not get submitted",
-          },
-        },
+            msg: "Without GroundType Race Will not get submitted"
+          }
+        }
       },
       DescriptionAr: {
         type: DataTypes.STRING,
@@ -96,8 +96,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Description Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       DescriptionEn: {
         type: DataTypes.STRING,
@@ -114,20 +114,20 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Description English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       RaceStatus: {
         type: DataTypes.STRING,
         allowNull: false,
         isIn: [["Completed", "Cancelled", "Live", "Due"]],
-        defaultValue: "Due",
+        defaultValue: "Due"
       },
       ResultStatus: {
         type: DataTypes.STRING,
         allowNull: false,
         isIn: [["Announced", "Awaited", "Cancelled"]],
-        defaultValue: "Awaited",
+        defaultValue: "Awaited"
       },
       StartTime: {
         type: DataTypes.TIME,
@@ -135,12 +135,19 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add StartTime Of Race" },
           notEmpty: {
-            msg: "Without StartTime Race Will not get submitted",
-          },
-        },
+            msg: "Without StartTime Race Will not get submitted"
+          }
+        }
       },
-      RaceNumber:{
-        type:DataType
+      RaceNumber: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add RaceNumber Of Race" },
+          notEmpty: {
+            msg: "Without RaceNumber Race Will not get submitted"
+          }
+        }
       },
       // EndTime: {
       //   type: DataTypes.TIME,
@@ -158,9 +165,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Day Of Race" },
           notEmpty: {
-            msg: "Without Day Race Will not get submitted",
-          },
-        },
+            msg: "Without Day Race Will not get submitted"
+          }
+        }
       },
 
       RaceCourse: {
@@ -169,109 +176,109 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add RaceCourse Of Race" },
           notEmpty: {
-            msg: "Without RaceCourse Race Will not get submitted",
-          },
-        },
+            msg: "Without RaceCourse Race Will not get submitted"
+          }
+        }
       },
       RaceType: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have RaceType" },
-          notEmpty: { msg: "RaceType  will not be empty" },
-        },
+          notEmpty: { msg: "RaceType  will not be empty" }
+        }
       },
       HorseFilled: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: false
       },
       WeatherType: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have WeatherType" },
-          notEmpty: { msg: "WeatherType  will not be empty" },
-        },
+          notEmpty: { msg: "WeatherType  will not be empty" }
+        }
       },
       WeatherDegree: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have WeatherDegree" },
-          notEmpty: { msg: "WeatherDegree  will not be empty" },
-        },
+          notEmpty: { msg: "WeatherDegree  will not be empty" }
+        }
       },
       WeatherIcon: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have WeatherIcon" },
-          notEmpty: { msg: "WeatherIcon  will not be empty" },
-        },
+          notEmpty: { msg: "WeatherIcon  will not be empty" }
+        }
       },
       RaceType: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have RaceType" },
-          notEmpty: { msg: "RaceType  will not be empty" },
-        },
+          notEmpty: { msg: "RaceType  will not be empty" }
+        }
       },
       PointTableSystem: {
         type: DataTypes.BOOLEAN,
-        defaultValue: 0,
+        defaultValue: 0
       },
       RaceCard: {
-        type: DataTypes.UUID,
+        type: DataTypes.UUID
       },
       Competition: {
-        type: DataTypes.UUID,
+        type: DataTypes.UUID
       },
       FirstPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
       SecondPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
       ThirdPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
       FourthPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
       FifthPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
       SixthPrice: {
         type: DataTypes.BIGINT,
-        defaultValue: 0,
+        defaultValue: 0
       },
-      TrackCondition:{
+      TrackCondition: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: false
       },
       Sponsor: {
         type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have Sponsor" },
-          notEmpty: { msg: "Sponsor  will not be empty" },
-        },
+          notEmpty: { msg: "Sponsor  will not be empty" }
+        }
       },
       BackupId: {
         type: DataTypes.BIGINT,
-        defaultValue: null,
-      },
+        defaultValue: null
+      }
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10,
+      initialAutoIncrement: 10
     }
   );
   return RaceModel;

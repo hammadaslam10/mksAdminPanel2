@@ -387,14 +387,14 @@ db.GroundTypeModel.hasMany(db.TrackLengthModel, {
   foreignKey: "GroundType",
   as: "GroundTypeModelData",
 });
-db.RaceCourseModel.hasMany(db.TrackLengthModel, {
-  foreignKey: "RaceCourse",
-  as: "TrackLengthRaceCourseData",
-});
-db.TrackLengthModel.belongsTo(db.RaceCourseModel, {
-  foreignKey: "RaceCourse",
-  as: "TrackLengthRaceCourseData",
-});
+// db.RaceCourseModel.hasMany(db.TrackLengthModel, {
+//   foreignKey: "RaceCourse",
+//   as: "TrackLengthRaceCourseData",
+// });
+// db.TrackLengthModel.belongsTo(db.RaceCourseModel, {
+//   foreignKey: "RaceCourse",
+//   as: "TrackLengthRaceCourseData",
+// });
 // -------------------------------------RaceCourse----------------------------
 db.NationalityModel.hasMany(db.RaceCourseModel, {
   foreignKey: "NationalityID",

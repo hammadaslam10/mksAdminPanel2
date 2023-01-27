@@ -43,7 +43,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
     try {
       const data = await TrackLengthModel.create({
         TrackLength: TrackLength,
-        RaceCourse: RaceCourse,
+        // RaceCourse: RaceCourse,
         RailPosition: RailPosition,
         GroundType: GroundType,
       });
