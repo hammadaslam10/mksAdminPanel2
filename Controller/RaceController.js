@@ -842,12 +842,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherDegree,
     WeatherIcon,
     TrackLength,
-    FirstPrice,
-    SecondPrice,
-    ThirdPrice,
-    FourthPrice,
-    FifthPrice,
-    SixthPrice,
     MeetingType,
     MeetingCode,
     Ground,
@@ -859,7 +853,15 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     totalPrize,
     PrizeNumber
   } = req.body;
-  if(!totalPrize){
+  let = {
+    FirstPrice,
+    SecondPrice,
+    ThirdPrice,
+    FourthPrice,
+    FifthPrice,
+    SixthPrice
+  } = req.body;
+  if (!totalPrize) {
     return next(new HandlerCallBack("Please provide total prize", 404));
   }
   if (PrizeNumber == 6) {
