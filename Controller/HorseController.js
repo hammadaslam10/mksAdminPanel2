@@ -239,7 +239,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
       tempnationality.map((newdata) => {
         console.log(newdata, "nationality");
         nationalforeignkeys.push({
-          _id: newdata._id||,
+          _id: newdata._id,
           BackupId: newdata.BackupId
         });
       });
