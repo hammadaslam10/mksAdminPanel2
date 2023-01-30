@@ -841,6 +841,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     WeatherType,
     WeatherDegree,
     WeatherIcon,
+    HorseKindinRace,
     TrackLength,
     MeetingType,
     MeetingCode,
@@ -861,7 +862,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     FifthPrice,
     SixthPrice
   } = req.body;
-
 
   if (!totalPrize) {
     return next(new HandlerCallBack("Please provide total prize", 404));
@@ -926,6 +926,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     RaceNumber: RaceNumber,
     // EndTime: EndTime,
     RaceType: RaceType,
+    HorseKindinRace: HorseKindinRace,
     WeatherType: WeatherType,
     WeatherDegree: WeatherDegree,
     WeatherIcon: WeatherIcon,
@@ -1042,18 +1043,14 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
-      singleverdictdetail = singleverdictdetail.split(",");
-      console.log(singleverdictdetail[0], "0 INDEX");
-      console.log(singleverdictdetail[1], "1 INDEX");
-      console.log(singleverdictdetail[2], "2 INDEX");
-      console.log(singleverdictdetail[3], "3 INDEX");
-
       await RaceAndVerdictsHorseModel.findOrCreate({
         where: {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
-          RaceModelId: req.params.id,
-          HorseModelId: singleverdictdetail[2]
+          RaceToBePredict: req.params.id,
+          HorseNo1: singleverdictdetail[2],
+          HorseNo2: singleverdictdetail[3],
+          HorseNo3: singleverdictdetail[4]
         }
       });
     });
@@ -1156,7 +1153,8 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     Day,
-    TrackCondition
+    TrackCondition,
+    HorseKindinRace
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id }
@@ -1207,7 +1205,8 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       Ground: Ground || data.Ground,
       Sponsor: Sponsor || data.Sponsor,
       Day: Day || data.Day,
-      TrackCondition: TrackCondition || data.TrackCondition
+      TrackCondition: TrackCondition || data.TrackCondition,
+      TrackCondition: HorseKindinRace || data.HorseKindinRace
     };
     data = await RaceModel.update(updateddata, {
       where: {

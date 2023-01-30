@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
         // allowNull: false,
         // validate: {
         //   notNull: { msg: "Please Add Image Of Jockey" },
@@ -26,9 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Date of birth Of Jockey" },
           notEmpty: {
-            msg: "Without Date of birth Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Date of birth Jockey Will not get submitted"
+          }
+        }
+      },
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
+        allowNull: false
       },
       NameEn: {
         type: DataTypes.STRING,
@@ -45,8 +51,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name in English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -66,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
           } else {
             throw new Error("Name Arabic Validation Failed");
           }
-        },
+        }
       },
       ShortNameEn: {
         type: DataTypes.STRING,
@@ -83,8 +89,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Short Name English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       ShortNameAr: {
         type: DataTypes.STRING,
@@ -105,12 +111,12 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("ShortName Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       Rating: {
         type: DataTypes.DOUBLE,
-        defaultValue: 0,
+        defaultValue: 0
       },
       NationalityID: {
         type: DataTypes.UUID,
@@ -118,9 +124,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Nationality Of Jockey" },
           notEmpty: {
-            msg: "Without Nationality Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Nationality Jockey Will not get submitted"
+          }
+        }
       },
       JockeyLicenseDate: {
         type: DataTypes.DATE,
@@ -128,12 +134,12 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Jockey License Date Of Jockey" },
           notEmpty: {
-            msg: "Without Jockey License Date Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Jockey License Date Jockey Will not get submitted"
+          }
+        }
       },
       RemarksEn: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
         // validate: {
         //   EnglishLanguageVerification() {
         //     if (this.RemarksEn.trim() == "") {
@@ -150,7 +156,7 @@ module.exports = (sequelize, DataTypes) => {
         // },
       },
       RemarksAr: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
         // validate: {
         //   ArabicLanguageVerification() {
         //     if (this.RemarksAr.trim() == "") {
@@ -176,9 +182,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Miniumum Jockey Weight Of Jockey" },
           notEmpty: {
-            msg: "Without Miniumum Jockey Weight Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Miniumum Jockey Weight Jockey Will not get submitted"
+          }
+        }
       },
       MaximumJockeyWeight: {
         type: DataTypes.BIGINT,
@@ -186,9 +192,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Maximum Jockey Weight Of Jockey" },
           notEmpty: {
-            msg: "Without Maximum Jockey Weight Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Maximum Jockey Weight Jockey Will not get submitted"
+          }
+        }
       },
       JockeyAllowance: {
         type: DataTypes.DOUBLE,
@@ -196,18 +202,18 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Jockey Allowance Of Jockey" },
           notEmpty: {
-            msg: "Without Jockey Allowance Jockey Will not get submitted",
-          },
-        },
+            msg: "Without Jockey Allowance Jockey Will not get submitted"
+          }
+        }
       },
       BackupId: {
         type: DataTypes.BIGINT,
-        defaultValue: null,
-      },
+        defaultValue: null
+      }
     },
     {
       freezeTableName: true,
-      paranoid: true,
+      paranoid: true
     }
   );
   return JockeyModel;
