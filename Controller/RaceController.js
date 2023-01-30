@@ -1006,7 +1006,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
           JockeyWeight: singlehorsedetail[5],
           Rating: singlehorsedetail[6],
           HorseRunningStatus: singlehorsedetail[7],
-          CapColor: singlehorsedetail[9]
+          CapColor: singlehorsedetail[8]
         }
       });
       await HorseAndRaceModel.findOrCreate({
@@ -1040,13 +1040,14 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   const { VerdictEntry } = req.body;
   console.log(req.body);
+  console.log(VerdictEntry,'VerdictEntry');
   let VerdictEntryData = Conversion(VerdictEntry);
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
       singleverdictdetail = singleverdictdetail.split(",");
+      console.log(singleverdictdetail[0],'singleverdictdetail')
       await RaceAndVerdictsHorseModel.create({
-        where: {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
           RaceToBePredict: req.params.id,
@@ -1054,7 +1055,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
           HorseNo2: singleverdictdetail[3],
           HorseNo3: singleverdictdetail[4],
           Remarks: singleverdictdetail[5]
-        }
+        
       });
     });
   });

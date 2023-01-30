@@ -235,7 +235,7 @@ exports.SingleCompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => {});
+exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => { });
 exports.EditCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,
@@ -405,8 +405,8 @@ exports.Voting = Trackerror(async (req, res, next) => {
     );
   }
   const { Horse } = req.body;
+  console.log(Horse);
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(decodedData);
   const userdata = await SubscriberModel.findOne({
     where: { [Op.and]: [{ _id: decodedData.id }, { ApprovedStatus: 1 }] },
   });
@@ -415,7 +415,8 @@ exports.Voting = Trackerror(async (req, res, next) => {
       new HandlerCallBack("Your are not Eligible to play competition", 401)
     );
   }
-
+  console.log(req.params.competitionid, "abc");
+  console.log(req.params.raceid, "dsd");
   const CompetitionID = await CompetitonModel.findOne({
     where: { _id: req.params.competitionid },
   });
@@ -429,6 +430,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     return next(new HandlerCallBack("Race time is Ended", 401));
   }
   if (CompetitionID.CompetitionCategory === "pick") {
+    console.log(Horse, "ghora");
     const HorseID = await HorseModel.findOne({
       where: { _id: Horse },
     });

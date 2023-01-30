@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-
       NameAr: {
         type: DataTypes.STRING,
         unique: true,

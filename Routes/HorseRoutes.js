@@ -14,8 +14,10 @@ const {
   SearchHorse,
   HorseMassUpload,
   HorseDropDown,
+  RaceHorse,
 } = require("../Controller/HorseController");
 router.route("/horsegetdeleted").get(GetDeletedHorse);
+router.route("/horserace/:raceid").get(RaceHorse);
 router.route("/SearchHorse").get(SearchHorse);
 router.route("/pedigreehorse/:id").get(PedigreeHorse);
 router.route("/restoresoftdeletehorse/:id").post(RestoreSoftDeletedHorse);

@@ -21,6 +21,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op, Sequelize } = require("sequelize");
+const RaceModel = db.RaceModel;
 exports.RaceHorse = Trackerror(async (req, res, next) => {
   const racedata = await RaceModel.findOne({
     where: {
@@ -31,13 +32,15 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
 
   // }
   const data = await HorseModel.findAll({
-    include: { all: true },
+    include: [{
+      model:db.OwnerModel, as : "ActiveOwnerData"
+    }],
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
-    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    // order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     attributes: ["NameEn", "NameAr", "_id", "ActiveOwner", "STARS"],
     where: {
-      HorseKind: {
+      KindHorse: {
         [Op.eq]: racedata.HorseKindinRace
       },
       NameEn: {
