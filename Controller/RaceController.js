@@ -988,10 +988,6 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   await HorseEntryData.map(async (singlehorse) => {
     await singlehorse.map(async (singlehorsedetail) => {
       singlehorsedetail = singlehorsedetail.split(",");
-      console.log(singlehorsedetail[0], "0 INDEX");
-      console.log(singlehorsedetail[1], "1 INDEX");
-      console.log(singlehorsedetail[2], "2 INDEX");
-      console.log(singlehorsedetail[3], "3 INDEX");
       horsedata = await HorseModel.findOne({
         where: {
           _id: singlehorsedetail[1]
@@ -1000,13 +996,17 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       await RaceAndHorseModel.findOrCreate({
         where: {
           GateNo: singlehorsedetail[0],
+          HorseNo: singlehorsedetail[1],
           RaceModelId: req.params.id,
-          HorseModelId: singlehorsedetail[1],
-          Equipment: singlehorsedetail[4],
+          HorseModelId: singlehorsedetail[2],
+          Equipment: singlehorsedetail[3],
           TrainerOnRace: horsedata.ActiveTrainer,
           OwnerOnRace: horsedata.ActiveOwner,
-          JockeyOnRace: singlehorsedetail[2],
-          JockeyWeight: singlehorsedetail[3]
+          JockeyOnRace: singlehorsedetail[4],
+          JockeyWeight: singlehorsedetail[5],
+          Rating: singlehorsedetail[6],
+          HorseRunningStatus: singlehorsedetail[7],
+          CapColor: singlehorsedetail[9]
         }
       });
       await HorseAndRaceModel.findOrCreate({
@@ -1036,6 +1036,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
     success: true
   });
 });
+
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   const { VerdictEntry } = req.body;
   console.log(req.body);
@@ -1043,14 +1044,15 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
-      await RaceAndVerdictsHorseModel.findOrCreate({
+      await RaceAndVerdictsHorseModel.create({
         where: {
           VerdictName: singleverdictdetail[0],
           Rank: singleverdictdetail[1],
           RaceToBePredict: req.params.id,
           HorseNo1: singleverdictdetail[2],
           HorseNo2: singleverdictdetail[3],
-          HorseNo3: singleverdictdetail[4]
+          HorseNo3: singleverdictdetail[4],
+          Remarks: singleverdictdetail[5]
         }
       });
     });

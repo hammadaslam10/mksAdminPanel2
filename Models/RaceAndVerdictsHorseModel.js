@@ -63,6 +63,16 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Without Name Horse 3 Will not get submitted"
           }
         }
+      },
+      Remarks: {
+        type: DataTypes.TEXT("long"),
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Please Add Name Of Remarks" },
+          notEmpty: {
+            msg: "Without Name Remarks Will not get submitted"
+          }
+        }
       }
     },
     {

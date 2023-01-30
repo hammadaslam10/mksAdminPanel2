@@ -21,6 +21,41 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op, Sequelize } = require("sequelize");
+exports.RaceHorse = Trackerror(async (req, res, next) => {
+  const racedata = await RaceModel.findOne({
+    where: {
+      _id: req.params.raceid
+    }
+  });
+  // if(){
+
+  // }
+  const data = await HorseModel.findAll({
+    include: { all: true },
+    offset: Number(req.query.page) - 1 || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    attributes: ["NameEn", "NameAr", "_id", "ActiveOwner", "STARS"],
+    where: {
+      HorseKind: {
+        [Op.eq]: racedata.HorseKindinRace
+      },
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`
+      },
+      shortCode: {
+        [Op.like]: `${req.query.shortCode || "%%"}`
+      }
+    }
+  });
+  res.status(200).json({
+    success: true,
+    data: data
+  });
+});
 exports.GetDeletedHorse = Trackerror(async (req, res, next) => {
   const data = await HorseModel.findAll({
     paranoid: false,

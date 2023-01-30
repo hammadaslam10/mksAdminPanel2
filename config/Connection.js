@@ -559,6 +559,14 @@ db.HorseAndRaceModel.belongsTo(db.EquipmentModel, {
   foreignKey: "Equipment",
   as: "EquipmentData1"
 });
+db.ColorModel.hasMany(db.HorseAndRaceModel, {
+  foreignKey: "CapColor",
+  as: "CapColorData1"
+});
+db.HorseAndRaceModel.belongsTo(db.ColorModel, {
+  foreignKey: "CapColor",
+  as: "CapColorData1"
+});
 db.OwnerModel.hasMany(db.HorseAndRaceModel, {
   foreignKey: "OwnerOnRace",
   as: "OwnerOnRaceData1"

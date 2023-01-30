@@ -251,7 +251,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0
       },
       STARS: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
         defaultValue: 0
       },
