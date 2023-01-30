@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      HorseKindinRace: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
       // Ground: {
       //   type: DataTypes.UUID,
       //   allowNull: false,
