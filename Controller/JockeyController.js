@@ -1,5 +1,6 @@
 const db = require("../config/Connection");
 const JockeyModel = db.JockeyModel;
+const NationalityModel = db.NationalityModel;
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { Jockey, Breeder } = require("../Utils/Path");
@@ -8,6 +9,10 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const Features = require("../Utils/Features");
 const { Op } = require("sequelize");
+function exchangefunction(arraytobechecked, valuetobechecked, val) {
+  let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
+  return a._id;
+}
 exports.GetDeletedJockey = Trackerror(async (req, res, next) => {
   const data = await JockeyModel.findAll({
     paranoid: false,
@@ -49,7 +54,7 @@ exports.JockeyMassUpload = Trackerror(async (req, res, next) => {
     await de.map((data) => {
       ShortCodeValidation.push(data.shortCode);
     });
-    const Duplicates = await Jockey.findAll({
+    const Duplicates = await JockeyModel.findAll({
       where: {
         shortCode: ShortCodeValidation
       }
@@ -105,7 +110,7 @@ exports.JockeyMassUpload = Trackerror(async (req, res, next) => {
           DOB: de[i].DOB || de[i].JockeyLicenseDate,
           shortCode: de[i].shortCode || null,
           MiniumumJockeyWeight: de[i].MiniumumJockeyWeight,
-          MaximumJockeyWeight: de[i].MaximumJockeyWeight,
+          MaximumJockeyWeight: de[i].MaximumJockeyWeight || 0,
           JockeyAllowance: de[i].JockeyAllowance,
           Rating: de[i].Rating || 0,
           NationalityID: temp,
@@ -114,7 +119,7 @@ exports.JockeyMassUpload = Trackerror(async (req, res, next) => {
         });
       }
 
-      // console.log(original);
+      console.log(original);
       const db = await JockeyModel.bulkCreate(original);
       // , {
       //   ignoreDuplicates: true,

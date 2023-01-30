@@ -1044,6 +1044,7 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
+      singleverdictdetail = singleverdictdetail.split(",");
       await RaceAndVerdictsHorseModel.create({
         where: {
           VerdictName: singleverdictdetail[0],
