@@ -1299,6 +1299,19 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.RacePredictor = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    where: { _id: req.params.id },
+    include: { all: true },
+  });
+  if (data === null) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetEditRaceVerdict = Trackerror(async (req, res, next) => {
   const data = await RaceAndVerdictsHorseModel.findAll({
     where: { RaceToBePredict: req.params.id },

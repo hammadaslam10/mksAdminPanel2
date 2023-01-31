@@ -235,7 +235,7 @@ exports.SingleCompetitonGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => { });
+exports.GetCompetitonAdmin = Trackerror(async (req, res, next) => {});
 exports.EditCompetiton = Trackerror(async (req, res, next) => {
   const {
     NameEn,

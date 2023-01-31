@@ -32,12 +32,14 @@ const {
   EditRaceVerdict,
   GetEditRaceVerdict,
   GetEditRaceHorses,
+  RacePredictor,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/GetEditRaceHorses/:id").get(GetEditRaceHorses);
 router.route("/EditRaceHorses/:id").put(EditRaceHorses);
 router.route("/GetEditRaceVerdict/:id").get(GetEditRaceVerdict);
 router.route("/EditRaceVerdict/:id").put(EditRaceVerdict);
+router.route("/RacePredictor/:id").get(RacePredictor);
 
 router.route("/racegetdeleted").get(GetDeletedRace);
 router.route("/restoresoftdeleterace/:id").post(RestoreSoftDeletedRace);
