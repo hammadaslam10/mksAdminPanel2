@@ -97,7 +97,68 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
-    include: { all: true },
+    include: [
+      {
+        paranoid: false,
+        model: db.MeetingTypeModel,
+        as: "MeetingTypeData"
+      },
+
+      {
+        model: db.RaceCourseModel,
+        as: "RaceCourseData",
+        paranoid: false
+      },
+      {
+        paranoid: false,
+        model: db.TrackLengthModel,
+        as: "TrackLengthData"
+      },
+      {
+        paranoid: false,
+        model: db.RaceNameModel,
+        as: "RaceNameModelData"
+      },
+      {
+        paranoid: false,
+        model: db.RaceKindModel,
+        as: "RaceKindData"
+      },
+      {
+        model: db.RaceTypeModel,
+        as: "RaceTypeModelData"
+      },
+      {
+        paranoid: false,
+        model: db.SponsorModel,
+        as: "SponsorData"
+      },
+      {
+        model: db.HorseModel,
+        as: "RaceAndHorseModelData",
+        include: {
+          all: true
+        },
+        paranoid: false
+      },
+      {
+        model: db.JockeyModel,
+        include: { all: true },
+        paranoid: false
+      },
+      {
+        model: db.ResultModel,
+        as: "RaceResultData",
+        include: { all: true },
+        paranoid: false
+      },
+      {
+        model: db.HorseAndRaceModel,
+        as: "RacehorsesData",
+        include: { all: true }
+
+      }
+    ],
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       MeetingType: {
@@ -243,11 +304,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData"
       },
-      // {
-      //   paranoid: false,
-      //   model: db.GroundTypeModel,
-      //   as: "GroundData"
-      // },
+
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -300,28 +357,7 @@ exports.GetRace = Trackerror(async (req, res, next) => {
         model: db.HorseAndRaceModel,
         as: "RacehorsesData",
         include: { all: true }
-        // include: [
-        //   {
-        //     model: db.EquipmentModel,
-        //     as: "EquipmentData1",
-        //   },
-        //   {
-        //     model: db.HorseModel,
-        //     as: "HorseModelIdData1",
-        //   },
-        //   {
-        //     model: db.TrainerModel,
-        //     as: "TrainerOnRaceData1",
-        //   },
-        //   {
-        //     model: db.JockeyModel,
-        //     as: "JockeyOnRaceData1",
-        //   },
-        //   {
-        //     model: db.OwnerModel,
-        //     as: "OwnerOnRaceData1",
-        //   },
-        // ],
+
       }
     ]
   });
@@ -995,7 +1031,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       });
       console.log(horsedata);
       try {
-        await RaceAndHorseModel.findOrCreate({
+        await HorseAndRaceModel.findOrCreate({
           where: {
             GateNo: singlehorsedetail[0],
             HorseNo: singlehorsedetail[1],
@@ -1014,6 +1050,11 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       }
       catch (err) {
         console.log(err);
+        // res.send({
+        //   message: err
+        // });
+        // res.end();
+        // return;
       }
 
 
