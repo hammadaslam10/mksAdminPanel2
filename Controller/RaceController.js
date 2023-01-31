@@ -726,7 +726,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
@@ -990,46 +990,35 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
       singlehorsedetail = singlehorsedetail.split(",");
       horsedata = await HorseModel.findOne({
         where: {
-          _id: singlehorsedetail[1]
+          _id: singlehorsedetail[2]
         }
       });
-      await RaceAndHorseModel.findOrCreate({
-        where: {
-          GateNo: singlehorsedetail[0],
-          HorseNo: singlehorsedetail[1],
-          RaceModelId: req.params.id,
-          HorseModelId: singlehorsedetail[2],
-          Equipment: singlehorsedetail[3],
-          TrainerOnRace: horsedata.ActiveTrainer,
-          OwnerOnRace: horsedata.ActiveOwner,
-          JockeyOnRace: singlehorsedetail[4],
-          JockeyWeight: singlehorsedetail[5],
-          Rating: singlehorsedetail[6],
-          HorseRunningStatus: singlehorsedetail[7],
-          CapColor: singlehorsedetail[8]
-        }
-      });
-      await HorseAndRaceModel.findOrCreate({
-        where: {
-          GateNo: singlehorsedetail[0],
-          RaceModelId: req.params.id,
-          HorseModelId: singlehorsedetail[1],
-          Equipment: singlehorsedetail[4],
-          TrainerOnRace: horsedata.ActiveTrainer,
-          OwnerOnRace: horsedata.ActiveOwner,
-          JockeyOnRace: singlehorsedetail[2],
-          JockeyWeight: singlehorsedetail[3]
-        }
-      });
+      console.log(horsedata);
+      try {
+        await RaceAndHorseModel.findOrCreate({
+          where: {
+            GateNo: singlehorsedetail[0],
+            HorseNo: singlehorsedetail[1],
+            RaceModelId: req.params.id,
+            HorseModelId: singlehorsedetail[2],
+            Equipment: singlehorsedetail[3],
+            TrainerOnRace: horsedata.ActiveTrainer,
+            OwnerOnRace: horsedata.ActiveOwner,
+            JockeyOnRace: singlehorsedetail[4],
+            JockeyWeight: singlehorsedetail[5],
+            Rating: singlehorsedetail[6],
+            HorseRunningStatus: singlehorsedetail[7],
+            CapColor: singlehorsedetail[8]
+          }
+        });
+      }
+      catch (err) {
+        console.log(err);
+      }
+
+
       horsedata = null;
-      await RaceAndJockeyModel.findOrCreate({
-        where: {
-          GateNo: singlehorsedetail[0],
-          JockeyModelId: singlehorsedetail[2],
-          RaceModelId: req.params.id,
-          JockeyWeight: singlehorsedetail[3]
-        }
-      });
+
     });
   });
   res.status(200).json({
@@ -1040,22 +1029,22 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
 exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   const { VerdictEntry } = req.body;
   console.log(req.body);
-  console.log(VerdictEntry,'VerdictEntry');
+  console.log(VerdictEntry, 'VerdictEntry');
   let VerdictEntryData = Conversion(VerdictEntry);
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
       singleverdictdetail = singleverdictdetail.split(",");
-      console.log(singleverdictdetail[0],'singleverdictdetail')
+      console.log(singleverdictdetail[0], 'singleverdictdetail');
       await RaceAndVerdictsHorseModel.create({
-          VerdictName: singleverdictdetail[0],
-          Rank: singleverdictdetail[1],
-          RaceToBePredict: req.params.id,
-          HorseNo1: singleverdictdetail[2],
-          HorseNo2: singleverdictdetail[3],
-          HorseNo3: singleverdictdetail[4],
-          Remarks: singleverdictdetail[5]
-        
+        VerdictName: singleverdictdetail[0],
+        Rank: singleverdictdetail[1],
+        RaceToBePredict: req.params.id,
+        HorseNo1: singleverdictdetail[2],
+        HorseNo2: singleverdictdetail[3],
+        HorseNo3: singleverdictdetail[4],
+        Remarks: singleverdictdetail[5]
+
       });
     });
   });
