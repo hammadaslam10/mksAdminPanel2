@@ -46,6 +46,63 @@ exports.GetRaceKindMaxShortCode = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.RaceKindMassUpload = Trackerror(async (req, res, next) => {
+  if (!req.files || !req.files.file) {
+    res.status(404).json({ message: "File not found" });
+  } else if (req.files.file.mimetype === "application/json") {
+    try {
+      let de = JSON.parse(req.files.file.data.toString("utf8"));
+      console.log(de);
+      let original = [];
+      let ShortCodeValidation = [];
+      await de.map((data) => {
+        ShortCodeValidation.push(data.shortCode);
+      });
+      const Duplicates = await RaceKindModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates.length >= 1) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
+        });
+        res.end();
+      } else {
+        await de.map((data) => {
+          original.push({
+            shortCode: data.shortCode,
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            BackupId: data.id,
+          });
+        });
+
+        const data = await RaceKindModel.bulkCreate(original);
+        res.status(201).json({ success: true, data });
+      }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  } else {
+    res.status(409).json({ message: "file format is not valid" });
+  }
+});
 exports.SearchRaceKind = Trackerror(async (req, res, next) => {
   const totalcount = await RaceKindModel.count();
   const data = await RaceKindModel.findAll({

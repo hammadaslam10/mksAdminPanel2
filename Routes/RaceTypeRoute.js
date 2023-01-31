@@ -8,11 +8,13 @@ const {
   SoftDeleteRaceType,
   GetRaceTypeMaxShortCode,
   GetDeletedRaceType,
-  RestoreSoftDeletedRaceType
+  RestoreSoftDeletedRaceType,
+  RaceTypeMassUpload,
 } = require("../Controller/RaceTypeController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/racetypegetdeleted").get(GetDeletedRaceType);
 router.route("/restoresoftdeleteracetype/:id").post(RestoreSoftDeletedRaceType);
+router.route("/RaceTypeMassUpload").post(RaceTypeMassUpload);
 router.route("/getracetypeshortcode").get(GetRaceTypeMaxShortCode);
 router.route("/uploadRaceType", upload.single("image")).post(CreateRaceType);
 router.route("/RaceTypeget").get(RaceTypeGet);
