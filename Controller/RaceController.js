@@ -1300,7 +1300,7 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
   });
 });
 exports.GetEditRaceVerdict = Trackerror(async (req, res, next) => {
-  const data = await RaceAndVerdictsHorseModel.findOne({
+  const data = await RaceAndVerdictsHorseModel.findAll({
     where: { RaceToBePredict: req.params.id },
     include: { all: true },
   });
@@ -1344,8 +1344,8 @@ exports.EditRaceVerdict = Trackerror(async (req, res, next) => {
   });
 });
 exports.GetEditRaceHorses = Trackerror(async (req, res, next) => {
-  const data = await HorseAndRaceModel.findOne({
-    where: { RaceToBePredict: req.params.id },
+  const data = await HorseAndRaceModel.findAll({
+    where: { RaceModelId: req.params.id },
     include: { all: true },
   });
   if (data === null) {
