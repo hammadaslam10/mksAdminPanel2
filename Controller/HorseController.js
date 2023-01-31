@@ -159,7 +159,7 @@ exports.HorseDropDown = Trackerror(async (req, res, next) => {
 });
 function exchangefunction(arraytobechecked, valuetobechecked, val) {
   let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
-  console.log(a, valuetobechecked, val);
+  // console.log(a, valuetobechecked, val);
   return a._id;
 }
 exports.HorseMassUpload = Trackerror(async (req, res, next) => {
@@ -195,7 +195,6 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
       res.end();
     } else {
       let tempnationality;
-      // let tempcreation;
       let temphorsekind;
       let temptrainer;
       let tempsex;
@@ -295,35 +294,35 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
           BackupId: newdata.BackupId,
         });
       });
-      console.log("hello breeder");
+
       tempbreeder.map((newdata) => {
         breederforeignkeys.push({
           _id: newdata._id,
           BackupId: newdata.BackupId,
         });
       });
-      console.log("hello owner");
+
       tempowner.map((newdata) => {
         ownerforeignkeys.push({
           _id: newdata._id,
           BackupId: newdata.BackupId,
         });
       });
-      console.log("hello color");
+
       tempcolor.map((newdata) => {
         colorforeignkeys.push({
           _id: newdata._id,
           BackupId: newdata.BackupId,
         });
       });
-      console.log("hello sex");
+
       tempsex.map((newdata) => {
         sexforeignkeys.push({
           _id: newdata._id,
           BackupId: newdata.BackupId,
         });
       });
-      console.log("hello trainer");
+
       temptrainer.map((newdata) => {
         trainerforeignkeys.push({
           _id: newdata._id,
@@ -406,8 +405,7 @@ exports.HorseMassUpload = Trackerror(async (req, res, next) => {
           BackupId: de[i].id,
         });
       }
-      // console.log(de[i]);
-      // console.log(original);
+      console.log(original);
       // var sources = _.map(req.body.discoverySource, function (source) {
       //   return {
       //     discoverySource: source,

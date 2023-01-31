@@ -92,6 +92,12 @@ exports.SearchRaceCourse = Trackerror(async (req, res, next) => {
       shortCode: {
         [Op.like]: `${req.query.shortCode || "%%"}`,
       },
+      NationalityID: {
+        [Op.like]: `${req.query.NationalityID || "%%"}`,
+      },
+      ColorCode: {
+        [Op.like]: `${req.query.ColorCode || "%%"}`,
+      },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",

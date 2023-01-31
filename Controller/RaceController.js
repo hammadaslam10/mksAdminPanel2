@@ -1389,7 +1389,7 @@ exports.EditRaceHorses = Trackerror(async (req, res, next) => {
           },
           {
             where: {
-              _id: singleverdictdetail[6],
+              _id: singlehorsedetail[9],
             },
           }
         );
