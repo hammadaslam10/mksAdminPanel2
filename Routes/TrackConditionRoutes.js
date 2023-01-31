@@ -9,12 +9,14 @@ const {
   GetTrackConditionMaxShortCode,
   GetDeletedTrackCondition,
   RestoreSoftDeletedTrackCondition,
+  TrackConditionMassUpload,
 } = require("../Controller/TrackConditionController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/TrackConditiongetdeleted").get(GetDeletedTrackCondition);
 router
   .route("/restoresoftdeleteTrackCondition/:id")
   .post(RestoreSoftDeletedTrackCondition);
+router.route("/TrackConditionMassUpload").post(TrackConditionMassUpload);
 router.route("/getTrackConditionshortcode").get(GetTrackConditionMaxShortCode);
 router
   .route("/uploadTrackCondition", upload.single("image"))

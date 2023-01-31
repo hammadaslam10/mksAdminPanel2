@@ -9,12 +9,14 @@ const {
   GetGroundTypeMaxShortCode,
   GetDeletedGroundType,
   RestoreSoftDeletedGroundType,
+  GroundTypeMassUpload,
 } = require("../Controller/GroundTypeController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/groundtypegetdeleted").get(GetDeletedGroundType);
 router
   .route("/restoresoftdeletegroundtype/:id")
   .post(RestoreSoftDeletedGroundType);
+router.route("/GroundTypeMassUpload").post(GroundTypeMassUpload);
 router.route("/getgroundtypeshortcode").get(GetGroundTypeMaxShortCode);
 router
   .route("/uploadGroundType", upload.single("image"))

@@ -10,12 +10,14 @@ const {
   GetFinalPositionMaxShortCode,
   GetDeletedFinalPosition,
   RestoreSoftDeletedFinalPosition,
+  FinalPositionMassUpload,
 } = require("../Controller/FinalPositionController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/FinalPositiongetdeleted").get(GetDeletedFinalPosition);
 router
   .route("/restoresoftdeleteFinalPosition/:id")
   .post(RestoreSoftDeletedFinalPosition);
+router.route("/FinalPositionMassUpload").post(FinalPositionMassUpload);
 router.route("/getsingleFinalPosition/:id").get(SingleFinalPosition);
 router.route("/getFinalPositionshortcode").get(GetFinalPositionMaxShortCode);
 router
