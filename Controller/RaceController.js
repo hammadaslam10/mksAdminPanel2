@@ -368,24 +368,27 @@ exports.GetRace = Trackerror(async (req, res, next) => {
 exports.RaceWithTime = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     order: [["StartTime", "ASC"]],
-    paranoid: false,
+    // paranoid: false,
     include: [
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
-        paranoid: false,
+        // paranoid: false,
       },
       {
         model: db.TrackLengthModel,
         as: "TrackLengthData",
-        paranoid: false,
+        // paranoid: false,
       },
       {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
-        paranoid: false,
+        // paranoid: false,
       },
     ],
+    where: {
+      HorseFilled: true,
+    },
   });
 
   res.status(200).json({
@@ -760,7 +763,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
