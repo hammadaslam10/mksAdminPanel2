@@ -234,7 +234,10 @@ exports.GroundTypeGet = Trackerror(async (req, res, next) => {
     .then((data) => {
       const response = getPagingData(data, page, limit);
       res.status(200).json({
-        response,
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
       });
     })
     .catch((err) => {
