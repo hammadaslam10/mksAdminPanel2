@@ -147,68 +147,6 @@ exports.BreederMassUpload = Trackerror(async (req, res, next) => {
     res.status(409).json({ message: "file format is not valid" });
   }
 });
-exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
-  try {
-    const data = await BreederModel.findOne({
-      paranoid: false,
-      where: { _id: req.params.id },
-    });
-    if (!data) {
-      return next(new HandlerCallBack("data not found", 404));
-    }
-    let newcode = data.shortCode * -1;
-    console.log(newcode);
-    await BreederModel.update(
-      { shortCode: newcode },
-      {
-        where: {
-          _id: req.params.id,
-        },
-        paranoid: false,
-      }
-    );
-    const restoredata = await BreederModel.restore({
-      where: { _id: req.params.id },
-    });
-    res.status(200).json({
-      success: true,
-      restoredata,
-    });
-  } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      let [result] = await BreederModel.findAll({
-        paranoid: false,
-        attributes: [
-          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-        ],
-      });
-      let newcode = result.dataValues.maxshortCode * -1;
-      console.log(newcode);
-      await BreederModel.update(
-        { shortCode: newcode + 1 },
-        {
-          where: {
-            _id: req.params.id,
-          },
-          paranoid: false,
-        }
-      );
-      const restoredata = await BreederModel.restore({
-        where: { _id: req.params.id },
-      });
-
-      res.status(200).json({
-        success: true,
-        restoredata,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: error,
-      });
-    }
-  }
-});
 
 exports.GetBreederMaxShortCode = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
@@ -475,13 +413,44 @@ exports.DeleteBreeder = Trackerror(async (req, res, next) => {
   });
 });
 exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
-  try {
-    const data = await BreederModel.findOne({
+  const data = await BreederModel.findOne({
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+  let checkcode = await BreederModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
+  });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await BreederModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await BreederModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await BreederModel.destroy({
       where: { _id: req.params.id },
     });
-    if (!data) {
-      return next(new HandlerCallBack("data not found", 404));
-    }
+
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
     await BreederModel.update(
       { shortCode: -data.shortCode },
       {
@@ -498,37 +467,80 @@ exports.SoftDeleteBreeder = Trackerror(async (req, res, next) => {
       success: true,
       message: "Soft Delete Successfully",
     });
-  } catch (error) {
-    if (error.name === "SequelizeUniqueConstraintError") {
-      let [result] = await BreederModel.findAll({
+  }
+});
+exports.RestoreSoftDeletedBreeder = Trackerror(async (req, res, next) => {
+  const data = await BreederModel.findOne({
+    paranoid: false,
+    where: { _id: req.params.id },
+  });
+  if (!data) {
+    return next(new HandlerCallBack("data not found", 404));
+  }
+
+  let checkcode = await BreederModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
+  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await BreederModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await BreederModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
         paranoid: false,
-        attributes: [
-          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
-        ],
-      });
+      }
+    );
+    const restoredata = await BreederModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
       await BreederModel.update(
-        { shortCode: -(result.dataValues.maxshortCode + 1) },
+        { shortCode: newcode },
         {
           where: {
             _id: req.params.id,
           },
+          paranoid: false,
         }
       );
-      await BreederModel.destroy({
-        where: { _id: req.params.id },
-      });
-
-      res.status(200).json({
-        success: true,
-        message: "Soft Delete Successfully",
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: error.errors.map((singleerr) => {
-          return singleerr.message;
-        }),
-      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
     }
+
+    const restoredata = await BreederModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
   }
 });

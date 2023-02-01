@@ -161,7 +161,7 @@ exports.TrackConditionGet = Trackerror(async (req, res, next) => {
         [Op.like]: `%${req.query.AbbrevAr || ""}%`,
       },
       shortCode: {
-        [Op.like]: `%${req.query.shortCode || ""}%`,
+        [Op.like]: `%${req.query.shortCode || "%%"}%`,
       },
       createdAt: {
         [Op.between]: [
@@ -174,6 +174,8 @@ exports.TrackConditionGet = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data,
+    filtered: data.length,
+    totalcount,
   });
 });
 exports.GetTrackConditionAdmin = Trackerror(async (req, res, next) => {});
