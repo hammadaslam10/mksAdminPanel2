@@ -29,13 +29,72 @@ exports.RestoreSoftDeletedRaceCourse = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const restoredata = await RaceCourseModel.restore({
-    where: { _id: req.params.id },
+
+  let checkcode = await RaceCourseModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
   });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await RaceCourseModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await RaceCourseModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await RaceCourseModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
+      await RaceCourseModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
+    }
+
+    const restoredata = await RaceCourseModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  }
 });
 
 exports.GetCourse = Trackerror(async (req, res, next) => {
@@ -282,14 +341,53 @@ exports.SoftDeleteCourse = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  console.log(data);
-  await RaceCourseModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await RaceCourseModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await RaceCourseModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await RaceCourseModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await RaceCourseModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "data Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await RaceCourseModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await RaceCourseModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });

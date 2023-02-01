@@ -92,6 +92,12 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
+        allowNull: false,
+      },
       BackupId: {
         type: DataTypes.BIGINT,
         defaultValue: null,

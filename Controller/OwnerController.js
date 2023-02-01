@@ -33,13 +33,72 @@ exports.RestoreSoftDeletedOwner = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const restoredata = await OwnerModel.restore({
-    where: { _id: req.params.id },
+
+  let checkcode = await OwnerModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
   });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await OwnerModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await OwnerModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await OwnerModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
+      await OwnerModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
+    }
+
+    const restoredata = await OwnerModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  }
 });
 exports.OwnerDropDown = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({
@@ -492,19 +551,59 @@ exports.DeleteOwner = Trackerror(async (req, res, next) => {
   });
 });
 exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
-  const data = await OwnerModel.findOne({
+  const data = await BreederModel.findOne({
     where: { _id: req.params.id },
   });
   if (!data) {
-    return new HandlerCallBack("data not found", 404);
+    return next(new HandlerCallBack("data not found", 404));
   }
-
-  await OwnerModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await BreederModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await BreederModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await BreederModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await BreederModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await BreederModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await BreederModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });

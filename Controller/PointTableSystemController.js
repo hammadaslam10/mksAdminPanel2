@@ -26,13 +26,72 @@ exports.RestoreSoftDeletedPointTableSystem = Trackerror(
     if (!data) {
       return next(new HandlerCallBack("data not found", 404));
     }
-    const restoredata = await PointTableSystemModel.restore({
-      where: { _id: req.params.id },
+
+    let checkcode = await PointTableSystemModel.findOne({
+      paranoid: false,
+      where: { shortCode: -1 * data.shortCode },
     });
-    res.status(200).json({
-      success: true,
-      restoredata,
-    });
+    console.log(checkcode);
+    if (checkcode) {
+      let [result] = await PointTableSystemModel.findAll({
+        paranoid: false,
+        attributes: [
+          [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+        ],
+      });
+      console.log(-1 * (result.dataValues.maxshortCode + 1));
+      let newcode = result.dataValues.maxshortCode + 1;
+      console.log(newcode, "dsd");
+      await PointTableSystemModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+      const restoredata = await PointTableSystemModel.restore({
+        where: { _id: req.params.id },
+      });
+
+      res.status(200).json({
+        success: true,
+        restoredata,
+      });
+    } else {
+      console.log("done else");
+      let newcode = -1 * (data.shortCode + 1);
+      console.log(newcode);
+      console.log(newcode);
+      try {
+        await PointTableSystemModel.update(
+          { shortCode: newcode },
+          {
+            where: {
+              _id: req.params.id,
+            },
+            paranoid: false,
+          }
+        );
+      } catch (error) {
+        if (error.name === "SequelizeUniqueConstraintError") {
+        } else {
+          res.status(500).json({
+            success: false,
+            message: error,
+          });
+        }
+      }
+
+      const restoredata = await PointTableSystemModel.restore({
+        where: { _id: req.params.id },
+      });
+      res.status(200).json({
+        success: true,
+        restoredata,
+      });
+    }
   }
 );
 
@@ -204,13 +263,53 @@ exports.SoftDeletePointTableSystem = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  await PointTableSystemModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await PointTableSystemModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await PointTableSystemModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await PointTableSystemModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await PointTableSystemModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await PointTableSystemModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await PointTableSystemModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });

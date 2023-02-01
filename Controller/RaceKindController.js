@@ -25,13 +25,72 @@ exports.RestoreSoftDeletedRaceKind = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const restoredata = await RaceKindModel.restore({
-    where: { _id: req.params.id },
+
+  let checkcode = await RaceKindModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
   });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await RaceKindModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await RaceKindModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await RaceKindModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
+      await RaceKindModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
+    }
+
+    const restoredata = await RaceKindModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  }
 });
 
 exports.GetRaceKindMaxShortCode = Trackerror(async (req, res, next) => {
@@ -140,15 +199,18 @@ exports.SearchRaceKind = Trackerror(async (req, res, next) => {
           req.query.endDate || "4030-12-01 00:00:00",
         ],
       },
-    }, limit, offset
-  }).then(data => {
-    const response = getPagingData(data, page, limit);
-    res.send(response);
+    },
+    limit,
+    offset,
   })
-    .catch(err => {
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.send(response);
+    })
+    .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "Some error occurred while retrieving tutorials.",
       });
     });
 
@@ -198,7 +260,7 @@ exports.RaceKindGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetRaceKindAdmin = Trackerror(async (req, res, next) => { });
+exports.GetRaceKindAdmin = Trackerror(async (req, res, next) => {});
 exports.EditRaceKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   let data = await RaceKindModel.findOne({
@@ -266,13 +328,53 @@ exports.SoftDeleteRaceKind = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  await RaceKindModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await RaceKindModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await RaceKindModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await RaceKindModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await RaceKindModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await RaceKindModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await RaceKindModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });

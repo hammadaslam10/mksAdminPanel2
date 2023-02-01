@@ -101,13 +101,72 @@ exports.RestoreSoftDeletedSex = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const restoredata = await SexModel.restore({
-    where: { _id: req.params.id },
+
+  let checkcode = await SexModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
   });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await SexModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await SexModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await SexModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
+      await SexModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
+    }
+
+    const restoredata = await SexModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  }
 });
 
 exports.GetSexMaxShortCode = Trackerror(async (req, res, next) => {
@@ -263,13 +322,53 @@ exports.SoftDeleteSex = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  await SexModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await SexModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await SexModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await SexModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await SexModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await SexModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await SexModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });

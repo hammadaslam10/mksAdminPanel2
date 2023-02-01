@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       image: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
         // allowNull: false,
         // validate: {
         //   notNull: { msg: "Please Add Owner Image Of Owner" },
@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name in English Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
       NationalityID: {
         type: DataTypes.UUID,
@@ -44,9 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Image Of Nationality" },
           notEmpty: {
-            msg: "Without Image Nationality Will not get submitted"
-          }
-        }
+            msg: "Without Image Nationality Will not get submitted",
+          },
+        },
       },
       NameAr: {
         type: DataTypes.TEXT("long"),
@@ -67,8 +67,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name Arabic Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
       TitleEn: {
         type: DataTypes.TEXT("long"),
@@ -85,8 +85,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title English Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
       TitleAr: {
         type: DataTypes.TEXT("long"),
@@ -107,20 +107,20 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Title Arabic Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
-      // shortCode: {
-      //   type: DataTypes.BIGINT,
-      //   autoIncrement: true,
-      //   unique: true,
-      //   allowNull: false,
-      //   allowNull: false,
-      //   validate: {
-      //     notNull: { msg: "Owner will have shortCode" },
-      //     notEmpty: { msg: "shortCode  will not be empty" }
-      //   }
-      // },
+      shortCode: {
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        unique: true,
+        allowNull: false,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Owner will have shortCode" },
+          notEmpty: { msg: "shortCode  will not be empty" },
+        },
+      },
       ShortEn: {
         type: DataTypes.TEXT("long"),
         allowNull: false,
@@ -136,8 +136,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Short Name English Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
       ShortAr: {
         type: DataTypes.TEXT("long"),
@@ -158,8 +158,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Short Name Arabic Validation Failed");
             }
-          }
-        }
+          },
+        },
       },
       RegistrationDate: {
         type: DataTypes.DATE,
@@ -167,19 +167,19 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: { msg: "Please Add Registration Date Of Advertisment" },
           notEmpty: {
-            msg: "Without Registration Date Advertisment Will not get submitted"
-          }
-        }
+            msg: "Without Registration Date Advertisment Will not get submitted",
+          },
+        },
       },
       BackupId: {
         type: DataTypes.BIGINT,
-        defaultValue: null
-      }
+        defaultValue: null,
+      },
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10
+      initialAutoIncrement: 10,
     }
   );
   return OwnerModel;

@@ -3,7 +3,7 @@ const CompetitonModel = db.CompetitonModel;
 const RaceModel = db.RaceModel;
 const HorseModel = db.HorseModel;
 const CompetitionRacesPointsModel = db.CompetitionRacesPointsModel;
-const SubscriberAndCompetitionModel = db.SubscriberAndCompetitionModel;
+const SubscriberAndCompetitonModel = db.SubscriberAndCompetitonModel;
 const SubscriberModel = db.SubscriberModel;
 const jwt = require("jsonwebtoken");
 const Trackerror = require("../Middleware/TrackError");
@@ -33,13 +33,72 @@ exports.RestoreSoftDeletedCompetiton = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  const restoredata = await CompetitonModel.restore({
-    where: { _id: req.params.id },
+
+  let checkcode = await CompetitonModel.findOne({
+    paranoid: false,
+    where: { shortCode: -1 * data.shortCode },
   });
-  res.status(200).json({
-    success: true,
-    restoredata,
-  });
+  console.log(checkcode);
+  if (checkcode) {
+    let [result] = await CompetitonModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-1 * (result.dataValues.maxshortCode + 1));
+    let newcode = result.dataValues.maxshortCode + 1;
+    console.log(newcode, "dsd");
+    await CompetitonModel.update(
+      { shortCode: newcode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+        paranoid: false,
+      }
+    );
+    const restoredata = await CompetitonModel.restore({
+      where: { _id: req.params.id },
+    });
+
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  } else {
+    console.log("done else");
+    let newcode = -1 * (data.shortCode + 1);
+    console.log(newcode);
+    console.log(newcode);
+    try {
+      await CompetitonModel.update(
+        { shortCode: newcode },
+        {
+          where: {
+            _id: req.params.id,
+          },
+          paranoid: false,
+        }
+      );
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error,
+        });
+      }
+    }
+
+    const restoredata = await CompetitonModel.restore({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      restoredata,
+    });
+  }
 });
 
 exports.GetCompetitonMaxShortCode = Trackerror(async (req, res, next) => {
@@ -326,15 +385,55 @@ exports.SoftDeleteCompetiton = Trackerror(async (req, res, next) => {
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-
-  await CompetitonModel.destroy({
-    where: { _id: req.params.id },
+  let checkcode = await CompetitonModel.findOne({
+    paranoid: false,
+    where: { shortCode: -data.shortCode },
   });
+  console.log(checkcode);
+  if (checkcode) {
+    console.log("hello");
+    let [result] = await CompetitonModel.findAll({
+      paranoid: false,
+      attributes: [
+        [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
+      ],
+    });
+    console.log(-result.dataValues.maxshortCode, "dsd");
+    await CompetitonModel.update(
+      { shortCode: -result.dataValues.maxshortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+    await CompetitonModel.destroy({
+      where: { _id: req.params.id },
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Soft Delete Successfully",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  } else {
+    console.log(data.shortCode);
+    await CompetitonModel.update(
+      { shortCode: -data.shortCode },
+      {
+        where: {
+          _id: req.params.id,
+        },
+      }
+    );
+
+    await CompetitonModel.destroy({
+      where: { _id: req.params.id },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Soft Delete Successfully",
+    });
+  }
 });
 exports.SearchCompetition = Trackerror(async (req, res, next) => {
   const totalcount = await CompetitonModel.count();
@@ -437,7 +536,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     if (!HorseID) {
       return next(new HandlerCallBack("Horse is not existed", 401));
     }
-    const verification = await SubscriberAndCompetitionModel.findAll({
+    const verification = await SubscriberAndCompetitonModel.findAll({
       where: {
         [Op.and]: [
           { CompetitionID: req.params.competitionid },
@@ -449,7 +548,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     if (verification.length !== 0) {
       return next(new HandlerCallBack("You Already Voted On this Race", 401));
     }
-    const data = await SubscriberAndCompetitionModel.create({
+    const data = await SubscriberAndCompetitonModel.create({
       CompetitionID: req.params.competitionid,
       RaceID: req.params.raceid,
       SubscriberID: decodedData.id,
@@ -472,7 +571,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     let VoteData = Conversion(Vote);
     console.log(Vote);
     console.log(VoteData);
-    const verification = await SubscriberAndCompetitionModel.findAll({
+    const verification = await SubscriberAndCompetitonModel.findAll({
       where: {
         [Op.and]: [
           { CompetitionID: req.params.competitionid },
@@ -486,7 +585,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     }
 
     try {
-      await SubscriberAndCompetitionModel.findOrCreate({
+      await SubscriberAndCompetitonModel.findOrCreate({
         where: {
           CompetitionID: req.params.competitionid,
           RaceID: req.params.raceid,
