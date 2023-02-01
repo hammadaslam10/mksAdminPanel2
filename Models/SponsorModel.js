@@ -96,10 +96,10 @@ module.exports = (sequelize, DataTypes) => {
       Url: {
         type: DataTypes.STRING,
       },
-      BackupId: {
-        type: DataTypes.BIGINT,
-        defaultValue: null,
-      },
+      // BackupId: {
+      //   type: DataTypes.BIGINT,
+      //   defaultValue: null,
+      // },
     },
     {
       freezeTableName: true,

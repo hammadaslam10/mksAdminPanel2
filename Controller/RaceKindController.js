@@ -103,11 +103,26 @@ exports.RaceKindMassUpload = Trackerror(async (req, res, next) => {
     res.status(409).json({ message: "file format is not valid" });
   }
 });
+const getPagingData = (data1, page, limit) => {
+  const { count: totalcount, rows: data } = data1;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalcount / limit);
+
+  return { totalcount, data, totalPages, currentPage };
+};
+const getPagination = (page, size) => {
+  const limit = size ? +size : 11;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
+
 exports.SearchRaceKind = Trackerror(async (req, res, next) => {
   const totalcount = await RaceKindModel.count();
-  const data = await RaceKindModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  console.log(page - 1);
+  const data = await RaceKindModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {
@@ -125,8 +140,18 @@ exports.SearchRaceKind = Trackerror(async (req, res, next) => {
           req.query.endDate || "4030-12-01 00:00:00",
         ],
       },
-    },
-  });
+    }, limit, offset
+  }).then(data => {
+    const response = getPagingData(data, page, limit);
+    res.send(response);
+  })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+
   res.status(200).json({
     success: true,
     data: data,
@@ -173,7 +198,7 @@ exports.RaceKindGet = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-exports.GetRaceKindAdmin = Trackerror(async (req, res, next) => {});
+exports.GetRaceKindAdmin = Trackerror(async (req, res, next) => { });
 exports.EditRaceKind = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
   let data = await RaceKindModel.findOne({

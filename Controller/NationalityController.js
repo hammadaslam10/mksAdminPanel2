@@ -67,7 +67,7 @@ exports.CreateNationality = Trackerror(async (req, res, next) => {
     HemisphereEn,
     HemisphereAr,
   } = req.body;
-  if (req.file == null) {
+  if (req.files == null) {
     try {
       const data = await NationalityModel.create({
         AbbrevEn: AbbrevEn,
@@ -307,7 +307,7 @@ exports.NationalityGet = Trackerror(async (req, res, next) => {
     filtered: data.length,
   });
 });
-exports.GetNationalityAdmin = Trackerror(async (req, res, next) => {});
+exports.GetNationalityAdmin = Trackerror(async (req, res, next) => { });
 exports.EditNationality = Trackerror(async (req, res, next) => {
   const {
     NameEn,

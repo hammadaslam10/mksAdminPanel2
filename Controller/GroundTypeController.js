@@ -139,12 +139,25 @@ exports.GroundTypeMassUpload = Trackerror(async (req, res, next) => {
     res.status(409).json({ message: "file format is not valid" });
   }
 });
+const getPagingData = (data1, page, limit) => {
+  const { count: totalcount, rows: data } = data1;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalcount / limit);
+
+  return { totalcount, data, totalPages, currentPage };
+};
+const getPagination = (page, size) => {
+  const limit = size ? +size : 11;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
 exports.GroundTypeGet = Trackerror(async (req, res, next) => {
-  const totalcount = await GroundTypeModel.count();
-  const data = await GroundTypeModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
-    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+
+  const data = await GroundTypeModel.findAndCountAll({
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "DESC"]],
     where: {
       NameEn: {
         [Op.like]: `%${req.query.NameEn || ""}%`,
@@ -167,8 +180,47 @@ exports.GroundTypeGet = Trackerror(async (req, res, next) => {
           req.query.endDate || "4030-12-01 00:00:00",
         ],
       },
-    },
-  });
+    }, limit, offset
+  })
+    .then(data => {
+      const response = getPagingData(data, page, limit);
+      res.send(response);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+  const totalcount = await GroundTypeModel.count();
+  // const data = await GroundTypeModel.findAll({
+  //   offset: Number(req.query.page) - 1 || 0,
+  //   limit: Number(req.query.limit) || 10,
+  //   order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+  // where: {
+  //   NameEn: {
+  //     [Op.like]: `%${req.query.NameEn || ""}%`,
+  //   },
+  //   NameAr: {
+  //     [Op.like]: `%${req.query.NameAr || ""}%`,
+  //   },
+  //   AbbrevEn: {
+  //     [Op.like]: `%${req.query.AbbrevEn || ""}%`,
+  //   },
+  //   AbbrevAr: {
+  //     [Op.like]: `%${req.query.AbbrevAr || ""}%`,
+  //   },
+  //   shortCode: {
+  //     [Op.like]: `${req.query.shortCode || "%%"}`,
+  //   },
+  //   createdAt: {
+  //     [Op.between]: [
+  //       req.query.startdate || "2021-12-01 00:00:00",
+  //       req.query.endDate || "4030-12-01 00:00:00",
+  //     ],
+  //   },
+  // },
+  // });
   res.status(200).json({
     success: true,
     data: data,
@@ -176,7 +228,7 @@ exports.GroundTypeGet = Trackerror(async (req, res, next) => {
     filtered: data.length,
   });
 });
-exports.GetGroundTypeAdmin = Trackerror(async (req, res, next) => {});
+exports.GetGroundTypeAdmin = Trackerror(async (req, res, next) => { });
 exports.EditGroundType = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode, AbbrevEn, AbbrevAr } = req.body;
   let data = await GroundTypeModel.findOne({
