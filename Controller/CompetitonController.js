@@ -3,7 +3,7 @@ const CompetitonModel = db.CompetitonModel;
 const RaceModel = db.RaceModel;
 const HorseModel = db.HorseModel;
 const CompetitionRacesPointsModel = db.CompetitionRacesPointsModel;
-const SubscriberAndCompetitonModel = db.SubscriberAndCompetitonModel;
+const SubscriberAndCompetitonModel = db.SubscriberAndCompetitionModel;
 const SubscriberModel = db.SubscriberModel;
 const jwt = require("jsonwebtoken");
 const Trackerror = require("../Middleware/TrackError");
@@ -533,6 +533,7 @@ exports.Voting = Trackerror(async (req, res, next) => {
     const HorseID = await HorseModel.findOne({
       where: { _id: Horse },
     });
+    console.log(HorseID, "dsd");
     if (!HorseID) {
       return next(new HandlerCallBack("Horse is not existed", 401));
     }

@@ -199,7 +199,6 @@ exports.GroundTypeMassUpload = Trackerror(async (req, res, next) => {
     res.status(409).json({ message: "file format is not valid" });
   }
 });
-
 exports.GroundTypeGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);

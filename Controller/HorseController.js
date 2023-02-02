@@ -2,6 +2,7 @@ const db = require("../config/Connection");
 const Trackerror = require("../Middleware/TrackError");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
 const TrainerModel = db.TrainerModel;
+const HorseAndRaceModel = db.HorseAndRaceModel;
 const HorseModel = db.HorseModel;
 const OwnerModel = db.OwnerModel;
 const JockeyModel = db.JockeyModel;
@@ -49,6 +50,42 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
       },
       shortCode: {
         [Op.like]: `${req.query.shortCode || "%%"}`,
+      },
+    },
+  });
+  res.status(200).json({
+    success: true,
+    data: data,
+  });
+});
+exports.HorsesInRace = Trackerror(async (req, res, next) => {
+  // HorseModelIdData1
+  const data = await HorseAndRaceModel.findAll({
+    include: [
+      {
+        model: db.HorseModel,
+        as: "HorseModelIdData1",
+        attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
+      },
+      // {
+      //   model: db.JockeyModel,
+      //   as: "HorseModelIdData1",
+      //   attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
+      // },
+      // {
+      //   model: db.TrainerModel,
+      //   as: "HorseModelIdData1",
+      //   attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
+      // },
+      // {
+      //   model: db.EquipmentModel,
+      //   as: "HorseModelIdData1",
+      //   attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
+      // },
+    ],
+    where: {
+      RaceModelId: {
+        [Op.eq]: req.params.raceid,
       },
     },
   });

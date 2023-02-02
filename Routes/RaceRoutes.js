@@ -33,6 +33,7 @@ const {
   GetEditRaceVerdict,
   GetEditRaceHorses,
   RacePredictor,
+  HorsesInRace,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/GetEditRaceHorses/:id").get(GetEditRaceHorses);

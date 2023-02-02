@@ -763,7 +763,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
