@@ -83,6 +83,7 @@ exports.HorsesInRace = Trackerror(async (req, res, next) => {
       //   attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
       // },
     ],
+    attributes: ["_id"],
     where: {
       RaceModelId: {
         [Op.eq]: req.params.raceid,
