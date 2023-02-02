@@ -401,12 +401,12 @@ exports.RaceWithTime = Trackerror(async (req, res, next) => {
 exports.GetRaceResultToBeAnnounced = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: {
-      [Op.and]: [
-        {
-          ResultStatus: "Awaited",
-        },
-        { RaceStatus: "Completed" },
-      ],
+      // [Op.and]: [
+      // {
+      //   ResultStatus: "Awaited",
+      // },
+      RaceStatus: "Completed",
+      // ],
     },
     include: [
       {
