@@ -10,6 +10,7 @@ const HorseKindModel = db.HorseKindModel;
 const BreederModel = db.BreederModel;
 const ColorModel = db.ColorModel;
 const SexModel = db.SexModel;
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const HorseJockeyComboModel = db.HorseJockeyComboModel;
@@ -705,11 +706,10 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
   });
 });
 exports.SearchHorse = Trackerror(async (req, res, next) => {
-  const totalcount = await HorseModel.count();
-  const data = await HorseModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
-    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await HorseModel.findAll({
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "DESC"]],
     include: { all: true },
     where: {
       KindHorse: {
@@ -721,12 +721,6 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       Sex: {
         [Op.like]: `%${req.query.Sex || ""}%`,
       },
-      // DOB: {
-      //   [Op.between]: [
-      //     req.query.startdate || "1000-12-01 00:00:00",
-      //     req.query.endDate || "5030-12-01 00:00:00",
-      //   ],
-      // },
       ActiveOwner: {
         [Op.like]: `%${req.query.ActiveOwner || ""}%`,
       },
@@ -739,15 +733,6 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       CreationId: {
         [Op.like]: `%${req.query.CreationId || ""}%`,
       },
-      // Dam: {
-      //   [Op.like]: `%${req.query.Dam || ""}%`,
-      // },
-      // Sire: {
-      //   [Op.like]: `%${req.query.Sire || ""}%`,
-      // },
-      // GSire: {
-      //   [Op.like]: `%${req.query.GSire || ""}%`,
-      // },
       Foal: {
         [Op.like]: `%${req.query.Foal || ""}%`,
       },
@@ -763,41 +748,36 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
       NameAr: {
         [Op.like]: `%${req.query.NameAr || ""}%`,
       },
-      // PurchasePrice: {
-      //   [Op.between]: [
-      //     req.query.startdate || 0.0,
-      //     req.query.endDate || 999999999999999999999999999.99999999999999999,
-      //   ],
-      // },
+
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
           req.query.endDate || "4030-12-01 00:00:00",
         ],
       },
-      // isGelded: {
-      //   [Op.like]: `%${req.query.isGelded || false}%`,
-      // },
-      // STARS: {
-      //   [Op.like]: `%${req.query.STARS || false}%`,
-      // },
-      // Rds: {
-      //   [Op.like]: `%${req.query.Rds || false}%`,
-      // },
-      // HorseStatus: {
-      //   [Op.like]: `%${req.query.HorseStatus || false}%`,
-      // },
+
       ColorID: {
         [Op.like]: `%${req.query.ColorID || ""}%`,
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    });
 });
 exports.GetHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findAll({
