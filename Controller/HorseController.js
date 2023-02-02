@@ -29,9 +29,6 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
       _id: req.params.raceid,
     },
   });
-  // if(){
-
-  // }
   const data = await HorseModel.findAll({
     include: [
       {
@@ -39,9 +36,6 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
         as: "ActiveOwnerData",
       },
     ],
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
-    // order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     attributes: ["NameEn", "NameAr", "_id", "ActiveOwner", "STARS"],
     where: {
       KindHorse: {
