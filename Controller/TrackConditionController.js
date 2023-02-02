@@ -206,8 +206,9 @@ exports.TrackConditionMassUpload = Trackerror(async (req, res, next) => {
 });
 exports.TrackConditionGet = Trackerror(async (req, res, next) => {
   const totalcount = await TrackConditionModel.count();
+  // Number(req.query.page) - 1 ||
   const data = await TrackConditionModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
+    offset: 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
@@ -223,9 +224,9 @@ exports.TrackConditionGet = Trackerror(async (req, res, next) => {
       AbbrevAr: {
         [Op.like]: `%${req.query.AbbrevAr || ""}%`,
       },
-      shortCode: {
-        [Op.like]: `%${req.query.shortCode || "%%"}%`,
-      },
+      // shortCode: {
+      //   [Op.like]: `%${req.query.shortCode || "%%"}%`,
+      // },
       createdAt: {
         [Op.between]: [
           req.query.startdate || "2021-12-01 00:00:00",
