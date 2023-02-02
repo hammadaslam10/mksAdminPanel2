@@ -2,6 +2,7 @@ const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const HorseModel = db.HorseModel;
 const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
+const SubscriberAndCompetitionModel = db.SubscriberAndCompetitionModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
 const HorseAndRaceModel = db.HorseAndRaceModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
@@ -21,6 +22,7 @@ const { uploadFile, deleteFile } = require("../Utils/s3");
 const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
+const sequelize = require("sequelize");
 exports.GetDeletedRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     paranoid: false,
@@ -1303,9 +1305,37 @@ exports.GetRaceonTimeAndRaceCourse = Trackerror(async (req, res, next) => {
   });
 });
 exports.RacePredictor = Trackerror(async (req, res, next) => {
-  const data = await RaceModel.findAll({
-    where: { _id: req.params.id },
-    include: { all: true },
+  const AllHorses = await HorseAndRaceModel.findAll({
+    where: { RaceModelId: req.params.id },
+    attributes: ["HorseModelId", "GateNo", "HorseNo", "HorseRunningStatus"],
+    include: [
+      {
+        model: db.HorseModel,
+        as: "HorseModelIdData1",
+        attributes: ["NameEn", "NameAr"],
+        include: [
+          {
+            model: db.SubscriberAndCompetitionModel,
+            as: "CompetitionHorseIDData",
+            attributes: [
+              [
+                sequelize.literal(
+                  "(SELECT COUNT(*) FROM SubscriberAndCompetitionModel where SubscriberAndCompetitionModel.HorseID=HorseModelIdData1._id)"
+                ),
+                "HorseScore",
+              ],
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  const data = await SubscriberAndCompetitionModel.findAll({
+    where: { RaceID: req.params.id },
+    // include: { all: true },
+    attributes: [
+      [sequelize.fn("count", sequelize.col("RaceID")), "TotalVotes"],
+    ],
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
@@ -1313,6 +1343,7 @@ exports.RacePredictor = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data,
+    AllHorses,
   });
 });
 exports.GetEditRaceVerdict = Trackerror(async (req, res, next) => {
