@@ -598,7 +598,7 @@ exports.AddRaceImage = Trackerror(async (req, res, next) => {
     await RaceResultImagesModel.findOrCreate({
       where: {
         RaceId: data._id,
-        images: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceImages}/${SingleImage}`,
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${RaceImages}/${SingleImage}`,
       },
     });
   });
@@ -745,20 +745,21 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     include: [
       {
-        // where: {
-        //   RaceID: result.RaceID
-        // },
+        where: {
+          RaceID: result.RaceID
+        },
         model: db.ResultModel,
         as: "RaceResultData",
-        include: [
-          {
-            model: db.HorseModel,
-            as: "HorseIDData",
-            include: { all: true },
-          },
-        ],
-      },
+        include: { all: true }
+      }
+      , {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+        include: { all: true }
+      }
+
     ],
+    attributes: ["_id"],
   });
   res.status(200).json({
     success: true,
