@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       Currency: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.UUID,
         allowNull: false,
         validate: {
           notNull: { msg: "Race will have Currency" },
