@@ -765,7 +765,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
@@ -1047,15 +1047,18 @@ exports.IncludeVerdicts = Trackerror(async (req, res, next) => {
   await VerdictEntryData.map(async (singleverdict) => {
     await singleverdict.map(async (singleverdictdetail) => {
       singleverdictdetail = singleverdictdetail.split(",");
-      console.log(singleverdictdetail[0], "singleverdictdetail");
+      console.log(singleverdictdetail[0], "1");
+      console.log(singleverdictdetail[1], "2");
+      console.log(singleverdictdetail[2], "3");
+      console.log(singleverdictdetail[3], "4");
+      console.log(singleverdictdetail[4], "5");
       await RaceAndVerdictsHorseModel.create({
         VerdictName: singleverdictdetail[0],
-        Rank: singleverdictdetail[1],
         RaceToBePredict: req.params.id,
-        HorseNo1: singleverdictdetail[2],
-        HorseNo2: singleverdictdetail[3],
-        HorseNo3: singleverdictdetail[4],
-        Remarks: singleverdictdetail[5],
+        HorseNo1: singleverdictdetail[1],
+        HorseNo2: singleverdictdetail[2],
+        HorseNo3: singleverdictdetail[3],
+        Remarks: singleverdictdetail[4],
       });
     });
   });

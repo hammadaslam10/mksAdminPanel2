@@ -506,9 +506,11 @@ exports.Voting = Trackerror(async (req, res, next) => {
   const { Horse } = req.body;
   console.log(Horse);
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(decodedData,'token')
   const userdata = await SubscriberModel.findOne({
     where: { [Op.and]: [{ _id: decodedData.id }, { ApprovedStatus: 1 }] },
   });
+  console.log(userdata,'user')
   if (!userdata) {
     return next(
       new HandlerCallBack("Your are not Eligible to play competition", 401)

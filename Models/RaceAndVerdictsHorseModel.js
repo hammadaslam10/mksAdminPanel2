@@ -14,16 +14,6 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      Rank: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-          notNull: { msg: "Please Add Rank Of Horse" },
-          notEmpty: {
-            msg: "Without Rank Horse Will not get submitted"
-          }
-        }
-      },
       RaceToBePredict: {
         type: DataTypes.UUID,
         allowNull: false,
