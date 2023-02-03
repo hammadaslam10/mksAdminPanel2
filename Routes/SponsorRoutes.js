@@ -8,13 +8,15 @@ const {
   DeleteSponsor,
   SoftDeleteSponsor,
   GetDeletedSponsor,
-  RestoreSoftDeletedSponsor
+  RestoreSoftDeletedSponsor,
+  SponsorMassUpload,
 } = require("../Controller/SponsorController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/sponsorgetdeleted").get(GetDeletedSponsor);
 router.route("/restoresoftdeletesponsor/:id").post(RestoreSoftDeletedSponsor);
 router.route("/uploadSponsor", upload.single("image")).post(CreateSponsor);
 
+router.route("/SponsorMassUpload").post(SponsorMassUpload);
 router.route("/Sponsorget").get(SponsorGet);
 router.route("/deleteSponsor/:id").delete(DeleteSponsor);
 router.route("/softdeletesponsor/:id").delete(SoftDeleteSponsor);

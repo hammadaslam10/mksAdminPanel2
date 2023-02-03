@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10,
+      initialAutoIncrement: 0,
     }
   );
   return FinalPositionModel;
