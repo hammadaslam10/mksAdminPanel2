@@ -746,18 +746,17 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     include: [
       {
         where: {
-          RaceID: result.RaceID
+          RaceID: result.RaceID,
         },
         model: db.ResultModel,
         as: "RaceResultData",
-        include: { all: true }
-      }
-      , {
+        include: { all: true },
+      },
+      {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
-        include: { all: true }
-      }
-
+        include: { all: true },
+      },
     ],
     attributes: ["_id"],
   });
@@ -766,48 +765,109 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => { });
+exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
+    attributes: {
+      exclude: [
+        "MeetingType",
+        "RaceKind",
+        "RaceName",
+        "TrackLength",
+        "HorseKindinRace",
+        "Currency",
+        "RaceCourse",
+        "RaceType",
+        "TrackCondition",
+        "Sponsor",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
+      paranoid: false,
+    },
     include: [
-      {
-        model: db.MeetingTypeModel,
-        as: "MeetingTypeData",
-      },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
+        attributes: {
+          exclude: [
+            "ColorCode",
+            "NationalityID",
+            "shortCode",
+            "AbbrevEn",
+            "AbbrevAr",
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+          ],
+        },
+        paranoid: false,
       },
       {
         model: db.TrackLengthModel,
         as: "TrackLengthData",
+        attributes: {
+          exclude: [
+            "GroundType",
+            "RaceCourseImage",
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+          ],
+        },
+        paranoid: false,
       },
       {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
       },
       {
         model: db.RaceKindModel,
         as: "RaceKindData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
       },
       {
         model: db.RaceTypeModel,
         as: "RaceTypeModelData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
       },
       {
         model: db.SponsorModel,
         as: "SponsorData",
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+            "DescriptionEn",
+            "DescriptionAr",
+          ],
+        },
+        paranoid: false,
       },
       {
         model: db.HorseModel,
         as: "RaceAndHorseModelData",
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.CompetitonModel,
         as: "CompetitionRacesPointsModelData",
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.ResultModel,
@@ -819,6 +879,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.HorseAndRaceModel,
         as: "RacehorsesData",
         include: { all: true },
+        paranoid: false,
       },
       {
         model: db.JockeyModel,
@@ -829,6 +890,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
             paranoid: false,
           },
         ],
+        paranoid: false,
       },
     ],
   });
