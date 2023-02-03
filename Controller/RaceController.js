@@ -755,7 +755,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
       , {
         model: db.RaceNameModel,
         as: "RaceNameModelData",
-        include: { all: true }
+
       }
 
     ],
