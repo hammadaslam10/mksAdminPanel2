@@ -774,10 +774,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.MeetingTypeModel,
         as: "MeetingTypeData",
       },
-      // {
-      //   model: db.GroundTypeModel,
-      //   as: "GroundData"
-      // },
       {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
@@ -822,28 +818,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.HorseAndRaceModel,
         as: "RacehorsesData",
         include: { all: true },
-        // include: [
-        //   {
-        //     model: db.EquipmentModel,
-        //     as: "EquipmentData1",
-        //   },
-        //   {
-        //     model: db.HorseModel,
-        //     as: "HorseModelIdData1",
-        //   },
-        //   {
-        //     model: db.TrainerModel,
-        //     as: "TrainerOnRaceData1",
-        //   },
-        //   {
-        //     model: db.JockeyModel,
-        //     as: "JockeyOnRaceData1",
-        //   },
-        //   {
-        //     model: db.OwnerModel,
-        //     as: "OwnerOnRaceData1",
-        //   },
-        // ],
       },
       {
         model: db.JockeyModel,
@@ -1044,6 +1018,7 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
             Rating: singlehorsedetail[6],
             HorseRunningStatus: singlehorsedetail[7],
             CapColor: singlehorsedetail[8],
+            JockeyRaceWeight: singlehorsedetail[9],
           },
         });
       } catch (err) {

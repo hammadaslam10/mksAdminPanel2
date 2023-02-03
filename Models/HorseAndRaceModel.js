@@ -7,66 +7,68 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       RaceModelId: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       HorseModelId: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       GateNo: {
         type: DataTypes.BIGINT,
-        allowNull: false
       },
       HorseNo: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
       },
       Equipment: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       TrainerOnRace: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       JockeyOnRace: {
         type: DataTypes.UUID,
-        allowNull: false
       },
       JockeyWeight: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
       },
       OwnerOnRace: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       CapColor: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       JockeyWeight: {
         type: DataTypes.BIGINT,
-        allowNull: false
+        allowNull: false,
       },
       HorseRunningStatus: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 1,
+      },
+      JockeyRaceWeight: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
       },
       Rating: {
         type: DataTypes.BIGINT,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10
+      initialAutoIncrement: 10,
     }
   );
   return HorseAndRaceModel;
