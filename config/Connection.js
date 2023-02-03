@@ -103,7 +103,6 @@ db.SubscriberAndTrainerModel = require("../Models/SubscriberAndTrainerModel")(
   Db,
   DataTypes
 );
-
 db.RaceCardRacesModel = require("../Models/RaceCardRacesModel")(Db, DataTypes);
 
 db.CompetitonWinnersModel = require("../Models/CompetitonWinnersModel")(
@@ -452,6 +451,14 @@ db.SponsorModel.hasMany(db.RaceModel, {
 db.RaceModel.belongsTo(db.SponsorModel, {
   foreignKey: "Sponsor",
   as: "SponsorData",
+});
+db.CurrencyModel.hasMany(db.RaceModel, {
+  foreignKey: "Currency",
+  as: "CurrencyData",
+});
+db.RaceModel.belongsTo(db.CurrencyModel, {
+  foreignKey: "Currency",
+  as: "CurrencyData",
 });
 db.MeetingTypeModel.hasMany(db.RaceModel, {
   foreignKey: "MeetingType",

@@ -892,6 +892,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     RaceNumber,
     totalPrize,
     PrizeNumber,
+    RaceWeight,
+    Currency,
   } = req.body;
   let = {
     FirstPrice,
@@ -945,14 +947,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     FirstPrice = first * totalPrize;
     SixthPrice = six * totalPrize;
   }
-  // const file = req.files.image;
-  // if (file == null) {
-  //   return next(new HandlerCallBack("Please upload an image", 404));
-  // }
-  // const Image = generateFileName();
-  // const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-  // console.log(req.files.image.data);
-  // await uploadFile(fileBuffer, `${Race}/${Image}`, file.mimetype);
 
   const data = await RaceModel.create({
     // image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
@@ -984,6 +978,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor: Sponsor,
     Day: Day,
     TrackCondition: TrackCondition,
+    RaceWeight: RaceWeight,
+    Currency: Currency,
   });
   res.status(200).json({
     success: true,
@@ -1188,6 +1184,8 @@ exports.EditRace = Trackerror(async (req, res, next) => {
     Day,
     TrackCondition,
     HorseKindinRace,
+    Currency,
+    RaceWeight,
   } = req.body;
   let data = await RaceModel.findOne({
     where: { _id: req.params.id },
@@ -1239,7 +1237,9 @@ exports.EditRace = Trackerror(async (req, res, next) => {
       Sponsor: Sponsor || data.Sponsor,
       Day: Day || data.Day,
       TrackCondition: TrackCondition || data.TrackCondition,
-      TrackCondition: HorseKindinRace || data.HorseKindinRace,
+      HorseKindinRace: HorseKindinRace || data.HorseKindinRace,
+      Currency: Currency || data.Currency,
+      RaceWeight: RaceWeight || data.RaceWeight,
     };
     data = await RaceModel.update(updateddata, {
       where: {
