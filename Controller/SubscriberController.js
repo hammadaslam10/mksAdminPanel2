@@ -163,10 +163,10 @@ exports.TrackHorses = Trackerror(async (req, res, next) => {
   if (!verify) {
     return next(new HandlerCallBack(`user not verified `));
   } else {
-    const data = await SubscriberAndHorsesModel.findOrCreate({
+    const data = await db.test.findOrCreate({
       where: {
-        SubscriberModelId: verify._id,
-        HorseModelId: Horse,
+        SubscriberModelId1: verify._id,
+        HorseModelId1: Horse,
       },
     });
     res.status(200).json({

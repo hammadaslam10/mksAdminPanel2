@@ -251,7 +251,7 @@ exports.HorseDropDown = Trackerror(async (req, res, next) => {
 });
 function exchangefunction(arraytobechecked, valuetobechecked, val) {
   let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);
-  // console.log(a, valuetobechecked, val);
+  console.log(a, valuetobechecked, val);
   return a._id;
 }
 exports.HorseMassUpload = Trackerror(async (req, res, next) => {

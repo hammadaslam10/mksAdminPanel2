@@ -1,5 +1,6 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
+const SubscriberModel = db.SubscriberModel;
 const HorseModel = db.HorseModel;
 const ResultModel = db.ResultModel;
 const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
@@ -23,6 +24,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
+const jwt = require("jsonwebtoken");
 exports.GetDeletedRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     paranoid: false,
@@ -779,6 +781,17 @@ exports.HorseHistory = Trackerror(async (req, res, next) => {
   });
 });
 exports.SingleRace = Trackerror(async (req, res, next) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return next(
+      new HandlerCallBack("Please login to access this resource", 401)
+    );
+  }
+
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  let verify = await SubscriberModel.findOne({
+    where: { _id: decodedData.id },
+  });
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
     paranoid: false,
@@ -938,6 +951,28 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
                 },
               },
               {
+                model: db.NationalityModel,
+                as: "NationalityData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                },
+              },
+              {
+                model: db.test,
+                as: "TrackHorses",
+                attributes: {
+                  exclude: [
+                    "createdAt",
+                    "updatedAt",
+                    "deletedAt",
+                    sequelize.literal(
+                      `(SELECT COUNT(*) FROM test where TrackHorses.SubscriberModelId1=${verify._id})`
+                    ),
+                    "HorseScore",
+                  ],
+                },
+              },
+              {
                 model: db.BreederModel,
                 as: "BreederData",
                 attributes: {
@@ -963,7 +998,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
           {
             model: db.TrainerModel,
             as: "TrainerOnRaceData1",
-            attributes: ["NameEn", "NameAr", "_id", "BackupId"],
+            attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
           },
           {
             model: db.JockeyModel,
@@ -973,7 +1008,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
                 "createdAt",
                 "updatedAt",
                 "deletedAt",
-                "image",
                 "shortCode",
                 "JockeyLicenseDate",
                 "RemarksEn",
@@ -1008,6 +1042,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
   // } else {
   res.status(200).json({
     success: true,
+    a: verify._id,
     data,
   });
   // }
@@ -1571,13 +1606,13 @@ exports.EditRaceHorsesv2 = Trackerror(async (req, res, next) => {
     HorseRunningStatus,
     CapColor,
     JockeyRaceWeight,
-    Rowid
+    Rowid,
   } = req.body;
   let racehorsedata = await HorseAndRaceModel.findOne({
-    where: { HorseModelId: HorseModelId }
+    where: { HorseModelId: HorseModelId },
   });
   let horsedata = await HorseModel.findOne({
-    where: { _id: HorseModelId }
+    where: { _id: HorseModelId },
   });
   console.log(horsedata, "Dsdsd");
   await HorseAndRaceModel.update(
@@ -1592,9 +1627,9 @@ exports.EditRaceHorsesv2 = Trackerror(async (req, res, next) => {
       JockeyOnRace: JockeyOnRace || racehorsedata.JockeyOnRace,
       JockeyWeight: JockeyWeight || racehorsedata.JockeyWeight,
       Rating: Rating || racehorsedata.Rating,
-      HorseRunningStatus: HorseRunningStatus || racehorsedata.HorseRunningStatus,
+      HorseRunningStatus:
+        HorseRunningStatus || racehorsedata.HorseRunningStatus,
       CapColor: CapColor || racehorsedata.CapColor,
-
     },
     {
       where: {
@@ -1603,12 +1638,10 @@ exports.EditRaceHorsesv2 = Trackerror(async (req, res, next) => {
     }
   );
 
-
   res.status(200).json({
     success: true,
-    message: "data has been updated"
+    message: "data has been updated",
   });
-
 });
 exports.EditRaceHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
@@ -1622,7 +1655,7 @@ exports.EditRaceHorses = Trackerror(async (req, res, next) => {
     singlehorse = singlehorse.split(",");
     console.log("00077792-262c-4831-b5f2-8209912447fa", "hello");
     racehorsedata = await HorseAndRaceModel.findOne({
-      where: { HorseModelId: "00077792-262c-4831-b5f2-8209912447fa" }
+      where: { HorseModelId: "00077792-262c-4831-b5f2-8209912447fa" },
     });
     horsedata = await HorseModel.findOne({
       where: {
@@ -1637,14 +1670,17 @@ exports.EditRaceHorses = Trackerror(async (req, res, next) => {
           GateNo: singlehorse[0] || racehorsedata.GateNo,
           HorseNo: singlehorse[1] || racehorsedata.HorseNo,
           RaceModelId: req.params.id,
-          HorseModelId: "00077792-262c-4831-b5f2-8209912447fa" || racehorsedata.HorseModelId,
+          HorseModelId:
+            "00077792-262c-4831-b5f2-8209912447fa" ||
+            racehorsedata.HorseModelId,
           Equipment: racehorsedata.Equipment,
           TrainerOnRace: horsedata.ActiveTrainer || racehorsedata.TrainerOnRace,
           OwnerOnRace: horsedata.ActiveOwner || racehorsedata.OwnerOnRace,
           JockeyOnRace: racehorsedata.JockeyOnRace,
           JockeyWeight: racehorsedata.JockeyWeight,
           Rating: singlehorse[6] || racehorsedata.Rating,
-          HorseRunningStatus: singlehorse[7] || racehorsedata.HorseRunningStatus,
+          HorseRunningStatus:
+            singlehorse[7] || racehorsedata.HorseRunningStatus,
           CapColor: racehorsedata.CapColor,
           JockeyRaceWeight: singlehorse[9] || racehorsedata.JockeyRaceWeight,
         },

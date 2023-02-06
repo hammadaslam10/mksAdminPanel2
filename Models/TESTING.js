@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const SubscriberAndHorsesModel = sequelize.define(
-    "SubscriberAndHorsesModel",
+  const test = sequelize.define(
+    "test",
 
     {
       _id: {
@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      HorseModelId: {
+      HorseModelId1: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      SubscriberModelId: {
+      SubscriberModelId1: {
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -25,5 +25,5 @@ module.exports = (sequelize, DataTypes) => {
       initialAutoIncrement: 10,
     }
   );
-  return SubscriberAndHorsesModel;
+  return test;
 };

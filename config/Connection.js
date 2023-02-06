@@ -95,6 +95,7 @@ db.SubscriberAndHorsesModel = require("../Models/SubscriberAndHorsesModel")(
   Db,
   DataTypes
 );
+db.test = require("../Models/TESTING")(Db, DataTypes);
 db.SubscriberAndOwnerModel = require("../Models/SubscriberAndOwnerModel")(
   Db,
   DataTypes
@@ -618,13 +619,31 @@ db.HorseModel.belongsToMany(db.RaceModel, {
 });
 
 // -------------------------------------SubscriberAndRace----------------------------
-db.SubscriberModel.belongsToMany(db.HorseModel, {
-  through: "SubscriberAndHorsesModel",
+// db.SubscriberModel.belongsToMany(db.HorseModel, {
+//   through: "SubscriberAndHorsesModel",
+//   foreignKey: "HorseModelId",
+//   as: "TrackHorses",
+// });
+// db.HorseModel.belongsToMany(db.SubscriberModel, {
+//   through: "SubscriberAndHorsesModel",
+//   foreignKey: "HorseModelId",
+//   as: "TrackHorses",
+// });
+db.test.belongsTo(db.HorseModel, {
+  foreignKey: "HorseModelId1",
   as: "TrackHorses",
 });
-db.HorseModel.belongsToMany(db.SubscriberModel, {
-  through: "SubscriberAndHorsesModel",
+db.HorseModel.hasMany(db.test, {
+  foreignKey: "HorseModelId1",
   as: "TrackHorses",
+});
+db.test.belongsTo(db.SubscriberModel, {
+  foreignKey: "SubscriberModelId1",
+  as: "TrackSubscriber",
+});
+db.SubscriberModel.hasMany(db.test, {
+  foreignKey: "SubscriberModelId1",
+  as: "TrackSubscriber",
 });
 db.SubscriberModel.belongsToMany(db.TrainerModel, {
   through: "SubscriberAndTrainerModel",
