@@ -768,6 +768,7 @@ exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
+    paranoid: false,
     attributes: {
       exclude: [
         "MeetingType",
@@ -783,6 +784,9 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         "createdAt",
         "updatedAt",
         "deletedAt",
+        "Competition",
+        "RaceCard",
+        "BackupId",
       ],
       paranoid: false,
     },
@@ -827,6 +831,22 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         paranoid: false,
       },
       {
+        model: db.TrackConditionModel,
+        as: "TrackConditionData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
+      },
+      {
+        model: db.CurrencyModel,
+        as: "CurrencyData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
+      },
+      {
         model: db.RaceKindModel,
         as: "RaceKindData",
         attributes: {
@@ -857,12 +877,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         paranoid: false,
       },
       {
-        model: db.HorseModel,
-        as: "RaceAndHorseModelData",
-        include: { all: true },
-        paranoid: false,
-      },
-      {
         model: db.CompetitonModel,
         as: "CompetitionRacesPointsModelData",
         include: { all: true },
@@ -877,30 +891,111 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseAndRaceModel,
         as: "RacehorsesData",
-        include: { all: true },
-        paranoid: false,
-      },
-      {
-        model: db.JockeyModel,
+        attributes: {
+          exclude: [
+            "RaceModelId",
+            "HorseModelId",
+            "Equipment",
+            "TrainerOnRace",
+            "JockeyOnRace",
+            "OwnerOnRace",
+          ],
+        },
+
         include: [
           {
-            model: db.NationalityModel,
-            as: "JockeyNationalityData",
-            paranoid: false,
+            model: db.EquipmentModel,
+            as: "EquipmentData1",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+            },
+          },
+          {
+            model: db.HorseModel,
+            as: "HorseModelIdData1",
+            attributes: ["NameEn", "NameAr", "_id", "DOB"],
+            include: [
+              {
+                model: db.HorseModel,
+                as: "DamData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                },
+              },
+              {
+                model: db.HorseModel,
+                as: "SireData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                },
+              },
+              {
+                model: db.HorseModel,
+                as: "GSireData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                },
+              },
+              {
+                model: db.HorseKindModel,
+                as: "KindHorseData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+                },
+              },
+            ],
+          },
+          {
+            model: db.TrainerModel,
+            as: "TrainerOnRaceData1",
+            attributes: ["NameEn", "NameAr", "_id", "BackupId"],
+          },
+          {
+            model: db.JockeyModel,
+            as: "JockeyOnRaceData1",
+            attributes: {
+              exclude: [
+                "createdAt",
+                "updatedAt",
+                "deletedAt",
+                "image",
+                "shortCode",
+                "JockeyLicenseDate",
+                "RemarksEn",
+                "Rating",
+                "NationalityID",
+                "BackupId",
+              ],
+            },
+          },
+          {
+            model: db.OwnerModel,
+            as: "OwnerOnRaceData1",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+            },
+          },
+          {
+            model: db.ColorModel,
+            as: "CapColorData1",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+            },
           },
         ],
         paranoid: false,
       },
     ],
   });
-  if (!data) {
-    return next(new HandlerCallBack("Race is Not Available", 404));
-  } else {
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  }
+  console.log(data);
+  // if (!data) {
+  //   return next(new HandlerCallBack("Race is Not Available", 404));
+  // } else {
+  res.status(200).json({
+    success: true,
+    data,
+  });
+  // }
 });
 exports.CreateRace = Trackerror(async (req, res, next) => {
   const {
