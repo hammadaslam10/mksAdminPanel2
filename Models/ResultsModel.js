@@ -4,6 +4,12 @@ module.exports = (sequelize, DataTypes) => {
     "ResultsModel",
 
     {
+      _id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true,
+      },
       RaceID: {
         type: DataTypes.UUID,
         allowNull: false,

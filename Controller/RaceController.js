@@ -1,6 +1,7 @@
 const db = require("../config/Connection");
 const RaceModel = db.RaceModel;
 const HorseModel = db.HorseModel;
+const ResultModel = db.ResultModel;
 const RaceAndPointsSystemModel = db.RaceAndPointsSystemModel;
 const SubscriberAndCompetitionModel = db.SubscriberAndCompetitionModel;
 const RaceAndHorseModel = db.RaceAndHorseModel;
@@ -8,7 +9,6 @@ const HorseAndRaceModel = db.HorseAndRaceModel;
 const RaceAndJockeyModel = db.RaceAndJockeyModel;
 const RaceCourseModel = db.RaceCourseModel;
 const ResultsModel = db.ResultModel;
-const ResultModel = db.ResultModel;
 const RaceResultImagesModel = db.RaceResultImagesModel;
 const RaceAndVerdictsHorseModel = db.RaceAndVerdictsHorseModel;
 const RaceAndVerdictsJockeyModel = db.RaceAndVerdictsJockeyModel;
@@ -764,7 +764,20 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
-exports.RaceSliderTimeAccording = Trackerror(async (req, res, next) => {});
+exports.HorseHistory = Trackerror(async (req, res, next) => {
+  const data = await ResultModel.findAll({
+    where: {
+      HorseID: req.params.horseid,
+    },
+    limit: 4,
+    order: [["createdAt", "ASC"]],
+    include: { all: true },
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
     where: { _id: req.params.id, HorseFilled: true },
@@ -792,6 +805,14 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
     },
     include: [
       {
+        model: db.HorseKindModel,
+        as: "HorseKindinRaceData",
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"],
+        },
+        paranoid: false,
+      },
+      {
         model: db.RaceCourseModel,
         as: "RaceCourseData",
         attributes: {
@@ -812,13 +833,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
         model: db.TrackLengthModel,
         as: "TrackLengthData",
         attributes: {
-          exclude: [
-            "GroundType",
-            "RaceCourseImage",
-            "createdAt",
-            "updatedAt",
-            "deletedAt",
-          ],
+          exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
         },
         paranoid: false,
       },
@@ -913,11 +928,18 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
           {
             model: db.HorseModel,
             as: "HorseModelIdData1",
-            attributes: ["NameEn", "NameAr", "_id", "DOB"],
+            attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
             include: [
               {
                 model: db.HorseModel,
                 as: "DamData",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                },
+              },
+              {
+                model: db.BreederModel,
+                as: "BreederData",
                 attributes: {
                   exclude: ["createdAt", "updatedAt", "deletedAt"],
                 },
@@ -934,13 +956,6 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
                 as: "GSireData",
                 attributes: {
                   exclude: ["createdAt", "updatedAt", "deletedAt"],
-                },
-              },
-              {
-                model: db.HorseKindModel,
-                as: "KindHorseData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
                 },
               },
             ],
