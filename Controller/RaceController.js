@@ -1511,22 +1511,26 @@ exports.GetEditRaceVerdict = Trackerror(async (req, res, next) => {
 });
 exports.EditRaceVerdict = Trackerror(async (req, res, next) => {
   const { VerdictEntry } = req.body;
+  const data = await RaceAndVerdictsHorseModel.findAll({
+    where: { RaceToBePredict: req.params.id },
+    include: { all: true },
+  });
   console.log(req.body);
   console.log(VerdictEntry, "VerdictEntry");
   let VerdictEntryData = Conversion(VerdictEntry);
   console.log(VerdictEntryData, "dsad");
   await VerdictEntryData.map(async (singleverdict) => {
-    await singleverdict.map(async (singleverdictdetail) => {
+    await singleverdict.map(async (singleverdictdetail, i) => {
       singleverdictdetail = singleverdictdetail.split(",");
       await RaceAndVerdictsHorseModel.update(
         {
-          VerdictName: singleverdictdetail[0],
-          Rank: singleverdictdetail[1],
-          RaceToBePredict: req.params.id,
-          HorseNo1: singleverdictdetail[2],
-          HorseNo2: singleverdictdetail[3],
-          HorseNo3: singleverdictdetail[4],
-          Remarks: singleverdictdetail[5],
+          VerdictName: singleverdictdetail[0] || data[i].VerdictName,
+          Rank: singleverdictdetail[1] || data[i].Rank,
+          RaceToBePredict: req.params.id || data[i].RaceToBePredict,
+          HorseNo1: singleverdictdetail[2] || data[i].HorseNo1,
+          HorseNo2: singleverdictdetail[3] || data[i].HorseNo2,
+          HorseNo3: singleverdictdetail[4] || data[i].HorseNo3,
+          Remarks: singleverdictdetail[5] || data[i].Remarks,
         },
         {
           where: {
@@ -1553,51 +1557,111 @@ exports.GetEditRaceHorses = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.EditRaceHorsesv2 = Trackerror(async (req, res, next) => {
+  const {
+    GateNo,
+    HorseNo,
+    HorseModelId,
+    Equipment,
+    TrainerOnRace,
+    OwnerOnRace,
+    JockeyOnRace,
+    JockeyWeight,
+    Rating,
+    HorseRunningStatus,
+    CapColor,
+    JockeyRaceWeight,
+    Rowid
+  } = req.body;
+  let racehorsedata = await HorseAndRaceModel.findOne({
+    where: { HorseModelId: HorseModelId }
+  });
+  let horsedata = await HorseModel.findOne({
+    where: { _id: HorseModelId }
+  });
+  console.log(horsedata, "Dsdsd");
+  await HorseAndRaceModel.update(
+    {
+      GateNo: GateNo || racehorsedata.GateNo,
+      HorseNo: HorseNo || racehorsedata.HorseNo,
+      RaceModelId: req.params.id,
+      HorseModelId: HorseModelId || racehorsedata.HorseModelId,
+      Equipment: Equipment || racehorsedata.Equipment,
+      TrainerOnRace: horsedata.TrainerOnRace,
+      OwnerOnRace: horsedata.OwnerOnRace,
+      JockeyOnRace: JockeyOnRace || racehorsedata.JockeyOnRace,
+      JockeyWeight: JockeyWeight || racehorsedata.JockeyWeight,
+      Rating: Rating || racehorsedata.Rating,
+      HorseRunningStatus: HorseRunningStatus || racehorsedata.HorseRunningStatus,
+      CapColor: CapColor || racehorsedata.CapColor,
+
+    },
+    {
+      where: {
+        _id: Rowid,
+      },
+    }
+  );
+
+
+  res.status(200).json({
+    success: true,
+    message: "data has been updated"
+  });
+
+});
 exports.EditRaceHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
   console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
   console.log(HorseEntryData, "dsad");
   let horsedata;
-  await HorseEntryData.map(async (singlehorse) => {
-    await singlehorse.map(async (singlehorsedetail) => {
-      singlehorsedetail = singlehorsedetail.split(",");
-      horsedata = await HorseModel.findOne({
-        where: {
-          _id: singlehorsedetail[2],
-        },
-      });
-      console.log(horsedata);
-      try {
-        await HorseAndRaceModel.update(
-          {
-            GateNo: singlehorsedetail[0],
-            HorseNo: singlehorsedetail[1],
-            RaceModelId: req.params.id,
-            HorseModelId: singlehorsedetail[2],
-            Equipment: singlehorsedetail[3],
-            TrainerOnRace: horsedata.ActiveTrainer,
-            OwnerOnRace: horsedata.ActiveOwner,
-            JockeyOnRace: singlehorsedetail[4],
-            JockeyWeight: singlehorsedetail[5],
-            Rating: singlehorsedetail[6],
-            HorseRunningStatus: singlehorsedetail[7],
-            CapColor: singlehorsedetail[8],
-          },
-          {
-            where: {
-              _id: singlehorsedetail[9],
-            },
-          }
-        );
-      } catch (err) {
-        console.log(err);
-      }
-
-      horsedata = null;
+  let racehorsedata;
+  await HorseEntryData.map(async (singlehorse, i) => {
+    // await singlehorse.map(async (singlehorsedetail, i) => {
+    singlehorse = singlehorse.split(",");
+    console.log("00077792-262c-4831-b5f2-8209912447fa", "hello");
+    racehorsedata = await HorseAndRaceModel.findOne({
+      where: { HorseModelId: "00077792-262c-4831-b5f2-8209912447fa" }
     });
+    horsedata = await HorseModel.findOne({
+      where: {
+        _id: "00077792-262c-4831-b5f2-8209912447fa",
+      },
+    });
+    console.log(racehorsedata, "racehorsedata");
+    console.log(racehorsedata.Equipment, "racehorsedata1222");
+    try {
+      await HorseAndRaceModel.update(
+        {
+          GateNo: singlehorse[0] || racehorsedata.GateNo,
+          HorseNo: singlehorse[1] || racehorsedata.HorseNo,
+          RaceModelId: req.params.id,
+          HorseModelId: "00077792-262c-4831-b5f2-8209912447fa" || racehorsedata.HorseModelId,
+          Equipment: racehorsedata.Equipment,
+          TrainerOnRace: horsedata.ActiveTrainer || racehorsedata.TrainerOnRace,
+          OwnerOnRace: horsedata.ActiveOwner || racehorsedata.OwnerOnRace,
+          JockeyOnRace: racehorsedata.JockeyOnRace,
+          JockeyWeight: racehorsedata.JockeyWeight,
+          Rating: singlehorse[6] || racehorsedata.Rating,
+          HorseRunningStatus: singlehorse[7] || racehorsedata.HorseRunningStatus,
+          CapColor: racehorsedata.CapColor,
+          JockeyRaceWeight: singlehorse[9] || racehorsedata.JockeyRaceWeight,
+        },
+        {
+          where: {
+            _id: singlehorse[10],
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    horsedata = null;
   });
   res.status(200).json({
     success: true,
   });
 });
+// });
