@@ -782,267 +782,986 @@ exports.HorseHistory = Trackerror(async (req, res, next) => {
 });
 exports.SingleRace = Trackerror(async (req, res, next) => {
   const { token } = req.cookies;
-  if (!token) {
-    return next(
-      new HandlerCallBack("Please login to access this resource", 401)
-    );
-  }
-
-  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-  let verify = await SubscriberModel.findOne({
-    where: { _id: decodedData.id },
-  });
-  const data = await RaceModel.findOne({
-    where: { _id: req.params.id, HorseFilled: true },
-    paranoid: false,
-    attributes: {
-      exclude: [
-        "MeetingType",
-        "RaceKind",
-        "RaceName",
-        "TrackLength",
-        "HorseKindinRace",
-        "Currency",
-        "RaceCourse",
-        "RaceType",
-        "TrackCondition",
-        "Sponsor",
-        "createdAt",
-        "updatedAt",
-        "deletedAt",
-        "Competition",
-        "RaceCard",
-        "BackupId",
-      ],
-      paranoid: false,
-    },
-    include: [
-      {
-        model: db.HorseKindModel,
-        as: "HorseKindinRaceData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.RaceCourseModel,
-        as: "RaceCourseData",
-        attributes: {
-          exclude: [
-            "ColorCode",
-            "NationalityID",
-            "shortCode",
-            "AbbrevEn",
-            "AbbrevAr",
-            "createdAt",
-            "updatedAt",
-            "deletedAt",
-          ],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.TrackLengthModel,
-        as: "TrackLengthData",
-        attributes: {
-          exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.RaceNameModel,
-        as: "RaceNameModelData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.TrackConditionModel,
-        as: "TrackConditionData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.CurrencyModel,
-        as: "CurrencyData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.RaceKindModel,
-        as: "RaceKindData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.RaceTypeModel,
-        as: "RaceTypeModelData",
-        attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.SponsorModel,
-        as: "SponsorData",
-        attributes: {
-          exclude: [
-            "createdAt",
-            "updatedAt",
-            "deletedAt",
-            "DescriptionEn",
-            "DescriptionAr",
-          ],
-        },
-        paranoid: false,
-      },
-      {
-        model: db.CompetitonModel,
-        as: "CompetitionRacesPointsModelData",
-        include: { all: true },
-        paranoid: false,
-      },
-      {
-        model: db.ResultModel,
-        as: "RaceResultData",
-        include: { all: true },
-        paranoid: false,
-      },
-      {
-        model: db.HorseAndRaceModel,
-        as: "RacehorsesData",
-        attributes: {
-          exclude: [
-            "RaceModelId",
-            "HorseModelId",
-            "Equipment",
-            "TrainerOnRace",
-            "JockeyOnRace",
-            "OwnerOnRace",
-          ],
-        },
-
-        include: [
-          {
-            model: db.EquipmentModel,
-            as: "EquipmentData1",
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
-            },
+  let verify;
+  let flag;
+  let data;
+  if (token) {
+    console.log(token);
+    let decodedData;
+    try {
+      decodedData = jwt.verify(token, process.env.JWT_SECRET);
+      verify = await SubscriberModel.findOne({
+        where: { _id: decodedData.id },
+      });
+      if (verify) {
+        data = await RaceModel.findOne({
+          where: { _id: req.params.id, HorseFilled: true },
+          paranoid: false,
+          attributes: {
+            exclude: [
+              "MeetingType",
+              "RaceKind",
+              "RaceName",
+              "TrackLength",
+              "HorseKindinRace",
+              "Currency",
+              "RaceCourse",
+              "RaceType",
+              "TrackCondition",
+              "Sponsor",
+              "createdAt",
+              "updatedAt",
+              "deletedAt",
+              "Competition",
+              "RaceCard",
+              "BackupId",
+            ],
+            paranoid: false,
           },
-          {
-            model: db.HorseModel,
-            as: "HorseModelIdData1",
-            attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
-            include: [
-              {
-                model: db.HorseModel,
-                as: "DamData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt"],
-                },
+          include: [
+            {
+              model: db.HorseKindModel,
+              as: "HorseKindinRaceData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
               },
-              {
-                model: db.NationalityModel,
-                as: "NationalityData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt"],
-                },
+              paranoid: false,
+            },
+            {
+              model: db.RaceCourseModel,
+              as: "RaceCourseData",
+              attributes: {
+                exclude: [
+                  "ColorCode",
+                  "NationalityID",
+                  "shortCode",
+                  "AbbrevEn",
+                  "AbbrevAr",
+                  "createdAt",
+                  "updatedAt",
+                  "deletedAt",
+                ],
               },
-              {
-                model: db.test,
-                as: "TrackHorses",
-                attributes: {
-                  exclude: [
-                    "createdAt",
-                    "updatedAt",
-                    "deletedAt",
-                    sequelize.literal(
-                      `(SELECT COUNT(*) FROM test where TrackHorses.SubscriberModelId1=${verify._id})`
-                    ),
-                    "HorseScore",
+              paranoid: false,
+            },
+            {
+              model: db.TrackLengthModel,
+              as: "TrackLengthData",
+              attributes: {
+                exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceNameModel,
+              as: "RaceNameModelData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.TrackConditionModel,
+              as: "TrackConditionData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.CurrencyModel,
+              as: "CurrencyData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceKindModel,
+              as: "RaceKindData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceTypeModel,
+              as: "RaceTypeModelData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.SponsorModel,
+              as: "SponsorData",
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "deletedAt",
+                  "DescriptionEn",
+                  "DescriptionAr",
+                ],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.CompetitonModel,
+              as: "CompetitionRacesPointsModelData",
+              include: { all: true },
+              paranoid: false,
+            },
+            {
+              model: db.ResultModel,
+              as: "RaceResultData",
+              include: { all: true },
+              paranoid: false,
+            },
+            {
+              model: db.HorseAndRaceModel,
+              as: "RacehorsesData",
+              attributes: {
+                exclude: [
+                  "RaceModelId",
+                  "HorseModelId",
+                  "Equipment",
+                  "TrainerOnRace",
+                  "JockeyOnRace",
+                  "OwnerOnRace",
+                ],
+              },
+
+              include: [
+                {
+                  model: db.EquipmentModel,
+                  as: "EquipmentData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
+                },
+                {
+                  model: db.HorseModel,
+                  as: "HorseModelIdData1",
+                  attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
+                  include: [
+                    {
+                      model: db.HorseModel,
+                      as: "DamData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.test,
+                      as: "TrackHorses",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.NationalityModel,
+                      as: "NationalityData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.BreederModel,
+                      as: "BreederData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.HorseModel,
+                      as: "SireData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.HorseModel,
+                      as: "GSireData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
                   ],
                 },
-              },
-              {
-                model: db.BreederModel,
-                as: "BreederData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                {
+                  model: db.TrainerModel,
+                  as: "TrainerOnRaceData1",
+                  attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
                 },
-              },
-              {
-                model: db.HorseModel,
-                as: "SireData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                {
+                  model: db.JockeyModel,
+                  as: "JockeyOnRaceData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "shortCode",
+                      "JockeyLicenseDate",
+                      "RemarksEn",
+                      "Rating",
+                      "NationalityID",
+                      "BackupId",
+                    ],
+                  },
                 },
-              },
-              {
-                model: db.HorseModel,
-                as: "GSireData",
-                attributes: {
-                  exclude: ["createdAt", "updatedAt", "deletedAt"],
+                {
+                  model: db.OwnerModel,
+                  as: "OwnerOnRaceData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
                 },
-              },
+                {
+                  model: db.ColorModel,
+                  as: "CapColorData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
+                },
+              ],
+              paranoid: false,
+            },
+          ],
+        });
+      } else {
+        data = await RaceModel.findOne({
+          where: { _id: req.params.id, HorseFilled: true },
+          paranoid: false,
+          attributes: {
+            exclude: [
+              "MeetingType",
+              "RaceKind",
+              "RaceName",
+              "TrackLength",
+              "HorseKindinRace",
+              "Currency",
+              "RaceCourse",
+              "RaceType",
+              "TrackCondition",
+              "Sponsor",
+              "createdAt",
+              "updatedAt",
+              "deletedAt",
+              "Competition",
+              "RaceCard",
+              "BackupId",
             ],
+            paranoid: false,
+          },
+          include: [
+            {
+              model: db.HorseKindModel,
+              as: "HorseKindinRaceData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceCourseModel,
+              as: "RaceCourseData",
+              attributes: {
+                exclude: [
+                  "ColorCode",
+                  "NationalityID",
+                  "shortCode",
+                  "AbbrevEn",
+                  "AbbrevAr",
+                  "createdAt",
+                  "updatedAt",
+                  "deletedAt",
+                ],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.TrackLengthModel,
+              as: "TrackLengthData",
+              attributes: {
+                exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceNameModel,
+              as: "RaceNameModelData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.TrackConditionModel,
+              as: "TrackConditionData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.CurrencyModel,
+              as: "CurrencyData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceKindModel,
+              as: "RaceKindData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.RaceTypeModel,
+              as: "RaceTypeModelData",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.SponsorModel,
+              as: "SponsorData",
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "deletedAt",
+                  "DescriptionEn",
+                  "DescriptionAr",
+                ],
+              },
+              paranoid: false,
+            },
+            {
+              model: db.CompetitonModel,
+              as: "CompetitionRacesPointsModelData",
+              include: { all: true },
+              paranoid: false,
+            },
+            {
+              model: db.ResultModel,
+              as: "RaceResultData",
+              include: { all: true },
+              paranoid: false,
+            },
+            {
+              model: db.HorseAndRaceModel,
+              as: "RacehorsesData",
+              attributes: {
+                exclude: [
+                  "RaceModelId",
+                  "HorseModelId",
+                  "Equipment",
+                  "TrainerOnRace",
+                  "JockeyOnRace",
+                  "OwnerOnRace",
+                ],
+              },
+
+              include: [
+                {
+                  model: db.EquipmentModel,
+                  as: "EquipmentData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
+                },
+                {
+                  model: db.HorseModel,
+                  as: "HorseModelIdData1",
+                  attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
+                  include: [
+                    {
+                      model: db.HorseModel,
+                      as: "DamData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.NationalityModel,
+                      as: "NationalityData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+
+                    {
+                      model: db.BreederModel,
+                      as: "BreederData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.HorseModel,
+                      as: "SireData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                    {
+                      model: db.HorseModel,
+                      as: "GSireData",
+                      attributes: {
+                        exclude: ["createdAt", "updatedAt", "deletedAt"],
+                      },
+                    },
+                  ],
+                },
+                {
+                  model: db.TrainerModel,
+                  as: "TrainerOnRaceData1",
+                  attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
+                },
+                {
+                  model: db.JockeyModel,
+                  as: "JockeyOnRaceData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "shortCode",
+                      "JockeyLicenseDate",
+                      "RemarksEn",
+                      "Rating",
+                      "NationalityID",
+                      "BackupId",
+                    ],
+                  },
+                },
+                {
+                  model: db.OwnerModel,
+                  as: "OwnerOnRaceData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
+                },
+                {
+                  model: db.ColorModel,
+                  as: "CapColorData1",
+                  attributes: {
+                    exclude: [
+                      "createdAt",
+                      "updatedAt",
+                      "deletedAt",
+                      "BackupId",
+                    ],
+                  },
+                },
+              ],
+              paranoid: false,
+            },
+          ],
+        });
+      }
+    } catch (err) {
+      data = await RaceModel.findOne({
+        where: { _id: req.params.id, HorseFilled: true },
+        paranoid: false,
+        attributes: {
+          exclude: [
+            "MeetingType",
+            "RaceKind",
+            "RaceName",
+            "TrackLength",
+            "HorseKindinRace",
+            "Currency",
+            "RaceCourse",
+            "RaceType",
+            "TrackCondition",
+            "Sponsor",
+            "createdAt",
+            "updatedAt",
+            "deletedAt",
+            "Competition",
+            "RaceCard",
+            "BackupId",
+          ],
+          paranoid: false,
+        },
+        include: [
+          {
+            model: db.HorseKindModel,
+            as: "HorseKindinRaceData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
           },
           {
-            model: db.TrainerModel,
-            as: "TrainerOnRaceData1",
-            attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
+            model: db.RaceCourseModel,
+            as: "RaceCourseData",
+            attributes: {
+              exclude: [
+                "ColorCode",
+                "NationalityID",
+                "shortCode",
+                "AbbrevEn",
+                "AbbrevAr",
+                "createdAt",
+                "updatedAt",
+                "deletedAt",
+              ],
+            },
+            paranoid: false,
           },
           {
-            model: db.JockeyModel,
-            as: "JockeyOnRaceData1",
+            model: db.TrackLengthModel,
+            as: "TrackLengthData",
+            attributes: {
+              exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.RaceNameModel,
+            as: "RaceNameModelData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.TrackConditionModel,
+            as: "TrackConditionData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.CurrencyModel,
+            as: "CurrencyData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.RaceKindModel,
+            as: "RaceKindData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.RaceTypeModel,
+            as: "RaceTypeModelData",
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+            paranoid: false,
+          },
+          {
+            model: db.SponsorModel,
+            as: "SponsorData",
             attributes: {
               exclude: [
                 "createdAt",
                 "updatedAt",
                 "deletedAt",
-                "shortCode",
-                "JockeyLicenseDate",
-                "RemarksEn",
-                "Rating",
-                "NationalityID",
-                "BackupId",
+                "DescriptionEn",
+                "DescriptionAr",
               ],
             },
+            paranoid: false,
           },
           {
-            model: db.OwnerModel,
-            as: "OwnerOnRaceData1",
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
-            },
+            model: db.CompetitonModel,
+            as: "CompetitionRacesPointsModelData",
+            include: { all: true },
+            paranoid: false,
           },
           {
-            model: db.ColorModel,
-            as: "CapColorData1",
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
-            },
+            model: db.ResultModel,
+            as: "RaceResultData",
+            include: { all: true },
+            paranoid: false,
           },
+          {
+            model: db.HorseAndRaceModel,
+            as: "RacehorsesData",
+            attributes: {
+              exclude: [
+                "RaceModelId",
+                "HorseModelId",
+                "Equipment",
+                "TrainerOnRace",
+                "JockeyOnRace",
+                "OwnerOnRace",
+              ],
+            },
+
+            include: [
+              {
+                model: db.EquipmentModel,
+                as: "EquipmentData1",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+                },
+              },
+              {
+                model: db.HorseModel,
+                as: "HorseModelIdData1",
+                attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
+                include: [
+                  {
+                    model: db.HorseModel,
+                    as: "DamData",
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt", "deletedAt"],
+                    },
+                  },
+                  {
+                    model: db.NationalityModel,
+                    as: "NationalityData",
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt", "deletedAt"],
+                    },
+                  },
+
+                  {
+                    model: db.BreederModel,
+                    as: "BreederData",
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt", "deletedAt"],
+                    },
+                  },
+                  {
+                    model: db.HorseModel,
+                    as: "SireData",
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt", "deletedAt"],
+                    },
+                  },
+                  {
+                    model: db.HorseModel,
+                    as: "GSireData",
+                    attributes: {
+                      exclude: ["createdAt", "updatedAt", "deletedAt"],
+                    },
+                  },
+                ],
+              },
+              {
+                model: db.TrainerModel,
+                as: "TrainerOnRaceData1",
+                attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
+              },
+              {
+                model: db.JockeyModel,
+                as: "JockeyOnRaceData1",
+                attributes: {
+                  exclude: [
+                    "createdAt",
+                    "updatedAt",
+                    "deletedAt",
+                    "shortCode",
+                    "JockeyLicenseDate",
+                    "RemarksEn",
+                    "Rating",
+                    "NationalityID",
+                    "BackupId",
+                  ],
+                },
+              },
+              {
+                model: db.OwnerModel,
+                as: "OwnerOnRaceData1",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+                },
+              },
+              {
+                model: db.ColorModel,
+                as: "CapColorData1",
+                attributes: {
+                  exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+                },
+              },
+            ],
+            paranoid: false,
+          },
+        ],
+      });
+    }
+  } else {
+    data = await RaceModel.findOne({
+      where: { _id: req.params.id, HorseFilled: true },
+      paranoid: false,
+      attributes: {
+        exclude: [
+          "MeetingType",
+          "RaceKind",
+          "RaceName",
+          "TrackLength",
+          "HorseKindinRace",
+          "Currency",
+          "RaceCourse",
+          "RaceType",
+          "TrackCondition",
+          "Sponsor",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+          "Competition",
+          "RaceCard",
+          "BackupId",
         ],
         paranoid: false,
       },
-    ],
-  });
-  console.log(data);
+      include: [
+        {
+          model: db.HorseKindModel,
+          as: "HorseKindinRaceData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.RaceCourseModel,
+          as: "RaceCourseData",
+          attributes: {
+            exclude: [
+              "ColorCode",
+              "NationalityID",
+              "shortCode",
+              "AbbrevEn",
+              "AbbrevAr",
+              "createdAt",
+              "updatedAt",
+              "deletedAt",
+            ],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.TrackLengthModel,
+          as: "TrackLengthData",
+          attributes: {
+            exclude: ["GroundType", "createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.RaceNameModel,
+          as: "RaceNameModelData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.TrackConditionModel,
+          as: "TrackConditionData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.CurrencyModel,
+          as: "CurrencyData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.RaceKindModel,
+          as: "RaceKindData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.RaceTypeModel,
+          as: "RaceTypeModelData",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.SponsorModel,
+          as: "SponsorData",
+          attributes: {
+            exclude: [
+              "createdAt",
+              "updatedAt",
+              "deletedAt",
+              "DescriptionEn",
+              "DescriptionAr",
+            ],
+          },
+          paranoid: false,
+        },
+        {
+          model: db.CompetitonModel,
+          as: "CompetitionRacesPointsModelData",
+          include: { all: true },
+          paranoid: false,
+        },
+        {
+          model: db.ResultModel,
+          as: "RaceResultData",
+          include: { all: true },
+          paranoid: false,
+        },
+        {
+          model: db.HorseAndRaceModel,
+          as: "RacehorsesData",
+          attributes: {
+            exclude: [
+              "RaceModelId",
+              "HorseModelId",
+              "Equipment",
+              "TrainerOnRace",
+              "JockeyOnRace",
+              "OwnerOnRace",
+            ],
+          },
+
+          include: [
+            {
+              model: db.EquipmentModel,
+              as: "EquipmentData1",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+              },
+            },
+            {
+              model: db.HorseModel,
+              as: "HorseModelIdData1",
+              attributes: ["NameEn", "NameAr", "_id", "DOB", "HorseImage"],
+              include: [
+                {
+                  model: db.HorseModel,
+                  as: "DamData",
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+                {
+                  model: db.NationalityModel,
+                  as: "NationalityData",
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+
+                {
+                  model: db.BreederModel,
+                  as: "BreederData",
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+                {
+                  model: db.HorseModel,
+                  as: "SireData",
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+                {
+                  model: db.HorseModel,
+                  as: "GSireData",
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+              ],
+            },
+            {
+              model: db.TrainerModel,
+              as: "TrainerOnRaceData1",
+              attributes: ["NameEn", "NameAr", "_id", "BackupId", "image"],
+            },
+            {
+              model: db.JockeyModel,
+              as: "JockeyOnRaceData1",
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "updatedAt",
+                  "deletedAt",
+                  "shortCode",
+                  "JockeyLicenseDate",
+                  "RemarksEn",
+                  "Rating",
+                  "NationalityID",
+                  "BackupId",
+                ],
+              },
+            },
+            {
+              model: db.OwnerModel,
+              as: "OwnerOnRaceData1",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+              },
+            },
+            {
+              model: db.ColorModel,
+              as: "CapColorData1",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
+              },
+            },
+          ],
+          paranoid: false,
+        },
+      ],
+    });
+  }
+
   // if (!data) {
   //   return next(new HandlerCallBack("Race is Not Available", 404));
   // } else {
   res.status(200).json({
     success: true,
-    a: verify._id,
     data,
   });
   // }
