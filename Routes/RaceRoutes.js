@@ -48,7 +48,7 @@ router.route("/RacePredictor/:id").get(RacePredictor);
 
 router.route("/racegetdeleted").get(GetDeletedRace);
 router.route("/restoresoftdeleterace/:id").post(RestoreSoftDeletedRace);
-router.route("/SearchRace").get(SearchRace);
+router.route("/SearchRace").get(SearchRace);  
 router.route("/getrace").get(GetRace);
 router.route("/getracehorses/:id").get(Getracehorses);
 router.route("/getlatestraceresult").get(ResultLatest);

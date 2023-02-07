@@ -64,7 +64,7 @@ exports.GetAllAdmin = Trackerror(async (req, res, next) => {
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       FirstName: {
-        [Op.like]: `%${req.query.FirstName || ""}%`,
+        [Op.like]: `%${req.query.FirstName || ""}%`,  
       },
       LastName: {
         [Op.like]: `%${req.query.LastName || ""}%`,
