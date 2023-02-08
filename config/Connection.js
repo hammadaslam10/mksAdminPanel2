@@ -11,6 +11,7 @@ let options = {
   language: "en",
   Protocol: "TCP",
 };
+
 const Db = new Sequelize(
   process.env.RDSDB,
   process.env.RDSUSER,
