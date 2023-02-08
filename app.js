@@ -40,6 +40,22 @@ const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
 const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 const FinalPositionRoutes = require("./Routes/FinalPositionRoutes");
 const TrackConditionRoutes = require("./Routes/TrackConditionRoutes");
+const { initializeApp } = require("firebase/app");
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA5a_if_wOdeqra8uuD6DsC4QS9x04TALE",
+  authDomain: "mksracing-87bea.firebaseapp.com",
+  projectId: "mksracing-87bea",
+  storageBucket: "mksracing-87bea.appspot.com",
+  messagingSenderId: "942994803396",
+  appId: "1:942994803396:web:c3376a97a3935c3d589791",
+};
+
+// Initialize Firebase
+ initializeApp(firebaseConfig);
 let cron = require("node-cron");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });
@@ -96,4 +112,5 @@ cron.schedule("* * * * *", () => {
   console.log("cron job working1");
 });
 app.use(ApplyMiddleware);
+
 module.exports = app;

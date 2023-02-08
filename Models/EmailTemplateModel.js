@@ -22,9 +22,29 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "EmailTemplate will have ShortCode" },
+          notNull: { msg: "EmailTemplate will have Subject" },
           notEmpty: { msg: "Subject  will not be empty" },
         },
+      },
+      Html: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "EmailTemplate will have Html" },
+          notEmpty: { msg: "Html  will not be empty" },
+        },
+      },
+      Target: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "EmailTemplate will have Target" },
+          notEmpty: { msg: "Target  will not be empty" },
+        },
+      },
+      Status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     {

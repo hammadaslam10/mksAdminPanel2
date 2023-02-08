@@ -192,8 +192,7 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
         as: "MeetingTypeData",
         attributes: {
           exclude: ["createdAt", "updatedAt", "deletedAt"],
-        }
-        
+        },
       },
       {
         model: db.RaceTypeModel,
@@ -248,12 +247,7 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
             model: db.EquipmentModel,
             as: "EquipmentData1",
             attributes: {
-              exclude: [
-                "createdAt",
-                "updatedAt",
-                "deletedAt",
-                "BackupId",
-              ],
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
             },
           },
           {
@@ -302,8 +296,6 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
                 attributes: {
                   exclude: ["createdAt", "updatedAt", "deletedAt"],
                 },
-
-
               },
             ],
           },
@@ -333,24 +325,14 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
             model: db.OwnerModel,
             as: "OwnerOnRaceData1",
             attributes: {
-              exclude: [
-                "createdAt",
-                "updatedAt",
-                "deletedAt",
-                "BackupId",
-              ],
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
             },
           },
           {
             model: db.ColorModel,
             as: "CapColorData1",
             attributes: {
-              exclude: [
-                "createdAt",
-                "updatedAt",
-                "deletedAt",
-                "BackupId",
-              ],
+              exclude: ["createdAt", "updatedAt", "deletedAt", "BackupId"],
             },
           },
         ],
@@ -936,6 +918,10 @@ exports.VerdictLatest = Trackerror(async (req, res, next) => {
   });
 });
 exports.ResultLatest = Trackerror(async (req, res, next) => {
+  let length = await ResultModel.count();
+  if (length == 0) {
+    return next(new HandlerCallBack("No Race Result", 404));
+  }
   const result = await ResultModel.findOne({
     order: [["createdAt", "DESC"]],
   });
@@ -945,6 +931,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
         where: {
           RaceID: result.RaceID,
         },
+        
         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
