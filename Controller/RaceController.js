@@ -931,7 +931,7 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
         where: {
           RaceID: result.RaceID,
         },
-        
+
         model: db.ResultModel,
         as: "RaceResultData",
         include: { all: true },
@@ -2562,6 +2562,7 @@ exports.EditRaceHorsesv2 = Trackerror(async (req, res, next) => {
       HorseRunningStatus:
         HorseRunningStatus || racehorsedata.HorseRunningStatus,
       CapColor: CapColor || racehorsedata.CapColor,
+      JockeyRaceWeight: JockeyRaceWeight || racehorsedata.JockeyRaceWeight,
     },
     {
       where: {

@@ -41,10 +41,7 @@ const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 const FinalPositionRoutes = require("./Routes/FinalPositionRoutes");
 const TrackConditionRoutes = require("./Routes/TrackConditionRoutes");
 const { initializeApp } = require("firebase/app");
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA5a_if_wOdeqra8uuD6DsC4QS9x04TALE",
   authDomain: "mksracing-87bea.firebaseapp.com",
@@ -55,7 +52,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
- initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 let cron = require("node-cron");
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "./config/Secrets.env" });

@@ -13,6 +13,12 @@ const {
   GetDeletedAdmin,
   UpdateAdmin,
 } = require("../Controller/AdminController");
+const {
+  GetSendNotification,
+  TemplateChanging,
+} = require("../Controller/PushNotification");
+router.route("/GetSendNotification").post(TemplateChanging);
+
 router.route("/Admingetdeleted").get(GetDeletedAdmin);
 router.route("/restoresoftdeleteAdmin/:id").post(RestoreSoftDeletedAdmin);
 router.route("/getAdmin").get(GetAllAdmin);
