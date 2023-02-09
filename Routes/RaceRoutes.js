@@ -39,7 +39,7 @@ const {
   ResultCreationV2,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
-router.route("/ResultCreationV2").get(ResultCreationV2);
+router.route("/ResultCreationV2/:RaceId").post(ResultCreationV2);
 
 router.route("/horsehistory/:horseid").get(HorseHistory);
 router.route("/GetEditRaceHorses/:id").get(GetEditRaceHorses);
