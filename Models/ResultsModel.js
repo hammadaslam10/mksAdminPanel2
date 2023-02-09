@@ -14,22 +14,25 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
+      RaceTime: {
+        type: DataTypes.TIME,
+        allowNull: false,
+      },
       HorseID: {
         type: DataTypes.UUID,
         allowNull: false,
       },
       BeatenBy: {
         type: DataTypes.UUID,
-        allowNull: false,
       },
       FinalPosition: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      PointTableSystem: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
+      // PointTableSystem: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      // },
       Distance: {
         type: DataTypes.BIGINT,
       },

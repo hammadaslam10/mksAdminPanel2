@@ -35,11 +35,13 @@ const {
   RacePredictor,
   HorsesInRace,
   HorseHistory,
-  EditRaceHorsesv2
+  EditRaceHorsesv2,
+  ResultCreationV2,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
-router.route("/horsehistory/:horseid").get(HorseHistory);
+router.route("/ResultCreationV2").get(ResultCreationV2);
 
+router.route("/horsehistory/:horseid").get(HorseHistory);
 router.route("/GetEditRaceHorses/:id").get(GetEditRaceHorses);
 router.route("/EditRaceHorses/:id").put(EditRaceHorsesv2);
 router.route("/GetEditRaceVerdict/:id").get(GetEditRaceVerdict);
@@ -48,7 +50,7 @@ router.route("/RacePredictor/:id").get(RacePredictor);
 
 router.route("/racegetdeleted").get(GetDeletedRace);
 router.route("/restoresoftdeleterace/:id").post(RestoreSoftDeletedRace);
-router.route("/SearchRace").get(SearchRace);  
+router.route("/SearchRace").get(SearchRace);
 router.route("/getrace").get(GetRace);
 router.route("/getracehorses/:id").get(Getracehorses);
 router.route("/getlatestraceresult").get(ResultLatest);

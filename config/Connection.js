@@ -12,22 +12,22 @@ let options = {
   Protocol: "TCP",
 };
 
-const Db = new Sequelize(
-  process.env.RDSDB,
-  process.env.RDSUSER,
-  process.env.RDSPASSWORD,
-  {
-    ...options,
-  }
-);
 // const Db = new Sequelize(
-//   process.env.SQLDB,
-//   process.env.SQLHOST,
-//   process.env.SQLPASSWORD,
+//   process.env.RDSDB,
+//   process.env.RDSUSER,
+//   process.env.RDSPASSWORD,
 //   {
-//     dialect: "mysql",
+//     ...options,
 //   }
 // );
+const Db = new Sequelize(
+  process.env.SQLDB,
+  process.env.SQLHOST,
+  process.env.SQLPASSWORD,
+  {
+    dialect: "mysql",
+  }
+);
 
 Db.authenticate()
   .then(() => {
@@ -519,14 +519,14 @@ db.ResultModel.belongsTo(db.HorseModel, {
   foreignKey: "BeatenBy",
   as: "BeatenByData",
 });
-db.PointTableSystemModel.hasMany(db.ResultModel, {
-  foreignKey: "PointTableSystem",
-  as: "PointTableSystemData",
-});
-db.ResultModel.belongsTo(db.PointTableSystemModel, {
-  foreignKey: "PointTableSystem",
-  as: "PointTableSystemData",
-});
+// db.PointTableSystemModel.hasMany(db.ResultModel, {
+//   foreignKey: "PointTableSystem",
+//   as: "PointTableSystemData",
+// });
+// db.ResultModel.belongsTo(db.PointTableSystemModel, {
+//   foreignKey: "PointTableSystem",
+//   as: "PointTableSystemData",
+// });
 db.FinalPositionModel.hasMany(db.ResultModel, {
   foreignKey: "FinalPosition",
   as: "FinalPositionDataHorse",

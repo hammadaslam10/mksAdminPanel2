@@ -809,6 +809,71 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
+// const distanceBetween = (arr, r = []) => {
+//   if (r.length <= arr.length - 2) {
+//     let temp = [];
+//     let b = arr[r.length];
+//     arr.forEach((e) => temp.push(e - b));
+//     r.push(temp.filter((e) => e > 0));
+//     return distanceBetween(arr, r);
+//   } else {
+//     return r;
+//   }
+// };
+
+exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
+  const { ResultEntry, RaceTime, VideoLink } = req.body;
+  for (let i = 0; i < ResultEntry; i++) {
+    if (!ResultEntry[i].Rank) {
+      return next(new HandlerCallBack("No Rank Exsist", 404));
+    }
+  }
+  let sortedProducts = ResultEntry.sort((p1, p2) =>
+    p1.Rank > p2.Rank ? 1 : p1.Rank < p2.Rank ? -1 : 0
+  );
+
+  for (let i = 0; i < sortedProducts.length; i++) {
+    if (i > 0) {
+      sortedProducts[i].BeatenBy = sortedProducts[i - 1].HorseId;
+      if (sortedProducts[i].Rank == sortedProducts[i - 1].Rank) {
+        sortedProducts[i].CumulativeDistance =
+          sortedProducts[i - 1].CumulativeDistance;
+        sortedProducts[i].BeatenBy = sortedProducts[i - 1].BeatenBy;
+      }
+
+      sortedProducts[i].CumulativeDistance =
+        sortedProducts[i - 1].CumulativeDistance + sortedProducts[i].Distance;
+    }
+    if (sortedProducts[i].Rank == 1) {
+      sortedProducts[i].BeatenBy = null;
+    }
+  }
+
+  for (let i = 0; i < ResultEntry; i++)
+    try {
+      await ResultsModel.findOrCreate({
+        where: {
+          RaceID: req.params.RaceId,
+          HorseID: ResultEntry[i].HorseID,
+          VideoLink: VideoLink,
+          RaceTime: RaceTime,
+          FinalPosition: ResultEntry[i].FinalPosition,
+          Distance: ResultEntry[i].Distance,
+          CumulativeDistance: ResultEntry[i].CumulativeDistance,
+          BeatenBy: ResultEntry[i].BeatenBy,
+        },
+      });
+    } catch (err) {
+      res.status(400).json({
+        success: false,
+        err,
+      });
+    }
+  res.status(200).json({
+    success: true,
+    sortedProducts,
+  });
+});
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   console.log(ResultEntry);
