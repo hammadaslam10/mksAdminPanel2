@@ -822,7 +822,9 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
 // };
 
 exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
-  const { ResultEntry, RaceTime, VideoLink } = req.body;
+  const { ResultEntry, RaceTime, VideoLink
+  } = req.body;
+  console.log(ResultEntry[0]);
   for (let i = 0; i < ResultEntry; i++) {
     if (!ResultEntry[i].Rank) {
       return next(new HandlerCallBack("No Rank Exsist", 404));
@@ -834,44 +836,45 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
 
   for (let i = 0; i < sortedProducts.length; i++) {
     if (i > 0) {
-      sortedProducts[i].BeatenBy = sortedProducts[i - 1].HorseId;
+      sortedProducts[i].BeatenBy = sortedProducts[i - 1].HorseID;
       if (sortedProducts[i].Rank == sortedProducts[i - 1].Rank) {
-        sortedProducts[i].CumulativeDistance =
-          sortedProducts[i - 1].CumulativeDistance;
+        sortedProducts[i].CumulativeDistance = Number(
+          sortedProducts[i - 1].CumulativeDistance);
         sortedProducts[i].BeatenBy = sortedProducts[i - 1].BeatenBy;
       }
 
       sortedProducts[i].CumulativeDistance =
-        sortedProducts[i - 1].CumulativeDistance + sortedProducts[i].Distance;
+        Number(sortedProducts[i - 1].CumulativeDistance) + Number(sortedProducts[i].Distance);
     }
     if (sortedProducts[i].Rank == 1) {
       sortedProducts[i].BeatenBy = null;
     }
   }
 
-  for (let i = 0; i < ResultEntry; i++)
-    try {
-      await ResultsModel.findOrCreate({
-        where: {
-          RaceID: req.params.RaceId,
-          HorseID: ResultEntry[i].HorseID,
-          VideoLink: VideoLink,
-          RaceTime: RaceTime,
-          FinalPosition: ResultEntry[i].FinalPosition,
-          Distance: ResultEntry[i].Distance,
-          CumulativeDistance: ResultEntry[i].CumulativeDistance,
-          BeatenBy: ResultEntry[i].BeatenBy,
-        },
-      });
-    } catch (err) {
-      res.status(400).json({
-        success: false,
-        err,
-      });
-    }
+  let data;
+  for (let i = 0; i < ResultEntry.length; i++)
+    // try {
+    data = await ResultsModel.findOrCreate({
+      where: {
+        RaceID: req.params.RaceId,
+        HorseID: ResultEntry[i].HorseID,
+        RaceTime: ResultEntry[i].RaceTime,
+        VideoLink: ResultEntry[i].VideoLink,
+        FinalPosition: ResultEntry[i].FinalPosition,
+        Distance: ResultEntry[i].Distance,
+        CumulativeDistance: ResultEntry[i].CumulativeDistance,
+        BeatenBy: ResultEntry[i].BeatenBy,
+      },
+    });
+  // } catch (err) {
+  //   res.status(400).json({
+  //     success: false,
+  //     err,
+  //   });
+  // }
   res.status(200).json({
     success: true,
-    sortedProducts,
+    data,
   });
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
