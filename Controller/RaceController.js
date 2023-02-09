@@ -822,9 +822,17 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
 // };
 
 exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
-  const { ResultEntry, RaceTime, VideoLink
-  } = req.body;
+  const { ResultEntry } = req.body;
   console.log(ResultEntry[0]);
+  let RaceData = await RaceModel.findOne({
+    where: { _id: req.params.RaceId }
+  });
+  first = 0;
+  second = 0;
+  third = 0;
+  fourth = 0;
+  fifth = 0;
+  sixth = 0;
   for (let i = 0; i < ResultEntry; i++) {
     if (!ResultEntry[i].Rank) {
       return next(new HandlerCallBack("No Rank Exsist", 404));
@@ -837,6 +845,7 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   for (let i = 0; i < sortedProducts.length; i++) {
     if (i > 0) {
       sortedProducts[i].BeatenBy = sortedProducts[i - 1].HorseID;
+
       if (sortedProducts[i].Rank == sortedProducts[i - 1].Rank) {
         sortedProducts[i].CumulativeDistance = Number(
           sortedProducts[i - 1].CumulativeDistance);
@@ -847,10 +856,65 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         Number(sortedProducts[i - 1].CumulativeDistance) + Number(sortedProducts[i].Distance);
     }
     if (sortedProducts[i].Rank == 1) {
+      first++;
+    }
+    if (sortedProducts[i].Rank == 2) {
+      second++;
+    }
+    if (sortedProducts[i].Rank == 3) {
+      third++;
+    }
+    if (sortedProducts[i].Rank == 4) {
+      fourth++;
+    }
+    if (sortedProducts[i].Rank == 5) {
+      fifth++;
+    }
+    if (sortedProducts[i].Rank == 6) {
+      sixth++;
+    }
+    if (sortedProducts[i].Rank == 1) {
       sortedProducts[i].BeatenBy = null;
     }
   }
+  for (let i = 0; i < sortedProducts.length; i++) {
+    if (sortedProducts[i].Rank == 1) {
+      if (RaceData.FirstPrice > 0) {
 
+        sortedProducts[i].Prize = RaceData.FirstPrice / first;
+      }
+    }
+    if (sortedProducts[i].Rank == 2) {
+      if (RaceData.SecondPrice > 0) {
+        sortedProducts[i].Prize = RaceData.SecondPrice / second;
+
+      }
+    }
+    if (sortedProducts[i].Rank == 3) {
+      if (RaceData.ThirdPrice > 0) {
+        sortedProducts[i].Prize = RaceData.ThirdPrice / third;
+
+      }
+    }
+    if (sortedProducts[i].Rank == 4) {
+      if (RaceData.FourthPrice > 0) {
+        sortedProducts[i].Prize = RaceData.FourthPrice / fourth;
+
+      }
+    }
+    if (sortedProducts[i].Rank == 5) {
+      if (RaceData.FifthPrice > 0) {
+        sortedProducts[i].Prize = RaceData.FifthPrice / fifth;
+
+      }
+    }
+    if (sortedProducts[i].Rank == 6) {
+      if (RaceData.SixthPrice > 0) {
+        sortedProducts[i].Prize = RaceData.SixthPrice / sixth;
+
+      }
+    }
+  };
   let data;
   for (let i = 0; i < ResultEntry.length; i++)
     // try {
@@ -859,6 +923,7 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         RaceID: req.params.RaceId,
         HorseID: ResultEntry[i].HorseID,
         Rating: ResultEntry[i].Rating,
+        PrizeWin: ResultEntry[i].Prize,
         RaceTime: ResultEntry[i].RaceTime,
         VideoLink: ResultEntry[i].VideoLink,
         FinalPosition: ResultEntry[i].FinalPosition,
@@ -868,7 +933,13 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
         JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
       },
-    });
+    }).then(() => {
+
+    })
+      .catch((err) => {
+        console.log("Error" + err);
+      });
+
   // } catch (err) {
   //   res.status(400).json({
   //     success: false,

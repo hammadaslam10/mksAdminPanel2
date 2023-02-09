@@ -42,19 +42,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         // allowNull: false,
       },
-      // PointTableSystem: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      // },
+      PrizeWin: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
       Distance: {
         type: DataTypes.BIGINT,
+        allowNull: false,
       },
       CumulativeDistance: {
         type: DataTypes.BIGINT,
+        allowNull: false,
       },
       VideoLink: {
         type: DataTypes.STRING,
         allowNull: false,
+
       },
     },
 
