@@ -519,6 +519,22 @@ db.ResultModel.belongsTo(db.HorseModel, {
   foreignKey: "BeatenBy",
   as: "BeatenByData",
 });
+db.TrainerModel.hasMany(db.ResultModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceDataResult",
+});
+db.ResultModel.belongsTo(db.TrainerModel, {
+  foreignKey: "TrainerOnRace",
+  as: "TrainerOnRaceDataResult",
+});
+db.JockeyModel.hasMany(db.ResultModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceDataResult",
+});
+db.ResultModel.belongsTo(db.JockeyModel, {
+  foreignKey: "JockeyOnRace",
+  as: "JockeyOnRaceDataResult",
+});
 // db.PointTableSystemModel.hasMany(db.ResultModel, {
 //   foreignKey: "PointTableSystem",
 //   as: "PointTableSystemData",

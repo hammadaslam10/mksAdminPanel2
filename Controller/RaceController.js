@@ -858,12 +858,15 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
       where: {
         RaceID: req.params.RaceId,
         HorseID: ResultEntry[i].HorseID,
+        Rating: ResultEntry[i].Rating,
         RaceTime: ResultEntry[i].RaceTime,
         VideoLink: ResultEntry[i].VideoLink,
         FinalPosition: ResultEntry[i].FinalPosition,
         Distance: ResultEntry[i].Distance,
         CumulativeDistance: ResultEntry[i].CumulativeDistance,
         BeatenBy: ResultEntry[i].BeatenBy,
+        TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+        JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
       },
     });
   // } catch (err) {
