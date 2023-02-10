@@ -65,7 +65,7 @@ exports.HorsesInRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseModel,
         as: "HorseModelIdData1",
-        attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr"],
+        attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr", "STARS"],
       },
       // {
       //   model: db.JockeyModel,

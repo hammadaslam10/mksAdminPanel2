@@ -962,28 +962,16 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
 
   for (let i = 0; i < ResultEntry.length; i++) {
     statements.push(
-      sequelize.query(
+      db.sequelize.query(
         `UPDATE ${tableName} 
       SET STARS='${ResultEntry[i].Rating}' 
-      WHERE id=${ResultEntry[i].HorseID};`
+      WHERE _id='${ResultEntry[i].HorseID}';`
       )
     );
   }
   const result = await Promise.all(statements);
   console.log(result);
-  // await HorseModel.bulkCreate(
-  //   [{ _id: "1c162f84-ffb1-42f4-9703-6f207a8c7984", STARS: 400 }],
-  //   {
-  //     updateOnDuplicate: ["_id"],
-  //   }
-  // );
 
-  // } catch (err) {
-  //   res.status(400).json({
-  //     success: false,
-  //     err,
-  //   });
-  // }
   res.status(200).json({
     success: true,
     data,
