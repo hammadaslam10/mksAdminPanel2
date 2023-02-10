@@ -786,6 +786,27 @@ exports.AddRaceImage = Trackerror(async (req, res, next) => {
     message: "all images are been submitted",
   });
 });
+exports.GetRacesHorsesForResult = Trackerror(async (req, res, next) => {
+  if (req.params.raceid) {
+    return next(new HandlerCallBack("No Race id Available in param", 404));
+  }
+  const data = await HorseAndRaceModel.findAll({
+    where: {
+      RaceModelId: req.params.raceid,
+    },
+    include: [
+      {
+        model: db.HorseModel,
+        as: "HorseModelIdData1",
+        attributes: ["_id"],
+      },
+    ],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.Getracehorses = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: {
@@ -809,23 +830,14 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-// const distanceBetween = (arr, r = []) => {
-//   if (r.length <= arr.length - 2) {
-//     let temp = [];
-//     let b = arr[r.length];
-//     arr.forEach((e) => temp.push(e - b));
-//     r.push(temp.filter((e) => e > 0));
-//     return distanceBetween(arr, r);
-//   } else {
-//     return r;
-//   }
-// };
 
 exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
-  console.log(ResultEntry[0]);
+  if (req.params.RaceId) {
+    return next(new HandlerCallBack("No Race id provided in param", 404));
+  }
   let RaceData = await RaceModel.findOne({
-    where: { _id: req.params.RaceId }
+    where: { _id: req.params.RaceId },
   });
   first = 0;
   second = 0;
@@ -848,12 +860,14 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
 
       if (sortedProducts[i].Rank == sortedProducts[i - 1].Rank) {
         sortedProducts[i].CumulativeDistance = Number(
-          sortedProducts[i - 1].CumulativeDistance);
+          sortedProducts[i - 1].CumulativeDistance
+        );
         sortedProducts[i].BeatenBy = sortedProducts[i - 1].BeatenBy;
       }
 
       sortedProducts[i].CumulativeDistance =
-        Number(sortedProducts[i - 1].CumulativeDistance) + Number(sortedProducts[i].Distance);
+        Number(sortedProducts[i - 1].CumulativeDistance) +
+        Number(sortedProducts[i].Distance);
     }
     if (sortedProducts[i].Rank == 1) {
       first++;
@@ -880,65 +894,67 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   for (let i = 0; i < sortedProducts.length; i++) {
     if (sortedProducts[i].Rank == 1) {
       if (RaceData.FirstPrice > 0) {
-
         sortedProducts[i].Prize = RaceData.FirstPrice / first;
       }
     }
     if (sortedProducts[i].Rank == 2) {
       if (RaceData.SecondPrice > 0) {
         sortedProducts[i].Prize = RaceData.SecondPrice / second;
-
       }
     }
     if (sortedProducts[i].Rank == 3) {
       if (RaceData.ThirdPrice > 0) {
         sortedProducts[i].Prize = RaceData.ThirdPrice / third;
-
       }
     }
     if (sortedProducts[i].Rank == 4) {
       if (RaceData.FourthPrice > 0) {
         sortedProducts[i].Prize = RaceData.FourthPrice / fourth;
-
       }
     }
     if (sortedProducts[i].Rank == 5) {
       if (RaceData.FifthPrice > 0) {
         sortedProducts[i].Prize = RaceData.FifthPrice / fifth;
-
       }
     }
     if (sortedProducts[i].Rank == 6) {
       if (RaceData.SixthPrice > 0) {
         sortedProducts[i].Prize = RaceData.SixthPrice / sixth;
-
       }
     }
-  };
+  }
   let data;
+  let a = [];
   for (let i = 0; i < ResultEntry.length; i++)
     // try {
-    data = await ResultsModel.findOrCreate({
-      where: {
-        RaceID: req.params.RaceId,
-        HorseID: ResultEntry[i].HorseID,
-        Rating: ResultEntry[i].Rating,
-        PrizeWin: ResultEntry[i].Prize,
-        RaceTime: ResultEntry[i].RaceTime,
-        VideoLink: ResultEntry[i].VideoLink,
-        FinalPosition: ResultEntry[i].FinalPosition,
-        Distance: ResultEntry[i].Distance,
-        CumulativeDistance: ResultEntry[i].CumulativeDistance,
-        BeatenBy: ResultEntry[i].BeatenBy,
-        TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
-        JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
-      },
-    }).then(() => {
-
-    })
-      .catch((err) => {
-        console.log("Error" + err);
+    a.push({
+      _id: ResultEntry[i].HorseID,
+      STARS: ResultEntry[i].Rating,
+    });
+  data = await ResultsModel.findOrCreate({
+    where: {
+      RaceID: req.params.RaceId,
+      HorseID: ResultEntry[i].HorseID,
+      Rating: ResultEntry[i].Rating,
+      PrizeWin: ResultEntry[i].Prize,
+      RaceTime: ResultEntry[i].RaceTime,
+      VideoLink: ResultEntry[i].VideoLink,
+      FinalPosition: ResultEntry[i].FinalPosition,
+      Distance: ResultEntry[i].Distance,
+      CumulativeDistance: ResultEntry[i].CumulativeDistance,
+      BeatenBy: ResultEntry[i].BeatenBy,
+      TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+      JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
+    },
+  })
+    .then(async () => {
+      await HorseModel.bulkCreate(a, {
+        updateOnDuplicate: ["_id"],
       });
+    })
+    .catch((err) => {
+      console.log("Error" + err);
+    });
 
   // } catch (err) {
   //   res.status(400).json({
