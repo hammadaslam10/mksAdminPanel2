@@ -37,6 +37,7 @@ const {
   HorseHistory,
   EditRaceHorsesv2,
   ResultCreationV2,
+  AllResults
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/ResultCreationV2/:RaceId").post(ResultCreationV2);
@@ -54,6 +55,7 @@ router.route("/SearchRace").get(SearchRace);
 router.route("/getrace").get(GetRace);
 router.route("/getracehorses/:id").get(Getracehorses);
 router.route("/getlatestraceresult").get(ResultLatest);
+router.route("/AllResults").get(AllResults);
 router.route("/raceprediction").get(VerdictLatest);
 router.route("/getracewithtime").get(RaceWithTime);
 router.route("/GetRaceWithStartTime").post(GetRaceWithStartTime);

@@ -928,52 +928,52 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   let a = [];
 
 
-    for (let i = 0; i < ResultEntry.length; i++) {
-      a.push({
-        _id: ResultEntry[i].HorseID,
-        STARS: ResultEntry[i].Rating,
-      });
-      console.log("done12");
-      data = await ResultsModel.findOrCreate(
-        {
-          where: {
-            RaceID: req.params.RaceId,
-            HorseID: ResultEntry[i].HorseID,
-            Rating: ResultEntry[i].Rating,
-            PrizeWin: ResultEntry[i].Prize,
-            RaceTime: ResultEntry[i].RaceTime,
-            VideoLink: ResultEntry[i].VideoLink,
-            FinalPosition: ResultEntry[i].FinalPosition,
-            Distance: ResultEntry[i].Distance,
-            CumulativeDistance: ResultEntry[i].CumulativeDistance,
-            BeatenBy: ResultEntry[i].BeatenBy,
-            TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
-            JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
-          },
+  for (let i = 0; i < ResultEntry.length; i++) {
+    a.push({
+      _id: ResultEntry[i].HorseID,
+      STARS: ResultEntry[i].Rating,
+    });
+    console.log("done12");
+    data = await ResultsModel.findOrCreate(
+      {
+        where: {
+          RaceID: req.params.RaceId,
+          HorseID: ResultEntry[i].HorseID,
+          Rating: ResultEntry[i].Rating,
+          PrizeWin: ResultEntry[i].Prize,
+          RaceTime: ResultEntry[i].RaceTime,
+          VideoLink: ResultEntry[i].VideoLink,
+          FinalPosition: ResultEntry[i].FinalPosition,
+          Distance: ResultEntry[i].Distance,
+          CumulativeDistance: ResultEntry[i].CumulativeDistance,
+          BeatenBy: ResultEntry[i].BeatenBy,
+          TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+          JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
         },
-      
-      );
-    }
-    const statements = [];
-    const tableName = "HorseModel";
+      },
 
-    for (let i = 0; i < ResultEntry.length; i++) {
-      statements.push(
-        db.sequelize.query(
-          `UPDATE ${tableName} 
+    );
+  }
+  const statements = [];
+  const tableName = "HorseModel";
+
+  for (let i = 0; i < ResultEntry.length; i++) {
+    statements.push(
+      db.sequelize.query(
+        `UPDATE ${tableName} 
       SET STARS='${ResultEntry[i].Rating}' 
       WHERE _id='${ResultEntry[i].HorseID}';`
-      
-        )
-      );
-    }
-    await Promise.all(statements);
-    res.status(200).json({
-      success: true,
-      data,
-      
-    });
+
+      )
+    );
+  }
+  await Promise.all(statements);
+  res.status(200).json({
+    success: true,
+    data,
+
   });
+});
 
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
@@ -1083,6 +1083,36 @@ exports.VerdictLatest = Trackerror(async (req, res, next) => {
     data,
   });
 });
+exports.AllResults = Trackerror(async (req, res, next) => {
+  let length = await ResultModel.count();
+  if (length == 0) {
+    return next(new HandlerCallBack("No Race Result", 404));
+  }
+
+  const data = await RaceModel.findAll({
+    include: [
+      {
+        // where: {
+        //   RaceID: result.RaceID,
+        // },
+
+        model: db.ResultModel,
+        as: "RaceResultData",
+        include: { all: true },
+        order: [["CumulativeDistance", "DESC"]],
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+      },
+    ],
+    attributes: ["_id"],
+  });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.ResultLatest = Trackerror(async (req, res, next) => {
   let length = await ResultModel.count();
   if (length == 0) {
@@ -1091,12 +1121,20 @@ exports.ResultLatest = Trackerror(async (req, res, next) => {
   const result = await ResultModel.findOne({
     order: [["createdAt", "DESC"]],
   });
+  // const data = await ResultModel.findAll({
+  //   order: [["CumulativeDistance", "ASC"]],
+  //   include: { all: true },
+  //   where: {
+  //     RaceID: result.RaceID,
+  //   },
+  // });
   const data = await RaceModel.findOne({
     include: [
       {
-        where: {
-          RaceID: result.RaceID,
-        },
+        order: [["CumulativeDistance", "DESC"]],
+  where: {
+    RaceID: result.RaceID,
+  },
 
         model: db.ResultModel,
         as: "RaceResultData",
