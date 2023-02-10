@@ -948,21 +948,35 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
         JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
       },
-
-    }).then(async () => {
-      console.log("done12");
-      console.log("done2");
-
     })
+      .then(async () => {
+        console.log("done12");
+        console.log("done2");
+      })
       .catch((err) => {
         console.log("Error" + err);
       });
   }
-  await HorseModel.bulkCreate([
-    { _id: "1c162f84-ffb1-42f4-9703-6f207a8c7984", STARS: 400 }
-  ], {
-    updateOnDuplicate: ["_id"],
-  });
+  const statements = [];
+  const tableName = "HorseModel";
+
+  for (let i = 0; i < ResultEntry.length; i++) {
+    statements.push(
+      sequelize.query(
+        `UPDATE ${tableName} 
+      SET STARS='${ResultEntry[i].Rating}' 
+      WHERE id=${ResultEntry[i].HorseID};`
+      )
+    );
+  }
+  const result = await Promise.all(statements);
+  console.log(result);
+  // await HorseModel.bulkCreate(
+  //   [{ _id: "1c162f84-ffb1-42f4-9703-6f207a8c7984", STARS: 400 }],
+  //   {
+  //     updateOnDuplicate: ["_id"],
+  //   }
+  // );
 
   // } catch (err) {
   //   res.status(400).json({
