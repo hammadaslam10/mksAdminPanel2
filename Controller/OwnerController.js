@@ -13,6 +13,7 @@ const { Conversion } = require("../Utils/Conversion");
 const OwnerSilkColorModel = db.OwnerSilkColorModel;
 const OwnerCapModel = db.OwnerCapModel;
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({
     paranoid: false,
@@ -101,7 +102,9 @@ exports.RestoreSoftDeletedOwner = Trackerror(async (req, res, next) => {
   }
 });
 exports.OwnerDropDown = Trackerror(async (req, res, next) => {
-  const data = await OwnerModel.findAll({
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await OwnerModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -117,11 +120,23 @@ exports.OwnerDropDown = Trackerror(async (req, res, next) => {
         [Op.like]: `${req.query.shortCode || "%%"}`,
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 function exchangefunction(arraytobechecked, valuetobechecked) {
   let a = arraytobechecked.find((item) => item.BackupId == valuetobechecked);

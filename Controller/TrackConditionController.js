@@ -5,6 +5,7 @@ const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedTrackCondition = Trackerror(async (req, res, next) => {
   const data = await TrackConditionModel.findAll({
     paranoid: false,
@@ -205,9 +206,11 @@ exports.TrackConditionMassUpload = Trackerror(async (req, res, next) => {
   }
 });
 exports.TrackConditionGet = Trackerror(async (req, res, next) => {
-  const totalcount = await TrackConditionModel.count();
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+
   // Number(req.query.page) - 1 ||
-  const data = await TrackConditionModel.findAll({
+  await TrackConditionModel.findAndCountAll({
     offset: 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -234,13 +237,23 @@ exports.TrackConditionGet = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    filtered: data.length,
-    totalcount,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.GetTrackConditionAdmin = Trackerror(async (req, res, next) => {});
 exports.EditTrackCondition = Trackerror(async (req, res, next) => {

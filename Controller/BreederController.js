@@ -15,6 +15,8 @@ const fs = require("fs");
 var stream = require("stream");
 const streamBuffers = require("stream-buffers");
 const { Blob } = require("buffer");
+
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedBreeder = Trackerror(async (req, res, next) => {
   const data = await BreederModel.findAll({
     paranoid: false,
@@ -61,6 +63,8 @@ const errorfilemessage = async (error) => {
   return message;
 };
 exports.BreederDropDown = Trackerror(async (req, res, next) => {
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
   const data = await BreederModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
@@ -77,11 +81,23 @@ exports.BreederDropDown = Trackerror(async (req, res, next) => {
         [Op.like]: `${req.query.shortCode || "%%"}`,
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.BreederMassUpload = Trackerror(async (req, res, next) => {
   if (!req.files || !req.files.file) {

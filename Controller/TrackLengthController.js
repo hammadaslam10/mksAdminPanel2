@@ -8,6 +8,7 @@ const { generateFileName } = require("../Utils/FileNameGeneration");
 const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { TrackLengths, Breeder } = require("../Utils/Path");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedTrackLength = Trackerror(async (req, res, next) => {
   const data = await TrackLengthModel.findAll({
     paranoid: false,
@@ -63,7 +64,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
       } else {
         res.status(500).json({
           success: false,
-          message: error
+          message: error,
         });
       }
     }
@@ -86,8 +87,9 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
   }
 });
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
-  const totalcount = await TrackLengthModel.count();
-  const data = await TrackLengthModel.findAll({
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await TrackLengthModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -109,13 +111,23 @@ exports.TrackLengthGet = Trackerror(async (req, res, next) => {
       },
     },
     include: { all: true },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.GetTrackLengthAdmin = Trackerror(async (req, res, next) => {});
 exports.EditTrackLength = Trackerror(async (req, res, next) => {
