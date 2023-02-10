@@ -11,7 +11,6 @@ const HorseKindModel = db.HorseKindModel;
 const BreederModel = db.BreederModel;
 const ColorModel = db.ColorModel;
 const SexModel = db.SexModel;
-const { getPagination, getPagingData } = require("../Utils/Pagination");
 const Features = require("../Utils/Features");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const HorseJockeyComboModel = db.HorseJockeyComboModel;
@@ -24,6 +23,81 @@ const { Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op, Sequelize } = require("sequelize");
 const RaceModel = db.RaceModel;
+const { getPagination, getPagingData } = require("../Utils/Pagination");
+exports.SearchHorse = Trackerror(async (req, res, next) => {
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await HorseModel.findAndCountAll({
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "DESC"]],
+    include: { all: true },
+    where: {
+      KindHorse: {
+        [Op.like]: `%${req.query.KindHorse || ""}%`,
+      },
+      Breeder: {
+        [Op.like]: `%${req.query.Breeder || ""}%`,
+      },
+      Sex: {
+        [Op.like]: `%${req.query.Sex || ""}%`,
+      },
+      ActiveOwner: {
+        [Op.like]: `%${req.query.ActiveOwner || ""}%`,
+      },
+      ActiveTrainer: {
+        [Op.like]: `%${req.query.ActiveTrainer || ""}%`,
+      },
+      NationalityID: {
+        [Op.like]: `%${req.query.NationalityID || ""}%`,
+      },
+      CreationId: {
+        [Op.like]: `%${req.query.CreationId || ""}%`,
+      },
+      Foal: {
+        [Op.like]: `%${req.query.Foal || ""}%`,
+      },
+      RemarksEn: {
+        [Op.like]: `%${req.query.RemarksEn || ""}%`,
+      },
+      RemarksAr: {
+        [Op.like]: `%${req.query.RemarksAr || ""}%`,
+      },
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+
+      ColorID: {
+        [Op.like]: `%${req.query.ColorID || ""}%`,
+      },
+    },
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    });
+});
 exports.RaceHorse = Trackerror(async (req, res, next) => {
   const racedata = await RaceModel.findOne({
     where: {
@@ -65,7 +139,14 @@ exports.HorsesInRace = Trackerror(async (req, res, next) => {
       {
         model: db.HorseModel,
         as: "HorseModelIdData1",
-        attributes: ["_id", "HorseImage", "KindHorse", "NameEn", "NameAr", "STARS"],
+        attributes: [
+          "_id",
+          "HorseImage",
+          "KindHorse",
+          "NameEn",
+          "NameAr",
+          "STARS",
+        ],
       },
       // {
       //   model: db.JockeyModel,
@@ -737,80 +818,7 @@ exports.PedigreeHorse = Trackerror(async (req, res, next) => {
     generation3d,
   });
 });
-exports.SearchHorse = Trackerror(async (req, res, next) => {
-  const { page, size } = req.query;
-  const { limit, offset } = getPagination(page - 1, size);
-  await HorseModel.findAndCountAll({
-    order: [[req.query.orderby || "createdAt", req.query.sequence || "DESC"]],
-    include: { all: true },
-    where: {
-      KindHorse: {
-        [Op.like]: `%${req.query.KindHorse || ""}%`,
-      },
-      Breeder: {
-        [Op.like]: `%${req.query.Breeder || ""}%`,
-      },
-      Sex: {
-        [Op.like]: `%${req.query.Sex || ""}%`,
-      },
-      ActiveOwner: {
-        [Op.like]: `%${req.query.ActiveOwner || ""}%`,
-      },
-      ActiveTrainer: {
-        [Op.like]: `%${req.query.ActiveTrainer || ""}%`,
-      },
-      NationalityID: {
-        [Op.like]: `%${req.query.NationalityID || ""}%`,
-      },
-      CreationId: {
-        [Op.like]: `%${req.query.CreationId || ""}%`,
-      },
-      Foal: {
-        [Op.like]: `%${req.query.Foal || ""}%`,
-      },
-      RemarksEn: {
-        [Op.like]: `%${req.query.RemarksEn || ""}%`,
-      },
-      RemarksAr: {
-        [Op.like]: `%${req.query.RemarksAr || ""}%`,
-      },
-      NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`,
-      },
-      NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`,
-      },
 
-      createdAt: {
-        [Op.between]: [
-          req.query.startdate || "2021-12-01 00:00:00",
-          req.query.endDate || "4030-12-01 00:00:00",
-        ],
-      },
-
-      ColorID: {
-        [Op.like]: `%${req.query.ColorID || ""}%`,
-      },
-    },
-    limit,
-    offset,
-  })
-    .then((data) => {
-      const response = getPagingData(data, page, limit);
-      res.status(200).json({
-        data: response.data,
-        currentPage: response.currentPage,
-        totalPages: response.totalPages,
-        totalcount: response.totalcount,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials.",
-      });
-    });
-});
 exports.GetHorse = Trackerror(async (req, res, next) => {
   let data = await HorseModel.findAll({
     include: { all: true },

@@ -5,6 +5,7 @@ const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+
 exports.GetDeletedColor = Trackerror(async (req, res, next) => {
   const data = await ColorModel.findAll({
     paranoid: false,
@@ -215,56 +216,49 @@ exports.CreateColor = Trackerror(async (req, res, next) => {
     }
   }
 });
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.ColorGet = Trackerror(async (req, res, next) => {
-  const totalcount = await ColorModel.count();
-  if (req.query.shortCode) {
-    const data = await ColorModel.findAll({
-      offset: Number(req.query.page) - 1 || 0,
-      limit: Number(req.query.limit) || 10,
-      order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
-      where: {
-        shortCode: {
-          [Op.eq]: `${req.query.shortCode}`,
-        },
-      },
-    });
-    res.status(200).json({
-      success: true,
-      data: data,
-      totalcount,
-      filtered: data.length,
-    });
-  } else {
-    const data = await ColorModel.findAll({
-      offset: Number(req.query.page) - 1 || 0,
-      limit: Number(req.query.limit) || 10,
-      order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
-      where: {
-        NameEn: {
-          [Op.like]: `%${req.query.NameEn || ""}%`,
-        },
-        NameAr: {
-          [Op.like]: `%${req.query.NameAr || ""}%`,
-        },
-        shortCode: {
-          [Op.like]: `%${req.query.shortCode || ""}%`,
-        },
-        createdAt: {
-          [Op.between]: [
-            req.query.startdate || "2021-12-01 00:00:00",
-            req.query.endDate || "4030-12-01 00:00:00",
-          ],
-        },
-      },
-    });
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
 
-    res.status(200).json({
-      success: true,
-      data: data,
-      totalcount,
-      filtered: data.length,
+  await ColorModel.findAndCountAll({
+    offset: Number(req.query.page) - 1 || 0,
+    limit: Number(req.query.limit) || 10,
+    order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    where: {
+      NameEn: {
+        [Op.like]: `%${req.query.NameEn || ""}%`,
+      },
+      NameAr: {
+        [Op.like]: `%${req.query.NameAr || ""}%`,
+      },
+      shortCode: {
+        [Op.like]: `%${req.query.shortCode || ""}%`,
+      },
+      createdAt: {
+        [Op.between]: [
+          req.query.startdate || "2021-12-01 00:00:00",
+          req.query.endDate || "4030-12-01 00:00:00",
+        ],
+      },
+    },
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
     });
-  }
 });
 
 exports.SingleColor = Trackerror(async (req, res, next) => {

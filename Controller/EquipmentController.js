@@ -5,6 +5,7 @@ const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedEquipment = Trackerror(async (req, res, next) => {
   const data = await EquipmentModel.findAll({
     paranoid: false,
@@ -212,8 +213,9 @@ exports.CreateEquipment = Trackerror(async (req, res, next) => {
   // }
 });
 exports.EquipmentGet = Trackerror(async (req, res, next) => {
-  const totalcount = await EquipmentModel.count();
-  const data = await EquipmentModel.findAll({
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  const data = await EquipmentModel.findAndCountAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -234,13 +236,24 @@ exports.EquipmentGet = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message:
+          err.message || "Some error occurred while retrieving Equipment.",
+      });
+    });
 });
 exports.GetEquipmentAdmin = Trackerror(async (req, res, next) => {});
 exports.EditEquipment = Trackerror(async (req, res, next) => {
