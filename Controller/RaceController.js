@@ -809,17 +809,6 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
     data: data,
   });
 });
-// const distanceBetween = (arr, r = []) => {
-//   if (r.length <= arr.length - 2) {
-//     let temp = [];
-//     let b = arr[r.length];
-//     arr.forEach((e) => temp.push(e - b));
-//     r.push(temp.filter((e) => e > 0));
-//     return distanceBetween(arr, r);
-//   } else {
-//     return r;
-//   }
-// };
 
 exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
@@ -841,6 +830,7 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   let sortedProducts = ResultEntry.sort((p1, p2) =>
     p1.Rank > p2.Rank ? 1 : p1.Rank < p2.Rank ? -1 : 0
   );
+  console.log(sortedProducts);
 
   for (let i = 0; i < sortedProducts.length; i++) {
     if (i > 0) {
@@ -850,10 +840,14 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         sortedProducts[i].CumulativeDistance = Number(
           sortedProducts[i - 1].CumulativeDistance);
         sortedProducts[i].BeatenBy = sortedProducts[i - 1].BeatenBy;
+
+      }
+      else {
+        sortedProducts[i].CumulativeDistance =
+          Number(sortedProducts[i - 1].CumulativeDistance) + Number(sortedProducts[i].Distance);
+
       }
 
-      sortedProducts[i].CumulativeDistance =
-        Number(sortedProducts[i - 1].CumulativeDistance) + Number(sortedProducts[i].Distance);
     }
     if (sortedProducts[i].Rank == 1) {
       first++;
@@ -940,12 +934,6 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         console.log("Error" + err);
       });
 
-  // } catch (err) {
-  //   res.status(400).json({
-  //     success: false,
-  //     err,
-  //   });
-  // }
   res.status(200).json({
     success: true,
     data,
