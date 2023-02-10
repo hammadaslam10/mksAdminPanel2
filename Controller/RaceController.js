@@ -833,7 +833,7 @@ exports.Getracehorses = Trackerror(async (req, res, next) => {
 
 exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
-  if (req.params.RaceId) {
+  if (!req.params.RaceId) {
     return next(new HandlerCallBack("No Race id provided in param", 404));
   }
   let RaceData = await RaceModel.findOne({
@@ -924,37 +924,45 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
     }
   }
   let data;
+  console.log("done");
   let a = [];
-  for (let i = 0; i < ResultEntry.length; i++)
+  for (let i = 0; i < ResultEntry.length; i++) {
     // try {
     a.push({
       _id: ResultEntry[i].HorseID,
       STARS: ResultEntry[i].Rating,
     });
-  data = await ResultsModel.findOrCreate({
-    where: {
-      RaceID: req.params.RaceId,
-      HorseID: ResultEntry[i].HorseID,
-      Rating: ResultEntry[i].Rating,
-      PrizeWin: ResultEntry[i].Prize,
-      RaceTime: ResultEntry[i].RaceTime,
-      VideoLink: ResultEntry[i].VideoLink,
-      FinalPosition: ResultEntry[i].FinalPosition,
-      Distance: ResultEntry[i].Distance,
-      CumulativeDistance: ResultEntry[i].CumulativeDistance,
-      BeatenBy: ResultEntry[i].BeatenBy,
-      TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
-      JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
-    },
-  })
-    .then(async () => {
-      await HorseModel.bulkCreate(a, {
-        updateOnDuplicate: ["_id"],
-      });
+    console.log("done12");
+    data = await ResultsModel.findOrCreate({
+      where: {
+        RaceID: req.params.RaceId,
+        HorseID: ResultEntry[i].HorseID,
+        Rating: ResultEntry[i].Rating,
+        PrizeWin: ResultEntry[i].Prize,
+        RaceTime: ResultEntry[i].RaceTime,
+        VideoLink: ResultEntry[i].VideoLink,
+        FinalPosition: ResultEntry[i].FinalPosition,
+        Distance: ResultEntry[i].Distance,
+        CumulativeDistance: ResultEntry[i].CumulativeDistance,
+        BeatenBy: ResultEntry[i].BeatenBy,
+        TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+        JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
+      },
+
+    }).then(async () => {
+      console.log("done12");
+      console.log("done2");
+
     })
-    .catch((err) => {
-      console.log("Error" + err);
-    });
+      .catch((err) => {
+        console.log("Error" + err);
+      });
+  }
+  await HorseModel.bulkCreate([
+    { _id: "1c162f84-ffb1-42f4-9703-6f207a8c7984", STARS: 400 }
+  ], {
+    updateOnDuplicate: ["_id"],
+  });
 
   // } catch (err) {
   //   res.status(400).json({
