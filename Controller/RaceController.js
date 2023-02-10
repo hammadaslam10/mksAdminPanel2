@@ -927,7 +927,7 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   console.log("done");
   let a = [];
 
-  const Transact = await db.sequelize.transaction(async (t) => {
+
     for (let i = 0; i < ResultEntry.length; i++) {
       a.push({
         _id: ResultEntry[i].HorseID,
@@ -951,7 +951,7 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
             JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
           },
         },
-        { transaction: t }
+      
       );
     }
     const statements = [];
@@ -962,19 +962,19 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         db.sequelize.query(
           `UPDATE ${tableName} 
       SET STARS='${ResultEntry[i].Rating}' 
-      WHERE _id='${ResultEntry[i].HorseID}';`,
-          { transaction: t }
+      WHERE _id='${ResultEntry[i].HorseID}';`
+      
         )
       );
     }
     await Promise.all(statements);
+    res.status(200).json({
+      success: true,
+      data,
+      
+    });
   });
-  res.status(200).json({
-    success: true,
-    data,
-    Transact,
-  });
-});
+
 exports.ResultCreation = Trackerror(async (req, res, next) => {
   const { ResultEntry } = req.body;
   console.log(ResultEntry);
