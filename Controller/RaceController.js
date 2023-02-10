@@ -926,55 +926,53 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   let data;
   console.log("done");
   let a = [];
-  for (let i = 0; i < ResultEntry.length; i++) {
-    // try {
-    a.push({
-      _id: ResultEntry[i].HorseID,
-      STARS: ResultEntry[i].Rating,
-    });
-    console.log("done12");
-    data = await ResultsModel.findOrCreate({
-      where: {
-        RaceID: req.params.RaceId,
-        HorseID: ResultEntry[i].HorseID,
-        Rating: ResultEntry[i].Rating,
-        PrizeWin: ResultEntry[i].Prize,
-        RaceTime: ResultEntry[i].RaceTime,
-        VideoLink: ResultEntry[i].VideoLink,
-        FinalPosition: ResultEntry[i].FinalPosition,
-        Distance: ResultEntry[i].Distance,
-        CumulativeDistance: ResultEntry[i].CumulativeDistance,
-        BeatenBy: ResultEntry[i].BeatenBy,
-        TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
-        JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
-      },
-    })
-      .then(async () => {
-        console.log("done12");
-        console.log("done2");
-      })
-      .catch((err) => {
-        console.log("Error" + err);
+
+  const Transact = await db.sequelize.transaction(async (t) => {
+    for (let i = 0; i < ResultEntry.length; i++) {
+      a.push({
+        _id: ResultEntry[i].HorseID,
+        STARS: ResultEntry[i].Rating,
       });
-  }
-  const statements = [];
-  const tableName = "HorseModel";
+      console.log("done12");
+      data = await ResultsModel.findOrCreate(
+        {
+          where: {
+            RaceID: req.params.RaceId,
+            HorseID: ResultEntry[i].HorseID,
+            Rating: ResultEntry[i].Rating,
+            PrizeWin: ResultEntry[i].Prize,
+            RaceTime: ResultEntry[i].RaceTime,
+            VideoLink: ResultEntry[i].VideoLink,
+            FinalPosition: ResultEntry[i].FinalPosition,
+            Distance: ResultEntry[i].Distance,
+            CumulativeDistance: ResultEntry[i].CumulativeDistance,
+            BeatenBy: ResultEntry[i].BeatenBy,
+            TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+            JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
+          },
+        },
+        { transaction: t }
+      );
+    }
+    const statements = [];
+    const tableName = "HorseModel";
 
-  for (let i = 0; i < ResultEntry.length; i++) {
-    statements.push(
-      db.sequelize.query(
-        `UPDATE ${tableName} 
+    for (let i = 0; i < ResultEntry.length; i++) {
+      statements.push(
+        db.sequelize.query(
+          `UPDATE ${tableName} 
       SET STARS='${ResultEntry[i].Rating}' 
-      WHERE _id='${ResultEntry[i].HorseID}';`
-      )
-    );
-  }
-  const result = await Promise.all(statements);
-  console.log(result);
-
+      WHERE _id='${ResultEntry[i].HorseID}';`,
+          { transaction: t }
+        )
+      );
+    }
+    await Promise.all(statements);
+  });
   res.status(200).json({
     success: true,
     data,
+    Transact,
   });
 });
 exports.ResultCreation = Trackerror(async (req, res, next) => {
