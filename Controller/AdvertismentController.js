@@ -14,6 +14,7 @@ const Features = require("../Utils/Features");
 const io = require("../socket");
 const validator = require("validator");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedAdvertisment = Trackerror(async (req, res, next) => {
   const data = await AdvertismentModel.findAll({
     paranoid: false,
@@ -74,10 +75,9 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
   //   ` SELECT _id, image, DescriptionEn, DescriptionAr, TitleEn, TitleAr, createdAt, updatedAt,TIMEDIFF(createdAt, updatedAt)  As TimeInMinutes, deletedAt FROM AdvertismentModel AS AdvertismentModel WHERE (AdvertismentModel.deletedAt IS NULL);`
   // );
   // Results will be an empty array and metadata will contain the number of affected rows.
-  const totalcount = await AdvertismentModel.count();
-  const data = await AdvertismentModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await AdvertismentModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       TitleEn: {
@@ -99,13 +99,23 @@ exports.AdsGet = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.GetAdsAdmin = Trackerror(async (req, res, next) => {});
 exports.EditAds = Trackerror(async (req, res, next) => {

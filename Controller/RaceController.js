@@ -100,9 +100,7 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
 
-  await RaceModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  await RaceModel.findAndCountAll({
     attributes: {
       exclude: [
         "MeetingType",

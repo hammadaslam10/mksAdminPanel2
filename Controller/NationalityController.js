@@ -321,9 +321,7 @@ exports.NationalityMassUpload = Trackerror(async (req, res, next) => {
 exports.NationalityGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-  const data = await NationalityModel.findAndCountAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+ await NationalityModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {

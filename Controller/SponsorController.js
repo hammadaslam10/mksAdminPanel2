@@ -139,9 +139,7 @@ exports.SponsorGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
 
-  await SponsorModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  await SponsorModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       TitleEn: {

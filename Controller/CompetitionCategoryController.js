@@ -144,9 +144,7 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
 exports.SearchCompetitionCategory = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-  await CompetitionCategoryModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  await CompetitionCategoryModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       NameEn: {

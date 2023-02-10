@@ -138,9 +138,7 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
 exports.SearchRaceCourse = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-  const data = await RaceCourseModel.findAndCountAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+   await RaceCourseModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     include: { all: true },
     where: {

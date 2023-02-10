@@ -146,9 +146,7 @@ exports.CreatePointTableSystem = Trackerror(async (req, res, next) => {
 exports.PointTableSystemGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-  const data = await PointTableSystemModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  await PointTableSystemModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       Group_Name: {

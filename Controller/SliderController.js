@@ -9,6 +9,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const Features = require("../Utils/Features");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedSlider = Trackerror(async (req, res, next) => {
   const data = await SliderModel.findAll({
     paranoid: false,
@@ -60,10 +61,9 @@ exports.CreateSlider = Trackerror(async (req, res, next) => {
   });
 });
 exports.SliderGet = Trackerror(async (req, res, next) => {
-  const totalcount = await SliderModel.count();
-  const data = await SliderModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  const data = await SliderModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       TitleEn: {
@@ -82,13 +82,23 @@ exports.SliderGet = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.GetSliderAdmin = Trackerror(async (req, res, next) => {});
 exports.EditSlider = Trackerror(async (req, res, next) => {

@@ -57,7 +57,7 @@ exports.RegisterAdmin = Trackerror(async (req, res, next) => {
   return next(new HandlerCallBack(`Error during Resgistration `));
 });
 exports.GetAllAdmin = Trackerror(async (req, res, next) => {
-  const totalcount = await AdminModel.count();
+ 
   const data = await AdminModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,

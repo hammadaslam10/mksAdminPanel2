@@ -89,9 +89,7 @@ exports.CreateTrackLength = Trackerror(async (req, res, next) => {
 exports.TrackLengthGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-  await TrackLengthModel.findAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
+  await TrackLengthModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       TrackLength: {
