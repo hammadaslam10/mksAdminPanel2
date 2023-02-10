@@ -863,11 +863,11 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
           sortedProducts[i - 1].CumulativeDistance
         );
         sortedProducts[i].BeatenBy = sortedProducts[i - 1].BeatenBy;
+      } else {
+        sortedProducts[i].CumulativeDistance =
+          Number(sortedProducts[i - 1].CumulativeDistance) +
+          Number(sortedProducts[i].Distance);
       }
-
-      sortedProducts[i].CumulativeDistance =
-        Number(sortedProducts[i - 1].CumulativeDistance) +
-        Number(sortedProducts[i].Distance);
     }
     if (sortedProducts[i].Rank == 1) {
       first++;
