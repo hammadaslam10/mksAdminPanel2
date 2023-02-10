@@ -5,6 +5,7 @@ const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedCompetitionCategory = Trackerror(async (req, res, next) => {
   const data = await CompetitionCategoryModel.findAll({
     paranoid: false,
@@ -141,8 +142,9 @@ exports.CreateCompetitionCategory = Trackerror(async (req, res, next) => {
   }
 });
 exports.SearchCompetitionCategory = Trackerror(async (req, res, next) => {
-  const totalcount = await CompetitionCategoryModel.count();
-  const data = await CompetitionCategoryModel.findAll({
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await CompetitionCategoryModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -163,13 +165,23 @@ exports.SearchCompetitionCategory = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.CompetitionCategoryGet = Trackerror(async (req, res, next) => {
   const data = await CompetitionCategoryModel.findAll({

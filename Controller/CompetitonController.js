@@ -13,6 +13,7 @@ const sequelize = require("sequelize");
 const { Race, Horse } = require("../Utils/Path");
 const { Conversion } = require("../Utils/Conversion");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedCompetiton = Trackerror(async (req, res, next) => {
   const data = await CompetitonModel.findAll({
     paranoid: false,
@@ -436,7 +437,8 @@ exports.SoftDeleteCompetiton = Trackerror(async (req, res, next) => {
   }
 });
 exports.SearchCompetition = Trackerror(async (req, res, next) => {
-  const totalcount = await CompetitonModel.count();
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
   const data = await CompetitonModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
@@ -488,13 +490,23 @@ exports.SearchCompetition = Trackerror(async (req, res, next) => {
       //   [Op.between]: [req.query.startdate, req.query.enddate],
       // },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.Voting = Trackerror(async (req, res, next) => {
   const { token } = req.cookies;
@@ -506,11 +518,11 @@ exports.Voting = Trackerror(async (req, res, next) => {
   const { Horse } = req.body;
   console.log(Horse);
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(decodedData,'token')
+  console.log(decodedData, "token");
   const userdata = await SubscriberModel.findOne({
     where: { [Op.and]: [{ _id: decodedData.id }, { ApprovedStatus: 1 }] },
   });
-  console.log(userdata,'user')
+  console.log(userdata, "user");
   if (!userdata) {
     return next(
       new HandlerCallBack("Your are not Eligible to play competition", 401)

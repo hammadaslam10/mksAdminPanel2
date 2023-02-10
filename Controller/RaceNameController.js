@@ -5,6 +5,7 @@ const HandlerCallBack = require("../Utils/HandlerCallBack");
 const { ArRegex } = require("../Utils/ArabicLanguageRegex");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.GetDeletedRaceName = Trackerror(async (req, res, next) => {
   const data = await RaceNameModel.findAll({
     paranoid: false,
@@ -106,7 +107,9 @@ exports.GetRaceNameMaxShortCode = Trackerror(async (req, res, next) => {
   });
 });
 exports.SearchRaceName = Trackerror(async (req, res, next) => {
-  const totalcount = await RaceNameModel.count();
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+
   const data = await RaceNameModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
@@ -128,13 +131,23 @@ exports.SearchRaceName = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.CreateRaceName = Trackerror(async (req, res, next) => {
   const { NameEn, NameAr, shortCode } = req.body;
