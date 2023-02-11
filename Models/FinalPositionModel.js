@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       NameEn: {
         type: DataTypes.STRING,
-        unique: true,
+       
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       NameAr: {
         type: DataTypes.STRING,
-        unique: true,
+     
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {
@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       shortCode: {
         type: DataTypes.BIGINT,
-        autoIncrement: true,
-        unique: true,
+        // autoIncrement: true,
+        // unique: true,
         allowNull: false,
         validate: {
           notNull: { msg: "FinalPosition will have ShortCode" },
