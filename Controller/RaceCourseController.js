@@ -138,16 +138,16 @@ exports.SingleRaceCourse = Trackerror(async (req, res, next) => {
 exports.SearchRaceCourse = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-   await RaceCourseModel.findAndCountAll({
+  await RaceCourseModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     include: { all: true },
     where: {
-      TrackNameEn: {
-        [Op.like]: `%${req.query.TrackNameEn || ""}%`,
-      },
-      TrackNameAr: {
-        [Op.like]: `%${req.query.TrackNameAr || ""}%`,
-      },
+      // TrackNameEn: {
+      //   [Op.like]: `%${req.query.TrackNameEn || ""}%`,
+      // },
+      // TrackNameAr: {
+      //   [Op.like]: `%${req.query.TrackNameAr || ""}%`,
+      // },
       shortCode: {
         [Op.like]: `${req.query.shortCode || "%%"}`,
       },
@@ -268,6 +268,71 @@ exports.CreateRaceCourse = Trackerror(async (req, res, next) => {
         });
       }
     }
+  }
+});
+exports.RaceCourseMassUpload = Trackerror(async (req, res, next) => {
+  if (!req.files || !req.files.file) {
+    res.status(404).json({ message: "File not found" });
+  } else if (req.files.file.mimetype === "application/json") {
+    try {
+      let de = JSON.parse(req.files.file.data.toString("utf8"));
+      console.log(de);
+      let original = [];
+      let ShortCodeValidation = [];
+      await de.map((data) => {
+        ShortCodeValidation.push(data.shortCode);
+      });
+      const Duplicates = await RaceCourseModel.findAll({
+        where: {
+          shortCode: ShortCodeValidation,
+        },
+      });
+      if (Duplicates.length >= 1) {
+        res.status(215).json({
+          success: false,
+          Notify: "Duplication Error",
+          message: {
+            ErrorName: "Duplication Error",
+            list: Duplicates.map((singledup) => {
+              return {
+                id: singledup.BackupId,
+                shortCode: singledup.shortCode,
+                NameEn: singledup.NameEn,
+                NameAr: singledup.NameAr,
+              };
+            }),
+          },
+        });
+        res.end();
+      } else {
+        console.log(Duplicates);
+        await de.map((data) => {
+          original.push({
+            ColorCode: data.ColorCode,
+            shortCode: data.shortCode,
+            TrackNameEn: data.TrackNameEn || data.NameEn,
+            NationalityID: "ed101126-1ddc-4b87-819f-b7c15da7a3be",
+            ColorCode: "ebb8cd80-2852-4666-a047-ec39a3dbd9ee",
+            TrackNameAr: data.TrackNameAr || data.NameAr,
+            NameEn: data.NameEn,
+            NameAr: data.NameAr,
+            BackupId: data.id,
+          });
+        });
+        const data = await RaceCourseModel.bulkCreate(original, {
+          // ignoreDuplicates: true,
+          // validate: true,
+        });
+        res.status(201).json({ success: true, data });
+      }
+    } catch (error) {
+      res.status(210).json({
+        success: false,
+        message: error,
+      });
+    }
+  } else {
+    res.status(409).json({ message: "file format is not valid" });
   }
 });
 exports.UpdateCourse = Trackerror(async (req, res, next) => {
