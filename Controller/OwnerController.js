@@ -476,10 +476,7 @@ exports.SearchOwner = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
   await OwnerModel.findAndCountAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
-    include: { all: true },
     where: {
       NameEn: {
         [Op.like]: `%${req.query.NameEn || ""}%`,
@@ -517,6 +514,14 @@ exports.SearchOwner = Trackerror(async (req, res, next) => {
     },
     limit,
     offset,
+    include: [
+      {
+        model: db.NationalityModel,
+        as: 'OwnerDataNationalityData',
+        attributes: ["NameEn"]
+      }
+    ]
+
   })
     .then((data) => {
       const response = getPagingData(data, page, limit);
@@ -533,7 +538,7 @@ exports.SearchOwner = Trackerror(async (req, res, next) => {
       });
     });
 });
-exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
+exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => { });
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
   const data = await OwnerModel.findAll({ include: { all: true } });
   res.status(200).json({
