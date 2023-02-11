@@ -811,7 +811,7 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
 });
 exports.AddRaceImage = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
-    where: { _id: req.params.id, ResultStatus: "Announced" },
+    where: { _id: req.params.id},
   });
   if (!data) {
     return new next(
