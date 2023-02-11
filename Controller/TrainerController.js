@@ -103,7 +103,13 @@ exports.SearchTrainer = Trackerror(async (req, res, next) => {
   const { limit, offset } = getPagination(page - 1, size);
   await TrainerModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
-    include: { all: true },
+    include: [
+      {
+        model: db.NationalityModel,
+        as: "TrainerNationalityData",
+        attributes: ["NameEn"]
+      }
+    ],
     where: {
       NameEn: {
         [Op.like]: `%${req.query.NameEn || ""}%`,
