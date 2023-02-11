@@ -810,7 +810,7 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
   });
 });
 exports.AddRaceImage = Trackerror(async (req, res, next) => {
-  if (req.params.id) {
+  if (!req.params.id) {
     return next(new HandlerCallBack("No Race id Available in param", 404));
   }
   const data = await RaceModel.findOne({
