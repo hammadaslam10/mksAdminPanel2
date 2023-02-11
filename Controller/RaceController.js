@@ -810,14 +810,17 @@ exports.PublishRaces = Trackerror(async (req, res, next) => {
   });
 });
 exports.AddRaceImage = Trackerror(async (req, res, next) => {
+  if (req.params.id) {
+    return next(new HandlerCallBack("No Race id Available in param", 404));
+  }
   const data = await RaceModel.findOne({
-    where: { _id: req.params.id},
+    where: { _id: req.params.id },
   });
   if (!data) {
-    return new next(
+    return next(new HandlerCallBack(
       "Race is not available or Result is not declared yet ",
       404
-    );
+    ));
   }
   let file = [req.files.image];
   await file.map(async (singleimage) => {
@@ -847,7 +850,7 @@ exports.AddRaceImage = Trackerror(async (req, res, next) => {
   });
 });
 exports.GetRacesHorsesForResult = Trackerror(async (req, res, next) => {
-  if (req.params.raceid) {
+  if (!req.params.raceid) {
     return next(new HandlerCallBack("No Race id Available in param", 404));
   }
   const data = await HorseAndRaceModel.findAll({
