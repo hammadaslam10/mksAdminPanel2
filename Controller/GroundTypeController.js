@@ -202,20 +202,21 @@ exports.GroundTypeMassUpload = Trackerror(async (req, res, next) => {
 exports.GroundTypeGet = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
+  const counting = await GroundTypeModel.count();
   await GroundTypeModel.findAndCountAll({
     order: [[req.query.orderby || "createdAt", req.query.sequence || "DESC"]],
     where: {
       NameEn: {
-        [Op.like]: `%${req.query.NameEn || ""}%`,
+        [Op.like]: `%${req.query.NameEn || "%%"}%`,
       },
       NameAr: {
-        [Op.like]: `%${req.query.NameAr || ""}%`,
+        [Op.like]: `%${req.query.NameAr || "%%"}%`,
       },
       AbbrevEn: {
-        [Op.like]: `%${req.query.AbbrevEn || ""}%`,
+        [Op.like]: `%${req.query.AbbrevEn || "%%"}%`,
       },
       AbbrevAr: {
-        [Op.like]: `%${req.query.AbbrevAr || ""}%`,
+        [Op.like]: `%${req.query.AbbrevAr || "%%"}%`,
       },
       shortCode: {
         [Op.like]: `${req.query.shortCode || "%%"}`,
@@ -237,6 +238,7 @@ exports.GroundTypeGet = Trackerror(async (req, res, next) => {
         currentPage: response.currentPage,
         totalPages: response.totalPages,
         totalcount: response.totalcount,
+        counting: counting,
       });
     })
     .catch((err) => {
