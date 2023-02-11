@@ -106,6 +106,9 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
       _id: req.params.raceid,
     },
   });
+  if (!req.params.raceid) {
+    return next(new HandlerCallBack("No Race id Available in param", 404));
+  }
   await HorseModel.findAndCountAll({
     include: [
       {
