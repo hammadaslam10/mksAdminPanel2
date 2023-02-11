@@ -564,27 +564,27 @@ exports.DeleteOwner = Trackerror(async (req, res, next) => {
   });
 });
 exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
-  const data = await BreederModel.findOne({
+  const data = await OwnerModel.findOne({
     where: { _id: req.params.id },
   });
   if (!data) {
     return next(new HandlerCallBack("data not found", 404));
   }
-  let checkcode = await BreederModel.findOne({
+  let checkcode = await OwnerModel.findOne({
     paranoid: false,
     where: { shortCode: -data.shortCode },
   });
   console.log(checkcode);
   if (checkcode) {
     console.log("hello");
-    let [result] = await BreederModel.findAll({
+    let [result] = await OwnerModel.findAll({
       paranoid: false,
       attributes: [
         [sequelize.fn("max", sequelize.col("shortCode")), "maxshortCode"],
       ],
     });
     console.log(-result.dataValues.maxshortCode, "dsd");
-    await BreederModel.update(
+    await OwnerModel.update(
       { shortCode: -result.dataValues.maxshortCode },
       {
         where: {
@@ -592,7 +592,7 @@ exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
         },
       }
     );
-    await BreederModel.destroy({
+    await OwnerModel.destroy({
       where: { _id: req.params.id },
     });
 
@@ -602,7 +602,7 @@ exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
     });
   } else {
     console.log(data.shortCode);
-    await BreederModel.update(
+    await OwnerModel.update(
       { shortCode: -data.shortCode },
       {
         where: {
@@ -611,7 +611,7 @@ exports.SoftDeleteOwner = Trackerror(async (req, res, next) => {
       }
     );
 
-    await BreederModel.destroy({
+    await OwnerModel.destroy({
       where: { _id: req.params.id },
     });
     res.status(200).json({
