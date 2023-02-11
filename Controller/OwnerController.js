@@ -473,8 +473,9 @@ exports.UpdateOwnerDetail = Trackerror(async (req, res, next) => {
   }
 });
 exports.SearchOwner = Trackerror(async (req, res, next) => {
-  const totalcount = await OwnerModel.count();
-  const data = await OwnerModel.findAll({
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+  await OwnerModel.findAndCountAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
@@ -514,13 +515,23 @@ exports.SearchOwner = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.UpdateOwnerHorse = Trackerror(async (req, res, next) => {});
 exports.ViewAllOwner = Trackerror(async (req, res, next) => {
