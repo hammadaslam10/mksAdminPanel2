@@ -10,8 +10,10 @@ const {
   GetDeletedRaceName,
   RestoreSoftDeletedRaceName,
   SearchRaceName,
+  RaceNameMassUpload,
 } = require("../Controller/RaceNameController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/RaceNameMassUpload").post(RaceNameMassUpload);
 router.route("/racenamegetdeleted").get(GetDeletedRaceName);
 router.route("/searchracename").get(SearchRaceName);
 router.route("/restoresoftdeleteracename/:id").post(RestoreSoftDeletedRaceName);

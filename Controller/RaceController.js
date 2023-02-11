@@ -25,6 +25,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
+const { getPagination, getPagingData } = require("../Utils/Pagination");
 exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     include: [
@@ -144,7 +145,9 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
   });
 });
 exports.SearchRace = Trackerror(async (req, res, next) => {
-  const totalcount = await RaceModel.count();
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
+
   const data = await RaceModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
@@ -471,13 +474,23 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
         ],
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-    totalcount,
-    filtered: data.length,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.RestoreSoftDeletedRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findOne({
@@ -974,32 +987,28 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   console.log("done");
   let a = [];
 
-
   for (let i = 0; i < ResultEntry.length; i++) {
     a.push({
       _id: ResultEntry[i].HorseID,
       STARS: ResultEntry[i].Rating,
     });
     console.log("done12");
-    data = await ResultsModel.findOrCreate(
-      {
-        where: {
-          RaceID: req.params.RaceId,
-          HorseID: ResultEntry[i].HorseID,
-          Rating: ResultEntry[i].Rating,
-          PrizeWin: ResultEntry[i].Prize,
-          RaceTime: ResultEntry[i].RaceTime,
-          VideoLink: ResultEntry[i].VideoLink,
-          FinalPosition: ResultEntry[i].FinalPosition,
-          Distance: ResultEntry[i].Distance,
-          CumulativeDistance: ResultEntry[i].CumulativeDistance,
-          BeatenBy: ResultEntry[i].BeatenBy,
-          TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
-          JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
-        },
+    data = await ResultsModel.findOrCreate({
+      where: {
+        RaceID: req.params.RaceId,
+        HorseID: ResultEntry[i].HorseID,
+        Rating: ResultEntry[i].Rating,
+        PrizeWin: ResultEntry[i].Prize,
+        RaceTime: ResultEntry[i].RaceTime,
+        VideoLink: ResultEntry[i].VideoLink,
+        FinalPosition: ResultEntry[i].FinalPosition,
+        Distance: ResultEntry[i].Distance,
+        CumulativeDistance: ResultEntry[i].CumulativeDistance,
+        BeatenBy: ResultEntry[i].BeatenBy,
+        TrainerOnRace: ResultEntry[i].TrainerOnRace || null,
+        JockeyOnRace: ResultEntry[i].JockeyOnRace || null,
       },
-
-    );
+    });
   }
   const statements = [];
   const tableName = "HorseModel";
@@ -1010,7 +1019,6 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
         `UPDATE ${tableName} 
       SET STARS='${ResultEntry[i].Rating}' 
       WHERE _id='${ResultEntry[i].HorseID}';`
-
       )
     );
   }
@@ -1018,7 +1026,6 @@ exports.ResultCreationV2 = Trackerror(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data,
-
   });
 });
 
