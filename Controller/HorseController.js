@@ -99,6 +99,8 @@ exports.SearchHorse = Trackerror(async (req, res, next) => {
     });
 });
 exports.RaceHorse = Trackerror(async (req, res, next) => {
+  const { page, size } = req.query;
+  const { limit, offset } = getPagination(page - 1, size);
   const racedata = await RaceModel.findOne({
     where: {
       _id: req.params.raceid,
