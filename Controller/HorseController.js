@@ -104,7 +104,7 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
       _id: req.params.raceid,
     },
   });
-  const data = await HorseModel.findAll({
+  await HorseModel.findAndCountAll({
     include: [
       {
         model: db.OwnerModel,
@@ -126,11 +126,23 @@ exports.RaceHorse = Trackerror(async (req, res, next) => {
         [Op.like]: `${req.query.shortCode || "%%"}`,
       },
     },
-  });
-  res.status(200).json({
-    success: true,
-    data: data,
-  });
+    limit,
+    offset,
+  })
+    .then((data) => {
+      const response = getPagingData(data, page, limit);
+      res.status(200).json({
+        data: response.data,
+        currentPage: response.currentPage,
+        totalPages: response.totalPages,
+        totalcount: response.totalcount,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message || "Some error occurred while retrieving Color.",
+      });
+    });
 });
 exports.HorsesInRace = Trackerror(async (req, res, next) => {
   // HorseModelIdData1
