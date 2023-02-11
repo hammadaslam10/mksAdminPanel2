@@ -37,9 +37,11 @@ const {
   HorseHistory,
   EditRaceHorsesv2,
   ResultCreationV2,
-  AllResults
+  AllResults,
+  AllDeclaredRaces,
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/AllDeclaredRaces").get(AllDeclaredRaces);
 router.route("/ResultCreationV2/:RaceId").post(ResultCreationV2);
 
 router.route("/horsehistory/:horseid").get(HorseHistory);

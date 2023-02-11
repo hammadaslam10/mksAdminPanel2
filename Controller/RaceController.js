@@ -25,6 +25,53 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
+exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
+  const data = await RaceModel.findAll({
+    include: [
+      {
+        model: db.ResultModel,
+        as: "RaceResultData",
+        attributes: [
+          "Rating",
+          "_id",
+          "RaceTime",
+          "CumulativeDistance",
+          "PrizeWin",
+        ],
+        order: ["CumulativeDistance", "ASC"],
+        include: [
+          {
+            model: db.HorseModel,
+            as: "HorseIDData",
+
+            attributes: ["_id", "NameEn", "NameAr"],
+          },
+          {
+            model: db.HorseModel,
+            as: "BeatenByData",
+            attributes: ["_id", "NameEn", "NameAr"],
+          },
+          {
+            model: db.FinalPositionModel,
+            as: "FinalPositionDataHorse",
+            attributes: ["_id", "NameEn", "Rank"],
+          },
+        ],
+      },
+      {
+        model: db.RaceNameModel,
+        as: "RaceNameModelData",
+        attributes: ["_id", "NameEn", "NameAr"],
+      },
+    ],
+    attributes: ["_id"],
+  });
+
+  res.status(200).json({
+    success: true,
+    data,
+  });
+});
 exports.GetDeletedRace = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     paranoid: false,
