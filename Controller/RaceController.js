@@ -2744,12 +2744,13 @@ exports.EditRaceVerdict = Trackerror(async (req, res, next) => {
 });
 exports.DeleteRaceHorse = Trackerror(async (req, res, next) => {
   const data = await HorseAndRaceModel.destroy({
-    where: { HorseModelId: req.params.id },
+    where: { HorseModelId: req.params.id, RaceModelId: req.params.raceid },
     force: true
   });
   res.status(200).json({
     success: true,
-    message: "Horse Has Been Delete Successfully"
+    message: "Horse Has Been Delete Successfully",
+    data
   });
 });
 exports.EditRaceVerdictv2 = Trackerror(async (req, res, next) => {
