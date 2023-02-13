@@ -16,3 +16,4 @@ exports.Admin = "Admin";
 exports.Race = "Race";
 exports.RaceImages = "RaceImages";
 exports.TrackLengths = "TrackLengths";
+exports.GroundType = "GroundType";

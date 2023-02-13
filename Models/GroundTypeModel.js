@@ -8,7 +8,17 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
+      },
+      image: {
+        type: DataTypes.STRING
+        // allowNull: false,
+        // validate: {
+        //   notNull: { msg: "Please Add Image Of Breeder" },
+        //   notEmpty: {
+        //     msg: "Without Image Breeder Will not get submitted",
+        //   },
+        // },
       },
       NameEn: {
         type: DataTypes.STRING,
@@ -25,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       shortCode: {
         type: DataTypes.BIGINT,
@@ -35,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: "Ground Type will have ShortCode" },
-          notEmpty: { msg: "ShortCode  will not be empty" },
-        },
+          notEmpty: { msg: "ShortCode  will not be empty" }
+        }
       },
       NameAr: {
         type: DataTypes.STRING,
@@ -56,8 +66,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Name Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       AbbrevEn: {
         type: DataTypes.STRING,
@@ -74,8 +84,8 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Abbreviation Name English Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       AbbrevAr: {
         type: DataTypes.STRING,
@@ -96,18 +106,18 @@ module.exports = (sequelize, DataTypes) => {
             } else {
               throw new Error("Abbreviation Arabic Validation Failed");
             }
-          },
-        },
+          }
+        }
       },
       BackupId: {
         type: DataTypes.BIGINT,
-        defaultValue: null,
-      },
+        defaultValue: null
+      }
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10,
+      initialAutoIncrement: 10
     }
   );
   return GroundTypeModel;
