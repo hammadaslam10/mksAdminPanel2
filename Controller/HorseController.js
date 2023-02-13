@@ -891,7 +891,6 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
     RemarksAr,
     RemarksEn
   } = req.body;
-  const file = req.files.image;
   let data;
   if (req.files == null) {
     data = await HorseModel.create({
@@ -924,6 +923,7 @@ exports.CreateHorse = Trackerror(async (req, res, next) => {
       RemarksAr: RemarksAr
     });
   } else {
+    const file = req.files.image;
     const Image = generateFileName();
     const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
     await uploadFile(fileBuffer, `${Horse}/${Image}`, file.mimetype);

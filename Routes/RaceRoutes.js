@@ -39,11 +39,13 @@ const {
   ResultCreationV2,
   AllResults,
   AllDeclaredRaces,
+  EditRaceVerdictv2
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
+router.route("/EditRaceVerdictv2/:id").put(EditRaceVerdictv2);
+
 router.route("/AllDeclaredRaces").get(AllDeclaredRaces);
 router.route("/ResultCreationV2/:RaceId").post(ResultCreationV2);
-
 router.route("/horsehistory/:horseid").get(HorseHistory);
 router.route("/GetEditRaceHorses/:id").get(GetEditRaceHorses);
 router.route("/EditRaceHorses/:id").put(EditRaceHorsesv2);
