@@ -40,7 +40,8 @@ const {
   AllResults,
   AllDeclaredRaces,
   EditRaceVerdictv2,
-  DeleteRaceVerdict
+  DeleteRaceVerdict,
+  DeleteRaceHorse
 } = require("../Controller/RaceController");
 const { upload } = require("../Utils/ImageUpload");
 router.route("/EditRaceVerdictv2/:id").put(EditRaceVerdictv2);
