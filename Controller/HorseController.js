@@ -329,6 +329,13 @@ exports.HorseDropDown = Trackerror(async (req, res, next) => {
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
+    include: [
+      {
+        model: db.NationalityModel,
+        as: "NationalityData",
+        attributes: ["NameEn", "NameAr", "_id"]
+      }
+    ],
     attributes: ["NameEn", "NameAr", "_id"],
     where: {
       NameEn: {
