@@ -1,5 +1,6 @@
 exports.News = "News";
 exports.Ads = "Ads";
+exports.ImagesStorages = "ImagesStorages";
 exports.Sponsor = "Sponsor";
 exports.Jockey = "Jockey";
 exports.Trainer = "Trainer";

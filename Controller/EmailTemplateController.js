@@ -34,11 +34,13 @@ exports.RestoreSoftDeletedEmailTemplate = Trackerror(async (req, res, next) => {
 });
 
 exports.CreateEmailTemplate = Trackerror(async (req, res, next) => {
-  const { TemplateName, Subject } = req.body;
+  const { TemplateName, Subject, Html, Target } = req.body;
 
   const data = await EmailTemplateModel.create({
     TemplateName: TemplateName,
     Subject: Subject,
+    Html: Html,
+    Target: Target,
   });
   res.status(201).json({
     success: true,
@@ -54,7 +56,7 @@ exports.EmailTemplateGet = Trackerror(async (req, res, next) => {
 });
 exports.GetEmailTemplateAdmin = Trackerror(async (req, res, next) => {});
 exports.EditEmailTemplate = Trackerror(async (req, res, next) => {
-  const { TemplateName, Subject, shortCode } = req.body;
+  const { TemplateName, Subject, Html, Target } = req.body;
   let data = await EmailTemplateModel.findOne({
     where: { _id: req.params.id },
   });
@@ -65,6 +67,8 @@ exports.EditEmailTemplate = Trackerror(async (req, res, next) => {
     const updateddata = {
       TemplateName: TemplateName || data.TemplateName,
       Subject: Subject || data.Subject,
+      Html: Html || data.Html,
+      Target: Target || data.Target,
     };
     data = await EmailTemplateModel.update(updateddata, {
       where: {

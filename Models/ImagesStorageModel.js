@@ -10,41 +10,27 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       image: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Please Add Image Of Advertisment" },
+          notNull: { msg: "Please Add Image" },
           notEmpty: {
-            msg: "Without Image Advertisment Will not get submitted"
-          }
-        }
+            msg: "Without Image Will not get submitted",
+          },
+        },
       },
-      TitleEn: {
+      Title: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          EnglishLanguageVerification() {
-            if (this.TitleEn.trim() == "") {
-              throw new Error("Please Enter Title in English ");
-            }
-            if (
-              /^[a-zA-Z0-9$-@!%*?&#^_.+]+$/.test(this.TitleEn) ||
-              /^[a-zA-Z0-9$-@!%*?&#^_. +]+$/.test(this.TitleEn)
-            ) {
-            } else {
-              throw new Error("Title English Validation Failed");
-            }
-          }
-        }
-      }
+      },
     },
     {
       freezeTableName: true,
       paranoid: true,
-      initialAutoIncrement: 10
+      initialAutoIncrement: 10,
     }
   );
   return ImagesStorageModel;
