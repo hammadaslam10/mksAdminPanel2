@@ -31,6 +31,7 @@ exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
     where: { ResultStatus: "Announced" },
     include: [
       {
+        separate:true, 
         model: db.ResultModel,
         as: "RaceResultData",
         attributes: [
@@ -59,6 +60,7 @@ exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
             attributes: ["_id", "NameEn", "Rank"],
           },
         ],
+        order: [["FinalPositionDataHorse", "Rank", "ASC"]],
       },
       {
         model: db.RaceNameModel,
@@ -1498,6 +1500,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
               paranoid: false,
             },
           ],
+          order: [["RacehorsesData", "HorseNo", "ASC"]],
         });
       } else {
         data = await RaceModel.findOne({
