@@ -58,7 +58,7 @@ exports.SearchUser = Trackerror(async (req, res, next) => {
       },
     },
     limit,
-    offset,
+    offset, 
   })
     .then((data) => {
       const response = getPagingData(data, page, limit);
@@ -76,6 +76,7 @@ exports.SearchUser = Trackerror(async (req, res, next) => {
     });
 });
 exports.GetDeletedSubscriber = Trackerror(async (req, res, next) => {
+  
   const data = await SubscriberModel.findAll({
     paranoid: false,
     where: {
