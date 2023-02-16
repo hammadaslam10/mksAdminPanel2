@@ -39,6 +39,7 @@ exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
           "_id",
           "RaceTime",
           "CumulativeDistance",
+          "Distance",
           "PrizeWin",
         ],
         order: ["CumulativeDistance", "ASC"],
