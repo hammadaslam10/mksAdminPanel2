@@ -2248,12 +2248,12 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Sponsor,
     EndTime,
     Day,
-    TrackCondition,
+
     RaceNumber,
     totalPrize,
     PrizeNumber,
     RaceWeight,
-    Currency,
+
   } = req.body;
   let = {
     FirstPrice,
@@ -2262,6 +2262,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     FourthPrice,
     FifthPrice,
     SixthPrice,
+    Currency,
+    TrackCondition,
   } = req.body;
 
   if (!totalPrize) {
@@ -2316,6 +2318,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
       attributes: ["_id"],
     });
   }
+  console.log(TrackConditionChecking._id)
   let CurrencyChecking;
   if (!CurrencyChecking) {
     CurrencyChecking = await db.CurrencyModel.findOne({
@@ -2325,6 +2328,14 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
       attributes: ["_id"],
     });
   }
+  console.log(CurrencyChecking._id, "ddad")
+  console.log(Currency || CurrencyChecking._id, "ddad")
+
+
+  // return condition1 ? value1
+  //   : condition2 ? value2
+  //     : condition3 ? value3
+  //       : value4;
 
   const data = await RaceModel.create({
     // image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
@@ -2355,9 +2366,9 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground: Ground,
     Sponsor: Sponsor,
     Day: Day,
-    TrackCondition: TrackCondition || TrackConditionChecking._id,
+    TrackCondition: !TrackCondition ? TrackCondition : TrackConditionChecking._id,
     RaceWeight: RaceWeight,
-    Currency: Currency || CurrencyChecking._id,
+    Currency: !Currency ? Currency : CurrencyChecking._id,
   });
   res.status(200).json({
     success: true,

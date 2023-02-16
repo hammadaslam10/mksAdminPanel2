@@ -30,4 +30,29 @@ router.route("/SearchOwner").get(SearchOwner);
 router.route("/deleteOwner/:id").delete(DeleteOwner);
 router.route("/ /:id", upload.single("image")).put(UpdateOwnerDetail);
 router.route("/softdeleteowner/:id").delete(SoftDeleteOwner);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;

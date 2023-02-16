@@ -320,7 +320,7 @@ exports.SearchJockey = Trackerror(async (req, res, next) => {
       NationalityID: {
         [Op.like]: `%${req.query.NationalityID || ""}%`,
       },
-      // RemarksEn: {
+      // RemarksEn: {     
       //   [Op.like]: `%${req.query.RemarksEn || ""}%`,
       // },
       // RemarksAr: {
