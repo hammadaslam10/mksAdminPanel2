@@ -12,22 +12,22 @@ let options = {
   Protocol: "TCP",
 };
 
-// const Db = new Sequelize(
-//   process.env.RDSDB,
-//   process.env.RDSUSER,
-//   process.env.RDSPASSWORD,
-//   {
-//     ...options,
-//   }
-// );
 const Db = new Sequelize(
-  process.env.SQLDB,
-  process.env.SQLHOST,
-  process.env.SQLPASSWORD,
+  process.env.RDSDB,
+  process.env.RDSUSER,
+  process.env.RDSPASSWORD,
   {
-    dialect: "mysql",
+    ...options,
   }
 );
+// const Db = new Sequelize(
+//   process.env.SQLDB,
+//   process.env.SQLHOST,
+//   process.env.SQLPASSWORD,
+//   {
+//     dialect: "mysql",
+//   }
+// );
 
 Db.authenticate()
   .then(() => {
@@ -50,6 +50,7 @@ db.RaceModel = require("../Models/RaceModel")(Db, DataTypes);
 db.ResultModel = require("../Models/ResultsModel")(Db, DataTypes);
 db.SliderModel = require("../Models/SliderModel")(Db, DataTypes);
 db.SponsorModel = require("../Models/SponsorModel")(Db, DataTypes);
+// db.SponsorModel.sync({ alter: true });
 db.RaceAndHorseModel = require("../Models/RaceAndHorseModel")(Db, DataTypes);
 db.HorseAndRaceModel = require("../Models/HorseAndRaceModel")(Db, DataTypes);
 db.RaceAndJockeyModel = require("../Models/RaceAndJockeyModel")(Db, DataTypes);

@@ -2374,45 +2374,69 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   let HorseEntryData = Conversion(HorseEntry);
   console.log(HorseEntryData, "dsad");
   let horsedata;
-  await HorseEntryData.map(async (singlehorse) => {
-    await singlehorse.map(async (singlehorsedetail) => {
-      singlehorsedetail = singlehorsedetail.split(",");
-      horsedata = await HorseModel.findOne({
-        where: {
-          _id: singlehorsedetail[2],
-        },
-      });
-      console.log(horsedata);
-      try {
-        await HorseAndRaceModel.findOrCreate({
-          where: {
-            GateNo: singlehorsedetail[0],
-            HorseNo: singlehorsedetail[1],
-            RaceModelId: req.params.id,
-            HorseModelId: singlehorsedetail[2],
-            Equipment: singlehorsedetail[3],
-            TrainerOnRace: horsedata.ActiveTrainer,
-            OwnerOnRace: horsedata.ActiveOwner,
-            JockeyOnRace: null,
-            JockeyWeight: singlehorsedetail[5] || null,
-            Rating: singlehorsedetail[6],
-            HorseRunningStatus: singlehorsedetail[7],
-            CapColor: singlehorsedetail[8],
-            JockeyRaceWeight: singlehorsedetail[9] || null,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-        // res.send({
-        //   message: err
-        // });
-        // res.end();
-        // return;
-      }
-
-      horsedata = null;
+  for (let i = 0; i < HorseEntry.length; i++) {
+    horsedata = await HorseModel.findOne({
+      where: {
+        _id: singlehorsedetail[2],
+      },
     });
-  });
+    await HorseAndRaceModel.findOrCreate({
+      where: {
+        GateNo: HorseEntry[i].GateNo,
+        HorseNo: HorseEntry[i].HorseNo,
+        RaceModelId: req.params.id,
+        HorseModelId: HorseEntry[i].HorseModelId,
+        Equipment: HorseEntry[i].Equipment || null,
+        TrainerOnRace: horsedata.ActiveTrainer,
+        OwnerOnRace: horsedata.ActiveOwner,
+        JockeyOnRace: HorseEntry[i].JockeyOnRace || null,
+        JockeyWeight: HorseEntry[i].JockeyWeight || null,
+        Rating: HorseEntry[i].Rating,
+        HorseRunningStatus: HorseEntry[i].HorseRunningStatus,
+        CapColor: HorseEntry[i].CapColor,
+        JockeyRaceWeight: HorseEntry[i].JockeyRaceWeight || null,
+      },
+    });
+  }
+  // await HorseEntryData.map(async (singlehorse) => {
+  //   await singlehorse.map(async (singlehorsedetail) => {
+  //     singlehorsedetail = singlehorsedetail.split(",");
+  // horsedata = await HorseModel.findOne({
+  //   where: {
+  //     _id: singlehorsedetail[2],
+  //   },
+  // });
+  // console.log(horsedata);
+  //     try {
+  //       await HorseAndRaceModel.findOrCreate({
+  //         where: {
+  //           GateNo: singlehorsedetail[0],
+  //           HorseNo: singlehorsedetail[1],
+  //           RaceModelId: req.params.id,
+  //           HorseModelId: singlehorsedetail[2],
+  //           Equipment: singlehorsedetail[3],
+  //           TrainerOnRace: horsedata.ActiveTrainer,
+  //           OwnerOnRace: horsedata.ActiveOwner,
+  //           JockeyOnRace: null,
+  //           JockeyWeight: singlehorsedetail[5] || null,
+  //           Rating: singlehorsedetail[6],
+  //           HorseRunningStatus: singlehorsedetail[7],
+  //           CapColor: singlehorsedetail[8],
+  //           JockeyRaceWeight: singlehorsedetail[9] || null,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.log(err);
+  //       // res.send({
+  //       //   message: err
+  //       // });
+  //       // res.end();
+  //       // return;
+  //     }
+
+  //     horsedata = null;
+  //   });
+  // });
   res.status(200).json({
     success: true,
   });

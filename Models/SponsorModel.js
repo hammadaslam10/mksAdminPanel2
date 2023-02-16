@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       DescriptionEn: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -33,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       DescriptionAr: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {
