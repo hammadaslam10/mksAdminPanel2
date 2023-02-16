@@ -1979,6 +1979,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
       });
     }
   } else {
+    console.log("hello");
     data = await RaceModel.findOne({
       where: { _id: req.params.id, HorseFilled: true },
       paranoid: false,
@@ -2208,6 +2209,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
           paranoid: false,
         },
       ],
+      order: [["RacehorsesData", "GateNo", "ASC"]],
     });
   }
 
