@@ -28,7 +28,6 @@ const Db = new Sequelize(
 //     dialect: "mysql",
 //   }
 // );
- 
 
 Db.authenticate()
   .then(() => {
@@ -154,6 +153,7 @@ db.RaceResultImagesModel = require("../Models/RaceResultImagesModel")(
 db.sequelize.sync({ force: false, alter: false }).then(() => {
   console.log("yes re-sync done!");
 });
+// db.SponsorModel.sync({ alter: true });
 
 // -------------------------------------SubscriberAndCompetitionModel----------------------------
 db.CompetitonModel.hasMany(db.SubscriberAndCompetitionModel, {
@@ -222,14 +222,14 @@ db.CompetitonModel.belongsTo(db.CompetitionCategoryModel, {
   foreignKey: "CompetitionType",
   as: "CompetitionTypeData",
 });
-db.SponsorModel.hasMany(db.CompetitonModel, {
-  foreignKey: "CompetitionSponsor",
-  as: "CompetitionSponsorData",
-});
-db.CompetitonModel.belongsTo(db.SponsorModel, {
-  foreignKey: "CompetitionSponsor",
-  as: "CompetitionSponsorData",
-});
+// db.SponsorModel.hasMany(db.CompetitonModel, {
+//   foreignKey: "CompetitionSponsor",
+//   as: "CompetitionSponsorData",
+// });
+// db.CompetitonModel.belongsTo(db.SponsorModel, {
+//   foreignKey: "CompetitionSponsor",
+//   as: "CompetitionSponsorData",
+// });
 db.CompetitonModel.belongsToMany(db.RaceModel, {
   through: "CompetitionRacesPointsModel",
   as: "CompetitionRacesPointsModelData",
@@ -450,14 +450,14 @@ db.RaceModel.belongsTo(db.RaceKindModel, {
   foreignKey: "RaceKind",
   as: "RaceKindData",
 });
-db.SponsorModel.hasMany(db.RaceModel, {
-  foreignKey: "Sponsor",
-  as: "SponsorData",
-});
-db.RaceModel.belongsTo(db.SponsorModel, {
-  foreignKey: "Sponsor",
-  as: "SponsorData",
-});
+// db.SponsorModel.hasMany(db.RaceModel, {
+//   foreignKey: "Sponsor",
+//   as: "SponsorData",
+// });
+// db.RaceModel.belongsTo(db.SponsorModel, {
+//   foreignKey: "Sponsor",
+//   as: "SponsorData",
+// });
 db.CurrencyModel.hasMany(db.RaceModel, {
   foreignKey: "Currency",
   as: "CurrencyData",

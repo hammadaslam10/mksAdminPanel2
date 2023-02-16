@@ -104,78 +104,70 @@ exports.SponsorMassUpload = Trackerror(async (req, res, next) => {
 exports.CreateSponsor = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   console.log(req.files);
-  if (req.files == null) {
-    try {
-      const data = await SponsorModel.create({
-        DescriptionEn: DescriptionEn,
-        DescriptionAr: DescriptionAr,
-        TitleEn: TitleEn,
-        TitleAr: TitleAr,
-        Url: Url,
-      });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
-        res.status(500).json({
-          success: false,
-          message: error.errors.map((singleerr) => {
-            return singleerr.message;
-          }),
-        });
-      // }
-    }
-  } else {
-    try {
-      const file = req.files.image;
-      const Image = generateFileName();
-      const fileBuffer = await resizeImageBuffer(
-        req.files.image.data,
-        214,
-        212
-      );
-      await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
+  let titleenchecking = await SponsorModel.findOne({
+    where: {
+      TitleEn: TitleEn,
+    },
+  });
+  if (titleenchecking) {
+    return next(new HandlerCallBack("TitleEn already exsist found", 404));
+  }
 
-      const data = await SponsorModel.create({
-        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
-        DescriptionEn: DescriptionEn,
-        DescriptionAr: DescriptionAr,
-        TitleEn: TitleEn,
-        TitleAr: TitleAr,
-        Url: Url,
-      });
-      res.status(201).json({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      // if (error.name === "SequelizeUniqueConstraintError") {
-      //   res.status(403);
-      //   res.json({
-      //     status: "error",
-      //     message: [
-      //       "This Short Code already exists, Please enter a different one.",
-      //     ],
-      //   });
-      // } else {
-        res.status(500).json({
-          success: false,
-          message: error.errors.map((singleerr) => {
-            return singleerr.message;
-          }),
-        });
-      // }
-    }
+  let descriptionenchecking = await SponsorModel.findOne({
+    where: {
+      DescriptionEn: DescriptionEn,
+    },
+  });
+  if (descriptionenchecking) {
+    return next(new HandlerCallBack("DescriptionEn already exsist found", 404));
+  }
+
+  let descriptionarchecking = await SponsorModel.findOne({
+    where: {
+      DescriptionAr: DescriptionAr,
+    },
+  });
+  if (descriptionarchecking) {
+    return next(new HandlerCallBack("DescriptionAr already exsist found", 404));
+  }
+  let titlarchecking = await SponsorModel.findOne({
+    where: {
+      TitleAr: TitleAr,
+    },
+  });
+  if (titlarchecking) {
+    return next(new HandlerCallBack("TitleAr already exsist found", 404));
+  }
+  if (req.files == null) {
+    const data = await SponsorModel.create({
+      DescriptionEn: DescriptionEn,
+      DescriptionAr: DescriptionAr,
+      TitleEn: TitleEn,
+      TitleAr: TitleAr,
+      Url: Url,
+    });
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } else {
+    const file = req.files.image;
+    const Image = generateFileName();
+    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
+    await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
+
+    const data = await SponsorModel.create({
+      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
+      DescriptionEn: DescriptionEn,
+      DescriptionAr: DescriptionAr,
+      TitleEn: TitleEn,
+      TitleAr: TitleAr,
+      Url: Url,
+    });
+    res.status(201).json({
+      success: true,
+      data,
+    });
   }
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {
