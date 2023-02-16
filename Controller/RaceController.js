@@ -31,7 +31,7 @@ exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
     where: { ResultStatus: "Announced" },
     include: [
       {
-        separate:true, 
+        separate: true,
         model: db.ResultModel,
         as: "RaceResultData",
         attributes: [
@@ -2307,6 +2307,24 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     FirstPrice = first * totalPrize;
     SixthPrice = six * totalPrize;
   }
+  let TrackConditionChecking;
+  if (!TrackConditionChecking) {
+    TrackConditionChecking = await db.TrackConditionModel.findOne({
+      where: {
+        NameEn: "GS",
+      },
+      attributes: ["_id"],
+    });
+  }
+  let CurrencyChecking;
+  if (!CurrencyChecking) {
+    CurrencyChecking = await db.CurrencyModel.findOne({
+      where: {
+        NameEn: "AED",
+      },
+      attributes: ["_id"],
+    });
+  }
 
   const data = await RaceModel.create({
     // image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Race}/${Image}`,
@@ -2337,9 +2355,9 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground: Ground,
     Sponsor: Sponsor,
     Day: Day,
-    TrackCondition: TrackCondition,
+    TrackCondition: TrackCondition || TrackConditionChecking._id,
     RaceWeight: RaceWeight,
-    Currency: Currency,
+    Currency: Currency || CurrencyChecking._id,
   });
   res.status(200).json({
     success: true,
