@@ -25,7 +25,7 @@ const { resizeImageBuffer } = require("../Utils/ImageResizing");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
-const { getPagination, getPagingData } = require("../Utils/Pagination");
+const { getPagination, getPagingData1 } = require("../Utils/Pagination");
 exports.AllDeclaredRaces = Trackerror(async (req, res, next) => {
   const data = await RaceModel.findAll({
     where: { ResultStatus: "Announced" },
@@ -148,10 +148,8 @@ exports.GetDeletedRace = Trackerror(async (req, res, next) => {
 exports.SearchRace = Trackerror(async (req, res, next) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page - 1, size);
-
+  let counttotal = await RaceModel.count();
   const data = await RaceModel.findAndCountAll({
-    offset: Number(req.query.page) - 1 || 0,
-    limit: Number(req.query.limit) || 10,
     attributes: {
       exclude: [
         "MeetingType",
@@ -479,7 +477,9 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
     offset,
   })
     .then((data) => {
-      const response = getPagingData(data, page, limit);
+      // console.log(page, limit, data);
+      const response = getPagingData1(data, page, limit, counttotal);
+      console.log(response);
       res.status(200).json({
         data: response.data,
         currentPage: response.currentPage,
