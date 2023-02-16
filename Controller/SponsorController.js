@@ -79,6 +79,7 @@ exports.SponsorMassUpload = Trackerror(async (req, res, next) => {
         NameAr: data.NameAr,
         DescriptionAr: data.DescriptionAr || data.NameAr,
         TitleEn: data.TitleEn || data.NameEn,
+        TitleAr: data.TitleAr || data.NameAr,
         DescriptionAr: data.DescriptionAr || data.NameAr,
         DescriptionEn: data.DescriptionEn || data.NameEn,
         BackupId: data.id,

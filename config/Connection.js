@@ -20,6 +20,7 @@ const Db = new Sequelize(
     ...options,
   }
 );
+
 // const Db = new Sequelize(
 //   process.env.SQLDB,
 //   process.env.SQLHOST,
