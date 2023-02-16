@@ -2873,9 +2873,9 @@ exports.EditRaceVerdictv2 = Trackerror(async (req, res, next) => {
 
 exports.GetEditRaceHorses = Trackerror(async (req, res, next) => {
   const data = await HorseAndRaceModel.findAll({
+    order: [["HorseNo", "ASC"]],
     where: { RaceModelId: req.params.id },
     include: { all: true },
-    order: [["GateNo", "ASC"]],
   });
   if (data === null) {
     return next(new HandlerCallBack("data not found", 404));
