@@ -1,6 +1,6 @@
 const db = require("../config/Connection");
 const AdminModel = db.AdminModel;
-const HorseModel = db.HorseModel;
+const HorseAndRaceModel = db.HorseAndRaceModel;
 const Trackerror = require("../Middleware/TrackError");
 const TokenCreation = require("../Utils/TokenCreation");
 const HandlerCallBack = require("../Utils/HandlerCallBack");
@@ -57,14 +57,13 @@ exports.RegisterAdmin = Trackerror(async (req, res, next) => {
   return next(new HandlerCallBack(`Error during Resgistration `));
 });
 exports.GetAllAdmin = Trackerror(async (req, res, next) => {
- 
   const data = await AdminModel.findAll({
     offset: Number(req.query.page) - 1 || 0,
     limit: Number(req.query.limit) || 10,
     order: [[req.query.orderby || "createdAt", req.query.sequence || "ASC"]],
     where: {
       FirstName: {
-        [Op.like]: `%${req.query.FirstName || ""}%`,  
+        [Op.like]: `%${req.query.FirstName || ""}%`,
       },
       LastName: {
         [Op.like]: `%${req.query.LastName || ""}%`,
@@ -330,4 +329,73 @@ exports.resetPassword = Trackerror(async (req, res, next) => {
   await user.save();
 
   TokenCreation(user, 200, res);
+});
+exports.HorseAndRaceMassUpload = Trackerror(async (req, res, next) => {
+  if (!req.files || !req.files.file) {
+    res.status(404).json({ message: "File not found" });
+  } else if (req.files.file.mimetype === "application/json") {
+    let de = JSON.parse(req.files.file.data.toString("utf8"));
+    // console.log(de);
+    let original = [];
+    // let ShortCodeValidation = [];
+    // await de.map((data) => {
+    //   ShortCodeValidation.push(data.shortCode);
+    // });
+    // const Duplicates = await SponsorModel.findAll({
+    //   where: {
+    //     shortCode: ShortCodeValidation,
+    //   },
+    // });
+    // if (Duplicates.length >= 1) {
+    //   res.status(215).json({
+    //     success: false,
+    //     Notify: "Duplication Error",
+    //     message: {
+    //       ErrorName: "Duplication Error",
+    //       list: Duplicates.map((singledup) => {
+    //         return {
+    //           id: singledup.BackupId,
+    //           shortCode: singledup.shortCode,
+    //           NameEn: singledup.NameEn,
+    //           NameAr: singledup.NameAr,
+    //         };
+    //       }),
+    //     },
+    //   });
+    //   res.end();
+    // } else {
+    await de.map((data) => {
+      original.push({
+        // shortCode: data.shortCode,
+        _id: data._id,
+        RaceModelId: data.RaceModelId,
+        HorseModelId: data.HorseModelId,
+        GateNo: data.GateNo,
+        HorseNo: data.HorseNo,
+        Equipment: data.Equipment,
+        TrainerOnRace: data.TrainerOnRace,
+        JockeyOnRace: data.JockeyOnRace,
+        JockeyWeight: data.JockeyWeight,
+        OwnerOnRace: data.OwnerOnRace,
+        CapColor: data.CapColor,
+        HorseRunningStatus: data.HorseRunningStatus,
+        JockeyRaceWeight: data.JockeyRaceWeight,
+        Rating: data.Rating,
+      });
+    });
+
+    try {
+      const data = await HorseAndRaceModel.bulkCreate(original);
+      // /{ validate: true }
+      res.status(201).json({ success: true, data });
+      // }
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error,
+      });
+    }
+  } else {
+    res.status(409).json({ message: "file format is not valid" });
+  }
 });

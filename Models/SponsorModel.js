@@ -57,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       TitleEn: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           EnglishLanguageVerification() {
@@ -75,6 +76,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       TitleAr: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         validate: {
           ArabicLanguageVerification() {

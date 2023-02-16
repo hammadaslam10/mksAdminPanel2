@@ -105,35 +105,77 @@ exports.CreateSponsor = Trackerror(async (req, res, next) => {
   const { DescriptionEn, DescriptionAr, TitleEn, TitleAr, Url } = req.body;
   console.log(req.files);
   if (req.files == null) {
-    const data = await SponsorModel.create({
-      DescriptionEn: DescriptionEn,
-      DescriptionAr: DescriptionAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
-      Url: Url,
-    });
-    res.status(200).json({
-      success: true,
-      data,
-    });
+    try {
+      const data = await SponsorModel.create({
+        DescriptionEn: DescriptionEn,
+        DescriptionAr: DescriptionAr,
+        TitleEn: TitleEn,
+        TitleAr: TitleAr,
+        Url: Url,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.json({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
+    }
   } else {
-    const file = req.files.image;
-    const Image = generateFileName();
-    const fileBuffer = await resizeImageBuffer(req.files.image.data, 214, 212);
-    await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
+    try {
+      const file = req.files.image;
+      const Image = generateFileName();
+      const fileBuffer = await resizeImageBuffer(
+        req.files.image.data,
+        214,
+        212
+      );
+      await uploadFile(fileBuffer, `${Sponsor}/${Image}`, file.mimetype);
 
-    const data = await SponsorModel.create({
-      image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
-      DescriptionEn: DescriptionEn,
-      DescriptionAr: DescriptionAr,
-      TitleEn: TitleEn,
-      TitleAr: TitleAr,
-      Url: Url,
-    });
-    res.status(201).json({
-      success: true,
-      data,
-    });
+      const data = await SponsorModel.create({
+        image: `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${Sponsor}/${Image}`,
+        DescriptionEn: DescriptionEn,
+        DescriptionAr: DescriptionAr,
+        TitleEn: TitleEn,
+        TitleAr: TitleAr,
+        Url: Url,
+      });
+      res.status(201).json({
+        success: true,
+        data,
+      });
+    } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        res.status(403);
+        res.json({
+          status: "error",
+          message: [
+            "This Short Code already exists, Please enter a different one.",
+          ],
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.errors.map((singleerr) => {
+            return singleerr.message;
+          }),
+        });
+      }
+    }
   }
 });
 exports.SponsorGet = Trackerror(async (req, res, next) => {

@@ -12,12 +12,14 @@ const {
   RestoreSoftDeletedAdmin,
   GetDeletedAdmin,
   UpdateAdmin,
+  HorseAndRaceMassUpload,
 } = require("../Controller/AdminController");
 const {
   GetSendNotification,
   TemplateChanging,
 } = require("../Controller/PushNotification");
 router.route("/GetSendNotification").post(TemplateChanging);
+router.route("/HorseAndRaceMassUpload").post(HorseAndRaceMassUpload);
 
 router.route("/Admingetdeleted").get(GetDeletedAdmin);
 router.route("/restoresoftdeleteAdmin/:id").post(RestoreSoftDeletedAdmin);
