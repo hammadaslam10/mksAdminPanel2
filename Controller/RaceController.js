@@ -2209,7 +2209,7 @@ exports.SingleRace = Trackerror(async (req, res, next) => {
           paranoid: false,
         },
       ],
-      order: [["RacehorsesData", "GateNo", "ASC"]],
+      order: [["RacehorsesData", "HorseNo", "ASC"]],
     });
   }
 
