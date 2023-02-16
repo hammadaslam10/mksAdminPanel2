@@ -2372,12 +2372,12 @@ exports.IncludeHorses = Trackerror(async (req, res, next) => {
   const { HorseEntry } = req.body;
   console.log(req.body);
   let HorseEntryData = Conversion(HorseEntry);
-  console.log(HorseEntryData, "dsad");
+  console.log(HorseEntry, "dsad");
   let horsedata;
   for (let i = 0; i < HorseEntry.length; i++) {
     horsedata = await HorseModel.findOne({
       where: {
-        _id: singlehorsedetail[2],
+        _id: HorseEntry[i].HorseModelId,
       },
     });
     await HorseAndRaceModel.findOrCreate({
@@ -2873,6 +2873,7 @@ exports.EditRaceVerdictv2 = Trackerror(async (req, res, next) => {
 
 exports.GetEditRaceHorses = Trackerror(async (req, res, next) => {
   const data = await HorseAndRaceModel.findAll({
+    order: [["HorseNo", "ASC"]],
     where: { RaceModelId: req.params.id },
     include: { all: true },
   });
