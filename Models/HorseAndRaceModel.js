@@ -26,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       Equipment: {
         type: DataTypes.UUID,
-        allowNull: false,
       },
       TrainerOnRace: {
         type: DataTypes.UUID,
@@ -37,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       JockeyWeight: {
         type: DataTypes.BIGINT,
-     
+
       },
       OwnerOnRace: {
         type: DataTypes.UUID,
@@ -49,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       JockeyWeight: {
         type: DataTypes.BIGINT,
-       
+
       },
       HorseRunningStatus: {
         type: DataTypes.BOOLEAN,
@@ -58,11 +57,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       JockeyRaceWeight: {
         type: DataTypes.BIGINT,
-      
+
       },
       Rating: {
         type: DataTypes.BIGINT,
-       
+
       },
     },
     {
