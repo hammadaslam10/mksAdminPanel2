@@ -1090,8 +1090,18 @@ exports.VerdictLatest = Trackerror(async (req, res, next) => {
         model: db.RaceModel,
         as: "RaceToBePredictData",
         paranoid: false,
-        attributes: ["_id"],
+        attributes: ["_id", "RaceNumber"],
         include: [
+          {
+            model: db.HorseAndRaceModel,
+            as: "RacehorsesData",
+            attributes: [
+              [
+                sequelize.fn("COUNT", sequelize.col("HorseModelId")),
+                "TotalRunners",
+              ],
+            ],
+          },
           {
             model: db.RaceNameModel,
             as: "RaceNameModelData",
