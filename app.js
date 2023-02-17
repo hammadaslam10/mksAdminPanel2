@@ -40,6 +40,7 @@ const NewsLetterRoutes = require("./Routes/NewsLetterRoutes");
 const PointTableSystemRoutes = require("./Routes/PointTableSystemRoutes");
 const FinalPositionRoutes = require("./Routes/FinalPositionRoutes");
 const ImageStorageRoutes = require("./Routes/ImagesStorageRoutes");
+const EmailTemplateRoutes = require("./Routes/EmailTemplateRoutes");
 const TrackConditionRoutes = require("./Routes/TrackConditionRoutes");
 const { initializeApp } = require("firebase/app");
 
@@ -104,6 +105,7 @@ app.use("/api/v1", PointTableSystemRoutes);
 app.use("/api/v1", TrackConditionRoutes);
 app.use("/api/v1", FinalPositionRoutes);
 app.use("/api/v1", ImageStorageRoutes);
+app.use("/api/v1", EmailTemplateRoutes);
 cron.schedule("* * * * *", () => {
   console.log("cron job working");
 });
