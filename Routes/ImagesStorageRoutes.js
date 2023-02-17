@@ -10,7 +10,6 @@ const {
   RestoreSoftDeletedImagesStorage,
 } = require("../Controller/ImageStorageController");
 const { upload } = require("../Utils/ImageUpload");
-
 router
   .route("/uploadImagesStorage", upload.single("image"))
   .post(CreateImagesStorage);

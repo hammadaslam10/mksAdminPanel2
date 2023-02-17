@@ -236,12 +236,12 @@ exports.GetonlyoneSusbcriber = Trackerror(async (req, res, next) => {
   const data = await SubscriberModel.findOne({
     where: { _id: req.params.id },
     include: [
-      {
-        paranoid: false,
-        model: db.test,
-        as: "TrackHorses",
-        include: { all: true },
-      },
+      // {
+      //   paranoid: false,
+      //   model: db.HorseModel,
+      //   as: "TrackSubscribers",
+      //   include: { all: true },
+      // },
       {
         paranoid: false,
         model: db.TrainerModel,
