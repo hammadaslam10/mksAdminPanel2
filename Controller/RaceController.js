@@ -171,7 +171,6 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
         "RaceCard",
         "BackupId",
       ],
-      paranoid: false,
     },
     include: [
       {
@@ -478,6 +477,7 @@ exports.SearchRace = Trackerror(async (req, res, next) => {
     },
     limit,
     offset,
+    paranoid: true,
   })
     .then((data) => {
       // console.log(page, limit, data);
@@ -1083,75 +1083,121 @@ exports.ResultCreation = Trackerror(async (req, res, next) => {
 });
 exports.VerdictLatest = Trackerror(async (req, res, next) => {
   const result = await RaceAndVerdictsHorseModel.findOne({
-    order: [["createdAt", "DESC"]],
-  });
-  const data = await RaceModel.findOne({
-    where: {
-      _id: result.RaceModelId,
-    },
+    order: [["RaceToBePredictData", "createdAt", "DESC"]],
+    attributes: ["id"],
     include: [
       {
-        model: db.MeetingTypeModel,
-        as: "MeetingTypeData",
-      },
-      // {
-      //   model: db.GroundTypeModel,
-      //   as: "GroundData"
-      // },
-      {
-        model: db.RaceCourseModel,
-        as: "RaceCourseData",
-      },
-      {
-        model: db.TrackLengthModel,
-        as: "TrackLengthData",
-      },
-      {
-        model: db.RaceNameModel,
-        as: "RaceNameModelData",
-      },
-      {
-        model: db.RaceKindModel,
-        as: "RaceKindData",
-      },
-      {
-        model: db.RaceTypeModel,
-        as: "RaceTypeModelData",
-      },
-      {
-        model: db.SponsorModel,
-        as: "SponsorData",
-      },
-      {
-        model: db.HorseModel,
-        as: "RaceAndHorseModelData",
-        include: { all: true },
-      },
-      {
-        model: db.HorseAndRaceModel,
-        as: "RacehorsesData",
-        include: { all: true },
-      },
-      {
-        model: db.CompetitonModel,
-        as: "CompetitionRacesPointsModelData",
-        include: { all: true },
-      },
-      {
-        model: db.JockeyModel,
+        model: db.RaceModel,
+        as: "RaceToBePredictData",
+        paranoid: false,
+        attributes: ["_id"],
         include: [
           {
-            model: db.NationalityModel,
-            as: "JockeyNationalityData",
-            paranoid: false,
+            model: db.RaceNameModel,
+            as: "RaceNameModelData",
+            attributes: ["_id", "NameEn", "NameAr"],
+          },
+          {
+            model: db.RaceAndVerdictsHorseModel,
+            as: "RaceToBePredictData",
+            attributes: ["id", "Remarks"],
+
+            include: [
+              {
+                model: db.VerdictModel,
+                as: "VerdictNameData",
+                attributes: ["NameEn", "NameAr", "_id"],
+              },
+              {
+                model: db.HorseModel,
+                as: "HorseNo1Data",
+                attributes: ["NameEn", "NameAr", "_id"],
+              },
+              {
+                model: db.HorseModel,
+                as: "HorseNo2Data",
+                attributes: ["NameEn", "NameAr", "_id"],
+              },
+              {
+                model: db.HorseModel,
+                as: "HorseNo3Data",
+                attributes: ["NameEn", "NameAr", "_id"],
+              },
+            ],
           },
         ],
       },
     ],
   });
+  console.log(result);
+  // const data = await RaceModel.findOne({
+  //   paranoid: false,
+  //   where: {
+  //     _id: result.RaceToBePredict,
+  //   },
+  //   include: [
+  //     {
+  //       model: db.MeetingTypeModel,
+  //       as: "MeetingTypeData",
+  //     },
+  //     // {
+  //     //   model: db.GroundTypeModel,
+  //     //   as: "GroundData"
+  //     // },
+  //     {
+  //       model: db.RaceCourseModel,
+  //       as: "RaceCourseData",
+  //     },
+  //     {
+  //       model: db.TrackLengthModel,
+  //       as: "TrackLengthData",
+  //     },
+  //     {
+  //       model: db.RaceNameModel,
+  //       as: "RaceNameModelData",
+  //     },
+  //     {
+  //       model: db.RaceKindModel,
+  //       as: "RaceKindData",
+  //     },
+  //     {
+  //       model: db.RaceTypeModel,
+  //       as: "RaceTypeModelData",
+  //     },
+  //     {
+  //       model: db.SponsorModel,
+  //       as: "SponsorData",
+  //     },
+  //     {
+  //       model: db.HorseModel,
+  //       as: "RaceAndHorseModelData",
+  //       include: { all: true },
+  //     },
+  //     {
+  //       model: db.HorseAndRaceModel,
+  //       as: "RacehorsesData",
+  //       include: { all: true },
+  //     },
+  //     {
+  //       model: db.CompetitonModel,
+  //       as: "CompetitionRacesPointsModelData",
+  //       include: { all: true },
+  //     },
+  //     {
+  //       model: db.JockeyModel,
+  //       include: [
+  //         {
+  //           model: db.NationalityModel,
+  //           as: "JockeyNationalityData",
+  //           paranoid: false,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // });
   res.status(200).json({
     success: true,
-    data,
+    result,
   });
 });
 exports.AllResults = Trackerror(async (req, res, next) => {
@@ -2253,7 +2299,6 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     totalPrize,
     PrizeNumber,
     RaceWeight,
-
   } = req.body;
   let = {
     FirstPrice,
@@ -2318,7 +2363,7 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
       attributes: ["_id"],
     });
   }
-  console.log(TrackConditionChecking._id)
+  console.log(TrackConditionChecking._id);
   let CurrencyChecking;
   if (!CurrencyChecking) {
     CurrencyChecking = await db.CurrencyModel.findOne({
@@ -2328,9 +2373,8 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
       attributes: ["_id"],
     });
   }
-  console.log(CurrencyChecking._id, "ddad")
-  console.log(Currency || CurrencyChecking._id, "ddad")
-
+  console.log(CurrencyChecking._id, "ddad");
+  console.log(Currency || CurrencyChecking._id, "ddad");
 
   // return condition1 ? value1
   //   : condition2 ? value2
@@ -2366,7 +2410,9 @@ exports.CreateRace = Trackerror(async (req, res, next) => {
     Ground: Ground,
     Sponsor: Sponsor,
     Day: Day,
-    TrackCondition: !TrackCondition ? TrackCondition : TrackConditionChecking._id,
+    TrackCondition: !TrackCondition
+      ? TrackCondition
+      : TrackConditionChecking._id,
     RaceWeight: RaceWeight,
     Currency: !Currency ? Currency : CurrencyChecking._id,
   });
